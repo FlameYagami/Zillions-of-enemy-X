@@ -4,35 +4,43 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CardEditor.Constant;
 using CardEditor.Entity;
+using CardEditor.Presenter;
 using CardEditor.Utils;
-using CardEditor.Utils.Dialog;
-using DeckEditor.Utils;
 
-namespace CardEditor.MVP
+namespace CardEditor.View
 {
+    public interface IView
+    {
+        void SetRaceItems(List<object> itemList);
+        void SetPackItems(List<object> itemList);
+        void UpdateListView(List<PreviewEntity> cardList);
+        void SetCardEntity(CardEntity cardmodel);
+        void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
+        void ShowDialog(string v);
+        CardEntity GetCardEntity();
+        void SetPicture(List<string> pictureListUri);
+        void Reset();
+        void UpdatePackLinkage(string packNumber);
+        void UpdateTypeLinkage(string type);
+    }
+
     /// <summary>
     ///     MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Constract.IView
+    public partial class MainWindow : IView
     {
-        private readonly Constract.IPresenter _presenter;
+        private readonly IPresenter _presenter;
 
         public MainWindow()
         {
             InitializeComponent();
-            _presenter = new Presenter(this);
+            _presenter = new Presenter.Presenter(this);
         }
 
-        public void SetBackground()
-        {
-            var uri = new Uri(Const.BackgroundPath, UriKind.Relative);
-            var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
-            Background = imageBrush;
-        }
+        /************************************************** 接口实现 **************************************************/
 
         public CardEntity GetCardEntity()
         {
@@ -55,8 +63,11 @@ namespace CardEditor.MVP
                 Ability = TxtAbility.Text.Trim(),
                 Lines = TxtLines.Text.Trim(),
                 Faq = TxtFaq.Text.Trim(),
-                AbilityType = SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.Ability),
-                AbilityDetail = SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(), SqliteConst.AbilityDetail),
+                AbilityType =
+                    SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.Ability),
+                AbilityDetail =
+                    SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(),
+                        SqliteConst.AbilityDetail),
                 AbilityDetialEntity = abilityDetialEntity
             };
         }
@@ -101,41 +112,46 @@ namespace CardEditor.MVP
                 }
         }
 
-        public void ResetAbility()
+        public void Reset()
         {
+            foreach (var control in GridQuery.Children)
+            {
+                var box = control as ComboBox;
+                if (box != null)
+                {
+                    box.Text = StringConst.NotApplicable;
+                }
+                var textBox = control as TextBox;
+                if (textBox != null)
+                {
+                    textBox.Text = string.Empty;
+                }
+            }
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
+            CmbCamp.IsEnabled = false;
         }
 
-        public void SetImage(List<string> imageListUri)
+        public void SetPicture(List<string> pictureListUri)
         {
             var tabItemList = new List<TabItem> {TabItem0, TabItem1, TabItem2, TabItem3};
             var imageList = new List<Image> {Img0, Img1, Img2, Img3};
             for (var i = 0; i != tabItemList.Count; i++)
-                if (i < imageListUri.Count)
+                if (i < pictureListUri.Count)
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
-                    imageList[i].Source = new BitmapImage(new Uri(imageListUri[i]));
+                    imageList[i].Source = new BitmapImage(new Uri(pictureListUri[i]));
                 }
                 else
                 {
                     tabItemList[i].Visibility = Visibility.Hidden;
                 }
             tabItemList[0].Focus();
-            if (0 != imageListUri.Count) return;
+            if (0 != pictureListUri.Count) return;
             tabItemList[0].Visibility = Visibility.Hidden;
             imageList[0].Source = new BitmapImage();
-        }
-
-        /// <summary>
-        ///     得到ListView的选择索引
-        /// </summary>
-        /// <returns></returns>
-        public int GetSelectIndex()
-        {
-            return LvCardPreview.SelectedIndex;
         }
 
         public void ShowDialog(string hint)
@@ -143,120 +159,11 @@ namespace CardEditor.MVP
             DialogUtils.ShowDlg(hint);
         }
 
-        public void SetType(string message)
-        {
-            CmbType.Text = message;
-        }
-
-        public void SetCamp(string message)
-        {
-            CmbCamp.Text = message;
-        }
-
-        public void SetRace(string message)
-        {
-            CmbRace.Text = message;
-        }
-
-        public void SetSign(string message)
-        {
-            CmbSign.Text = message;
-        }
-
-        public void SetRare(string message)
-        {
-            CmbRare.Text = message;
-        }
-
-        public void SetCName(string message)
-        {
-            TxtCName.Text = message;
-        }
-
-        public void SetJName(string message)
-        {
-            TxtJName.Text = message;
-        }
-
-        public void SetIllust(string message)
-        {
-            TxtIllust.Text = message;
-        }
-
-        public void SetPack(string message)
-        {
-            CmbPack.Text = message;
-        }
-
-        public void SetNumber(string message)
-        {
-            if (message.Equals(string.Empty))
-                TxtNumber.Text = string.Empty;
-            else
-                TxtNumber.Text = TxtNumber.Text.Length >= 4
-                    ? TxtNumber.Text.Replace(TxtNumber.Text.Substring(0, 4), message)
-                    : message;
-        }
-
-        public void SetCost(string message)
-        {
-            TxtCost.Text = message;
-        }
-
-        public void SetPower(string message)
-        {
-            TxtPower.Text = message;
-        }
-
-        public void SetAbility(string message)
-        {
-            TxtAbility.Text = message;
-        }
-
-        public void SetLimit(string message)
-        {
-            CmbRestrict.Text = message;
-        }
-
-        public void SetLines(string message)
-        {
-            TxtLines.Text = message;
-        }
-
-        public void SetFaq(string message)
-        {
-            TxtFaq.Text = message;
-        }
-
-        public void SetCampEnabled(bool isEnabled)
-        {
-            CmbCamp.IsEnabled = IsEnabled;
-        }
-
-        public void SetRaceEnabled(bool isEnabled)
-        {
-            CmbRace.IsEnabled = isEnabled;
-        }
-
-        public void SetSignEnabled(bool isEnabled)
-        {
-            CmbSign.IsEnabled = isEnabled;
-        }
-
-        public void SetCostEnabled(bool isEnabled)
-        {
-            TxtCost.IsEnabled = isEnabled;
-        }
-
-        public void SetPowerEnabled(bool isEnabled)
-        {
-            TxtPower.IsEnabled = isEnabled;
-        }
-
         public void SetRaceItems(List<object> itemList)
         {
             CmbRace.ItemsSource = null;
             CmbRace.ItemsSource = itemList;
+            CmbRace.IsEnabled = 0 != itemList.Count;
             CmbRace.Text = StringConst.NotApplicable;
         }
 
@@ -266,26 +173,6 @@ namespace CardEditor.MVP
             CmbPack.ItemsSource = itemList;
         }
 
-        public string GetPack()
-        {
-            return CmbPack.Text.Trim();
-        }
-
-        public new string GetType()
-        {
-            return CmbType.Text.Trim();
-        }
-
-        public string GetCamp()
-        {
-            return CmbCamp.Text.Trim();
-        }
-
-        public string GetMode()
-        {
-            return CmbMode.Text.Trim();
-        }
-
         public void UpdateListView(List<PreviewEntity> cardList)
         {
             LvCardPreview.ItemsSource = null;
@@ -293,10 +180,49 @@ namespace CardEditor.MVP
             LblCardCount.Content = StringConst.QueryResult + cardList.Count;
         }
 
-        public string GetPassword()
+        public void UpdatePackLinkage(string packNumber)
         {
-            var p = Marshal.SecureStringToBSTR(TxtPassword.SecurePassword);
-            return Marshal.PtrToStringBSTR(p); // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
+            if (packNumber.Equals(string.Empty))
+                TxtNumber.Text = string.Empty;
+            else
+                TxtNumber.Text = TxtNumber.Text.Length >= 4
+                    ? TxtNumber.Text.Replace(TxtNumber.Text.Substring(0, 4), packNumber)
+                    : packNumber;
+            if (packNumber.Contains("P"))
+                CmbRare.Text = StringConst.RarePr;
+        }
+
+        public void UpdateTypeLinkage(string type)
+        {
+            switch (type)
+            {
+                case StringConst.NotApplicable:
+                case StringConst.TypeZx:
+                case StringConst.TypeZxEx:
+                    {
+                        _view.SetPowerEnabled(true);
+                        _view.SetRace(StringConst.NotApplicable);
+                        _view.SetSign(StringConst.NotApplicable);
+                        _view.SetCost(string.Empty);
+                        _view.SetPower(string.Empty);
+                        break;
+                    }
+                case StringConst.TypePlayer:
+                    {
+                        _view.SetPowerEnabled(false);
+                        _view.SetRace(StringConst.Hyphen);
+                        _view.SetSign(StringConst.Hyphen);
+                        _view.SetCost(string.Empty);
+                        _view.SetPower(string.Empty);
+                        break;
+                    }
+                case StringConst.TypeEvent:
+                    {
+                        _view.SetRace(StringConst.Hyphen);
+                        _view.SetPower(string.Empty);
+                        break;
+                    }
+            }
         }
 
         public void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible)
@@ -305,10 +231,7 @@ namespace CardEditor.MVP
             BtnDecrypt.Visibility = isDecryptVisible ? Visibility.Visible : Visibility.Hidden;
         }
 
-        public string GetOrder()
-        {
-            return CmbOrder.Text.Trim();
-        }
+        /************************************************** 事件 **************************************************/
 
         /// <summary>程序载入</summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -319,89 +242,92 @@ namespace CardEditor.MVP
         /// <summary>退出</summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.Exit();
+            _presenter.ExitClick();
         }
 
         /// <summary>添加</summary>
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.AddCard();
+            _presenter.AddClick(CmbOrder.Text.Trim());
         }
 
         /// <summary>更新</summary>
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.UpdateCard();
+            _presenter.UpdateClick(LvCardPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>删除</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.Delete();
+            _presenter.DeleteClick(LvCardPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>查询</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.Query();
+            _presenter.QueryClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim(), CmbPack.Text.Trim());
         }
 
         /// <summary>重置</summary>
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.Reset();
+            _presenter.ResetClick();
         }
 
         /// <summary>卡包选择</summary>
         private void Pack_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.PackChanged();
+            _presenter.PackChanged(CmbPack.Text.Trim());
         }
 
         /// <summary>类型选择</summary>
         private void Type_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.TypeChanged();
+            _presenter.TypeChanged(CmbType.Text.Trim());
         }
 
         /// <summary>阵营选择</summary>
         private void Camp_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.CampChanged();
+            _presenter.CampChanged(CmbCamp.Text.Trim());
         }
 
         /// <summary>列表选择</summary>
         private void LvCardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.CardPreviewChanged();
+            _presenter.PreviewChanged(LvCardPreview.SelectedIndex);
         }
 
         private void CmbCamp_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.CampChanged();
+            _presenter.CampChanged(CmbCamp.Text.Trim());
         }
 
         private void CmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.TypeChanged();
+            _presenter.TypeChanged(CmbCamp.Text.Trim());
         }
 
         /// <summary>加密数据库</summary>
         private void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.EncryptDatabase();
+            // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
+            _presenter.EncryptDatabaseClick(
+                Marshal.PtrToStringBSTR(Marshal.SecureStringToBSTR(TxtPassword.SecurePassword)));
         }
 
         /// <summary>解密数据库</summary>
         private void Decrypt_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DecryptDatabase();
+            _presenter.DecryptDatabaseClick(
+                Marshal.PtrToStringBSTR(Marshal.SecureStringToBSTR(TxtPassword.SecurePassword)));
         }
 
         /// <summary>改变排序方式</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.Order();
+            _presenter.OrderChanged(CmbOrder.Text.Trim());
         }
     }
 }

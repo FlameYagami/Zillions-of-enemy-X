@@ -2,7 +2,7 @@
 {
     public class SqliteConst
     {
-        public const string DatabaseName = "Data.db";
+        public const string DatabaseName = "Query.db";
         public const string DatabasePassword = "DatabasePassword";
         public const string CardTable = "TableCard";
         public const string QueryAllSql = "SELECT * FROM " + CardTable + " ORDER BY " + Number + " ASC";
@@ -39,6 +39,6 @@
             + CName + "," + JName + "," + Illust + "," + Number + "," + Cost + "," + Power + "," + Ability + "," +
             Lines + "," + Faq + "," + AbilityDetail + ")";
 
-        public static string DatabasePath = $"Data Source='{Const.RootPath + DatabaseName}'";
+        public static string DatabasePath = $"Query Source='{Const.RootPath + DatabaseName}'";
     }
 }

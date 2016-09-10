@@ -2,7 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace DeckEditor.Utils
+namespace CardEditor.Utils
 {
     internal class JsonUtils
     {

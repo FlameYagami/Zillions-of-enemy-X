@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using CardEditor.Constant;
-using DeckEditor.Utils;
 
 namespace CardEditor.Utils
 {

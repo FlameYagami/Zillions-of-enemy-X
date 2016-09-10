@@ -16,7 +16,7 @@ namespace CardEditor.Utils
         public static string GetBaseValue(string value)
         {
             return StringConst.NotApplicable.Equals(value) ? string.Empty : value.Replace("'", "''");
-                // 处理字符串中对插入语句影响的'号
+            // 处理字符串中对插入语句影响的'号
         }
 
         /// <summary>

@@ -1,22 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
-using DeckEditor.Utils;
 
-namespace CardEditor.MVP
+namespace CardEditor.Model
 {
-    internal class Data : SqliteConst, Constract.IData
+    public interface IQuery
     {
-        /// <summary>总数据缓存</summary>
-        public static DataSet DsAllCache = new DataSet();
+        void SetCardList();
+        string GetQuerySql(CardEntity cardEntity, string order);
+        string GetEditorSql(CardEntity cardEntity, string order);
+        string GetUpdateSql(CardEntity cardEntity, string number);
+        string GetAddSql(CardEntity cardEntity);
+        string GetDeleteSql(string number);
+    }
 
-        /// <summary>部分数据缓存</summary>
-        public static DataSet DsPartCache = new DataSet();
-
+    internal class Query : SqliteConst, IQuery
+    {
         /// <summary>ListView数据缓存</summary>
         public static List<PreviewEntity> CardList { get; set; }
 
@@ -143,7 +145,7 @@ namespace CardEditor.MVP
             builder.Append(Lines + "= '" + cardEntity.Lines + "',");
             builder.Append(Faq + "= '" + cardEntity.Faq + "',");
             builder.Append(AbilityDetail + "= '" + JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity) + "'");
-                // 详细能力处理
+            // 详细能力处理
 
             builder.Append(" WHERE " + Number);
             builder.Append("= '" + number + "'");

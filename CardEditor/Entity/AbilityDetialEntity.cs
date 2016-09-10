@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using CardEditor.Constant;
 
 namespace CardEditor.Entity
 {
@@ -68,7 +67,7 @@ namespace CardEditor.Entity
                 foreach (var properties in GetType().GetProperties())
                 {
                     if (!properties.Name.ToLower().Equals(abilityDetailItem.Key)) continue;
-                    tempAbilityDetailDic.Add(abilityDetailItem.Key, (int)properties.GetValue(this));
+                    tempAbilityDetailDic.Add(abilityDetailItem.Key, (int) properties.GetValue(this));
                     break;
                 }
             _abilityDetailDic = tempAbilityDetailDic;
@@ -81,7 +80,7 @@ namespace CardEditor.Entity
                 foreach (var properties in GetType().GetProperties())
                 {
                     if (!properties.Name.ToLower().Equals(checkbox.Content.ToString().ToLower())) continue;
-                    properties.SetValue(this, checkbox.IsChecked != null && (bool) checkbox.IsChecked ? 1 : 0);
+                    properties.SetValue(this, (checkbox.IsChecked != null) && (bool) checkbox.IsChecked ? 1 : 0);
                     break;
                 }
         }

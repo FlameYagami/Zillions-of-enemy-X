@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using CardEditor.Utils.Dialog;
 
-namespace CardEditor.Utils.Dialog
+namespace CardEditor.Utils
 {
     public class DialogUtils
     {

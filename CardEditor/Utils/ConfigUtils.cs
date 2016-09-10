@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace DeckEditor.Utils
+namespace CardEditor.Utils
 {
     public class ConfigUtils
     {

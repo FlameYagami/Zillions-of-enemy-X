@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DeckEditor.Utils
+namespace CardEditor.Utils
 {
     public class StringUtils
     {

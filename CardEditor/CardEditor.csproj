@@ -69,36 +69,36 @@
     <Compile Include="Entity\AbilityDetialEntity.cs" />
     <Compile Include="Entity\CardEntity.cs" />
     <Compile Include="Entity\PreviewEntity.cs" />
-    <Compile Include="MVP\Data.cs" />
-    <Compile Include="MVP\Constract.cs" />
-    <Compile Include="MVP\Presenter.cs" />
+    <Compile Include="Model\DataCache.cs" />
+    <Compile Include="Model\IQuery.cs" />
+    <Compile Include="Presenter\Presenter.cs" />
     <Compile Include="Utils\CardUtils.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\ConfigUtils.cs" />
     <Compile Include="Constant\SqliteConst.cs" />
     <Compile Include="Utils\SqliteUtils.cs" />
-    <Compile Include="Utils\Dialog\Dlg.cs">
+    <Compile Include="View\Dlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utils\Dialog\Dlg.Designer.cs">
+    <Compile Include="View\Dlg.Designer.cs">
       <DependentUpon>Dlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Dialog\DlgOK.cs">
+    <Compile Include="View\DlgOK.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utils\Dialog\DlgOK.Designer.cs">
+    <Compile Include="View\DlgOK.Designer.cs">
       <DependentUpon>DlgOK.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Dialog\DlgOKCancel.cs">
+    <Compile Include="View\DlgOKCancel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Utils\Dialog\DlgOKCancel.Designer.cs">
+    <Compile Include="View\DlgOKCancel.Designer.cs">
       <DependentUpon>DlgOKCancel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Dialog\DialogUtils.cs" />
+    <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
-    <Page Include="MVP\View.xaml">
+    <Page Include="View\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -106,7 +106,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MVP\View.xaml.cs">
+    <Compile Include="View\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -129,13 +129,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utils\Dialog\Dlg.resx">
+    <EmbeddedResource Include="View\Dlg.resx">
       <DependentUpon>Dlg.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utils\Dialog\DlgOK.resx">
+    <EmbeddedResource Include="View\DlgOK.resx">
       <DependentUpon>DlgOK.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utils\Dialog\DlgOKCancel.resx">
+    <EmbeddedResource Include="View\DlgOKCancel.resx">
       <DependentUpon>DlgOKCancel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
