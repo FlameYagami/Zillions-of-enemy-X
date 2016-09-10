@@ -14,17 +14,16 @@ namespace CardEditor.View
 {
     public interface IView
     {
-        void SetRaceItems(List<object> itemList);
         void SetPackItems(List<object> itemList);
-        void UpdateListView(List<PreviewEntity> cardList);
         void SetCardEntity(CardEntity cardmodel);
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
-        void ShowDialog(string v);
-        CardEntity GetCardEntity();
-        void SetPicture(List<string> pictureListUri);
+        void SetPicture(List<string> picturePathList);
         void Reset();
+        void UpdateListView(List<PreviewEntity> previewEntityList);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
+        void UpdateCampLinkage(List<object> itemList);
+        CardEntity GetCardEntity();
     }
 
     /// <summary>
@@ -118,14 +117,10 @@ namespace CardEditor.View
             {
                 var box = control as ComboBox;
                 if (box != null)
-                {
                     box.Text = StringConst.NotApplicable;
-                }
                 var textBox = control as TextBox;
                 if (textBox != null)
-                {
                     textBox.Text = string.Empty;
-                }
             }
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
@@ -134,32 +129,27 @@ namespace CardEditor.View
             CmbCamp.IsEnabled = false;
         }
 
-        public void SetPicture(List<string> pictureListUri)
+        public void SetPicture(List<string> picturePathList)
         {
             var tabItemList = new List<TabItem> {TabItem0, TabItem1, TabItem2, TabItem3};
             var imageList = new List<Image> {Img0, Img1, Img2, Img3};
             for (var i = 0; i != tabItemList.Count; i++)
-                if (i < pictureListUri.Count)
+                if (i < picturePathList.Count)
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
-                    imageList[i].Source = new BitmapImage(new Uri(pictureListUri[i]));
+                    imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
                 }
                 else
                 {
                     tabItemList[i].Visibility = Visibility.Hidden;
                 }
             tabItemList[0].Focus();
-            if (0 != pictureListUri.Count) return;
+            if (0 != picturePathList.Count) return;
             tabItemList[0].Visibility = Visibility.Hidden;
             imageList[0].Source = new BitmapImage();
         }
 
-        public void ShowDialog(string hint)
-        {
-            DialogUtils.ShowDlg(hint);
-        }
-
-        public void SetRaceItems(List<object> itemList)
+        public void UpdateCampLinkage(List<object> itemList)
         {
             CmbRace.ItemsSource = null;
             CmbRace.ItemsSource = itemList;
@@ -173,11 +163,11 @@ namespace CardEditor.View
             CmbPack.ItemsSource = itemList;
         }
 
-        public void UpdateListView(List<PreviewEntity> cardList)
+        public void UpdateListView(List<PreviewEntity> previewEntityList)
         {
             LvCardPreview.ItemsSource = null;
-            LvCardPreview.ItemsSource = cardList;
-            LblCardCount.Content = StringConst.QueryResult + cardList.Count;
+            LvCardPreview.ItemsSource = previewEntityList;
+            LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
         }
 
         public void UpdatePackLinkage(string packNumber)
@@ -198,30 +188,47 @@ namespace CardEditor.View
             {
                 case StringConst.NotApplicable:
                 case StringConst.TypeZx:
+                {
+                    TxtCost.IsEnabled = true;
+                    TxtPower.IsEnabled = true;
+                    CmbRace.IsEnabled = true;
+
+                    CmbRace.Text = StringConst.NotApplicable;
+                    break;
+                }
                 case StringConst.TypeZxEx:
-                    {
-                        _view.SetPowerEnabled(true);
-                        _view.SetRace(StringConst.NotApplicable);
-                        _view.SetSign(StringConst.NotApplicable);
-                        _view.SetCost(string.Empty);
-                        _view.SetPower(string.Empty);
-                        break;
-                    }
+                {
+                    TxtCost.IsEnabled = true;
+                    TxtPower.IsEnabled = true;
+                    CmbRace.IsEnabled = true;
+
+                    CmbSign.Text = StringConst.Hyphen;
+                    CmbRace.Text = StringConst.NotApplicable;
+                    break;
+                }
                 case StringConst.TypePlayer:
-                    {
-                        _view.SetPowerEnabled(false);
-                        _view.SetRace(StringConst.Hyphen);
-                        _view.SetSign(StringConst.Hyphen);
-                        _view.SetCost(string.Empty);
-                        _view.SetPower(string.Empty);
-                        break;
-                    }
+                {
+                    TxtCost.IsEnabled = false;
+                    TxtPower.IsEnabled = false;
+                    CmbRace.IsEnabled = false;
+
+                    TxtCost.Text = string.Empty;
+                    TxtPower.Text = string.Empty;
+                    CmbSign.Text = StringConst.Hyphen;
+                    CmbRace.Text = StringConst.NotApplicable;
+                    break;
+                }
                 case StringConst.TypeEvent:
-                    {
-                        _view.SetRace(StringConst.Hyphen);
-                        _view.SetPower(string.Empty);
-                        break;
-                    }
+                {
+                    TxtCost.IsEnabled = true;
+                    TxtPower.IsEnabled = false;
+                    CmbRace.IsEnabled = false;
+
+                    TxtPower.Text = string.Empty;
+                    CmbSign.Text = StringConst.Hyphen;
+                    CmbRace.Text = StringConst.NotApplicable;
+                    break;
+                }
             }
         }
 

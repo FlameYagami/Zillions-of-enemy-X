@@ -62,7 +62,7 @@ namespace CardEditor.Presenter
         public void CampChanged(string camp)
         {
             if (!camp.Equals(StringConst.NotApplicable))
-                _view.SetRaceItems(CardUtils.GetPartRace(camp));
+                _view.UpdateCampLinkage(CardUtils.GetPartRace(camp));
         }
 
         public void PreviewChanged(int selectIndex)
@@ -87,7 +87,7 @@ namespace CardEditor.Presenter
             {
                 if (pack.Equals(string.Empty))
                 {
-                    _view.ShowDialog(StringConst.PackSeleteNone);
+                    DialogUtils.ShowDlg(StringConst.PackSeleteNone);
                     return;
                 }
                 UpdateCacheAndUi(_query.GetEditorSql(cardModel, order));
@@ -100,7 +100,7 @@ namespace CardEditor.Presenter
             var cardModel = _view.GetCardEntity();
             if (CardUtils.IsNumberExist(cardModel.Number))
             {
-                _view.ShowDialog(StringConst.CardIsExitst);
+                DialogUtils.ShowDlg(StringConst.CardIsExitst);
                 return;
             }
             if (!DialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
@@ -113,12 +113,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                _view.ShowDialog(StringConst.AddSucceed);
+                DialogUtils.ShowDlg(StringConst.AddSucceed);
+                return;
             }
-            else
-            {
-                _view.ShowDialog(StringConst.AddFailed);
-            }
+            DialogUtils.ShowDlg(StringConst.AddFailed);
         }
 
         /// <summary>重置</summary>
@@ -132,7 +130,7 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                _view.ShowDialog(StringConst.CardSeleteNone);
+                DialogUtils.ShowDlg(StringConst.CardSeleteNone);
                 return;
             }
             if (!DialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
@@ -146,12 +144,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                _view.ShowDialog(StringConst.UpdateSucceed);
+                DialogUtils.ShowDlg(StringConst.UpdateSucceed);
+                return;
             }
-            else
-            {
-                _view.ShowDialog(StringConst.UpdateFailed);
-            }
+            DialogUtils.ShowDlg(StringConst.UpdateFailed);
         }
 
         /// <summary>删除</summary>
@@ -159,7 +155,7 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                _view.ShowDialog(StringConst.CardSeleteNone);
+                DialogUtils.ShowDlg(StringConst.CardSeleteNone);
                 return;
             }
             if (!DialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
@@ -173,12 +169,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                _view.ShowDialog(StringConst.DeleteSucceed);
+                DialogUtils.ShowDlg(StringConst.DeleteSucceed);
+                return;
             }
-            else
-            {
-                _view.ShowDialog(StringConst.DeleteFailed);
-            }
+            DialogUtils.ShowDlg(StringConst.DeleteFailed);
         }
 
         /// <summary>排序发生变化</summary>
@@ -208,11 +202,9 @@ namespace CardEditor.Presenter
             {
                 _view.SetPasswordVisibility(false, true);
                 DialogUtils.ShowDlg(StringConst.EncryptSucced);
+                return;
             }
-            else
-            {
-                DialogUtils.ShowDlgOk(StringConst.EncryptFailed);
-            }
+            DialogUtils.ShowDlgOk(StringConst.EncryptFailed);
         }
 
         public void DecryptDatabaseClick(string password)
@@ -226,11 +218,9 @@ namespace CardEditor.Presenter
             {
                 _view.SetPasswordVisibility(true, false);
                 DialogUtils.ShowDlg(StringConst.DncryptSucced);
+                return;
             }
-            else
-            {
-                DialogUtils.ShowDlgOk(StringConst.DncryptFailed);
-            }
+            DialogUtils.ShowDlgOk(StringConst.DncryptFailed);
         }
 
         /// <summary>
