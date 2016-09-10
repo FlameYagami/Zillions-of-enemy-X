@@ -1,0 +1,388 @@
+﻿<Window x:Class="DeckEditor.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeckEditor.View"
+        mc:Ignorable="d"
+        Title="Z/X DeckEditor" Height="680" Width="1110" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        Loaded="Window_Loaded" Foreground="Black">
+
+    <Grid Name="Grid" Width="1090" Height="641">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="570" />
+            <ColumnDefinition Width="220" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TabControl x:Name="TcImage" HorizontalAlignment="Left" Margin="5" Height="280" Width="187"
+                            Background="#50F0F8FF">
+                    <TabItem Header="A" Name="TbiPicture1" Background="#50F0F8FF">
+                        <Image x:Name="ImgPicture1" Width="180" Height="252"
+                               MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                    </TabItem>
+                    <TabItem Header="B" Name="TbiPicture2" Background="#50F0F8FF">
+                        <Image x:Name="ImgPicture2" Width="180" Height="252"
+                               MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                    </TabItem>
+                    <TabItem Header="C" Name="TbiPicture3" Background="#50F0F8FF">
+                        <Image x:Name="ImgPicture3" Width="180" Height="252"
+                               MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                    </TabItem>
+                    <TabItem Header="D" Name="TbiPicture4" Background="#50F0F8FF">
+                        <Image x:Name="ImgPicture4" Width="180" Height="252"
+                               MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                    </TabItem>
+                </TabControl>
+                <Grid Grid.Column="1" Margin="5,0,5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="160" />
+                        <RowDefinition Height="100" />
+                    </Grid.RowDefinitions>
+                    <Button Name="BtnExit" Grid.Column="0" Margin="10,5,10,5" Click="Exit_Click" Content="退出编辑"
+                            Background="#AAF0F8FF" />
+                    <Grid Margin="5" Grid.Row="1" Background="#50F0F8FF">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="LblPlayer" Content="玩家卡:" VerticalContentAlignment="Center" />
+                        <ListView x:Name="PlayerListView" Width="60" Height="70" Margin="8,0,8,0" Grid.Row="1"
+                                  VerticalAlignment="Top" Background="#50F0F8FF"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                          MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                                        <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                        <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
+                                               Height="63" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Label x:Name="LblLife" Grid.Row="2" Height="25" Content="生命恢复:" VerticalContentAlignment="Center" />
+                        <Label x:Name="LblVoid" Grid.Row="3" Height="25" Content="虚空使者:" VerticalContentAlignment="Center" />
+                    </Grid>
+                    <Grid Margin="5,5,5,0" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Button Name="BtnValueOrder" Margin="10,5,10,5" Content="数值排序" Background="#50F0F8FF"
+                                Click="BtnValueOrder_Click" />
+                        <Button Name="BtnRandomOrder" Grid.Row="1" Margin="10,5,10,5" Content="随机排序"
+                                Background="#50F0F8FF" Click="BtnRandomOrder_Click" />
+                    </Grid>
+                </Grid>
+            </Grid>
+            <TabControl x:Name="tabControl" Margin="5,5,5,5" Background="#50F0F8FF" Grid.Row="1">
+                <TabItem Header="基础信息" Background="#50F0F8FF">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="LblICName" Grid.Row="0" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Margin="0" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="30" />
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="ImgICamp0" />
+                            <Image x:Name="ImgICamp1" Grid.Column="1" />
+                            <Label x:Name="LblINumber" Grid.Column="2" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                            <Label x:Name="LblIType" Grid.Column="3" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                            <Label x:Name="LblIRare" Grid.Column="4" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                            <Image x:Name="ImgISign" Grid.Column="5" />
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="LblIPower" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                            <Label x:Name="LblICost" Grid.Column="1" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                            <Label x:Name="LblIRace" Grid.Column="2" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" Margin="0" />
+                        </Grid>
+                        <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="扩展信息" Background="#50F0F8FF" />
+            </TabControl>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="160" />
+                <RowDefinition Height="142*" />
+                <RowDefinition Height="208*" />
+                <RowDefinition Height="76*" />
+            </Grid.RowDefinitions>
+            <Grid Height="30" Width="556">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Button Name="BtnDelete" Grid.Column="1" Margin="5" Click="Delete_Click" Content="删除"
+                        Background="#AAF0F8FF" />
+                <ComboBox Name="CmbDeck" Grid.Column="2" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" DropDownClosed="CmbDeck_DropDownClosed"
+                          DropDownOpened="CmbDeck_DropDownOpened" />
+                <Button Name="BtnSava" Grid.Column="3" Margin="5" Click="Sava_Click" Content="保存"
+                        Background="#AAF0F8FF" />
+                <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"
+                        Background="#AAF0F8FF" />
+                <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"
+                        Background="#AAF0F8FF" />
+            </Grid>
+            <Grid VerticalAlignment="Center" Margin="5" Background="#50F0F8FF" Height="150" Width="556"
+                  Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1.75*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2.5*" />
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Label Name="LblType" Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="种类:" />
+                <Label Name="LblCamp" Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="阵营:" />
+                <Label Name="LblRace" Grid.Column="0" Grid.Row="2" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="种族:" />
+                <Label Name="LblSign" Grid.Column="0" Grid.Row="3" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="标记:" />
+                <Label Name="LblRare" Grid.Column="0" Grid.Row="4" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="罕贵:" />
+                <ComboBox Name="CmbType" Grid.Column="1" Grid.Row="0" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" Text="(N/A)">
+                    <ComboBoxItem>(N/A)</ComboBoxItem>
+                    <ComboBoxItem>Z/X</ComboBoxItem>
+                    <ComboBoxItem>事件</ComboBoxItem>
+                    <ComboBoxItem>玩家</ComboBoxItem>
+                    <ComboBoxItem>Z/X EX</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Name="CmbCamp" Grid.Column="1" Grid.Row="1" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" Text="(N/A)"
+                          DropDownClosed="Camp_DropDownClosed">
+                    <ComboBoxItem>(N/A)</ComboBoxItem>
+                    <ComboBoxItem>红</ComboBoxItem>
+                    <ComboBoxItem>蓝</ComboBoxItem>
+                    <ComboBoxItem>白</ComboBoxItem>
+                    <ComboBoxItem>黑</ComboBoxItem>
+                    <ComboBoxItem>绿</ComboBoxItem>
+                    <ComboBoxItem>无</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Name="CmbRace" Grid.Column="1" Grid.Row="2" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" Text="(N/A)" />
+                <ComboBox Name="CmbSign" Grid.Column="1" Grid.Row="3" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" Text="(N/A)">
+                    <ComboBoxItem>(N/A)</ComboBoxItem>
+                    <ComboBoxItem>-</ComboBoxItem>
+                    <ComboBoxItem>点燃</ComboBoxItem>
+                    <ComboBoxItem>觉醒之种</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Name="CmbRare" Grid.Column="1" Grid.Row="4" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" Text="(N/A)">
+                    <ComboBoxItem>(N/A)</ComboBoxItem>
+                    <ComboBoxItem>CVR</ComboBoxItem>
+                    <ComboBoxItem>IGR</ComboBoxItem>
+                    <ComboBoxItem>ZX/R</ComboBoxItem>
+                    <ComboBoxItem>UR</ComboBoxItem>
+                    <ComboBoxItem>SR</ComboBoxItem>
+                    <ComboBoxItem>R</ComboBoxItem>
+                    <ComboBoxItem>UC</ComboBoxItem>
+                    <ComboBoxItem>C</ComboBoxItem>
+                </ComboBox>
+                <Label Name="LblKey" Grid.Column="2" Grid.Row="0" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="字段:" />
+                <Label Name="LblIllust" Grid.Column="2" Grid.Row="2" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="画师:" />
+                <Label Name="LblPack" Grid.Column="2" Grid.Row="1" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="卡包:" />
+                <Label Name="LblCost" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="费用:" />
+                <Label Name="LblPower" Grid.Column="2" Grid.Row="4" VerticalContentAlignment="Center"
+                       HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="力量:" />
+                <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="5"
+                         VerticalContentAlignment="Center" />
+                <ComboBox Name="CmbIllust" Grid.Column="3" Grid.Row="2" Margin="5"
+                          VerticalContentAlignment="Center" IsEditable="True" />
+                <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="1" Margin="5" VerticalContentAlignment="Center"
+                          IsEditable="True" />
+                <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" Margin="5" VerticalContentAlignment="Center" />
+                <TextBox Name="TxtPower" Grid.Column="3" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" />
+                <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Margin="5" Content="能力分类"
+                        Background="#AAF0F8FF" Click="BtnAbilityDetail_Click" />
+                <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
+                        Click="Query_Click" Content="检索" Background="#AAF0F8FF" />
+                <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Margin="5" Click="Reset_Click" Content="重置"
+                        Background="#AAF0F8FF" />
+
+                <ListBox x:Name="LstAbilityType" SelectionMode="Multiple" Background="#AAF0F8FF" Margin="0"
+                         Width="90"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" Grid.Column="5" Grid.Row="0"
+                         Grid.RowSpan="5"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Center">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="1" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <CheckBox x:Name="ChkAbilityType0" Content="Lv" />
+                    <CheckBox x:Name="ChkAbilityType1" Content="射程" />
+                    <CheckBox x:Name="ChkAbilityType2" Content="绝界" />
+                    <CheckBox x:Name="ChkAbilityType4" Content="起始卡" />
+                    <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" />
+                    <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" />
+                    <CheckBox x:Name="ChkAbilityType7" Content="进化原力" />
+                    <CheckBox x:Name="ChkAbilityType8" Content="零点优化" />
+                </ListBox>
+            </Grid>
+            <ListView x:Name="IgListView" Margin="2.5" Height="138" Width="554" Grid.Row="2" Background="#50F0F8FF"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="UgListView" Margin="2.5" Height="204" Width="554" Grid.Row="3" Background="#50F0F8FF"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="ExListView" Margin="2.5" Width="554" Height="70" Grid.Row="4" Background="#50F0F8FF"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="LblCardCount" Margin="5,5,5,0" Background="#50F0F8FF" VerticalContentAlignment="Center" />
+                <ComboBox x:Name="CmbOrder" IsEditable="True" Margin="5" VerticalContentAlignment="Center"
+                          Text="编号" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="60"
+                          VerticalAlignment="Top" Grid.Column="1">
+                    <ComboBoxItem>编号</ComboBoxItem>
+                    <ComboBoxItem>数值</ComboBoxItem>
+                </ComboBox>
+            </Grid>
+            <ListView x:Name="PreviewListView" Margin="5" Background="#50F0F8FF" Grid.Row="1"
+                      SelectionChanged="PreviewListView_SelectionChanged" AllowDrop="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="70" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45" />
+                                <ColumnDefinition Width="125" />
+                                <ColumnDefinition Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23" />
+                                <RowDefinition Height="23" />
+                                <RowDefinition Height="23" />
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding ImagePath}" Grid.Column="0" Grid.RowSpan="3"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Image Source="{Binding LimitPath}" Grid.Column="0" Grid.Row="0"
+                                  VerticalAlignment="Top" HorizontalAlignment="Left" />
+                            <TextBlock Text="{Binding CName}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="0"
+                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" Margin="5,0,0,0"
+                                       LineStackingStrategy="BlockLineHeight" />
+                            <Label Content="{Binding CampAndRace}" Grid.Column="1" Grid.Row="1"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Label Content="{Binding PowerAndCost}" Grid.Column="1" Grid.Row="2"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Label Name="LblPreviewNumber" Content="{Binding Number}" Grid.Column="2" Grid.Row="0" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Window>
