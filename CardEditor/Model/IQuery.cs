@@ -4,6 +4,7 @@ using System.Text;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
+using System.Linq;
 
 namespace CardEditor.Model
 {
@@ -93,7 +94,8 @@ namespace CardEditor.Model
                 CardList = new List<PreviewEntity>();
             else
                 CardList.Clear();
-            foreach (var row in DsPartCache.Tables[CardTable].Rows.Cast<DataRow>())
+            foreach (var row in DataCache.DsPartCache.Tables[CardTable].Rows.Cast<DataRow>())
+            {
                 CardList.Add(new PreviewEntity
                 {
                     CName = row[CName].ToString(),
@@ -101,6 +103,7 @@ namespace CardEditor.Model
                     Cost = row[Cost].ToString().Equals(string.Empty) ? StringConst.Hyphen : row[Cost].ToString(),
                     Number = row[Number].ToString()
                 });
+            }
         }
 
         /// <summary>

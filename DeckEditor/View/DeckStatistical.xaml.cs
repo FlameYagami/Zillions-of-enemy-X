@@ -20,7 +20,7 @@ namespace DeckEditor.View
     /// </summary>
     public partial class DekcStatistical
     {
-        public DekcStatistical(Dictionary<int,int> statisticsDic)
+        public DekcStatistical(Dictionary<int, int> statisticsDic)
         {
             InitializeComponent();
             CreateChartColumn(statisticsDic);
@@ -28,40 +28,35 @@ namespace DeckEditor.View
 
         public void CreateChartColumn(Dictionary<int, int> statisticsDic)
         {
-            //创建一个图标
-            var chart = new Chart
-            {
-                //是否启用打印和保持图片
-                ToolBarEnabled = false,
-                //是否启用或禁用滚动
-                ScrollingEnabled = false,
-                //3D效果显示
-                View3D = true
-            };
             var yAxis = new Axis
             {
-                AxisMinimum = 0,
+                //设置图表中Y轴的后缀       
                 Suffix = "枚"
             };
-            //设置图标中Y轴的最小值永远为0           
-            //设置图表中Y轴的后缀          
             chart.AxesY.Add(yAxis);
 
+            var xAxis = new Axis
+            {
+                //设置图表中X轴的后缀       
+                Suffix = "费"
+            };
+            chart.AxesX.Add(xAxis);
+
             // 创建一个新的数据线。               
-            var dataSeries = new DataSeries {RenderAs = RenderAs.StackedColumn};
-
-            // 设置数据线的格式
-            //柱状Stacked
-
-
+            var dataSeries = new DataSeries
+            {
+                RenderAs = RenderAs.StackedColumn,
+                LabelEnabled = true,
+                LabelText = "#YValue"
+            };
             // 设置数据点              
             foreach (var item in statisticsDic)
             {
                 // 创建一个数据点的实例。                   
                 var dataPoint = new DataPoint
                 {
-                    // 设置X轴点       
-                    AxisXLabel = item.Key.ToString(),
+                    // 设置X轴点
+                    XValue = int.Parse(item.Key.ToString()),
                     //设置Y轴点      
                     YValue = int.Parse(item.Value.ToString())
                 };       
@@ -70,7 +65,6 @@ namespace DeckEditor.View
             }
             // 添加数据线到数据序列。                
             chart.Series.Add(dataSeries);
-            Grid.Children.Add(chart);
         }
     }
 }

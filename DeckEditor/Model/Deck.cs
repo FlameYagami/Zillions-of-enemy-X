@@ -177,16 +177,16 @@ namespace DeckEditor.Model
 
         public Dictionary<int, int> DekcStatistical()
         {
-            var dekcStatisticalDic = new Dictionary<int,int>();
+            var dekcStatisticalDic = new Dictionary<int, int>();
             var costIgList = DataCache.IgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
             var costUgList = DataCache.UgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
             var costDeckList = new List<int>();
             costDeckList.AddRange(costIgList);
             costDeckList.AddRange(costUgList);
             var costMax = costDeckList.Max();
-            for (var i = 0; i != costMax; i++)
+            for (var i = 0; i != costMax + 1; i++)
             {
-                dekcStatisticalDic.Add(i + 1,costDeckList.Count(cost => cost.Equals(i + 1)));
+                dekcStatisticalDic.Add(i + 1, costDeckList.Count(cost => cost.Equals(i + 1)));
             }
             return dekcStatisticalDic;
         }
@@ -215,8 +215,8 @@ namespace DeckEditor.Model
         private static void Value(List<DeckEntity> deckEntityList)
         {
             var tempDeckEntityList = deckEntityList.OrderBy(tempDeckEntity => tempDeckEntity.Camp)
-                .ThenBy(tempDeckEntity => tempDeckEntity.Cost)
-                .ThenBy(tempDeckEntity => tempDeckEntity.Power)
+                .OrderByDescending(tempDeckEntity => tempDeckEntity.Cost)
+                .OrderByDescending(tempDeckEntity => tempDeckEntity.Power)
                 .ThenBy(tempDeckEntity => tempDeckEntity.Number)
                 .ToList();
             deckEntityList.Clear();

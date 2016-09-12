@@ -257,7 +257,7 @@
                 <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Margin="5" Content="能力分类"
                         Background="#AAF0F8FF" Click="BtnAbilityDetail_Click" />
                 <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
-                        Click="Query_Click" Content="检索" Background="#AAF0F8FF" />
+                        Click="Query_Click" Content="检索" Background="#AAF0F8FF" IsDefault="True" />
                 <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Margin="5" Click="Reset_Click" Content="重置"
                         Background="#AAF0F8FF" />
 

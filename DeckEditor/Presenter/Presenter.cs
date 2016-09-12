@@ -188,11 +188,11 @@ namespace DeckEditor.Presenter
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     break;
                 case StringConst.AreaType.Ug:
-                    _deck.DeleteEntityFromColl(number, DataCache.IgColl);
+                    _deck.DeleteEntityFromColl(number, DataCache.UgColl);
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     break;
                 case StringConst.AreaType.Ex:
-                    _deck.DeleteEntityFromColl(number, DataCache.IgColl);
+                    _deck.DeleteEntityFromColl(number, DataCache.ExColl);
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
             }
