@@ -56,6 +56,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFVisifire.Charts, Version=5.1.2.0, Culture=neutral, PublicKeyToken=0cd785983078370b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\WPFVisifire.Charts.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -79,6 +83,9 @@
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Constant\SqliteConst.cs" />
     <Compile Include="Utils\SqliteUtils.cs" />
+    <Compile Include="View\DeckStatistical.xaml.cs">
+      <DependentUpon>DeckStatistical.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Dlg.xaml.cs">
       <DependentUpon>Dlg.xaml</DependentUpon>
     </Compile>
@@ -92,6 +99,10 @@
     <Compile Include="Utils\PointUtils.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
+    <Page Include="View\DeckStatistical.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -151,6 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WPFVisifire.Charts.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -31,6 +31,7 @@ namespace DeckEditor.Presenter
         void PictureMouseRightClick(Image image);
         void CampChanged(string camp);
         void ShowAllDeckName();
+        void DekcStatisticalClick();
     }
 
     internal class Presenter : IPresenter
@@ -258,6 +259,12 @@ namespace DeckEditor.Presenter
         {
             var deckNameList = _deck.GetDeckNameList();
             _view.SetDeckName(deckNameList);
+        }
+
+        public void DekcStatisticalClick()
+        {
+            var dekcStatisticalDic = _deck.DekcStatistical();
+            DialogUtils.ShowDekcStatistical(dekcStatisticalDic);
         }
 
         /// <summary>

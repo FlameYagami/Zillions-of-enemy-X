@@ -328,10 +328,16 @@ namespace DeckEditor.View
             _presenter.RandomOrder();
         }
 
+        /// <summary>卡组统计事件</summary>
+        private void BtnDekcStatistical_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.DekcStatisticalClick();
+        }
         /// <summary>退出</summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
         }
+
     }
 }

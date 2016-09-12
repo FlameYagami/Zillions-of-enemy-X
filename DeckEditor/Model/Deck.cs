@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
@@ -21,6 +22,7 @@ namespace DeckEditor.Model
         bool Resave(string deckName);
         void Load(string deckName);
         List<string> GetDeckNameList();
+        Dictionary<int,int> DekcStatistical();
     }
 
     internal class Deck : SqliteConst, IDeck
@@ -171,6 +173,22 @@ namespace DeckEditor.Model
                 .Where(deckFile => StringConst.DeckExtension.Equals(deckFile.Extension))
                 .Select(deckName => Path.GetFileNameWithoutExtension(deckName.FullName))
                 .ToList();
+        }
+
+        public Dictionary<int, int> DekcStatistical()
+        {
+            var dekcStatisticalDic = new Dictionary<int,int>();
+            var costIgList = DataCache.IgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
+            var costUgList = DataCache.UgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
+            var costDeckList = new List<int>();
+            costDeckList.AddRange(costIgList);
+            costDeckList.AddRange(costUgList);
+            var costMax = costDeckList.Max();
+            for (var i = 0; i != costMax; i++)
+            {
+                dekcStatisticalDic.Add(i + 1,costDeckList.Count(cost => cost.Equals(i + 1)));
+            }
+            return dekcStatisticalDic;
         }
 
         private static void AddEntityToColl(string number, string thumbnailPath, ICollection<DeckEntity> collection)

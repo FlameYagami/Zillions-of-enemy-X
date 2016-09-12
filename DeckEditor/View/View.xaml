@@ -81,11 +81,14 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <Button Name="BtnValueOrder" Margin="10,5,10,5" Content="数值排序" Background="#50F0F8FF"
                                 Click="BtnValueOrder_Click" />
                         <Button Name="BtnRandomOrder" Grid.Row="1" Margin="10,5,10,5" Content="随机排序"
                                 Background="#50F0F8FF" Click="BtnRandomOrder_Click" />
+                        <Button Name="BtnDekcStatistical" Grid.Row="2" Margin="10,5,10,5" Content="卡组统计"
+                                Background="#50F0F8FF" Click="BtnDekcStatistical_Click" />
                     </Grid>
                 </Grid>
             </Grid>
