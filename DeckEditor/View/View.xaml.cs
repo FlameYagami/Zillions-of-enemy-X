@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -113,6 +112,9 @@ namespace DeckEditor.View
             LblICost.Content = cardmodel.Cost;
             LblIRace.Content = cardmodel.Race;
             LblIAbility.Text = cardmodel.Ability;
+            LblIJName.Content = cardmodel.JName;
+            LblILines.Text = cardmodel.Lines;
+            LblIFaq.Text = cardmodel.Faq;
             var signUri = CardUtils.GetSignPath(cardmodel.Sign);
             var campUriList = CardUtils.GetCampPathList(cardmodel.Camp);
             try
@@ -157,7 +159,7 @@ namespace DeckEditor.View
                 if (i < picturePathList.Count)
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
-                    imageList[i].Tag = numberList[i];
+                    imageList[i].Tag = numberList[i].Replace(StringConst.ImageExtension, "");
                     imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
                 }
                 else
@@ -333,11 +335,11 @@ namespace DeckEditor.View
         {
             _presenter.DekcStatisticalClick();
         }
+
         /// <summary>退出</summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
         }
-
     }
 }

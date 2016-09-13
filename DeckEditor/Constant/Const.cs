@@ -37,7 +37,7 @@ namespace DeckEditor.Constant
 
         public static Dictionary<string, string> ImgLimitPathDic = new Dictionary<string, string>
         {
-            {"0", TexturesPath + "Restrict.png"},
+            {"0", TexturesPath + "Restrict.png"}
         };
 
         public static Dictionary<string, string> ImgCampPathDic = new Dictionary<string, string>

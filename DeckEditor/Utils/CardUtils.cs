@@ -92,9 +92,9 @@ namespace DeckEditor.Utils
         public static List<string> GetThumbnailPathList(string number, List<string> thumbnailFilePathList)
         {
             var tempList = thumbnailFilePathList.AsParallel()
-                    .Where(nextInfoPath => nextInfoPath.Contains(number))
-                    .OrderBy(path => path.Length)
-                    .ToList();
+                .Where(nextInfoPath => nextInfoPath.Contains(number))
+                .OrderBy(path => path.Length)
+                .ToList();
             if (tempList.Count.Equals(0))
                 tempList.Add(Const.ThumbnailUnknownPath);
             return tempList;
@@ -108,10 +108,8 @@ namespace DeckEditor.Utils
         public static string GetRestrictPath(string limit)
         {
             foreach (var item in Const.ImgLimitPathDic)
-            {
                 if (limit.Equals(item.Key))
-                return item.Value;
-            }
+                    return item.Value;
             return string.Empty;
         }
 

@@ -213,9 +213,8 @@ namespace DeckEditor.Presenter
         public void PictureMouseRightClick(Image image)
         {
             var number = image.Tag.ToString();
-            var thumbnailPath = Const.ThumbnailPath + number;
+            var thumbnailPath = Const.ThumbnailPath + number + StringConst.ImageExtension;
             var areaType = CardUtils.GetAreaType(number);
-
             // 添加卡
             if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
             // 添加成功则更新该区域

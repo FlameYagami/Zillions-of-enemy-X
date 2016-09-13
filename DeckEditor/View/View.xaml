@@ -74,8 +74,10 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <Label x:Name="LblLife" Grid.Row="2" Height="25" Content="生命恢复:" VerticalContentAlignment="Center" />
-                        <Label x:Name="LblVoid" Grid.Row="3" Height="25" Content="虚空使者:" VerticalContentAlignment="Center" />
+                        <Label x:Name="LblLife" Grid.Row="2" Height="25" Content="生命恢复:"
+                               VerticalContentAlignment="Center" />
+                        <Label x:Name="LblVoid" Grid.Row="3" Height="25" Content="虚空使者:"
+                               VerticalContentAlignment="Center" />
                     </Grid>
                     <Grid Margin="5,5,5,0" Grid.Row="2">
                         <Grid.RowDefinitions>
@@ -138,7 +140,19 @@
                         <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="扩展信息" Background="#50F0F8FF" />
+                <TabItem Header="扩展信息" Background="#50F0F8FF">
+                    <Grid Grid.Row="3" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="LblIJName" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Margin="0" />
+                        <TextBlock x:Name="LblILines" Grid.Row="1" TextWrapping="Wrap" Margin="0" />
+                        <TextBlock x:Name="LblIFaq" Grid.Row="2" TextWrapping="Wrap" Margin="0" />
+                    </Grid>
+                </TabItem>
             </TabControl>
         </Grid>
         <Grid Grid.Column="1">
@@ -291,8 +305,10 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                   HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
                         </Grid>
@@ -309,8 +325,10 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                   HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
                         </Grid>
@@ -327,8 +345,10 @@
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown" MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                   HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
                         </Grid>
@@ -372,7 +392,7 @@
                             <Image Source="{Binding ImagePath}" Grid.Column="0" Grid.RowSpan="3"
                                    VerticalAlignment="Center" HorizontalAlignment="Center" />
                             <Image Source="{Binding LimitPath}" Grid.Column="0" Grid.Row="0"
-                                  VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                   VerticalAlignment="Top" HorizontalAlignment="Left" />
                             <TextBlock Text="{Binding CName}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="0"
                                        TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
                                        HorizontalAlignment="Center" Margin="5,0,0,0"

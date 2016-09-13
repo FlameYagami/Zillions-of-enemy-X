@@ -4,7 +4,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Input;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
@@ -22,7 +21,7 @@ namespace DeckEditor.Model
         bool Resave(string deckName);
         void Load(string deckName);
         List<string> GetDeckNameList();
-        Dictionary<int,int> DekcStatistical();
+        Dictionary<int, int> DekcStatistical();
     }
 
     internal class Deck : SqliteConst, IDeck
@@ -185,9 +184,7 @@ namespace DeckEditor.Model
             costDeckList.AddRange(costUgList);
             var costMax = costDeckList.Max();
             for (var i = 0; i != costMax + 1; i++)
-            {
                 dekcStatisticalDic.Add(i + 1, costDeckList.Count(cost => cost.Equals(i + 1)));
-            }
             return dekcStatisticalDic;
         }
 
@@ -227,7 +224,8 @@ namespace DeckEditor.Model
         {
             var tempEntityList = new List<DeckEntity>();
             var random = new Random();
-            deckEntityList.ForEach(deckEntity => tempEntityList.Insert(random.Next(tempEntityList.Count + 1), deckEntity));
+            deckEntityList.ForEach(
+                deckEntity => tempEntityList.Insert(random.Next(tempEntityList.Count + 1), deckEntity));
             deckEntityList.Clear();
             deckEntityList.AddRange(tempEntityList);
         }

@@ -16,12 +16,12 @@ namespace DeckEditor.Model
 
     internal class Query : SqliteConst, IQuery
     {
-        public string QuerySqlMemory { get; set; }
-
         public Query()
         {
             QuerySqlMemory = string.Empty;
         }
+
+        public string QuerySqlMemory { get; set; }
 
         public void SetCardList(DataSet dsPartCache)
         {
@@ -68,7 +68,7 @@ namespace DeckEditor.Model
             builder.Append(cardEntity.AbilityDetail); // 详细能力
             QuerySqlMemory = builder.ToString();
             builder.Append(previewOrderType.Equals(StringConst.PreviewOrderType.Number) ? OrderNumberSql : OrderValueSql);
-                // 完整的查询语句
+            // 完整的查询语句
             return builder.ToString();
         }
     }

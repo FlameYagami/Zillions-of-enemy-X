@@ -8,7 +8,8 @@
         Title="DlgOkCancel" Height="125" Width="200" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         ShowInTaskbar="False" WindowStyle="None">
     <Grid>
-        <Label x:Name="label" Margin="10,10,10,34" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+        <Label x:Name="label" Margin="10,10,10,34" HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" FontSize="14" />
         <Button x:Name="BtnCacncel" Content="取消" Margin="10,96,105,10" Click="BtnCacncel_Click" />
         <Button x:Name="BtnConfirm" Content="确定" Margin="105,96,10,10" Click="BtnConfirm_Click" />
     </Grid>

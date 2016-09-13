@@ -36,9 +36,9 @@ namespace DeckEditor.Utils
         }
 
         /// <summary>卡组统计窗口</summary>
-        public static void ShowDekcStatistical(Dictionary<int,int> deckStatistical)
+        public static void ShowDekcStatistical(Dictionary<int, int> deckStatistical)
         {
-            var dlg = new DekcStatistical(deckStatistical) { Owner = Application.Current.MainWindow };
+            var dlg = new DekcStatistical(deckStatistical) {Owner = Application.Current.MainWindow};
             var showDialog = dlg.ShowDialog();
         }
     }

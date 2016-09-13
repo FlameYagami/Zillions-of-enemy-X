@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Collections.Generic;
 using Visifire.Charts;
 
 namespace DeckEditor.View
 {
     /// <summary>
-    /// DekcStatistical.xaml 的交互逻辑
+    ///     DekcStatistical.xaml 的交互逻辑
     /// </summary>
     public partial class DekcStatistical
     {
@@ -59,7 +47,7 @@ namespace DeckEditor.View
                     XValue = int.Parse(item.Key.ToString()),
                     //设置Y轴点      
                     YValue = int.Parse(item.Value.ToString())
-                };       
+                };
                 //添加数据点                   
                 dataSeries.DataPoints.Add(dataPoint);
             }
