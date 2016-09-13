@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeckEditor.View"
         mc:Ignorable="d"
         Title="Z/X DeckEditor" Height="680" Width="1110" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" >
 
     <Grid Name="Grid" Width="1090" Height="641">
         <Grid.ColumnDefinitions>
@@ -49,8 +49,7 @@
                         <RowDefinition Height="160" />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
-                    <Button Name="BtnExit" Grid.Column="0" Margin="10,5,10,5" Click="Exit_Click" Content="退出编辑"
-                            Background="#AAF0F8FF" />
+                    <Button Name="BtnExit" Grid.Column="0" Margin="10,5,10,5" Click="Exit_Click" Content="退出编辑"/>
                     <Grid Margin="5" Grid.Row="1" Background="#50F0F8FF">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -60,7 +59,7 @@
                         </Grid.RowDefinitions>
                         <Label x:Name="LblPlayer" Content="玩家卡:" VerticalContentAlignment="Center" />
                         <ListView x:Name="PlayerListView" Width="60" Height="70" Margin="8,0,8,0" Grid.Row="1"
-                                  VerticalAlignment="Top" Background="#50F0F8FF"
+                                  VerticalAlignment="Top"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   ScrollViewer.VerticalScrollBarVisibility="Disabled">
                             <ListView.ItemTemplate>
@@ -85,12 +84,12 @@
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <Button Name="BtnValueOrder" Margin="10,5,10,5" Content="数值排序" Background="#50F0F8FF"
+                        <Button Name="BtnValueOrder" Margin="10,5,10,5" Content="数值排序"
                                 Click="BtnValueOrder_Click" />
                         <Button Name="BtnRandomOrder" Grid.Row="1" Margin="10,5,10,5" Content="随机排序"
-                                Background="#50F0F8FF" Click="BtnRandomOrder_Click" />
+                                 Click="BtnRandomOrder_Click" />
                         <Button Name="BtnDekcStatistical" Grid.Row="2" Margin="10,5,10,5" Content="卡组统计"
-                                Background="#50F0F8FF" Click="BtnDekcStatistical_Click" />
+                                Click="BtnDekcStatistical_Click" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -140,7 +139,7 @@
                         <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="扩展信息" Background="#50F0F8FF">
+                <TabItem Header="扩展信息">
                     <Grid Grid.Row="3" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -171,17 +170,13 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Button Name="BtnDelete" Grid.Column="1" Margin="5" Click="Delete_Click" Content="删除"
-                        Background="#AAF0F8FF" />
+                <Button Name="BtnDelete" Grid.Column="1" Margin="5" Click="Delete_Click" Content="删除"/>
                 <ComboBox Name="CmbDeck" Grid.Column="2" Margin="5" VerticalContentAlignment="Center"
                           IsEditable="True" DropDownClosed="CmbDeck_DropDownClosed"
                           DropDownOpened="CmbDeck_DropDownOpened" />
-                <Button Name="BtnSava" Grid.Column="3" Margin="5" Click="Sava_Click" Content="保存"
-                        Background="#AAF0F8FF" />
-                <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"
-                        Background="#AAF0F8FF" />
-                <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"
-                        Background="#AAF0F8FF" />
+                <Button Name="BtnSava" Grid.Column="3" Margin="5" Click="Sava_Click" Content="保存"/>
+                <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"/>
+                <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"/>
             </Grid>
             <Grid VerticalAlignment="Center" Margin="5" Background="#50F0F8FF" Height="150" Width="556"
                   Grid.Row="1">
@@ -268,12 +263,10 @@
                           IsEditable="True" />
                 <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" Margin="5" VerticalContentAlignment="Center" ToolTip="区间以连接号分开（A-B）" />
                 <TextBox Name="TxtPower" Grid.Column="3" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" ToolTip="区间以连接号分开（A-B）" />
-                <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Margin="5" Content="能力分类"
-                        Background="#AAF0F8FF" Click="BtnAbilityDetail_Click" />
+                <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Margin="5" Content="能力分类" Click="BtnAbilityDetail_Click" />
                 <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
-                        Click="Query_Click" Content="检索" Background="#AAF0F8FF" IsDefault="True" />
-                <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Margin="5" Click="Reset_Click" Content="重置"
-                        Background="#AAF0F8FF" />
+                        Click="Query_Click" Content="检索" IsDefault="True" />
+                <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Margin="5" Click="Reset_Click" Content="重置"/>
 
                 <ListBox x:Name="LstAbilityType" SelectionMode="Multiple" Background="#AAF0F8FF" Margin="0"
                          Width="90"
@@ -295,7 +288,7 @@
                     <CheckBox x:Name="ChkAbilityType8" Content="零点优化" />
                 </ListBox>
             </Grid>
-            <ListView x:Name="IgListView" Margin="2.5" Height="138" Width="554" Grid.Row="2" Background="#50F0F8FF"
+            <ListView x:Name="IgListView" Margin="2.5" Height="138" Width="554" Grid.Row="2" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>
@@ -315,7 +308,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView x:Name="UgListView" Margin="2.5" Height="204" Width="554" Grid.Row="3" Background="#50F0F8FF"
+            <ListView x:Name="UgListView" Margin="2.5" Height="204" Width="554" Grid.Row="3"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>
@@ -335,7 +328,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView x:Name="ExListView" Margin="2.5" Width="554" Height="70" Grid.Row="4" Background="#50F0F8FF"
+            <ListView x:Name="ExListView" Margin="2.5" Width="554" Height="70" Grid.Row="4"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListView.ItemsPanel>
@@ -374,7 +367,7 @@
                     <ComboBoxItem>数值</ComboBoxItem>
                 </ComboBox>
             </Grid>
-            <ListView x:Name="PreviewListView" Margin="5" Background="#50F0F8FF" Grid.Row="1"
+            <ListView x:Name="PreviewListView" Margin="5" Grid.Row="1"
                       SelectionChanged="PreviewListView_SelectionChanged" AllowDrop="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>

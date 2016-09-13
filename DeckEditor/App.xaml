@@ -4,6 +4,27 @@
              xmlns:local="clr-namespace:DeckEditor"
              StartupUri="/View/View.xaml">
     <Application.Resources>
-
+        <Style TargetType="{x:Type TextBox }">
+            <Setter Property="Foreground" Value="MediumBlue"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock }">
+            <Setter Property="Foreground" Value="MediumBlue"/>
+        </Style>
+        <Style TargetType="{x:Type Label }">
+            <Setter Property="Foreground" Value="MediumBlue"/>
+        </Style>
+        <Style TargetType="{x:Type Button }">
+            <Setter Property="Foreground" Value="MediumBlue"/>
+            <Setter Property="Background" Value="#AAF0F8FF"/>
+        </Style>
+        <Style TargetType="{x:Type CheckBox }">
+            <Setter Property="Foreground" Value="MediumBlue"/>
+        </Style>
+        <Style TargetType="{x:Type ListView }">
+            <Setter Property="Background" Value="#50F0F8FF"/>
+        </Style>
+        <Style TargetType="{x:Type TabItem }">
+            <Setter Property="Background" Value="#50F0F8FF"/>
+        </Style>
     </Application.Resources>
 </Application>
