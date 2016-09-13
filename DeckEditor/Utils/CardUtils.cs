@@ -91,11 +91,13 @@ namespace DeckEditor.Utils
         /// <returns></returns>
         public static List<string> GetThumbnailPathList(string number, List<string> thumbnailFilePathList)
         {
-            return
-                thumbnailFilePathList.AsParallel()
+            var tempList = thumbnailFilePathList.AsParallel()
                     .Where(nextInfoPath => nextInfoPath.Contains(number))
                     .OrderBy(path => path.Length)
                     .ToList();
+            if (tempList.Count.Equals(0))
+                tempList.Add(Const.ThumbnailUnknownPath);
+            return tempList;
         }
 
         /// <summary>
