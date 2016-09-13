@@ -99,7 +99,6 @@
       <DependentUpon>DlgOkCancel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\JsonUtils.cs" />
-    <Compile Include="Utils\PointUtils.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Page Include="View\DeckStatistical.xaml">
