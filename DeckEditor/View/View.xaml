@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeckEditor.View"
         mc:Ignorable="d"
         Title="Z/X DeckEditor" Height="680" Width="1110" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
-        Loaded="Window_Loaded" Foreground="Black">
+        Loaded="Window_Loaded">
 
     <Grid Name="Grid" Width="1090" Height="641">
         <Grid.ColumnDefinitions>
@@ -27,19 +27,19 @@
                 <TabControl x:Name="TcImage" HorizontalAlignment="Left" Margin="5" Height="280" Width="187"
                             Background="#50F0F8FF">
                     <TabItem Header="A" Name="TbiPicture1" Background="#50F0F8FF">
-                        <Image x:Name="ImgPicture1" Width="180" Height="252"
+                        <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
                     <TabItem Header="B" Name="TbiPicture2" Background="#50F0F8FF">
-                        <Image x:Name="ImgPicture2" Width="180" Height="252"
+                        <Image x:Name="ImgPicture2" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
                     <TabItem Header="C" Name="TbiPicture3" Background="#50F0F8FF">
-                        <Image x:Name="ImgPicture3" Width="180" Height="252"
+                        <Image x:Name="ImgPicture3" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
                     <TabItem Header="D" Name="TbiPicture4" Background="#50F0F8FF">
-                        <Image x:Name="ImgPicture4" Width="180" Height="252"
+                        <Image x:Name="ImgPicture4" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
                 </TabControl>
@@ -66,7 +66,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                          MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                                          MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                         <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                                         <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                Height="63" />
@@ -261,13 +261,13 @@
                 <Label Name="LblPower" Grid.Column="2" Grid.Row="4" VerticalContentAlignment="Center"
                        HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="力量:" />
                 <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="5"
-                         VerticalContentAlignment="Center" />
+                         VerticalContentAlignment="Center" ToolTip="字段以空格分开（A B）" />
                 <ComboBox Name="CmbIllust" Grid.Column="3" Grid.Row="2" Margin="5"
                           VerticalContentAlignment="Center" IsEditable="True" />
                 <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="1" Margin="5" VerticalContentAlignment="Center"
                           IsEditable="True" />
-                <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" Margin="5" VerticalContentAlignment="Center" />
-                <TextBox Name="TxtPower" Grid.Column="3" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" />
+                <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" Margin="5" VerticalContentAlignment="Center" ToolTip="区间以连接号分开（A-B）" />
+                <TextBox Name="TxtPower" Grid.Column="3" Grid.Row="4" Margin="5" VerticalContentAlignment="Center" ToolTip="区间以连接号分开（A-B）" />
                 <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Margin="5" Content="能力分类"
                         Background="#AAF0F8FF" Click="BtnAbilityDetail_Click" />
                 <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
@@ -306,7 +306,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                             <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
@@ -326,7 +326,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                             <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
@@ -346,7 +346,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown">
+                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                             <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                             <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
@@ -378,7 +378,7 @@
                       SelectionChanged="PreviewListView_SelectionChanged" AllowDrop="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="70" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown">
+                        <Grid Height="70" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown" ToolTip="右键添加">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="45" />
                                 <ColumnDefinition Width="125" />

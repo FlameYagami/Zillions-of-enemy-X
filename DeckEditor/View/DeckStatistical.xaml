@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeckEditor.View"
         xmlns:chart="clr-namespace:Visifire.Charts;assembly=WPFVisifire.Charts"
         mc:Ignorable="d"
-        Title="DekcStatistical" Height="350" Width="650" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Title="卡组统计" Height="350" Width="650" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         ShowInTaskbar="False">
     <Grid Name="Grid">
         <chart:Chart Name="chart" ScrollingEnabled="False" View3D="True" />
