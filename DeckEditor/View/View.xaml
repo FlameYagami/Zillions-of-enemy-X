@@ -3,15 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DeckEditor.View"
         mc:Ignorable="d"
-        Title="Z/X DeckEditor" Height="680" Width="1110" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        Title="Z/X DeckEditor" Height="680" Width="1100" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
         Loaded="Window_Loaded" >
 
-    <Grid Name="Grid" Width="1090" Height="641">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
-            <ColumnDefinition Width="570" />
+            <ColumnDefinition />
             <ColumnDefinition Width="220" />
         </Grid.ColumnDefinitions>
         <Grid>
@@ -21,10 +20,10 @@
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="210" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TabControl x:Name="TcImage" HorizontalAlignment="Left" Margin="5" Height="280" Width="187"
+                <TabControl x:Name="TcImage" HorizontalAlignment="Left" Margin="10" Height="280" Width="190"
                             Background="#50F0F8FF">
                     <TabItem Header="A" Name="TbiPicture1" Background="#50F0F8FF">
                         <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
@@ -45,23 +44,20 @@
                 </TabControl>
                 <Grid Grid.Column="1" Margin="5,0,5,10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="40" />
                         <RowDefinition Height="160" />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
-                    <Button Name="BtnExit" Grid.Column="0" Margin="10,5,10,5" Click="Exit_Click" Content="退出编辑"/>
+                    <Button Name="BtnExit" Grid.Column="0" Margin="5,10,5,10" Click="Exit_Click" Content="退出编辑"/>
                     <Grid Margin="5" Grid.Row="1" Background="#50F0F8FF">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
+                            <RowDefinition Height="25" />
                             <RowDefinition Height="70" />
                             <RowDefinition Height="25" />
                             <RowDefinition Height="25" />
                         </Grid.RowDefinitions>
                         <Label x:Name="LblPlayer" Content="玩家卡:" VerticalContentAlignment="Center" />
-                        <ListView x:Name="PlayerListView" Width="60" Height="70" Margin="8,0,8,0" Grid.Row="1"
-                                  VerticalAlignment="Top"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListView x:Name="PlayerListView" Width="60" Height="70" Margin="5,0,5,0" Grid.Row="1" Style="{DynamicResource ListViewArea}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
@@ -78,22 +74,22 @@
                         <Label x:Name="LblVoid" Grid.Row="3" Height="25" Content="虚空使者:"
                                VerticalContentAlignment="Center" />
                     </Grid>
-                    <Grid Margin="5,5,5,0" Grid.Row="2">
+                    <Grid Margin="0" Grid.Row="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
-                        <Button Name="BtnValueOrder" Margin="10,5,10,5" Content="数值排序"
+                        <Button Name="BtnValueOrder" Margin="5" Content="数值排序"
                                 Click="BtnValueOrder_Click" />
-                        <Button Name="BtnRandomOrder" Grid.Row="1" Margin="10,5,10,5" Content="随机排序"
+                        <Button Name="BtnRandomOrder" Grid.Row="1" Margin="5" Content="随机排序"
                                  Click="BtnRandomOrder_Click" />
-                        <Button Name="BtnDekcStatistical" Grid.Row="2" Margin="10,5,10,5" Content="卡组统计"
+                        <Button Name="BtnDekcStatistical" Grid.Row="2" Margin="5" Content="卡组统计"
                                 Click="BtnDekcStatistical_Click" />
                     </Grid>
                 </Grid>
             </Grid>
-            <TabControl x:Name="tabControl" Margin="5,5,5,5" Background="#50F0F8FF" Grid.Row="1">
+            <TabControl Margin="10" Background="#50F0F8FF" Grid.Row="1">
                 <TabItem Header="基础信息" Background="#50F0F8FF">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
@@ -139,7 +135,7 @@
                         <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="扩展信息">
+                <TabItem Header="扩展信息" Background="#50F0F8FF">
                     <Grid Grid.Row="3" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -156,13 +152,11 @@
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="40" />
                 <RowDefinition Height="160" />
-                <RowDefinition Height="142*" />
-                <RowDefinition Height="208*" />
-                <RowDefinition Height="76*" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid Height="30" Width="556">
+            <Grid Height="30">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
@@ -178,8 +172,7 @@
                 <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"/>
                 <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"/>
             </Grid>
-            <Grid VerticalAlignment="Center" Margin="5" Background="#50F0F8FF" Height="150" Width="556"
-                  Grid.Row="1">
+            <Grid VerticalAlignment="Center" Background="#50F0F8FF" Height="150" Width="554" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
@@ -288,87 +281,82 @@
                     <CheckBox x:Name="ChkAbilityType8" Content="零点优化" />
                 </ListBox>
             </Grid>
-            <ListView x:Name="IgListView" Margin="2.5" Height="138" Width="554" Grid.Row="2" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+            <Grid Grid.Row="2" Margin="0,0,0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="138*" />
+                    <RowDefinition Height="204*" />
+                    <RowDefinition Height="70*" />
+                </Grid.RowDefinitions>
+                <ListView x:Name="IgListView"  Height="138" Width="554" Grid.Row="0" Style="{DynamicResource ListViewArea}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
-                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <ListView x:Name="UgListView" Margin="2.5" Height="204" Width="554" Grid.Row="3"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView x:Name="UgListView" Height="204" Width="554" Grid.Row="1" Style="{DynamicResource ListViewArea}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
-                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <ListView x:Name="ExListView" Margin="2.5" Width="554" Height="70" Grid.Row="4"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView x:Name="ExListView" Height="70" Width="554" Grid.Row="2" Style="{DynamicResource ListViewArea}" VerticalAlignment="Bottom">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                            <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
-                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="40"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.5*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Label x:Name="LblCardCount" Margin="5,5,5,0" Background="#50F0F8FF" VerticalContentAlignment="Center" />
-                <ComboBox x:Name="CmbOrder" IsEditable="True" Margin="5" VerticalContentAlignment="Center"
-                          Text="编号" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="60"
-                          VerticalAlignment="Top" Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="LblCardCount" Width="110" Margin="10,5,10,5" Background="#50F0F8FF" VerticalContentAlignment="Center" />
+                <ComboBox x:Name="CmbOrder" IsEditable="True" VerticalContentAlignment="Center" Margin="10"
+                          Text="编号" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="70">
                     <ComboBoxItem>编号</ComboBoxItem>
                     <ComboBoxItem>数值</ComboBoxItem>
                 </ComboBox>
-            </Grid>
-            <ListView x:Name="PreviewListView" Margin="5" Grid.Row="1"
-                      SelectionChanged="PreviewListView_SelectionChanged" AllowDrop="True">
+            </StackPanel>
+            <ListView x:Name="PreviewListView" Margin="10,0,10,10" Grid.Row="1" SelectionChanged="PreviewListView_SelectionChanged" Background ="#50F0F8FF">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Height="70" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown" ToolTip="右键添加">
