@@ -23,33 +23,32 @@
                     <ColumnDefinition Width="210" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TabControl x:Name="TcImage" HorizontalAlignment="Left" Margin="10" Height="280" Width="190"
-                            Background="#50F0F8FF">
-                    <TabItem Header="A" Name="TbiPicture1" Background="#50F0F8FF">
+                <TabControl x:Name="TcImage" Height="280" Width="190" Style="{DynamicResource Tc}">
+                    <TabItem Header="A" Name="TbiPicture1" Background="#75F0F8FF">
                         <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
-                    <TabItem Header="B" Name="TbiPicture2" Background="#50F0F8FF">
+                    <TabItem Header="B" Name="TbiPicture2" Background="#75F0F8FF">
                         <Image x:Name="ImgPicture2" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
-                    <TabItem Header="C" Name="TbiPicture3" Background="#50F0F8FF">
+                    <TabItem Header="C" Name="TbiPicture3" Background="#75F0F8FF">
                         <Image x:Name="ImgPicture3" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
-                    <TabItem Header="D" Name="TbiPicture4" Background="#50F0F8FF">
+                    <TabItem Header="D" Name="TbiPicture4" Background="#75F0F8FF">
                         <Image x:Name="ImgPicture4" Width="180" Height="252" ToolTip="右键添加"
                                MouseRightButtonDown="Picture_MouseRightButtonDown" />
                     </TabItem>
                 </TabControl>
-                <Grid Grid.Column="1" Margin="5,0,5,10">
+                <Grid Grid.Column="1" Margin="0,0,5,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="160" />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
                     <Button Name="BtnExit" Grid.Column="0" Margin="5,10,5,10" Click="Exit_Click" Content="退出编辑"/>
-                    <Grid Margin="5" Grid.Row="1" Background="#50F0F8FF">
+                    <Grid Margin="5" Grid.Row="1" Background="#75F0F8FF">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25" />
                             <RowDefinition Height="70" />
@@ -63,8 +62,7 @@
                                     <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                           MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                         <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                                        <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
-                                               Height="63" />
+                                        <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -89,8 +87,8 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <TabControl Margin="10" Background="#50F0F8FF" Grid.Row="1">
-                <TabItem Header="基础信息" Background="#50F0F8FF">
+            <TabControl Grid.Row="1" Style="{DynamicResource Tc}">
+                <TabItem Header="基础信息" Background="#75F0F8FF">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -98,26 +96,26 @@
                             <RowDefinition Height="30" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Label x:Name="LblICName" Grid.Row="0" HorizontalContentAlignment="Center"
+                        <Label x:Name="LblICName" Grid.Row="0" HorizontalContentAlignment="Center" FontSize="16"
                                VerticalContentAlignment="Center" Margin="0" />
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30" />
                                 <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="1.5*" />
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
-                            <Image x:Name="ImgICamp0" />
-                            <Image x:Name="ImgICamp1" Grid.Column="1" />
+                            <Image x:Name="ImgICamp0" Margin="5"/>
+                            <Image x:Name="ImgICamp1" Margin="5" Grid.Column="1" />
                             <Label x:Name="LblINumber" Grid.Column="2" HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center" Margin="0" />
                             <Label x:Name="LblIType" Grid.Column="3" HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center" Margin="0" />
                             <Label x:Name="LblIRare" Grid.Column="4" HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center" Margin="0" />
-                            <Image x:Name="ImgISign" Grid.Column="5" />
+                            <Image x:Name="ImgISign" Margin="5" Grid.Column="5" />
                         </Grid>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -135,14 +133,14 @@
                         <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="扩展信息" Background="#50F0F8FF">
+                <TabItem Header="扩展信息" Background="#75F0F8FF">
                     <Grid Grid.Row="3" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-                        <Label x:Name="LblIJName" HorizontalContentAlignment="Center"
+                        <Label x:Name="LblIJName" HorizontalContentAlignment="Center" FontSize="16"
                                VerticalContentAlignment="Center" Margin="0" />
                         <TextBlock x:Name="LblILines" Grid.Row="1" TextWrapping="Wrap" Margin="0" />
                         <TextBlock x:Name="LblIFaq" Grid.Row="2" TextWrapping="Wrap" Margin="0" />
@@ -172,7 +170,7 @@
                 <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"/>
                 <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"/>
             </Grid>
-            <Grid VerticalAlignment="Center" Background="#50F0F8FF" Height="150" Width="554" Grid.Row="1">
+            <Grid VerticalAlignment="Center" Background="#75F0F8FF" Height="150" Width="554" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
@@ -249,7 +247,7 @@
                 <Label Name="LblPower" Grid.Column="2" Grid.Row="4" VerticalContentAlignment="Center"
                        HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="力量:" />
                 <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="5"
-                         VerticalContentAlignment="Center" ToolTip="字段以空格分开（A B）" />
+                         VerticalContentAlignment="Center" ToolTip="字段以空格分开（A B C）" />
                 <ComboBox Name="CmbIllust" Grid.Column="3" Grid.Row="2" Margin="5"
                           VerticalContentAlignment="Center" IsEditable="True" />
                 <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="1" Margin="5" VerticalContentAlignment="Center"
@@ -261,7 +259,7 @@
                         Click="Query_Click" Content="检索" IsDefault="True" />
                 <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Margin="5" Click="Reset_Click" Content="重置"/>
 
-                <ListBox x:Name="LstAbilityType" SelectionMode="Multiple" Background="#AAF0F8FF" Margin="0"
+                <ListBox x:Name="LstAbilityType" SelectionMode="Multiple" Background="#75F0F8FF" Margin="0"
                          Width="90"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled" Grid.Column="5" Grid.Row="0"
                          Grid.RowSpan="5"
@@ -297,7 +295,7 @@
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding RestrictPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                                 <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                                 <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
@@ -315,7 +313,7 @@
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding RestrictPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                                 <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                                 <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
@@ -333,7 +331,7 @@
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                               MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                                <Image Source="{Binding LimitPath}" Height="23" Width="23" VerticalAlignment="Top"
+                                <Image Source="{Binding RestrictPath}" Height="23" Width="23" VerticalAlignment="Top"
                                    HorizontalAlignment="Left" />
                                 <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
                                 <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45" Height="63" />
@@ -349,7 +347,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Label x:Name="LblCardCount" Width="110" Margin="10,5,10,5" Background="#50F0F8FF" VerticalContentAlignment="Center" />
+                <Label x:Name="LblCardCount" Width="110" Margin="10,5,10,5" Background="#75F0F8FF" VerticalContentAlignment="Center" />
                 <ComboBox x:Name="CmbOrder" IsEditable="True" VerticalContentAlignment="Center" Margin="10"
                           Text="编号" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="70">
                     <ComboBoxItem>编号</ComboBoxItem>
@@ -359,26 +357,20 @@
             <ListBox x:Name="LstPreview" Margin="10,0,10,10" Grid.Row="1" SelectionChanged="PreviewListView_SelectionChanged" Style="{DynamicResource LstPreview}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="70" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown" ToolTip="右键添加">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="45" />
-                                <ColumnDefinition Width="125" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="23" />
-                                <RowDefinition Height="23" />
-                                <RowDefinition Height="23" />
-                            </Grid.RowDefinitions>
-                            <Image Style="{DynamicResource ImageArea}" Source="{Binding ImagePath}" Grid.Column="0" Grid.RowSpan="3"/>
-                            <Image Source="{Binding LimitPath}" Grid.Column="0" Grid.Row="0"
-                                   VerticalAlignment="Top" HorizontalAlignment="Left" />
-                            <TextBlock Text="{Binding CName}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="0"
-                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" Margin="5,0,0,0"
-                                       LineStackingStrategy="BlockLineHeight" />
-                            <Label Style="{DynamicResource LblAlignmentCenter}" Content="{Binding CampAndRace}" Grid.Column="1" Grid.Row="1"/>
-                            <Label Style="{DynamicResource LblAlignmentCenter}" Content="{Binding PowerAndCost}" Grid.Column="1" Grid.Row="2"/>
-                            <Label Name="LblPreviewNumber" Content="{Binding Number}" Grid.Column="0" Grid.Row="0" Visibility="Collapsed"/>
+                        <Grid Height="63" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown" ToolTip="右键添加">
+                            <StackPanel Orientation="Horizontal">
+                                <Grid>
+                                    <Image Source="{Binding ImagePath}" Style="{DynamicResource ImageArea}" Width="45" Height="63"/>
+                                    <Image Source="{Binding RestrictPath}" Height="15" Width="15" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                                </Grid>
+                                <StackPanel Orientation="Vertical" Width="125">
+                                    <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
+                                               HorizontalAlignment="Center" LineStackingStrategy="BlockLineHeight" />
+                                    <Label Style="{DynamicResource LblAlignmentCenter}" Content="{Binding CampAndRace}"/>
+                                    <Label Style="{DynamicResource LblAlignmentCenter}" Content="{Binding PowerAndCost}"/>
+                                    <Label Name="LblPreviewNumber" Content="{Binding Number}" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

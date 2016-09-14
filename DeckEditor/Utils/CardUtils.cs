@@ -107,7 +107,7 @@ namespace DeckEditor.Utils
         /// <returns></returns>
         public static string GetRestrictPath(string limit)
         {
-            foreach (var item in Const.ImgLimitPathDic)
+            foreach (var item in Const.ImgRestrictPathDic)
                 if (limit.Equals(item.Key))
                     return item.Value;
             return string.Empty;

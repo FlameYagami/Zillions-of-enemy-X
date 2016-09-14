@@ -7,6 +7,6 @@
         public string CampAndRace { get; set; }
         public string PowerAndCost { get; set; }
         public string Number { get; set; }
-        public string Restrict { get; set; }
+        public string RestrictPath { get; set; }
     }
 }

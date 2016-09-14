@@ -31,7 +31,7 @@ namespace DeckEditor.Presenter
         void PictureMouseRightClick(Image image);
         void CampChanged(string camp);
         void ShowAllDeckName();
-        void DekcStatisticalClick();
+        void DeckStatisticalClick();
     }
 
     internal class Presenter : IPresenter
@@ -186,6 +186,7 @@ namespace DeckEditor.Presenter
                 case StringConst.AreaType.Ig:
                     _deck.DeleteEntityFromColl(number, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
+                    _view.UpdateLifeAndVoid(CardUtils.GetLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ug:
                     _deck.DeleteEntityFromColl(number, DataCache.UgColl);
@@ -260,8 +261,10 @@ namespace DeckEditor.Presenter
             _view.SetDeckName(deckNameList);
         }
 
-        public void DekcStatisticalClick()
+        public void DeckStatisticalClick()
         {
+            if (DataCache.IgColl.Count.Equals(0) && DataCache.UgColl.Count.Equals(0))
+                return;
             var dekcStatisticalDic = _deck.DekcStatistical();
             DialogUtils.ShowDekcStatistical(dekcStatisticalDic);
         }

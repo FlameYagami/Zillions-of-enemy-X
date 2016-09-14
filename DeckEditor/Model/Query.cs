@@ -45,7 +45,7 @@ namespace DeckEditor.Model
                                    + (cost.Equals(string.Empty) ? StringConst.Hyphen : cost),
                     Number = number,
                     ImagePath = thumbnailPathList.Count.Equals(0) ? string.Empty : thumbnailPathList[0],
-                    Restrict = restrictPath
+                    RestrictPath = restrictPath
                 });
             }
         }

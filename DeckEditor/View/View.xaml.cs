@@ -203,8 +203,8 @@ namespace DeckEditor.View
 
         public void UpdateLifeAndVoid(List<int> countLifeAndVoid)
         {
-            LblLife.Content = StringConst.Life + countLifeAndVoid[0];
-            LblVoid.Content = StringConst.Void + countLifeAndVoid[1];
+            LblLife.Content = StringConst.Life + " " + countLifeAndVoid[0];
+            LblVoid.Content = StringConst.Void + " " + countLifeAndVoid[1];
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -333,7 +333,7 @@ namespace DeckEditor.View
         /// <summary>卡组统计事件</summary>
         private void BtnDekcStatistical_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DekcStatisticalClick();
+            _presenter.DeckStatisticalClick();
         }
 
         /// <summary>退出</summary>

@@ -4,14 +4,14 @@
              StartupUri="/View/View.xaml">
     <Application.Resources>
         <Style TargetType="ListView" x:Key="ListViewArea">
-            <Setter Property="Background" Value="#50F0F8FF"/>
+            <Setter Property="Background" Value="#75F0F8FF"/>
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         </Style>
         <Style TargetType="ListBox" x:Key="LstPreview">
-            <Setter Property="Background" Value="#50F0F8FF"/>
+            <Setter Property="Background" Value="#75F0F8FF"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -27,6 +27,13 @@
         <Style TargetType="Label" x:Key="LblContentAlignmentCenter">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TabControl" x:Key="Tc">
+            <Setter Property="Background" Value="#75F0F8FF" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#A0F0F8FF"/>
         </Style>
     </Application.Resources>
 </Application>
