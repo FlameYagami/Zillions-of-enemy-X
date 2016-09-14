@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:DeckEditor"
              StartupUri="/View/View.xaml">
     <Application.Resources>
-
+        <Style TargetType="Label" x:Key="LabelQuery">
+            <Setter Property="Height" Value="25" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
     </Application.Resources>
 </Application>

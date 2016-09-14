@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms.VisualStyles;
 using CardEditor.Constant;
 using CardEditor.Model;
 using CardEditor.Utils;
@@ -22,6 +23,7 @@ namespace CardEditor.Presenter
         void EncryptDatabaseClick(string password);
         void DecryptDatabaseClick(string password);
         void Init();
+        void ExportClick(string pack);
     }
 
     internal class Presenter : IPresenter
@@ -46,6 +48,21 @@ namespace CardEditor.Presenter
                 _view.SetPasswordVisibility(true, false);
                 DialogUtils.ShowDlgOk(StringConst.DbOpenError);
             }
+        }
+
+        public void ExportClick(string pack)
+        {
+            if (pack.Equals(StringConst.NotApplicable) || pack.Contains(StringConst.Series))
+            {
+                DialogUtils.ShowDlgOk(StringConst.PackChoiceNone);
+                return;
+            }
+            var sql = SqlUtils.GetExportSql(pack);
+            if (!SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache)) return;
+            var exportPath = DialogUtils.ShowExport(pack);
+            if (exportPath.Equals(string.Empty)) return;
+            var isExport = ExcelHelper.ExportPackToExcel(exportPath, DataCache.DsPartCache);
+            DialogUtils.ShowDlg(isExport?StringConst.ExportSucceed: StringConst.ExportFailed);
         }
 
         public void PackChanged(string pack)
@@ -87,7 +104,7 @@ namespace CardEditor.Presenter
             {
                 if (pack.Equals(string.Empty))
                 {
-                    DialogUtils.ShowDlg(StringConst.PackSeleteNone);
+                    DialogUtils.ShowDlg(StringConst.PackChoiceNone);
                     return;
                 }
                 UpdateCacheAndUi(_query.GetEditorSql(cardModel, order));
@@ -130,7 +147,7 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                DialogUtils.ShowDlg(StringConst.CardSeleteNone);
+                DialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
             if (!DialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
@@ -155,7 +172,7 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                DialogUtils.ShowDlg(StringConst.CardSeleteNone);
+                DialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
             if (!DialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
@@ -195,7 +212,7 @@ namespace CardEditor.Presenter
         {
             if (password.Equals(string.Empty))
             {
-                DialogUtils.ShowDlgOk(StringConst.PasswordHint);
+                DialogUtils.ShowDlgOk(StringConst.PasswordNone);
                 return;
             }
             if (SqliteUtils.Encrypt(DataCache.DsAllCache))
@@ -211,7 +228,7 @@ namespace CardEditor.Presenter
         {
             if (password.Equals(string.Empty))
             {
-                DialogUtils.ShowDlgOk(StringConst.PasswordHint);
+                DialogUtils.ShowDlgOk(StringConst.PasswordNone);
                 return;
             }
             if (SqliteUtils.Decrypt())

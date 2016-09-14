@@ -40,6 +40,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NPOI, Version=2.0.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -76,6 +80,7 @@
     <Compile Include="Model\IQuery.cs" />
     <Compile Include="Presenter\Presenter.cs" />
     <Compile Include="Utils\CardUtils.cs" />
+    <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\ConfigUtils.cs" />
@@ -152,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
+    <Content Include="NPOI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

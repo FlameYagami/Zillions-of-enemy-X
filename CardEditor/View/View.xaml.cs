@@ -165,8 +165,8 @@ namespace CardEditor.View
 
         public void UpdateListView(List<PreviewEntity> previewEntityList)
         {
-            LvCardPreview.ItemsSource = null;
-            LvCardPreview.ItemsSource = previewEntityList;
+            LstPreview.ItemsSource = null;
+            LstPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
         }
 
@@ -261,13 +261,13 @@ namespace CardEditor.View
         /// <summary>更新</summary>
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.UpdateClick(LvCardPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.UpdateClick(LstPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>删除</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DeleteClick(LvCardPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.DeleteClick(LstPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>查询</summary>
@@ -303,7 +303,7 @@ namespace CardEditor.View
         /// <summary>列表选择</summary>
         private void LvCardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.PreviewChanged(LvCardPreview.SelectedIndex);
+            _presenter.PreviewChanged(LstPreview.SelectedIndex);
         }
 
         private void CmbCamp_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -335,6 +335,11 @@ namespace CardEditor.View
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.OrderChanged(CmbOrder.Text.Trim());
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.ExportClick(CmbPack.Text.Trim());
         }
     }
 }

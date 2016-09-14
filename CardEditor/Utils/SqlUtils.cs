@@ -88,5 +88,10 @@ namespace CardEditor.Utils
             }
             return value.ToString();
         }
+
+        public static string GetExportSql(string pack)
+        {
+            return $"SELECT {SqliteConst.ColumnCard} FROM {SqliteConst.CardTable} WHERE {SqliteConst.Pack} LIKE '%{pack}%' {SqliteConst.NumberOrderSql}";
+        }
     }
 }
