@@ -5,6 +5,7 @@ using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
 using System.Linq;
+using System;
 
 namespace CardEditor.Model
 {
@@ -16,6 +17,7 @@ namespace CardEditor.Model
         string GetUpdateSql(CardEntity cardEntity, string number);
         string GetAddSql(CardEntity cardEntity);
         string GetDeleteSql(string number);
+        CardEntity AnalysisAbility(string ability);
     }
 
     internal class Query : SqliteConst, IQuery
@@ -158,6 +160,21 @@ namespace CardEditor.Model
         public List<PreviewEntity> GetCardList()
         {
             return CardList;
+        }
+
+        public CardEntity AnalysisAbility(string ability)
+        {
+            CardEntity cardEntity = new CardEntity();
+            if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
+            {
+                cardEntity.Type = StringConst.TypeZxEx;
+                cardEntity.Sign = StringConst.Hyphen;
+            }
+            else if (ability.Contains("【★】"))
+            {
+                cardEntity.Type = StringConst.TypeEvent;
+            }
+            return cardEntity;
         }
     }
 }

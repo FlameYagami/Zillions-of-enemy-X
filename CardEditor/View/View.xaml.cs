@@ -126,7 +126,10 @@ namespace CardEditor.View
                 checkbox.IsChecked = false;
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
-            CmbCamp.IsEnabled = false;
+            TxtAbility.Text = string.Empty;
+            TxtLines.Text = string.Empty;
+            TxtFaq.Text = string.Empty;
+            CmbRace.IsEnabled = false;
         }
 
         public void SetPicture(List<string> picturePathList)
@@ -192,8 +195,6 @@ namespace CardEditor.View
                     TxtCost.IsEnabled = true;
                     TxtPower.IsEnabled = true;
                     CmbRace.IsEnabled = true;
-
-                    CmbRace.Text = StringConst.NotApplicable;
                     break;
                 }
                 case StringConst.TypeZxEx:
@@ -201,9 +202,7 @@ namespace CardEditor.View
                     TxtCost.IsEnabled = true;
                     TxtPower.IsEnabled = true;
                     CmbRace.IsEnabled = true;
-
                     CmbSign.Text = StringConst.Hyphen;
-                    CmbRace.Text = StringConst.NotApplicable;
                     break;
                 }
                 case StringConst.TypePlayer:
@@ -215,7 +214,7 @@ namespace CardEditor.View
                     TxtCost.Text = string.Empty;
                     TxtPower.Text = string.Empty;
                     CmbSign.Text = StringConst.Hyphen;
-                    CmbRace.Text = StringConst.NotApplicable;
+                    CmbRace.Text = StringConst.Hyphen;
                     break;
                 }
                 case StringConst.TypeEvent:
@@ -226,7 +225,7 @@ namespace CardEditor.View
 
                     TxtPower.Text = string.Empty;
                     CmbSign.Text = StringConst.Hyphen;
-                    CmbRace.Text = StringConst.NotApplicable;
+                    CmbRace.Text = StringConst.Hyphen;
                     break;
                 }
             }
@@ -340,6 +339,11 @@ namespace CardEditor.View
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExportClick(CmbPack.Text.Trim());
+        }
+
+        private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _presenter.AbilityChanged(TxtAbility.Text.Trim());
         }
     }
 }

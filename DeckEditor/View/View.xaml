@@ -349,7 +349,7 @@
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="LblCardCount" Width="110" Margin="10,5,10,5" Background="#75F0F8FF" VerticalContentAlignment="Center" />
                 <ComboBox x:Name="CmbOrder" IsEditable="True" VerticalContentAlignment="Center" Margin="10"
-                          Text="编号" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="70">
+                          Text="数值" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right" Width="70">
                     <ComboBoxItem>编号</ComboBoxItem>
                     <ComboBoxItem>数值</ComboBoxItem>
                 </ComboBox>

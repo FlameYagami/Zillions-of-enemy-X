@@ -24,6 +24,7 @@ namespace CardEditor.Presenter
         void DecryptDatabaseClick(string password);
         void Init();
         void ExportClick(string pack);
+        void AbilityChanged(string ability);
     }
 
     internal class Presenter : IPresenter
@@ -249,6 +250,11 @@ namespace CardEditor.Presenter
             SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache);
             _query.SetCardList();
             _view.UpdateListView(Query.CardList);
+        }
+
+        public void AbilityChanged(string ability)
+        {
+            var cardModel = _query.AnalysisAbility(ability);
         }
     }
 }

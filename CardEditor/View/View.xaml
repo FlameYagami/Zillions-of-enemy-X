@@ -118,14 +118,14 @@
                     </TabItem>
                 </TabControl>
             </Grid>
-            <Grid Grid.Column="2" Name="GridQuery" Background="#50F0F8FF">
+            <Grid Grid.Column="2" Background="#50F0F8FF">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="145"/>
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="105"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Margin="10,10,10,5">
+                <Grid Margin="10,10,10,5" Name="GridQuery">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25" />
                         <RowDefinition Height="25" />
@@ -266,7 +266,7 @@
                     </Grid.RowDefinitions>
                     <Label Name="LblAbility" Content="能力:"/>
                     <TextBox Grid.Row="1" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
-                         VerticalScrollBarVisibility="Visible" Background="#50F0F8FF" />
+                         VerticalScrollBarVisibility="Visible" Background="#50F0F8FF" TextChanged="TxtAbility_TextChanged" />
                     <Label Name="LblLines" Grid.Row="2" Content="台词:"/>
                     <TextBox x:Name="TxtLines" Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True"
                          VerticalScrollBarVisibility="Visible" Background="#50F0F8FF" />
