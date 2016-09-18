@@ -15,7 +15,7 @@ namespace CardEditor.View
     public interface IView
     {
         void SetPackItems(List<object> itemList);
-        void SetCardEntity(CardEntity cardmodel);
+        void SetCardEntity(CardEntity cardEntity);
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
         void Reset();
@@ -23,6 +23,7 @@ namespace CardEditor.View
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
+        void UpdateAbilityLinkage(StringConst.AbilityType abilityType);
         CardEntity GetCardEntity();
     }
 
@@ -40,6 +41,38 @@ namespace CardEditor.View
         }
 
         /************************************************** 接口实现 **************************************************/
+
+        public void UpdateAbilityLinkage(StringConst.AbilityType abilityType)
+        {
+            switch (abilityType)
+            {
+                case StringConst.AbilityType.Ig:
+                {
+                    CmbType.Text = StringConst.TypeZx;
+                    CmbSign.Text = StringConst.SignIg;
+                    break;
+                }
+                case StringConst.AbilityType.Start:
+                {
+                    CmbType.Text = StringConst.TypeZx;
+                    CmbSign.Text = StringConst.Hyphen;
+                    break;
+                }
+                case StringConst.AbilityType.Event:
+                {
+                    CmbType.Text = StringConst.TypeEvent;
+                    CmbRace.Text = StringConst.Hyphen;
+                    TxtPower.Text = string.Empty;
+                    break;
+                }
+                case StringConst.AbilityType.Extra:
+                {
+                    CmbType.Text = StringConst.TypeZxEx;
+                    CmbSign.Text = StringConst.Hyphen;
+                    break;
+                }
+            }
+        }
 
         public CardEntity GetCardEntity()
         {

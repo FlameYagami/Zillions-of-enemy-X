@@ -17,7 +17,7 @@ namespace CardEditor.Model
         string GetUpdateSql(CardEntity cardEntity, string number);
         string GetAddSql(CardEntity cardEntity);
         string GetDeleteSql(string number);
-        CardEntity AnalysisAbility(string ability);
+        StringConst.AbilityType AnalysisAbility(string ability);
     }
 
     internal class Query : SqliteConst, IQuery
@@ -162,19 +162,25 @@ namespace CardEditor.Model
             return CardList;
         }
 
-        public CardEntity AnalysisAbility(string ability)
+        public StringConst.AbilityType AnalysisAbility(string ability)
         {
-            CardEntity cardEntity = new CardEntity();
             if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
             {
-                cardEntity.Type = StringConst.TypeZxEx;
-                cardEntity.Sign = StringConst.Hyphen;
+                return StringConst.AbilityType.Extra;
             }
-            else if (ability.Contains("【★】"))
+            if (ability.Contains("【★】"))
             {
-                cardEntity.Type = StringConst.TypeEvent;
+                return StringConst.AbilityType.Event;
             }
-            return cardEntity;
+            if (ability.Contains(StringConst.AbilityLife) || ability.Contains(StringConst.AbilityVoid))
+            {
+                return StringConst.AbilityType.Ig;
+            }
+            if (ability.Contains(StringConst.AbilityStart))
+            {
+                return StringConst.AbilityType.Start;
+            }
+            return StringConst.AbilityType.None;
         }
     }
 }

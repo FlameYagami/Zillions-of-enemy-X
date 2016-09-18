@@ -254,7 +254,8 @@ namespace CardEditor.Presenter
 
         public void AbilityChanged(string ability)
         {
-            var cardModel = _query.AnalysisAbility(ability);
+            var abilityType = _query.AnalysisAbility(ability);
+            _view.UpdateAbilityLinkage(abilityType);
         }
     }
 }
