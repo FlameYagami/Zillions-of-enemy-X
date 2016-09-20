@@ -69,26 +69,22 @@ namespace DeckEditor.View
             CmbRace.IsEnabled = false;
             var uri = new Uri(Const.BackgroundPath, UriKind.Relative);
             var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
-            Background = imageBrush;
+            //Background = imageBrush;
         }
 
         public void Reset()
         {
-            CmbType.Text = StringConst.NotApplicable;
-            CmbCamp.Text = StringConst.NotApplicable;
-            CmbRace.Text = StringConst.NotApplicable;
-            CmbSign.Text = StringConst.NotApplicable;
-            CmbRare.Text = StringConst.NotApplicable;
-            CmbPack.Text = StringConst.NotApplicable;
-            CmbIllust.Text = StringConst.NotApplicable;
-
-            TxtKey.Text = string.Empty;
-            TxtCost.Text = string.Empty;
-            TxtPower.Text = string.Empty;
-
-            CmbRace.IsEnabled = false;
             CmbRace.ItemsSource = null;
-
+            CmbRace.IsEnabled = false;
+            foreach (var control in GridQuery.Children)
+            {
+                var comboBox = control as ComboBox;
+                if (comboBox != null)
+                    comboBox.Text = StringConst.NotApplicable;
+                var textBox = control as TextBox;
+                if (textBox != null)
+                    textBox.Text = string.Empty;
+            }
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
             DataCache.AbilityDetialEntity.ResetAbilityDetailDic();
@@ -113,6 +109,7 @@ namespace DeckEditor.View
             LblIRace.Content = cardmodel.Race;
             LblIAbility.Text = cardmodel.Ability;
             LblIJName.Content = cardmodel.JName;
+            LblIIllust.Content = cardmodel.Illust;
             LblILines.Text = cardmodel.Lines;
             LblIFaq.Text = cardmodel.Faq;
             var signUri = CardUtils.GetSignPath(cardmodel.Sign);
@@ -265,7 +262,14 @@ namespace DeckEditor.View
         /// <summary>组卡区域左键事件</summary>
         private void AreaGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _presenter.ImgAreaMouseLeftClick(sender as Grid);
+            if (e.ClickCount == 2)
+            {
+                _presenter.ImgAreaMouseDoubleClick(sender as Grid);
+            }
+            else
+            {
+                _presenter.ImgAreaMouseLeftClick(sender as Grid);
+            }
         }
 
         /// <summary>组卡区域右键事件</summary>
@@ -340,6 +344,19 @@ namespace DeckEditor.View
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
+        }
+
+        private void GridTitle_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void GridTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }

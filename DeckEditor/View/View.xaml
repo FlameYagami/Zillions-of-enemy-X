@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Z/X DeckEditor" Height="680" Width="1100" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
-        Loaded="Window_Loaded" >
-
-    <Grid>
+        Loaded="Window_Loaded" WindowStyle="None" >
+    <StackPanel Orientation="Vertical">
+        <Grid Name="GridTitle" Height="30" Background="#3F3F46" ToolTip="右键最小化"
+              MouseRightButtonDown="GridTitle_MouseRightButtonDown" MouseMove="GridTitle_MouseMove">
+            <Label Content="Z/X DeckEditor" Style="{DynamicResource LblAlignmentCenter}" Foreground="White" FontSize="16"/>
+        </Grid>
+        <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition />
@@ -134,17 +138,14 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="扩展信息" Background="#75F0F8FF">
-                    <Grid Grid.Row="3" Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                        </Grid.RowDefinitions>
+                    <StackPanel Margin="5">
                         <Label x:Name="LblIJName" HorizontalContentAlignment="Center" FontSize="16"
-                               VerticalContentAlignment="Center" Margin="0" />
-                        <TextBlock x:Name="LblILines" Grid.Row="1" TextWrapping="Wrap" Margin="0" />
-                        <TextBlock x:Name="LblIFaq" Grid.Row="2" TextWrapping="Wrap" Margin="0" />
-                    </Grid>
+                               VerticalContentAlignment="Center" Margin="0" Height="30"/>
+                        <Label x:Name="LblIIllust" HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center" Margin="0" Height="30"/>
+                        <TextBlock x:Name="LblILines" TextWrapping="Wrap" Margin="0" Height="auto"/>
+                        <TextBlock x:Name="LblIFaq" TextWrapping="Wrap" Margin="0" Height="auto"/>
+                    </StackPanel>
                 </TabItem>
             </TabControl>
         </Grid>
@@ -170,7 +171,7 @@
                 <Button Name="BtnResava" Grid.Column="4" Margin="5" Click="Resave_Click" Content="另存"/>
                 <Button Name="BtnClear" Grid.Column="0" Margin="5" Click="BtnClear_Click" Content="清空"/>
             </Grid>
-            <Grid VerticalAlignment="Center" Background="#75F0F8FF" Height="150" Width="554" Grid.Row="1">
+            <Grid Name="GridQuery" VerticalAlignment="Center" Background="#75F0F8FF" Height="150" Width="554" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
@@ -285,12 +286,8 @@
                     <RowDefinition Height="204*" />
                     <RowDefinition Height="70*" />
                 </Grid.RowDefinitions>
-                <ListView x:Name="IgListView"  Height="138" Width="554" Grid.Row="0" Style="{DynamicResource ListViewArea}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                <ListView x:Name="IgListView"  Height="138" Width="554" Grid.Row="0" Style="{DynamicResource ListViewArea}" 
+                  ItemsPanel="{DynamicResource ListViewItemPanel}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
@@ -303,12 +300,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <ListView x:Name="UgListView" Height="204" Width="554" Grid.Row="1" Style="{DynamicResource ListViewArea}">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                <ListView x:Name="UgListView" Height="204" Width="554" Grid.Row="1" Style="{DynamicResource ListViewArea}" 
+                          ItemsPanel="{DynamicResource ListViewItemPanel}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
@@ -321,12 +314,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <ListView x:Name="ExListView" Height="70" Width="554" Grid.Row="2" Style="{DynamicResource ListViewArea}" VerticalAlignment="Bottom">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                <ListView x:Name="ExListView" Height="70" Width="554" Grid.Row="2" Style="{DynamicResource ListViewArea}" 
+                          ItemsPanel="{DynamicResource ListViewItemPanel}" VerticalAlignment="Bottom">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
@@ -377,4 +366,5 @@
             </ListBox>
         </Grid>
     </Grid>
+    </StackPanel>
 </Window>

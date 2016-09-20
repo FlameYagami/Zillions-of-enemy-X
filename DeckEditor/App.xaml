@@ -10,6 +10,12 @@
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         </Style>
+
+        <!-- ListViewItem的换行模板-->
+        <ItemsPanelTemplate x:Key="ListViewItemPanel">
+            <WrapPanel />
+        </ItemsPanelTemplate>
+
         <Style TargetType="ListBox" x:Key="LstPreview">
             <Setter Property="Background" Value="#75F0F8FF"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />

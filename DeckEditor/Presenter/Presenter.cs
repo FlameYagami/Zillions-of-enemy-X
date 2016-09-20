@@ -2,10 +2,13 @@
 using System.Data;
 using System.IO;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using DeckEditor.Constant;
 using DeckEditor.Model;
 using DeckEditor.Utils;
 using DeckEditor.View;
+using Label = System.Windows.Controls.Label;
 
 namespace DeckEditor.Presenter
 {
@@ -32,6 +35,7 @@ namespace DeckEditor.Presenter
         void CampChanged(string camp);
         void ShowAllDeckName();
         void DeckStatisticalClick();
+        void ImgAreaMouseDoubleClick(Grid grid);
     }
 
     internal class Presenter : IPresenter
@@ -146,27 +150,8 @@ namespace DeckEditor.Presenter
             if (label == null) return;
             var number = label.Content.ToString();
             var thumbnailPath = _deck.GetAddThumbnailPath(number, selectIndex);
-            var areaType = CardUtils.GetAreaType(number);
 
-            // 添加卡
-            if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
-            // 添加成功则更新该区域
-            switch (areaType)
-            {
-                case StringConst.AreaType.Pl:
-                    _view.UpdateDeckListView(areaType, DataCache.PlColl);
-                    break;
-                case StringConst.AreaType.Ig:
-                    _view.UpdateDeckListView(areaType, DataCache.IgColl);
-                    _view.UpdateLifeAndVoid(CardUtils.GetLifeAndVoidCount());
-                    break;
-                case StringConst.AreaType.Ug:
-                    _view.UpdateDeckListView(areaType, DataCache.UgColl);
-                    break;
-                case StringConst.AreaType.Ex:
-                    _view.UpdateDeckListView(areaType, DataCache.ExColl);
-                    break;
-            }
+            AddCard(number, thumbnailPath);
         }
 
         public void ImgAreaMouseRightClick(Grid grid)
@@ -215,6 +200,11 @@ namespace DeckEditor.Presenter
         {
             var number = image.Tag.ToString();
             var thumbnailPath = Const.ThumbnailPath + number + StringConst.ImageExtension;
+            AddCard(number, thumbnailPath);
+        }
+
+        private void AddCard(string number,string thumbnailPath)
+        {
             var areaType = CardUtils.GetAreaType(number);
             // 添加卡
             if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
@@ -267,6 +257,18 @@ namespace DeckEditor.Presenter
                 return;
             var dekcStatisticalDic = _deck.DekcStatistical();
             DialogUtils.ShowDekcStatistical(dekcStatisticalDic);
+        }
+
+        public void ImgAreaMouseDoubleClick(Grid grid)
+        {
+            var label = (Label)grid?.FindName(StringConst.LblAreaNumber);
+            if (label == null) return;
+            var image = (Image)grid?.FindName(StringConst.ImgAreaThumbnail);
+            if (image == null) return;
+
+            var number = label.Content.ToString();
+            var thumbnailPath = image.Source.ToString();
+            AddCard(number, thumbnailPath);
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
