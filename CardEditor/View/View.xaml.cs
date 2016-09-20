@@ -189,8 +189,6 @@ namespace CardEditor.View
         {
             CmbRace.ItemsSource = null;
             CmbRace.ItemsSource = itemList;
-            CmbRace.IsEnabled = 0 != itemList.Count;
-            CmbRace.Text = StringConst.NotApplicable;
         }
 
         public void SetPackItems(List<object> itemList)
@@ -228,37 +226,41 @@ namespace CardEditor.View
                     TxtCost.IsEnabled = true;
                     TxtPower.IsEnabled = true;
                     CmbRace.IsEnabled = true;
+                    CmbSign.IsEnabled = true;
                     break;
                 }
                 case StringConst.TypeZxEx:
                 {
+                    CmbRace.IsEnabled = true;
+                    CmbSign.IsEnabled = false;
                     TxtCost.IsEnabled = true;
                     TxtPower.IsEnabled = true;
-                    CmbRace.IsEnabled = true;
+
                     CmbSign.Text = StringConst.Hyphen;
                     break;
                 }
                 case StringConst.TypePlayer:
                 {
+                    CmbRace.IsEnabled = false;
+                    CmbSign.IsEnabled = false;
                     TxtCost.IsEnabled = false;
                     TxtPower.IsEnabled = false;
-                    CmbRace.IsEnabled = false;
 
+                    CmbRace.Text = StringConst.Hyphen;
+                    CmbSign.Text = StringConst.Hyphen;
                     TxtCost.Text = string.Empty;
                     TxtPower.Text = string.Empty;
-                    CmbSign.Text = StringConst.Hyphen;
-                    CmbRace.Text = StringConst.Hyphen;
                     break;
                 }
                 case StringConst.TypeEvent:
                 {
+                    CmbRace.IsEnabled = false;
+                    CmbSign.IsEnabled = true;
                     TxtCost.IsEnabled = true;
                     TxtPower.IsEnabled = false;
-                    CmbRace.IsEnabled = false;
 
-                    TxtPower.Text = string.Empty;
-                    CmbSign.Text = StringConst.Hyphen;
                     CmbRace.Text = StringConst.Hyphen;
+                    TxtPower.Text = string.Empty;
                     break;
                 }
             }
@@ -314,38 +316,10 @@ namespace CardEditor.View
             _presenter.ResetClick();
         }
 
-        /// <summary>卡包选择</summary>
-        private void Pack_DropDownClosed(object sender, EventArgs e)
-        {
-            _presenter.PackChanged(CmbPack.Text.Trim());
-        }
-
-        /// <summary>类型选择</summary>
-        private void Type_DropDownClosed(object sender, EventArgs e)
-        {
-            _presenter.TypeChanged(CmbType.Text.Trim());
-        }
-
-        /// <summary>阵营选择</summary>
-        private void Camp_DropDownClosed(object sender, EventArgs e)
-        {
-            _presenter.CampChanged(CmbCamp.Text.Trim());
-        }
-
         /// <summary>列表选择</summary>
         private void LvCardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _presenter.PreviewChanged(LstPreview.SelectedIndex);
-        }
-
-        private void CmbCamp_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _presenter.CampChanged(CmbCamp.Text.Trim());
-        }
-
-        private void CmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _presenter.TypeChanged(CmbCamp.Text.Trim());
         }
 
         /// <summary>加密数据库</summary>
@@ -377,6 +351,24 @@ namespace CardEditor.View
         private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
         {
             _presenter.AbilityChanged(TxtAbility.Text.Trim());
+        }
+
+        /// <summary>类型选择</summary>
+        private void CmbType_TextChanged(object sender, RoutedEventArgs e)
+        {
+            _presenter.TypeChanged(CmbType.Text.Trim());
+        }
+
+        /// <summary>阵营选择</summary>
+        private void CmbCamp_TextChanged(object sender, RoutedEventArgs e)
+        {
+            _presenter.CampChanged(CmbCamp.Text.Trim());
+        }
+
+        /// <summary>卡包选择</summary>
+        private void CmbPack_TextChanged(object sender, RoutedEventArgs e)
+        {
+            _presenter.PackChanged(CmbPack.Text.Trim());
         }
     }
 }

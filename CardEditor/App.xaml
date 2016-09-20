@@ -4,10 +4,12 @@
              StartupUri="/View/View.xaml">
     <Application.Resources>
         <Style TargetType="Label" x:Key="LabelQuery">
-            <Setter Property="Height" Value="25" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        
+        <Style TargetType="TextBox" x:Key="TxtQuery">
+            <Setter Property="Margin" Value="2.5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
     </Application.Resources>

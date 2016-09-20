@@ -150,7 +150,7 @@
                     <Label Name="LblSign" Grid.Column="0" Grid.Row="3" Style="{DynamicResource LabelQuery}" Content="标记:"/>
                     <Label Name="LblRare" Grid.Column="0" Grid.Row="4" Style="{DynamicResource LabelQuery}" Content="罕贵:"/>
                     <ComboBox Name="CmbType" Grid.Column="1" Grid.Row="0" Margin="2.5" IsEditable="True" Text="(N/A)"
-                          DropDownClosed="Type_DropDownClosed" SelectionChanged="CmbType_SelectionChanged">
+                          TextBoxBase.TextChanged="CmbType_TextChanged">
                         <ComboBoxItem>(N/A)</ComboBoxItem>
                         <ComboBoxItem>Z/X</ComboBoxItem>
                         <ComboBoxItem>事件</ComboBoxItem>
@@ -158,7 +158,7 @@
                         <ComboBoxItem>Z/X EX</ComboBoxItem>
                     </ComboBox>
                     <ComboBox Name="CmbCamp" Grid.Column="1" Grid.Row="1" Margin="2.5" IsEditable="True" Text="(N/A)"
-                          DropDownClosed="Camp_DropDownClosed" SelectionChanged="CmbCamp_SelectionChanged">
+                          TextBoxBase.TextChanged="CmbCamp_TextChanged">
                         <ComboBoxItem>(N/A)</ComboBoxItem>
                         <ComboBoxItem>红</ComboBoxItem>
                         <ComboBoxItem>蓝</ComboBoxItem>
@@ -192,13 +192,13 @@
                     <Label Name="LblNumber" Grid.Column="2" Grid.Row="4" Style="{DynamicResource LabelQuery}" Content="卡编:"/>
                     <Label Name="LblCost" Grid.Column="4" Grid.Row="3" Style="{DynamicResource LabelQuery}" Content="费用:"/>
                     <Label Name="LblPower" Grid.Column="4" Grid.Row="4" Style="{DynamicResource LabelQuery}" Content="力量:"/>
-                    <TextBox Name="TxtCName" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Margin="2.5" />
-                    <TextBox Name="TxtJName" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="1" Margin="2.5" />
-                    <TextBox Name="TxtIllust" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="2" Margin="2.5" />
-                    <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="3" Margin="2.5" IsEditable="True" DropDownClosed="Pack_DropDownClosed" />
-                    <TextBox Name="TxtNumber" Grid.Column="3" Grid.Row="4" Margin="2.5" />
-                    <TextBox Name="TxtCost" Grid.Column="5" Grid.Row="3" Margin="2.5" />
-                    <TextBox Name="TxtPower" Grid.Column="5" Grid.Row="4" Margin="2.5" />
+                    <TextBox Name="TxtCName" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0" Style="{DynamicResource TxtQuery}" />
+                    <TextBox Name="TxtJName" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="1" Style="{DynamicResource TxtQuery}" />
+                    <TextBox Name="TxtIllust" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="2" Style="{DynamicResource TxtQuery}" />
+                    <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="3" Margin="2.5" IsEditable="True" TextBoxBase.TextChanged="CmbPack_TextChanged"/>
+                    <TextBox Name="TxtNumber" Grid.Column="3" Grid.Row="4" Style="{DynamicResource TxtQuery}" />
+                    <TextBox Name="TxtCost" Grid.Column="5" Grid.Row="3" Style="{DynamicResource TxtQuery}" />
+                    <TextBox Name="TxtPower" Grid.Column="5" Grid.Row="4" Style="{DynamicResource TxtQuery}" />
                     <Button Name="BtnQuery" Grid.Column="6" Grid.Row="0" Margin="2.5" Click="Query_Click" Content="检索"/>
                     <Button Name="BtnReset" Grid.Column="6" Grid.Row="1" Margin="2.5" Click="Reset_Click" Content="重置"/>
                     <Button Name="BtnAdd" Grid.Column="6" Grid.Row="2" Margin="2.5" Click="Add_Click" Content="添加"/>

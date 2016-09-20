@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms.VisualStyles;
 using CardEditor.Constant;
 using CardEditor.Model;
 using CardEditor.Utils;
@@ -63,7 +62,7 @@ namespace CardEditor.Presenter
             var exportPath = DialogUtils.ShowExport(pack);
             if (exportPath.Equals(string.Empty)) return;
             var isExport = ExcelHelper.ExportPackToExcel(exportPath, DataCache.DsPartCache);
-            DialogUtils.ShowDlg(isExport?StringConst.ExportSucceed: StringConst.ExportFailed);
+            DialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
         public void PackChanged(string pack)
@@ -79,8 +78,9 @@ namespace CardEditor.Presenter
 
         public void CampChanged(string camp)
         {
-            if (!camp.Equals(StringConst.NotApplicable))
-                _view.UpdateCampLinkage(CardUtils.GetPartRace(camp));
+            if (camp.Equals(StringConst.NotApplicable))
+                return;
+            _view.UpdateCampLinkage(CardUtils.GetPartRace(camp));
         }
 
         public void PreviewChanged(int selectIndex)
@@ -241,6 +241,12 @@ namespace CardEditor.Presenter
             DialogUtils.ShowDlgOk(StringConst.DncryptFailed);
         }
 
+        public void AbilityChanged(string ability)
+        {
+            var abilityType = _query.AnalysisAbility(ability);
+            _view.UpdateAbilityLinkage(abilityType);
+        }
+
         /// <summary>
         ///     更新全部数据集合以及ListView
         /// </summary>
@@ -250,12 +256,6 @@ namespace CardEditor.Presenter
             SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache);
             _query.SetCardList();
             _view.UpdateListView(Query.CardList);
-        }
-
-        public void AbilityChanged(string ability)
-        {
-            var abilityType = _query.AnalysisAbility(ability);
-            _view.UpdateAbilityLinkage(abilityType);
         }
     }
 }
