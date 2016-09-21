@@ -3,12 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DeckEditor.View"
         xmlns:chart="clr-namespace:Visifire.Charts;assembly=WPFVisifire.Charts"
         mc:Ignorable="d"
-        Title="卡组统计" Height="350" Width="650" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        ShowInTaskbar="False">
-    <Grid Name="Grid">
-        <chart:Chart Name="chart" ScrollingEnabled="False" View3D="True" />
-    </Grid>
+        Title="卡组统计" Height="350" Width="650" WindowStartupLocation="CenterOwner" Style="{DynamicResource ChildWindow}">
+    <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Style="{DynamicResource BorderTitle}" ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown">
+                <Label Content="卡组统计" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16"/>
+            </Border>
+            <chart:Chart Name="ChartDeck" Grid.Row="1" ScrollingEnabled="False" View3D="True" Margin="10" Background="#75F0F8FF"
+                         ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown"/>
+        </Grid>
+    </Border>
 </Window>

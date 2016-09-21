@@ -21,14 +21,14 @@ namespace DeckEditor.View
                 //设置图表中Y轴的后缀       
                 Suffix = "枚"
             };
-            chart.AxesY.Add(yAxis);
+            ChartDeck.AxesY.Add(yAxis);
 
             var xAxis = new Axis
             {
                 //设置图表中X轴的后缀       
                 Suffix = "费"
             };
-            chart.AxesX.Add(xAxis);
+            ChartDeck.AxesX.Add(xAxis);
 
             // 创建一个新的数据线。               
             var dataSeries = new DataSeries
@@ -52,7 +52,12 @@ namespace DeckEditor.View
                 dataSeries.DataPoints.Add(dataPoint);
             }
             // 添加数据线到数据序列。                
-            chart.Series.Add(dataSeries);
+            ChartDeck.Series.Add(dataSeries);
+        }
+
+        private void Exit_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -43,7 +43,7 @@
             ColumnPower + "," + ColumnAbility + "," +
             ColumnLines + "," + ColumnFaq + "," + ColumnAbilityDetail + ")";
 
-        public static string[] ColumArray =
+        public static string[] ColumKeyArray =
         {
             ColumnCName,
             ColumnType,
@@ -51,7 +51,6 @@
             ColumnRace,
             ColumnSign,
             ColumnRare,
-            ColumnPack,
             ColumnIllust,
             ColumnNumber,
             ColumnCost,

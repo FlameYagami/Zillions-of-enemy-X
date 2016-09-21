@@ -69,7 +69,7 @@ namespace DeckEditor.View
             CmbRace.IsEnabled = false;
             var uri = new Uri(Const.BackgroundPath, UriKind.Relative);
             var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
-            //Background = imageBrush;
+            BorderView.Background = imageBrush;
         }
 
         public void Reset()
@@ -109,6 +109,7 @@ namespace DeckEditor.View
             LblIRace.Content = cardmodel.Race;
             LblIAbility.Text = cardmodel.Ability;
             LblIJName.Content = cardmodel.JName;
+            LblIPack.Content = cardmodel.Pack;
             LblIIllust.Content = cardmodel.Illust;
             LblILines.Text = cardmodel.Lines;
             LblIFaq.Text = cardmodel.Faq;
@@ -335,7 +336,7 @@ namespace DeckEditor.View
         }
 
         /// <summary>卡组统计事件</summary>
-        private void BtnDekcStatistical_Click(object sender, RoutedEventArgs e)
+        private void BtnDeckStatistical_Click(object sender, RoutedEventArgs e)
         {
             _presenter.DeckStatisticalClick();
         }
@@ -346,12 +347,12 @@ namespace DeckEditor.View
             _presenter.ExitClick();
         }
 
-        private void GridTitle_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void GridTitle_MouseMove(object sender, MouseEventArgs e)
+        private void Title_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

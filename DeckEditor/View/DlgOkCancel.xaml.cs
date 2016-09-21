@@ -10,7 +10,7 @@ namespace DeckEditor.View
         public DlgOkCancel(string message)
         {
             InitializeComponent();
-            label.Content = message;
+            LblHint.Content = message;
         }
 
         private void BtnCacncel_Click(object sender, RoutedEventArgs e)

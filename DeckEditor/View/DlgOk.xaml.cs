@@ -10,7 +10,7 @@ namespace DeckEditor.View
         public DlgOk(string message)
         {
             InitializeComponent();
-            label.Content = label;
+            LblHint.Content = message;
         }
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)

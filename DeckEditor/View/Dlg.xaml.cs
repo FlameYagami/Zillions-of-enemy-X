@@ -13,7 +13,7 @@ namespace DeckEditor.View
         {
             InitializeComponent();
             StartKiller();
-            label.Content = value;
+            LblHint.Content = value;
         }
 
         public void StartKiller()

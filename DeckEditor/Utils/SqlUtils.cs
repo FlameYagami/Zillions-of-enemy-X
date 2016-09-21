@@ -41,8 +41,8 @@ namespace DeckEditor.Utils
         {
             return !string.Empty.Equals(value)
                 ? (value.Contains(StringConst.Hyphen)
-                    ? $" AND {column}>='{value.Split('-')[0]}' AND {column}<='{value.Split('-')[1]}'"
-                    : $" AND {column}='{value}'")
+                    ? $" AND {column}>={value.Split('-')[0]} AND {column}<={value.Split('-')[1]}"
+                    : $" AND {column}={value}")
                 : string.Empty;
         }
 
@@ -108,7 +108,7 @@ namespace DeckEditor.Utils
         private static string GetPartKeySql(string value)
         {
             var tempValue = new StringBuilder();
-            foreach (var column in ColumArray)
+            foreach (var column in ColumKeyArray)
                 tempValue.Append($" OR {column} LIKE '%{value}%'");
             return tempValue.ToString();
         }

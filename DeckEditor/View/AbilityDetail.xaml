@@ -3,16 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DeckEditor.View"
         mc:Ignorable="d"
-        Title="能力分类" Height="175" Width="425" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        ShowInTaskbar="False" Loaded="Window_Loaded">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <ListBox x:Name="LstAbilityDetail" SelectionMode="Multiple" Margin="5" Background="#50F0F8FF"
+        Title="能力分类" Height="175" Width="450" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" Style="{DynamicResource ChildWindow}">
+    <Border Style="{DynamicResource BorderWindow}"  Name="BorderView" Background="#1A1A1A">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="4*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Style="{DynamicResource BorderTitle}">
+                <Grid Name="GridTitle" Height="30">
+                    <Label Content="能力分类" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16"/>
+                </Grid>
+            </Border>
+            <ListBox Grid.Row="1" x:Name="LstAbilityDetail" SelectionMode="Multiple" Margin="5" Background="#50F0F8FF"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
@@ -46,9 +51,10 @@
             <CheckBox x:Name="ChkAbilityDetail23" Content="生命相关" />
             <CheckBox x:Name="ChkAbilityDetail24" Content="特殊胜利" />
         </ListBox>
-        <Button x:Name="BtnCancel" Content="取消" Margin="100,4,0,4" Grid.Row="1" HorizontalAlignment="Left" Width="100"
-                Click="BtnCancel_Click" />
-        <Button x:Name="BtnOK" Content="确定" Margin="0,4,100,4" Grid.Row="1" RenderTransformOrigin="1.678,0.447"
+        <Button x:Name="BtnCancel" Content="取消" Margin="100,0,0,5" Grid.Row="2" 
+                HorizontalAlignment="Left" Width="100" Click="BtnCancel_Click" />
+        <Button x:Name="BtnOk" Content="确定" Margin="0,0,100,5" Grid.Row="2"
                 HorizontalAlignment="Right" Width="100" Click="BtnOK_Click" />
     </Grid>
+    </Border>
 </Window>
