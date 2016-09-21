@@ -92,10 +92,15 @@ namespace DeckEditor.View
 
         public void SetRaceItems(List<object> itemList)
         {
-            CmbRace.ItemsSource = null;
-            CmbRace.ItemsSource = itemList;
+            if (null == itemList)
+            {
+                CmbRace.IsEnabled = false;
+                return;
+            }
+            CmbRace.Items.Clear();
+            itemList.ForEach(value => CmbRace.Items.Add(value.ToString()));
             CmbRace.Text = StringConst.NotApplicable;
-            CmbRace.IsEnabled = null != itemList;
+            CmbRace.IsEnabled = true;
         }
 
         public void SetCardModel(CardEntity cardmodel)
