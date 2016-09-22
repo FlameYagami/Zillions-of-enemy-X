@@ -7,5 +7,6 @@ namespace DeckEditor
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

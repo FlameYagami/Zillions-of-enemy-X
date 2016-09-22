@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using CardEditor.Constant;
 using CardEditor.Entity;
@@ -187,8 +188,8 @@ namespace CardEditor.View
 
         public void UpdateCampLinkage(List<object> itemList)
         {
-            CmbRace.ItemsSource = null;
-            CmbRace.ItemsSource = itemList;
+            CmbRace.Items.Clear();
+            itemList.ForEach(race => CmbRace.Items.Add(race.ToString()));
         }
 
         public void SetPackItems(List<object> itemList)
@@ -369,6 +370,19 @@ namespace CardEditor.View
         private void CmbPack_TextChanged(object sender, RoutedEventArgs e)
         {
             _presenter.PackChanged(CmbPack.Text.Trim());
+        }
+
+        private void Title_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Title_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
     }
 }
