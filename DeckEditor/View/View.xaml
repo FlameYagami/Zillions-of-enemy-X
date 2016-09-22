@@ -282,12 +282,16 @@
                             <RowDefinition Height="204*" />
                             <RowDefinition Height="70*" />
                         </Grid.RowDefinitions>
-                        <ListView x:Name="IgListView" Height="138" Width="554" Grid.Row="0"
-                                  Style="{DynamicResource ListViewArea}"
+                        <Border Grid.Row="0" Style="{DynamicResource ControlBorder}" Height="138" Width="554"  Background="#75F0F8FF" >
+                            <ListView x:Name="IgListView" 
+                                      ScrollViewer.VerticalScrollBarVisibility ="Disabled"  
+                                      ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
+                                  Style="{DynamicResource ControlTransparent}"
                                   ItemsPanel="{DynamicResource ListViewItemPanel}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                    <Grid 
+                                        MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                           MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                         <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                VerticalAlignment="Top"
@@ -299,40 +303,49 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <ListView x:Name="UgListView" Height="204" Width="554" Grid.Row="1"
-                                  Style="{DynamicResource ListViewArea}"
+                        </Border>
+                        <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Height="204" Width="554"  Background="#75F0F8FF" >
+                            <ListView x:Name="UgListView"
+                                  ScrollViewer.VerticalScrollBarVisibility ="Disabled"  
+                                  ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
+                                  Style="{DynamicResource ControlTransparent}"
                                   ItemsPanel="{DynamicResource ListViewItemPanel}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                            MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                           MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                                        <Image Source="{Binding RestrictPath}" Height="23" Width="23"
+                                            <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                VerticalAlignment="Top"
                                                HorizontalAlignment="Left" />
-                                        <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                                        <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
+                                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                Height="63" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        <ListView x:Name="ExListView" Height="70" Width="554" Grid.Row="2"
-                                  Style="{DynamicResource ListViewArea}"
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Border>
+                        <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Width="554" Background="#75F0F8FF" >
+                            <ListView x:Name="ExListView" Height="70" 
+                                  Style="{DynamicResource ControlTransparent}"
                                   ItemsPanel="{DynamicResource ListViewItemPanel}" VerticalAlignment="Bottom">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                            MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                           MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
-                                        <Image Source="{Binding RestrictPath}" Height="23" Width="23"
+                                            <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                VerticalAlignment="Top"
                                                HorizontalAlignment="Left" />
-                                        <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
-                                        <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
+                                            <Label Name="LblAreaNumber" Content="{Binding Number}" Visibility="Collapsed" />
+                                            <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                Height="63" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Border>
                     </Grid>
                 </Grid>
                 <Grid Grid.Column="2">
@@ -351,32 +364,34 @@
                             <ComboBoxItem>数值</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
-                    <ListBox x:Name="LstPreview" Margin="10,0,10,10" Grid.Row="1"
-                             SelectionChanged="PreviewListView_SelectionChanged" Style="{DynamicResource LstPreview}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="63" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown"
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="10,0,10,10" >
+                        <ListBox x:Name="LstPreview"  SelectionChanged="PreviewListView_SelectionChanged" Style="{DynamicResource ControlTransparent}"  Background="#75F0F8FF" 
+                                 ScrollViewer.VerticalScrollBarVisibility ="Auto"  ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="63" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown"
                                       ToolTip="右键添加">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Grid>
-                                            <Image Source="{Binding ImagePath}" Width="45" Height="63" />
-                                            <Image Source="{Binding RestrictPath}" Height="15" Width="15"
+                                        <StackPanel Orientation="Horizontal">
+                                            <Grid>
+                                                <Image Source="{Binding ImagePath}" Width="45" Height="63" />
+                                                <Image Source="{Binding RestrictPath}" Height="15" Width="15"
                                                    VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                        </Grid>
-                                        <StackPanel Orientation="Vertical" Width="125">
-                                            <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
+                                            </Grid>
+                                            <StackPanel Orientation="Vertical" Width="125">
+                                                <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
                                                        HorizontalAlignment="Center"
                                                        LineStackingStrategy="BlockLineHeight" />
-                                            <Label Style="{DynamicResource LblCenter}" Content="{Binding CampAndRace}" />
-                                            <Label Style="{DynamicResource LblCenter}" Content="{Binding PowerAndCost}" />
-                                            <Label Name="LblPreviewNumber" Content="{Binding Number}"
+                                                <Label Style="{DynamicResource LblCenter}" Content="{Binding CampAndRace}" />
+                                                <Label Style="{DynamicResource LblCenter}" Content="{Binding PowerAndCost}" />
+                                                <Label Name="LblPreviewNumber" Content="{Binding Number}"
                                                    Visibility="Collapsed" />
+                                            </StackPanel>
                                         </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
                 </Grid>
             </Grid>
         </Grid>

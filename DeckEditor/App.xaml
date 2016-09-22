@@ -4,6 +4,20 @@
              StartupUri="/View/View.xaml">
     <Application.Resources>
 
+        <!-- 联动Style 内层-->
+        <Style x:Key="ControlTransparent">
+            <Setter Property="Border.BorderThickness" Value="0" />
+            <Setter Property="Border.BorderBrush" Value="Transparent"/>
+            <Setter Property="Border.Background" Value="Transparent"/>
+        </Style>
+
+        <!-- 联动Style 外层-->
+        <Style x:Key="ControlBorder">
+            <Setter Property="Border.BorderThickness" Value="2"/>
+            <Setter Property="Border.BorderBrush" Value="#66AFE9" />
+            <Setter Property="Border.CornerRadius" Value="5" />
+        </Style>
+
         <!-- 基础窗体样式模板-->
         <Style TargetType="Window" x:Key="BaseWindow">
             <Setter Property="AllowsTransparency" Value="True"/>
@@ -50,14 +64,7 @@
         <ItemsPanelTemplate x:Key="ListViewItemPanel">
             <WrapPanel />
         </ItemsPanelTemplate>
-        
-        <Style TargetType="ListBox" x:Key="LstPreview">
-            <Setter Property="Background" Value="#75F0F8FF"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>
-        
+
         <!-- LabelCenter模板-->
         <Style TargetType="Label" x:Key="LblCenter">
             <Setter Property="HorizontalAlignment" Value="Center"/>
