@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CardEditor.Utils.Dialog
+namespace CardEditor.View
 {
-    public partial class Dlg : Form
+    /// <summary>
+    ///     Dlg.xaml 的交互逻辑
+    /// </summary>
+    public partial class Dlg
     {
         public Dlg(string value)
         {
             InitializeComponent();
             StartKiller();
-            label.Text = value;
+            LblHint.Content = value;
         }
 
         public void StartKiller()

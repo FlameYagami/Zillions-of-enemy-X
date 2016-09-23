@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using CardEditor.View;
-using Application = System.Windows.Application;
+﻿using System.Collections.Generic;
+using System.Windows;
+using DeckEditor.View;
 
-namespace CardEditor.Utils
+namespace DeckEditor.Utils
 {
     public class DialogUtils
     {
@@ -29,15 +28,18 @@ namespace CardEditor.Utils
             return (showDialog != null) && showDialog.Value;
         }
 
-        public static string ShowExport(string pack)
+        /// <summary>能力分类窗口</summary>
+        public static void ShowAbilityDetail()
         {
-            var sfd = new SaveFileDialog
-            {
-                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
-                Filter = @"xls文件(*.xls)|*.xls",
-                FileName = pack
-            };
-            return sfd.ShowDialog() != DialogResult.OK ? string.Empty : sfd.FileName;
+            var dlg = new AbilityDetail {Owner = Application.Current.MainWindow};
+            var showDialog = dlg.ShowDialog();
+        }
+
+        /// <summary>卡组统计窗口</summary>
+        public static void ShowDekcStatistical(Dictionary<int, int> deckStatistical)
+        {
+            var dlg = new DekcStatistical(deckStatistical) {Owner = Application.Current.MainWindow};
+            var showDialog = dlg.ShowDialog();
         }
     }
 }

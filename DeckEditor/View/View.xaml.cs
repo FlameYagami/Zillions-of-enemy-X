@@ -176,8 +176,8 @@ namespace DeckEditor.View
 
         public void UpdateCardPreviewListView(List<PreviewEntity> cardList)
         {
-            LstPreview.ItemsSource = null;
-            LstPreview.ItemsSource = cardList;
+            LvwPreview.ItemsSource = null;
+            LvwPreview.ItemsSource = cardList;
             LblCardCount.Content = StringConst.QueryResult + cardList.Count;
         }
 
@@ -266,7 +266,7 @@ namespace DeckEditor.View
         /// <summary>列表区域切换事件</summary>
         private void PreviewListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.PreivewListViewChanged(LstPreview.SelectedIndex);
+            _presenter.PreivewListViewChanged(LvwPreview.SelectedIndex);
         }
 
         /// <summary>列表区域右键事件</summary>

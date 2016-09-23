@@ -91,7 +91,8 @@ namespace CardEditor.Utils
 
         public static string GetExportSql(string pack)
         {
-            return $"SELECT {SqliteConst.ColumnCard} FROM {SqliteConst.CardTable} WHERE {SqliteConst.Pack} LIKE '%{pack}%' {SqliteConst.NumberOrderSql}";
+            return
+                $"SELECT {SqliteConst.ColumnCard} FROM {SqliteConst.CardTable} WHERE {SqliteConst.Pack} LIKE '%{pack}%' {SqliteConst.NumberOrderSql}";
         }
     }
 }

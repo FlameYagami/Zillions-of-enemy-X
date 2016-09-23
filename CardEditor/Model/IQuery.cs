@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
-using System.Linq;
-using System;
 
 namespace CardEditor.Model
 {
@@ -22,6 +21,12 @@ namespace CardEditor.Model
 
     internal class Query : SqliteConst, IQuery
     {
+        public Query()
+        {
+            MemoryQuerySql = string.Empty;
+            CardList = new List<PreviewEntity>();
+        }
+
         /// <summary>ListView数据缓存</summary>
         public static List<PreviewEntity> CardList { get; set; }
 
@@ -97,7 +102,6 @@ namespace CardEditor.Model
             else
                 CardList.Clear();
             foreach (var row in DataCache.DsPartCache.Tables[CardTable].Rows.Cast<DataRow>())
-            {
                 CardList.Add(new PreviewEntity
                 {
                     CName = row[CName].ToString(),
@@ -105,7 +109,6 @@ namespace CardEditor.Model
                     Cost = row[Cost].ToString().Equals(string.Empty) ? StringConst.Hyphen : row[Cost].ToString(),
                     Number = row[Number].ToString()
                 });
-            }
         }
 
         /// <summary>
@@ -157,30 +160,22 @@ namespace CardEditor.Model
             return builder.ToString();
         }
 
-        public List<PreviewEntity> GetCardList()
-        {
-            return CardList;
-        }
-
         public StringConst.AbilityType AnalysisAbility(string ability)
         {
             if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
-            {
                 return StringConst.AbilityType.Extra;
-            }
             if (ability.Contains("【★】"))
-            {
                 return StringConst.AbilityType.Event;
-            }
             if (ability.Contains(StringConst.AbilityLife) || ability.Contains(StringConst.AbilityVoid))
-            {
                 return StringConst.AbilityType.Ig;
-            }
             if (ability.Contains(StringConst.AbilityStart))
-            {
                 return StringConst.AbilityType.Start;
-            }
             return StringConst.AbilityType.None;
+        }
+
+        public List<PreviewEntity> GetCardList()
+        {
+            return CardList;
         }
     }
 }

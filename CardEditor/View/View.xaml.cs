@@ -47,31 +47,31 @@ namespace CardEditor.View
         {
             switch (abilityType)
             {
-                case StringConst.AbilityType.Ig:
-                {
-                    CmbType.Text = StringConst.TypeZx;
-                    CmbSign.Text = StringConst.SignIg;
-                    break;
-                }
-                case StringConst.AbilityType.Start:
-                {
-                    CmbType.Text = StringConst.TypeZx;
-                    CmbSign.Text = StringConst.Hyphen;
-                    break;
-                }
-                case StringConst.AbilityType.Event:
-                {
-                    CmbType.Text = StringConst.TypeEvent;
-                    CmbRace.Text = StringConst.Hyphen;
-                    TxtPower.Text = string.Empty;
-                    break;
-                }
-                case StringConst.AbilityType.Extra:
-                {
-                    CmbType.Text = StringConst.TypeZxEx;
-                    CmbSign.Text = StringConst.Hyphen;
-                    break;
-                }
+                //case StringConst.AbilityType.Ig:
+                //{
+                //    CmbType.Text = StringConst.TypeZx;
+                //    CmbSign.Text = StringConst.SignIg;
+                //    break;
+                //}
+                //case StringConst.AbilityType.Start:
+                //{
+                //    CmbType.Text = StringConst.TypeZx;
+                //    CmbSign.Text = StringConst.Hyphen;
+                //    break;
+                //}
+                //case StringConst.AbilityType.Event:
+                //{
+                //    CmbType.Text = StringConst.TypeEvent;
+                //    CmbRace.Text = StringConst.Hyphen;
+                //    TxtPower.Text = string.Empty;
+                //    break;
+                //}
+                //case StringConst.AbilityType.Extra:
+                //{
+                //    CmbType.Text = StringConst.TypeZxEx;
+                //    CmbSign.Text = StringConst.Hyphen;
+                //    break;
+                //}
             }
         }
 
@@ -200,8 +200,8 @@ namespace CardEditor.View
 
         public void UpdateListView(List<PreviewEntity> previewEntityList)
         {
-            LstPreview.ItemsSource = null;
-            LstPreview.ItemsSource = previewEntityList;
+            LvwPreview.ItemsSource = null;
+            LvwPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
         }
 
@@ -296,13 +296,13 @@ namespace CardEditor.View
         /// <summary>更新</summary>
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.UpdateClick(LstPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.UpdateClick(LvwPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>删除</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DeleteClick(LstPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.DeleteClick(LvwPreview.SelectedIndex, CmbOrder.Text.Trim());
         }
 
         /// <summary>查询</summary>
@@ -320,7 +320,7 @@ namespace CardEditor.View
         /// <summary>列表选择</summary>
         private void LvCardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.PreviewChanged(LstPreview.SelectedIndex);
+            _presenter.PreviewChanged(LvwPreview.SelectedIndex);
         }
 
         /// <summary>加密数据库</summary>
@@ -344,24 +344,31 @@ namespace CardEditor.View
             _presenter.OrderChanged(CmbOrder.Text.Trim());
         }
 
+        /// <summary>一键导出事件</summary>
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExportClick(CmbPack.Text.Trim());
         }
 
+        /// <summary>能力文本改变事件</summary>
         private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
         {
             _presenter.AbilityChanged(TxtAbility.Text.Trim());
         }
 
-        /// <summary>类型选择</summary>
+        /// <summary>类型选择（因为Style关系,下拉不会触发改事件）</summary> 
         private void CmbType_TextChanged(object sender, RoutedEventArgs e)
         {
             _presenter.TypeChanged(CmbType.Text.Trim());
         }
 
+        private void CmbType_DropDownClosed(object sender, EventArgs e)
+        {
+            _presenter.TypeChanged(CmbType.Text.Trim());
+        }
+
         /// <summary>阵营选择</summary>
-        private void CmbCamp_TextChanged(object sender, RoutedEventArgs e)
+        private void CmbCamp_TextChanged(object sender, EventArgs e)
         {
             _presenter.CampChanged(CmbCamp.Text.Trim());
         }
@@ -372,17 +379,18 @@ namespace CardEditor.View
             _presenter.PackChanged(CmbPack.Text.Trim());
         }
 
-        private void Title_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        /// <summary>窗口最小化事件</summary>
+        private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void Title_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        /// <summary>标题拖拽事件</summary>
+        private void Title_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-            {
                 DragMove();
-            }
         }
+
     }
 }

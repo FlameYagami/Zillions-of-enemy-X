@@ -24,9 +24,8 @@ namespace CardEditor.Utils
                     dap.Fill(dts, CardTable);
                     con.Close();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    //MessageBox.Show(e.ToString());
                     return false;
                 }
             }

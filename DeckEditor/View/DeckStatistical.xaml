@@ -15,8 +15,9 @@
             <Border Style="{DynamicResource BorderTitle}" ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown">
                 <Label Content="卡组统计" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16"/>
             </Border>
-            <chart:Chart Name="ChartDeck" Grid.Row="1" ScrollingEnabled="False" View3D="True" Margin="10" Background="#75F0F8FF"
-                         ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown"/>
+            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="10"  ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown" >
+                <chart:Chart Name="ChartDeck" Style="{DynamicResource ControlTransparent}" ScrollingEnabled="False" View3D="True"/>
+            </Border>
         </Grid>
     </Border>
 </Window>

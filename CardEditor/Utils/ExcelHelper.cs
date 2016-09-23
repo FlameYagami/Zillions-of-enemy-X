@@ -7,10 +7,9 @@ namespace CardEditor.Utils
 {
     internal class ExcelHelper
     {
-        public static bool ExportPackToExcel(string filePath,DataSet dataSet)
+        public static bool ExportPackToExcel(string filePath, DataSet dataSet)
         {
             foreach (DataTable dt in dataSet.Tables)
-            {
                 try
                 {
                     var icolIndex = 0;
@@ -43,11 +42,10 @@ namespace CardEditor.Utils
                     file.Close();
                     file.Dispose();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }
-            }
             return true;
         }
     }
