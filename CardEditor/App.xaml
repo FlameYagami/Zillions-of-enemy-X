@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="/View/View.xaml">
     <Application.Resources>
-        
+
         <!-- 联动Style 内层-->
         <Style x:Key="ControlTransparent">
             <Setter Property="Border.BorderThickness" Value="0" />
@@ -16,6 +16,7 @@
             <Setter Property="Border.BorderThickness" Value="2"/>
             <Setter Property="Border.BorderBrush" Value="#66AFE9" />
             <Setter Property="Border.CornerRadius" Value="5" />
+            <Setter Property="Border.Background" Value="#B0F0F8FF"/>
         </Style>
 
         <!-- 基础窗体样式模板-->
@@ -46,31 +47,11 @@
             <Setter Property="Background" Value="#D03F3F46"/>
             <Setter Property="CornerRadius" Value="15,15,0,0" />
         </Style>
-        <!-- 控件Border样式模板-->
-        <Style TargetType="Border" x:Key="BorderControl">
-            <Setter Property="Background" Value="#75F0F8FF"/>
-            <Setter Property="CornerRadius" Value="5" />
-        </Style>
-
-        <Style TargetType="ListView" x:Key="ListViewArea">
-            <Setter Property="Background" Value="#75F0F8FF"/>
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
-        </Style>
-
+        
         <!-- ListViewItem的换行模板-->
         <ItemsPanelTemplate x:Key="ListViewItemPanel">
             <WrapPanel />
         </ItemsPanelTemplate>
-
-        <Style TargetType="ListBox" x:Key="LstPreview">
-            <Setter Property="Background" Value="#75F0F8FF"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>
 
         <!-- LabelCenter模板-->
         <Style TargetType="Label" x:Key="LblCenter">

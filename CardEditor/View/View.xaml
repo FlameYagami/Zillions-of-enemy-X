@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Z/X CardEditor" Height="650" Width="960" WindowStartupLocation="CenterScreen"
+        Title="Z/X CardEditor" Height="650" Width="970" WindowStartupLocation="CenterScreen"
         Style="{DynamicResource BaseWindow}"
         Loaded="Window_Loaded">
     <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
@@ -28,18 +28,18 @@
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Margin="5" Height="25">
-                        <Border Style="{DynamicResource BorderControl}">
+                    <StackPanel Orientation="Horizontal" Margin="5" Height="30">
+                        <Border Style="{DynamicResource ControlBorder}">
                             <Label x:Name="LblCardCount" Width="170" />
                         </Border>
-                        <ComboBox x:Name="CmbOrder" Margin="10,0,0,0" Width="70"
+                        <ComboBox x:Name="CmbOrder" Margin="10,0,0,0" Width="75"
                                   DropDownClosed="CmbOrder_DropDownClosed">
                             <ComboBoxItem>编号</ComboBoxItem>
                             <ComboBoxItem>数值</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
-                    <Border Style="{DynamicResource BorderControl}" Grid.Row="1" Margin="5,0,5,5">
-                        <ListBox x:Name="LstPreview" Grid.Row="1" Background="Transparent"
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
+                        <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstPreview" Grid.Row="1" Background="Transparent"
                                  SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -57,72 +57,92 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="35" />
                         <RowDefinition />
                         <RowDefinition Height="390" />
                     </Grid.RowDefinitions>
-                    <Grid Height="30" Grid.Row="0">
+                    <Grid Grid.Row="0" Height="35">
                         <Button Name="BtnExit" Click="Exit_Click" Content="退出编辑" />
                     </Grid>
-                    <Border Grid.Row="1" Style="{DynamicResource BorderControl}" Margin="5,0,5,0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0">
-                                <ComboBoxItem>检索</ComboBoxItem>
-                                <ComboBoxItem>编辑</ComboBoxItem>
-                                <ComboBoxItem>开发</ComboBoxItem>
-                            </ComboBox>
-                            <Label Name="LblMode" Grid.Column="0" Grid.Row="0" Content="模式选择:"
+                    <StackPanel  Grid.Row="1" Orientation="Vertical">
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0">
+                                    <ComboBoxItem>检索</ComboBoxItem>
+                                    <ComboBoxItem>编辑</ComboBoxItem>
+                                    <ComboBoxItem>开发</ComboBoxItem>
+                                </ComboBox>
+                                <Label Name="LblMode" Grid.Column="0" Grid.Row="0" Content="模式选择:"
                                    Style="{DynamicResource LblCenter}" />
-                            <ComboBox Name="CmbRestrict" Grid.Column="1" Grid.Row="1">
-                                <ComboBoxItem>(N/A)</ComboBoxItem>
-                                <ComboBoxItem>禁止</ComboBoxItem>
-                                <ComboBoxItem>无制限</ComboBoxItem>
-                            </ComboBox>
-                            <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制" Style="{DynamicResource LblCenter}" />
-                        </Grid>
-                    </Border>
-                    <Border Grid.Row="2" Style="{DynamicResource BorderControl}" Margin="5,5,5,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Name="LblPassword" Grid.Column="0" Content="输入密码:"
+                                <ComboBox Name="CmbRestrict" Grid.Column="1" Grid.Row="1">
+                                    <ComboBoxItem>(N/A)</ComboBoxItem>
+                                    <ComboBoxItem>禁止</ComboBoxItem>
+                                    <ComboBoxItem>无制限</ComboBoxItem>
+                                </ComboBox>
+                                <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制" Style="{DynamicResource LblCenter}" />
+                            </Grid>
+                        </Border>
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Name="LblPassword" Grid.Column="0" Content="输入密码:"
                                    Style="{DynamicResource LblCenter}" />
-                            <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
+                                <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
                                     Background="White">
-                                <PasswordBox Name="TxtPassword" Grid.Column="1"
+                                    <PasswordBox Name="TxtPassword" Grid.Column="1"
                                              Style="{DynamicResource ControlTransparent}"
                                              VerticalContentAlignment="Center" />
-                            </Border>
-                            <Button Name="BtnEncrypt" Grid.Column="2" Click="Encrypt_Click" Visibility="Hidden"
+                                </Border>
+                                <Button Name="BtnEncrypt" Grid.Column="2" Click="Encrypt_Click" Visibility="Hidden"
                                     Content="加密" />
-                            <Button Name="BtnDecrypt" Grid.Column="2" Click="Decrypt_Click" Visibility="Visible"
+                                <Button Name="BtnDecrypt" Grid.Column="2" Click="Decrypt_Click" Visibility="Visible"
                                     Content="解密" />
-                        </Grid>
-                    </Border>
-                    <TabControl Grid.Row="4" x:Name="TabControl" Margin="5">
-                        <TabItem Header="A" Name="TabItem0" Background="#75F0F8FF">
-                            <Image x:Name="Img0" Width="250" Height="350" />
+                            </Grid>
+                        </Border>
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5,0">
+                            <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityType"
+                                                 SelectionMode="Multiple"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="3" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <CheckBox x:Name="ChkAbilityType0" Content="Lv" />
+                                <CheckBox x:Name="ChkAbilityType1" Content="射程" />
+                                <CheckBox x:Name="ChkAbilityType2" Content="绝界" />
+                                <CheckBox x:Name="ChkAbilityType4" Content="起始卡" />
+                                <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" />
+                                <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" />
+                                <CheckBox x:Name="ChkAbilityType7" Content="进化原力" />
+                                <CheckBox x:Name="ChkAbilityType8" Content="零点优化" />
+                            </ListBox>
+                        </Border>
+                    </StackPanel>
+                    <TabControl Grid.Row="2" Width="256" x:Name="TabControl" Background="#B0F0F8FF" VerticalAlignment="Bottom" Margin="0,0,0,5">
+                        <TabItem Header="A" Name="TabItem0" Background="#B0F0F8FF">
+                            <Image x:Name="Img0" Width="250" Height="350"/>
                         </TabItem>
-                        <TabItem Header="B" Name="TabItem1" Background="#75F0F8FF">
+                        <TabItem Header="B" Name="TabItem1" Background="#B0F0F8FF">
                             <Image x:Name="Img1" Width="250" Height="350" />
                         </TabItem>
-                        <TabItem Header="C" Name="TabItem2" Background="#75F0F8FF">
+                        <TabItem Header="C" Name="TabItem2" Background="#B0F0F8FF">
                             <Image x:Name="Img2" Width="250" Height="350" />
                         </TabItem>
-                        <TabItem Header="D" Name="TabItem3" Background="#75F0F8FF">
+                        <TabItem Header="D" Name="TabItem3" Background="#B0F0F8FF">
                             <Image x:Name="Img3" Width="250" Height="350" />
                         </TabItem>
                     </TabControl>
@@ -133,7 +153,7 @@
                             <RowDefinition Height="40" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" Height="30">
+                        <Grid Grid.Row="0" Height="35">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
@@ -145,7 +165,7 @@
                             <Button Grid.Column="2" Name="BtnUpdate" Click="Update_Click" Content="修改" />
                             <Button Grid.Column="3" Name="BtnAdd" Click="Add_Click" Content="添加" />
                         </Grid>
-                        <Border Grid.Row="1" Style="{DynamicResource BorderControl}" Margin="5,0,5,5">
+                        <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="5,0,5,5">
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="150" />
@@ -240,8 +260,7 @@
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="45" />
-                                        <RowDefinition Height="105" />
+                                        <RowDefinition Height="110" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1.5*" />
                                         <RowDefinition Height="25" />
@@ -250,26 +269,6 @@
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="0" Margin="5,2.5,5,2.5">
-                                        <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityType"
-                                                 SelectionMode="Multiple"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                            <ListBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="5" />
-                                                </ItemsPanelTemplate>
-                                            </ListBox.ItemsPanel>
-                                            <CheckBox x:Name="ChkAbilityType0" Content="Lv" />
-                                            <CheckBox x:Name="ChkAbilityType1" Content="射程" />
-                                            <CheckBox x:Name="ChkAbilityType2" Content="绝界" />
-                                            <CheckBox x:Name="ChkAbilityType4" Content="起始卡" />
-                                            <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" />
-                                            <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" />
-                                            <CheckBox x:Name="ChkAbilityType7" Content="进化原力" />
-                                            <CheckBox x:Name="ChkAbilityType8" Content="零点优化" />
-                                        </ListBox>
-                                    </Border>
-                                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,2.5,5,2.5">
                                         <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityDetail"
                                                  SelectionMode="Multiple" Background="Transparent"
                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -306,14 +305,14 @@
                                             <CheckBox x:Name="ChkAbilityDetail24" Content="特殊胜利" />
                                         </ListBox>
                                     </Border>
-                                    <Label Grid.Row="2" Name="LblAbility" Content="能力:" />
-                                    <TextBox Grid.Row="3" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Grid.Row="1" Name="LblAbility" Content="能力:" />
+                                    <TextBox Grid.Row="2" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
-                                    <Label Name="LblLines" Grid.Row="4" Content="台词:" />
-                                    <TextBox x:Name="TxtLines" Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Name="LblLines" Grid.Row="3" Content="台词:" />
+                                    <TextBox x:Name="TxtLines" Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalScrollBarVisibility="Auto" />
-                                    <Label Name="LblFaq" Grid.Row="6" Content="调整:" />
-                                    <TextBox x:Name="TxtFaq" Grid.Row="7" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Name="LblFaq" Grid.Row="5" Content="调整:" />
+                                    <TextBox x:Name="TxtFaq" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalScrollBarVisibility="Auto" />
                                 </Grid>
                             </Grid>

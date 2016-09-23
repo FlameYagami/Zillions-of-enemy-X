@@ -53,16 +53,15 @@
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40" />
-                                <RowDefinition Height="95" />
-                                <RowDefinition Height="70" />
-                                <RowDefinition Height="95" />
+                                <RowDefinition Height="70"/>
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Column="0" Height="30">
-                                <Button Name="BtnExit" Click="Exit_Click" Content="退出编辑" />
-                            </StackPanel>
-                            <Border Grid.Row="1" Style="{DynamicResource BorderControl}" Margin="5,0,5,0">
-                                <ListView x:Name="PlayerListView" Width="60" Height="70"
-                                          Style="{DynamicResource ListViewArea}">
+                            <Grid Grid.Column="0" Margin="0,2.5,0,2.5">
+                                <Button  Margin="5" Name="BtnExit" Click="Exit_Click" Content="退出编辑"/>
+                            </Grid>
+                            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Width="60" Height="70">
+                                <ListView x:Name="PlayerListView" Style="{DynamicResource ControlTransparent}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
@@ -76,10 +75,11 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </Border>
-                            <Border Grid.Row="2" Style="{DynamicResource BorderControl}" Margin="5">
+                            <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Margin="5">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                    <Label x:Name="LblLife" Height="25" Content="生命恢复:" />
-                                    <Label x:Name="LblVoid" Height="25" Content="虚空使者:" />
+                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStart" Height="25" Content="起始卡:" />
+                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLife" Height="25" Content="生命恢复:" />
+                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoid" Height="25" Content="虚空使者:" />
                                 </StackPanel>
                             </Border>
                             <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center">
@@ -156,7 +156,7 @@
                         <RowDefinition Height="160" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Grid Height="30" Margin="0,5,0,5">
+                    <Grid Height="30" Margin="0,2.5,0,2.5" Width="564">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -164,14 +164,14 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
+                        <Button Name="BtnClear" Grid.Column="0" Click="BtnClear_Click" Content="清空" />
                         <Button Name="BtnDelete" Grid.Column="1" Click="Delete_Click" Content="删除" />
                         <ComboBox Name="CmbDeck" Grid.Column="2" DropDownClosed="CmbDeck_DropDownClosed"
                                   DropDownOpened="CmbDeck_DropDownOpened" />
                         <Button Name="BtnSava" Grid.Column="3" Click="Sava_Click" Content="保存" />
                         <Button Name="BtnResava" Grid.Column="4" Click="Resave_Click" Content="另存" />
-                        <Button Name="BtnClear" Grid.Column="0" Click="BtnClear_Click" Content="清空" />
                     </Grid>
-                    <Border BorderThickness="2" CornerRadius="5" Grid.Row="1" Background="#75F0F8FF" Width="554">
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Width="554">
                         <Grid Name="GridQuery" VerticalAlignment="Center" Height="150">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
@@ -256,33 +256,35 @@
                             <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
                                     Click="Query_Click" Content="检索" IsDefault="True" />
                             <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Click="Reset_Click" Content="重置" />
-                            <ListBox x:Name="LstAbilityType" SelectionMode="Multiple" Width="90" Grid.RowSpan="5"
-                                     Grid.Column="5" Grid.Row="0" Background="#50F0F8FF"
+                            <Border Style="{DynamicResource ControlBorder}" Width="90" Grid.RowSpan="5" Grid.Column="5" Grid.Row="0">
+                                <ListBox x:Name="LstAbilityType" Style="{DynamicResource ControlTransparent}" SelectionMode="Multiple"
                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="1" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <CheckBox x:Name="ChkAbilityType0" Content="Lv" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType1" Content="射程" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType2" Content="绝界" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType4" Content="起始卡" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType7" Content="进化原力" Foreground="Black" />
-                                <CheckBox x:Name="ChkAbilityType8" Content="零点优化" Foreground="Black" />
-                            </ListBox>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="1" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <CheckBox x:Name="ChkAbilityType0" Content="Lv" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType1" Content="射程" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType2" Content="绝界" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType4" Content="起始卡" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType7" Content="进化原力" Foreground="Black" />
+                                    <CheckBox x:Name="ChkAbilityType8" Content="零点优化" Foreground="Black" />
+                                </ListBox>
+                            </Border>
+
                         </Grid>
                     </Border>
-                    <Grid Grid.Row="2" Margin="0,0,0,10">
+                    <Grid Grid.Row="2" Margin="0,10,0,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="138*" />
                             <RowDefinition Height="204*" />
                             <RowDefinition Height="70*" />
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Style="{DynamicResource ControlBorder}" Height="138" Width="554"  Background="#75F0F8FF" >
+                        <Border Grid.Row="0" Style="{DynamicResource ControlBorder}" Height="138" Width="554" VerticalAlignment="Top">
                             <ListView x:Name="IgListView" 
                                       ScrollViewer.VerticalScrollBarVisibility ="Disabled"  
                                       ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
@@ -304,7 +306,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
                         </Border>
-                        <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Height="204" Width="554"  Background="#75F0F8FF" >
+                        <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Height="204" Width="554" VerticalAlignment="Center">
                             <ListView x:Name="UgListView"
                                   ScrollViewer.VerticalScrollBarVisibility ="Disabled"  
                                   ScrollViewer.HorizontalScrollBarVisibility ="Disabled"
@@ -326,10 +328,10 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Border>
-                        <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Width="554" Background="#75F0F8FF" >
-                            <ListView x:Name="ExListView" Height="70" 
+                        <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Height="70" Width="554" VerticalAlignment="Bottom">
+                            <ListView x:Name="ExListView"
                                   Style="{DynamicResource ControlTransparent}"
-                                  ItemsPanel="{DynamicResource ListViewItemPanel}" VerticalAlignment="Bottom">
+                                  ItemsPanel="{DynamicResource ListViewItemPanel}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid
@@ -353,19 +355,18 @@
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <Border Style="{DynamicResource BorderControl}" Margin="10,7.5,5,7.5">
-                            <Label x:Name="LblCardCount" Width="110" VerticalContentAlignment="Center" Height="25" />
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0">
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5">
+                            <Label Style="{DynamicResource ControlTransparent}" x:Name="LblCardCount" Width="110" VerticalContentAlignment="Center"/>
                         </Border>
-                        <ComboBox x:Name="CmbOrder" Margin="10,7.5,5,7.5"
-                                  Text="数值" DropDownClosed="CmbOrder_DropDownClosed" HorizontalAlignment="Right"
-                                  Width="75">
+                        <ComboBox x:Name="CmbOrder" Margin="5,7.5" Width="75"
+                                  Text="数值" DropDownClosed="CmbOrder_DropDownClosed">
                             <ComboBoxItem>编号</ComboBoxItem>
                             <ComboBoxItem>数值</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="10,0,10,10" >
-                        <ListBox x:Name="LstPreview"  SelectionChanged="PreviewListView_SelectionChanged" Style="{DynamicResource ControlTransparent}"  Background="#75F0F8FF" 
+                        <ListBox x:Name="LstPreview"  SelectionChanged="PreviewListView_SelectionChanged" Style="{DynamicResource ControlTransparent}"
                                  ScrollViewer.VerticalScrollBarVisibility ="Auto"  ScrollViewer.HorizontalScrollBarVisibility ="Disabled">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
