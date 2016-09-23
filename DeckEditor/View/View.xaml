@@ -32,20 +32,20 @@
                             <ColumnDefinition Width="210" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TabControl x:Name="TcImage" Height="280" Width="190" Style="{DynamicResource Tc}">
-                            <TabItem Header="A" Name="TbiPicture1" Background="#75F0F8FF">
+                        <TabControl x:Name="TcImage" Height="280" Width="190" Background="#B0F0F8FF">
+                            <TabItem Header="A" Name="TbiPicture1" Background="#B0F0F8FF">
                                 <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="B" Name="TbiPicture2" Background="#75F0F8FF">
+                            <TabItem Header="B" Name="TbiPicture2" Background="#B0F0F8FF">
                                 <Image x:Name="ImgPicture2" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="C" Name="TbiPicture3" Background="#75F0F8FF">
+                            <TabItem Header="C" Name="TbiPicture3" Background="#B0F0F8FF">
                                 <Image x:Name="ImgPicture3" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="D" Name="TbiPicture4" Background="#75F0F8FF">
+                            <TabItem Header="D" Name="TbiPicture4" Background="#B0F0F8FF">
                                 <Image x:Name="ImgPicture4" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
@@ -77,9 +77,18 @@
                             </Border>
                             <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Margin="5">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStart" Height="25" Content="起始卡:" />
-                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLife" Height="25" Content="生命恢复:" />
-                                    <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoid" Height="25" Content="虚空使者:" />
+                                    <StackPanel Orientation="Horizontal" Height="25" >
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStart" Content="起始卡" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStartCount"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Height="25" >
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLife" Content="生命恢复" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLifeCount" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Height="25" >
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoid" Content="虚空使者" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoidCount"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                             <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center">
@@ -89,8 +98,8 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <TabControl Grid.Row="1" Style="{DynamicResource Tc}">
-                        <TabItem Header="基础信息" Background="#75F0F8FF">
+                    <TabControl Grid.Row="1" Background="#B0F0F8FF" Margin="10">
+                        <TabItem Header="基础信息" Background="#B0F0F8FF">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
@@ -136,7 +145,7 @@
                                 <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                             </Grid>
                         </TabItem>
-                        <TabItem Header="扩展信息" Background="#75F0F8FF">
+                        <TabItem Header="扩展信息" Background="#B0F0F8FF">
                             <StackPanel Margin="5">
                                 <Label x:Name="LblIJName" HorizontalContentAlignment="Center" FontSize="16"
                                        VerticalContentAlignment="Center" Margin="0" Height="30" />

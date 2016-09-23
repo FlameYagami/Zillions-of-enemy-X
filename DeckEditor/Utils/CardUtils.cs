@@ -255,6 +255,18 @@ namespace DeckEditor.Utils
         }
 
         /// <summary>
+        ///     判断卡片是否为起始卡
+        /// </summary>
+        /// <param name="number">卡编</param>
+        /// <returns>Ture|Flase</returns>
+        public static bool IsStart(string number)
+        {
+            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+                .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
+            return row[ColumnAbility].ToString().Contains(StringConst.AbilityStart);
+        }
+
+        /// <summary>
         ///     判断卡片是否为生命恢复
         /// </summary>
         /// <param name="number">卡编</param>
@@ -296,10 +308,11 @@ namespace DeckEditor.Utils
         ///     获取卡组中生命恢复和虚空使者总数的集合
         /// </summary>
         /// <returns></returns>
-        public static List<int> GetLifeAndVoidCount()
+        public static List<int> GetStartAndLifeAndVoidCount()
         {
             var list = new List<int>
             {
+                DataCache.UgColl.AsParallel().Count(deckEntity => IsStart(deckEntity.Number)),
                 DataCache.IgColl.AsParallel().Count(deckEntity => IsLife(deckEntity.Number)),
                 DataCache.IgColl.AsParallel().Count(deckEntity => IsVoid(deckEntity.Number))
             };

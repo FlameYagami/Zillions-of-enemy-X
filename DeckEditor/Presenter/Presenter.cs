@@ -171,7 +171,7 @@ namespace DeckEditor.Presenter
                 case StringConst.AreaType.Ig:
                     _deck.DeleteEntityFromColl(number, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
-                    _view.UpdateLifeAndVoid(CardUtils.GetLifeAndVoidCount());
+                    _view.UpdateLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ug:
                     _deck.DeleteEntityFromColl(number, DataCache.UgColl);
@@ -289,7 +289,7 @@ namespace DeckEditor.Presenter
             _view.UpdateDeckListView(StringConst.AreaType.Ig, DataCache.IgColl);
             _view.UpdateDeckListView(StringConst.AreaType.Ug, DataCache.UgColl);
             _view.UpdateDeckListView(StringConst.AreaType.Ex, DataCache.ExColl);
-            _view.UpdateLifeAndVoid(CardUtils.GetLifeAndVoidCount());
+            _view.UpdateLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
         }
     }
 }

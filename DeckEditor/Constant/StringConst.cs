@@ -51,8 +51,7 @@
         public const string Hyphen = "-";
         public const string Series = "系列";
         public const string QueryResult = "检索结果: ";
-        public const string Life = "生命恢复:";
-        public const string Void = "虚空使者:";
+        public const string AbilityStart = "【常】起始卡";
         public const string AbilityLife = "【常】生命恢复";
         public const string AbilityVoid = "【常】虚空使者";
 

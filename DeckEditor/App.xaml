@@ -60,12 +60,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        
-        <!-- TabControl模板-->
-        <Style TargetType="TabControl" x:Key="Tc">
-            <Setter Property="Background" Value="#75F0F8FF" />
-            <Setter Property="Margin" Value="10" />
-        </Style>
 
         <!-- Button模板-->
         <Style TargetType="{x:Type Button}">
