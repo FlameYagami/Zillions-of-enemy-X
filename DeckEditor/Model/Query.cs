@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
@@ -28,7 +27,7 @@ namespace DeckEditor.Model
         {
             DataCache.InfoColl.Clear();
             var filePathlist = CardUtils.GetThumbnailFilePathList();
-            foreach (var row in dsPartCache.Tables[TableCard].Rows.Cast<DataRow>())
+            foreach (var row in dsPartCache.Tables[TableName].Rows.Cast<DataRow>())
             {
                 var camp = row[ColumnCamp].ToString();
                 var race = row[ColumnRace].ToString();

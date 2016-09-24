@@ -13,7 +13,7 @@ namespace DeckEditor.Utils
     {
         public static CardEntity GetCardModel(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.AsParallel()
                 .Cast<DataRow>()
                 .First(column => column[ColumnNumber].Equals(number));
             return new CardEntity
@@ -121,7 +121,7 @@ namespace DeckEditor.Utils
         public static bool IsNumberExist(string number)
         {
             return
-                DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+                DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                     .Any(row => row[ColumnNumber].ToString().Equals(number));
         }
 
@@ -142,7 +142,7 @@ namespace DeckEditor.Utils
         public static List<object> GetIllust()
         {
             var packlist = new List<object> {StringConst.NotApplicable};
-            var tempList = DataCache.DsAllCache.Tables[TableCard].AsEnumerable().AsParallel()
+            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
                 .Select(column => column[ColumnIllust])
                 .Distinct()
                 .OrderBy(value => value.ToString().Length)
@@ -154,7 +154,7 @@ namespace DeckEditor.Utils
         private static IEnumerable<object> GetPartPack(string packType)
         {
             var packlist = new List<object> {packType + StringConst.Series};
-            var tempList = DataCache.DsAllCache.Tables[TableCard].AsEnumerable().AsParallel()
+            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
                 .Select(column => column[ColumnPack])
                 .Distinct()
                 .Where(value => value.ToString().Contains(packType))
@@ -167,7 +167,7 @@ namespace DeckEditor.Utils
         public static List<object> GetPartRace(string camp)
         {
             var packlist = new List<object> {StringConst.NotApplicable};
-            var tempList = (from row in DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var tempList = (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                     where row[ColumnCamp].Equals(camp)
                     select row[ColumnRace])
                 .ToList()
@@ -231,7 +231,7 @@ namespace DeckEditor.Utils
         /// <returns></returns>
         public static StringConst.AreaType GetAreaType(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             if (StringConst.SignIg.Equals(row[ColumnSign].ToString()))
                 return StringConst.AreaType.Ig;
@@ -249,7 +249,7 @@ namespace DeckEditor.Utils
         /// <returns></returns>
         public static int GetMaxCount(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnRestrict].ToString().Equals(string.Empty) ? 4 : int.Parse(row[ColumnRestrict].ToString());
         }
@@ -261,7 +261,7 @@ namespace DeckEditor.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsStart(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityStart);
         }
@@ -273,7 +273,7 @@ namespace DeckEditor.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsLife(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityLife);
         }
@@ -285,7 +285,7 @@ namespace DeckEditor.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsVoid(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityVoid);
         }
@@ -297,7 +297,7 @@ namespace DeckEditor.Utils
         /// <returns>Life|Void|Normal</returns>
         public static StringConst.IgType GetIgType(string number)
         {
-            var ability = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var ability = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()))[ColumnAbility].ToString();
             if (ability.Contains(StringConst.AbilityLife)) return StringConst.IgType.Life;
             if (ability.Contains(StringConst.AbilityVoid)) return StringConst.IgType.Void;

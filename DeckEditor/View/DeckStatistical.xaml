@@ -9,14 +9,17 @@
     <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Border Style="{DynamicResource BorderTitle}" ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown">
-                <Label Content="卡组统计" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16"/>
+            <Border Style="{DynamicResource BorderTitle}" ToolTip="右键退出"
+                    MouseRightButtonDown="Exit_MouseRightButtonDown">
+                <Label Content="卡组统计" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
             </Border>
-            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="10"  ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown" >
-                <chart:Chart Name="ChartDeck" Style="{DynamicResource ControlTransparent}" ScrollingEnabled="False" View3D="True"/>
+            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="10" ToolTip="右键退出"
+                    MouseRightButtonDown="Exit_MouseRightButtonDown">
+                <chart:Chart Name="ChartDeck" Style="{DynamicResource ControlTransparent}" ScrollingEnabled="False"
+                             View3D="True" />
             </Border>
         </Grid>
     </Border>

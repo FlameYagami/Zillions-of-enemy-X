@@ -4,9 +4,9 @@
     {
         public const string DatabaseName = "Data.db";
         public const string DatabasePassword = "DatabasePassword";
-        public const string CardTable = "TableCard";
-        public const string QueryAllSql = "SELECT * FROM " + CardTable + " ORDER BY " + Number + " ASC";
-        public const string QueryBaseSql = "SELECT * FROM " + CardTable + " WHERE 1=1";
+        public const string TableName = "TableCard";
+        public const string QueryAllSql = "SELECT * FROM " + TableName + " ORDER BY " + Number + " ASC";
+        public const string QueryBaseSql = "SELECT * FROM " + TableName + " WHERE 1=1";
 
         /// <summary>卡编排序方式</summary>
         public const string NumberOrderSql = " ORDER BY " + Number + " ASC";

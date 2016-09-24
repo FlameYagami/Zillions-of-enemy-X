@@ -30,24 +30,24 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="5" Height="25">
                         <Border Style="{DynamicResource ControlBorder}">
-                            <Label x:Name="LblCardCount" Width="165"/>
+                            <Label x:Name="LblCardCount" Width="165" />
                         </Border>
                         <ComboBox x:Name="CmbOrder" Margin="10,0,0,0" Width="75"
-                                  DropDownClosed="CmbOrder_DropDownClosed">
+                                  DropDownClosed="CmbOrder_DropDownClosed" Text="编号">
                             <ComboBoxItem>编号</ComboBoxItem>
                             <ComboBoxItem>数值</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
                         <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvwPreview" Grid.Row="1"
-                                 Background="Transparent"
-                                 SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
+                                  Background="Transparent"
+                                  SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Height="15">
-                                        <Label Content="{Binding CName}" Width="155"/>
-                                        <Label Content="{Binding Power}" Width="40" HorizontalContentAlignment="Center"/>
-                                        <Label Content="{Binding Cost}" Width="20" HorizontalContentAlignment="Center"/>
+                                        <Label Content="{Binding CName}" Width="155" />
+                                        <Label Content="{Binding Power}" Width="40" HorizontalContentAlignment="Center" />
+                                        <Label Content="{Binding Cost}" Width="20" HorizontalContentAlignment="Center" />
                                         <Label Content="{Binding Number}" Width="0" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -76,7 +76,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0">
+                                <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0" Text="检索">
                                     <ComboBoxItem>检索</ComboBoxItem>
                                     <ComboBoxItem>编辑</ComboBoxItem>
                                     <ComboBoxItem>开发</ComboBoxItem>
@@ -201,14 +201,15 @@
                                     <Label Name="LblRare" Grid.Column="0" Grid.Row="4"
                                            Style="{DynamicResource LblCenter}" Content="罕贵" />
                                     <ComboBox Name="CmbType" Grid.Column="1" Grid.Row="0"
-                                              TextBoxBase.TextChanged="CmbType_TextChanged" DropDownClosed="CmbType_DropDownClosed" >
+                                              TextBoxBase.TextChanged="CmbType_TextChanged">
                                         <ComboBoxItem>(N/A)</ComboBoxItem>
                                         <ComboBoxItem>Z/X</ComboBoxItem>
                                         <ComboBoxItem>事件</ComboBoxItem>
                                         <ComboBoxItem>玩家</ComboBoxItem>
                                         <ComboBoxItem>Z/X EX</ComboBoxItem>
                                     </ComboBox>
-                                    <ComboBox Name="CmbCamp" Grid.Column="1" Grid.Row="1" DropDownClosed="CmbCamp_TextChanged">
+                                    <ComboBox Name="CmbCamp" Grid.Column="1" Grid.Row="1"
+                                              TextBoxBase.TextChanged="CmbCamp_TextChanged">
                                         <ComboBoxItem>(N/A)</ComboBoxItem>
                                         <ComboBoxItem>红</ComboBoxItem>
                                         <ComboBoxItem>蓝</ComboBoxItem>
@@ -318,14 +319,17 @@
                                             <CheckBox x:Name="ChkAbilityDetail24" Content="特殊胜利" />
                                         </ListBox>
                                     </Border>
-                                    <Label Grid.Row="1" Name="LblAbility" Content="能力:" Margin="5,0,5,0"/>
-                                    <TextBox Grid.Row="2" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                    <Label Grid.Row="1" Name="LblAbility" Content="能力:" Margin="5,0,5,0" />
+                                    <TextBox Grid.Row="2" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
+                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
-                                    <Label Name="LblLines" Grid.Row="3" Content="台词:" Margin="5,0,5,0"/>
-                                    <TextBox x:Name="TxtLines" Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                    <Label Name="LblLines" Grid.Row="3" Content="台词:" Margin="5,0,5,0" />
+                                    <TextBox x:Name="TxtLines" Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True"
+                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
-                                    <Label Name="LblFaq" Grid.Row="5" Content="调整:" Margin="5,0,5,0"/>
-                                    <TextBox x:Name="TxtFaq" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                    <Label Name="LblFaq" Grid.Row="5" Content="调整:" Margin="5,0,5,0" />
+                                    <TextBox x:Name="TxtFaq" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True"
+                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
                                 </Grid>
                             </Grid>

@@ -45,13 +45,11 @@
       <HintPath>.\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite">
       <HintPath>.\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,35 +75,14 @@
     <Compile Include="Entity\CardEntity.cs" />
     <Compile Include="Entity\PreviewEntity.cs" />
     <Compile Include="Model\DataCache.cs" />
-    <Compile Include="Model\IQuery.cs" />
+    <Compile Include="Model\Query.cs" />
     <Compile Include="Presenter\Presenter.cs" />
     <Compile Include="Utils\CardUtils.cs" />
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
-    <Compile Include="Utils\ConfigUtils.cs" />
     <Compile Include="Constant\SqliteConst.cs" />
     <Compile Include="Utils\SqliteUtils.cs" />
-    <Compile Include="View\Dlg.xaml.cs">
-      <DependentUpon>Dlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\DlgOk.xaml.cs">
-      <DependentUpon>DlgOk.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\JsonUtils.cs" />
-    <Page Include="View\Dlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\DlgOk.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\DlgOkCancel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,9 +90,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="View\DlgOkCancel.xaml.cs">
-      <DependentUpon>DlgOkCancel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
@@ -150,13 +124,31 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="icon.ico" />
     <Content Include="NPOI.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQLite.Interop.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigLib\ConfigLib.csproj">
+      <Project>{94f7aee4-28a6-4b7e-9815-34a79c0d17d8}</Project>
+      <Name>ConfigLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dialog\DialogLib.csproj">
+      <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
+      <Name>DialogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JsonLib\JsonLib.csproj">
+      <Project>{1a6bbae5-6814-49dd-80cb-4f20a741fc6b}</Project>
+      <Name>JsonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StringLib\StringLib.csproj">
+      <Project>{023bf28c-a18e-4d7e-bf6d-a1006a9a7b3a}</Project>
+      <Name>StringLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

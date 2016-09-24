@@ -21,7 +21,7 @@ namespace DeckEditor.View
         void Reset();
         void UpdateCardPreviewListView(List<PreviewEntity> cardList);
         void UpdateDeckListView(StringConst.AreaType areaType, List<DeckEntity> deckColl);
-        void UpdateLifeAndVoid(List<int> countStartAandLifeAndVoid);
+        void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid);
         void SetPicture(List<string> numberList, List<string> picturePathList);
         void SetCardModel(CardEntity cardmodel);
         void SetRaceItems(List<object> itemList);
@@ -204,7 +204,7 @@ namespace DeckEditor.View
             }
         }
 
-        public void UpdateLifeAndVoid(List<int> countStartAandLifeAndVoid)
+        public void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid)
         {
             var startCount = countStartAandLifeAndVoid[0];
             var lifeCount = countStartAandLifeAndVoid[1];
@@ -212,12 +212,21 @@ namespace DeckEditor.View
             LblStartCount.Content = startCount;
             LblLifeCount.Content = lifeCount;
             LblVoidCount.Content = voidCount;
-            LblStartCount.Foreground = startCount == 0 ? new SolidColorBrush(Colors.Red) : startCount == 1 
-                ? new SolidColorBrush(Colors.Lime) : new SolidColorBrush(Colors.Yellow);
-            LblLifeCount.Foreground = lifeCount == 0 || lifeCount == 1 ? new SolidColorBrush(Colors.Red) : lifeCount == 2 
-                ? new SolidColorBrush(Colors.Yellow) : new SolidColorBrush(Colors.Lime);
-            LblVoidCount.Foreground = voidCount == 0 || voidCount == 1 ? new SolidColorBrush(Colors.Red) : voidCount == 2
-                ? new SolidColorBrush(Colors.Yellow) : new SolidColorBrush(Colors.Lime);
+            LblStartCount.Foreground = startCount == 0
+                ? new SolidColorBrush(Colors.Red)
+                : startCount == 1
+                    ? new SolidColorBrush(Colors.Lime)
+                    : new SolidColorBrush(Colors.Yellow);
+            LblLifeCount.Foreground = (lifeCount == 0) || (lifeCount == 1)
+                ? new SolidColorBrush(Colors.Red)
+                : lifeCount == 2
+                    ? new SolidColorBrush(Colors.Yellow)
+                    : new SolidColorBrush(Colors.Lime);
+            LblVoidCount.Foreground = (voidCount == 0) || (voidCount == 1)
+                ? new SolidColorBrush(Colors.Red)
+                : voidCount == 2
+                    ? new SolidColorBrush(Colors.Yellow)
+                    : new SolidColorBrush(Colors.Lime);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -279,13 +288,9 @@ namespace DeckEditor.View
         private void AreaGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
-            {
                 _presenter.ImgAreaMouseDoubleClick(sender as Grid);
-            }
             else
-            {
                 _presenter.ImgAreaMouseLeftClick(sender as Grid);
-            }
         }
 
         /// <summary>组卡区域右键事件</summary>
@@ -370,9 +375,7 @@ namespace DeckEditor.View
         private void Title_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-            {
                 DragMove();
-            }
         }
     }
 }

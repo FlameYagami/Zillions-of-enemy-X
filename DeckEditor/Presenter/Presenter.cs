@@ -2,13 +2,11 @@
 using System.Data;
 using System.IO;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 using DeckEditor.Constant;
 using DeckEditor.Model;
 using DeckEditor.Utils;
 using DeckEditor.View;
-using Label = System.Windows.Controls.Label;
+using Dialog;
 
 namespace DeckEditor.Presenter
 {
@@ -60,7 +58,7 @@ namespace DeckEditor.Presenter
                     Directory.CreateDirectory(Const.DeckFolderPath);
             }
             else
-                DialogUtils.ShowDlgOk(StringConst.DbOpenError);
+                BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
         }
 
         public void ExitClick()
@@ -94,7 +92,7 @@ namespace DeckEditor.Presenter
         {
             var isResaved = _deck.Resave(deckName);
             if (!isResaved) return;
-            DialogUtils.ShowDlg(StringConst.ResaveSucceed);
+            BaseDialogUtils.ShowDlg(StringConst.ResaveSucceed);
         }
 
         public void DeleteClick(string deckName)
@@ -103,7 +101,7 @@ namespace DeckEditor.Presenter
             if (!isDeleted) return;
             ClearClick();
             _view.SetDeckName(string.Empty);
-            DialogUtils.ShowDlg(StringConst.DeleteSucceed);
+            BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
         }
 
         public void ValueOrder()
@@ -171,11 +169,12 @@ namespace DeckEditor.Presenter
                 case StringConst.AreaType.Ig:
                     _deck.DeleteEntityFromColl(number, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
-                    _view.UpdateLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
+                    _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ug:
                     _deck.DeleteEntityFromColl(number, DataCache.UgColl);
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
+                    _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ex:
                     _deck.DeleteEntityFromColl(number, DataCache.ExColl);
@@ -203,29 +202,6 @@ namespace DeckEditor.Presenter
             AddCard(number, thumbnailPath);
         }
 
-        private void AddCard(string number,string thumbnailPath)
-        {
-            var areaType = CardUtils.GetAreaType(number);
-            // 添加卡
-            if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
-            // 添加成功则更新该区域
-            switch (areaType)
-            {
-                case StringConst.AreaType.Pl:
-                    _view.UpdateDeckListView(areaType, DataCache.PlColl);
-                    break;
-                case StringConst.AreaType.Ig:
-                    _view.UpdateDeckListView(areaType, DataCache.IgColl);
-                    break;
-                case StringConst.AreaType.Ug:
-                    _view.UpdateDeckListView(areaType, DataCache.UgColl);
-                    break;
-                case StringConst.AreaType.Ex:
-                    _view.UpdateDeckListView(areaType, DataCache.ExColl);
-                    break;
-            }
-        }
-
         public void CampChanged(string camp)
         {
             _view.SetRaceItems(camp.Equals(StringConst.NotApplicable) ? null : CardUtils.GetPartRace(camp));
@@ -234,7 +210,7 @@ namespace DeckEditor.Presenter
         public void SaveClick(string deckName)
         {
             var isSaved = _deck.Save(deckName);
-            DialogUtils.ShowDlg(isSaved ? StringConst.SaveSucceed : StringConst.DeckNameNone);
+            BaseDialogUtils.ShowDlg(isSaved ? StringConst.SaveSucceed : StringConst.DeckNameNone);
         }
 
         public void DeckNameChanged(string deckName)
@@ -261,14 +237,39 @@ namespace DeckEditor.Presenter
 
         public void ImgAreaMouseDoubleClick(Grid grid)
         {
-            var label = (Label)grid?.FindName(StringConst.LblAreaNumber);
+            var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
             if (label == null) return;
-            var image = (Image)grid?.FindName(StringConst.ImgAreaThumbnail);
+            var image = (Image) grid?.FindName(StringConst.ImgAreaThumbnail);
             if (image == null) return;
 
             var number = label.Content.ToString();
             var thumbnailPath = image.Source.ToString();
             AddCard(number, thumbnailPath);
+        }
+
+        private void AddCard(string number, string thumbnailPath)
+        {
+            var areaType = CardUtils.GetAreaType(number);
+            // 添加卡
+            if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
+            // 添加成功则更新该区域
+            switch (areaType)
+            {
+                case StringConst.AreaType.Pl:
+                    _view.UpdateDeckListView(areaType, DataCache.PlColl);
+                    break;
+                case StringConst.AreaType.Ig:
+                    _view.UpdateDeckListView(areaType, DataCache.IgColl);
+                    _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
+                    break;
+                case StringConst.AreaType.Ug:
+                    _view.UpdateDeckListView(areaType, DataCache.UgColl);
+                    _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
+                    break;
+                case StringConst.AreaType.Ex:
+                    _view.UpdateDeckListView(areaType, DataCache.ExColl);
+                    break;
+            }
         }
 
         /// <summary>
@@ -289,7 +290,7 @@ namespace DeckEditor.Presenter
             _view.UpdateDeckListView(StringConst.AreaType.Ig, DataCache.IgColl);
             _view.UpdateDeckListView(StringConst.AreaType.Ug, DataCache.UgColl);
             _view.UpdateDeckListView(StringConst.AreaType.Ex, DataCache.ExColl);
-            _view.UpdateLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
+            _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
         }
     }
 }

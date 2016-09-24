@@ -3,6 +3,8 @@ using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using CardEditor.Constant;
+using ConfigLib;
+using StringLib;
 
 namespace CardEditor.Utils
 {
@@ -21,7 +23,7 @@ namespace CardEditor.Utils
                     var cmd = new SQLiteCommand(sql, con);
                     var dap = new SQLiteDataAdapter(cmd);
                     dts.Clear();
-                    dap.Fill(dts, CardTable);
+                    dap.Fill(dts, TableName);
                     con.Close();
                 }
                 catch (Exception)

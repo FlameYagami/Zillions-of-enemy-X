@@ -10,6 +10,7 @@ using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Presenter;
 using CardEditor.Utils;
+using JsonLib;
 
 namespace CardEditor.View
 {
@@ -47,31 +48,31 @@ namespace CardEditor.View
         {
             switch (abilityType)
             {
-                //case StringConst.AbilityType.Ig:
-                //{
-                //    CmbType.Text = StringConst.TypeZx;
-                //    CmbSign.Text = StringConst.SignIg;
-                //    break;
-                //}
-                //case StringConst.AbilityType.Start:
-                //{
-                //    CmbType.Text = StringConst.TypeZx;
-                //    CmbSign.Text = StringConst.Hyphen;
-                //    break;
-                //}
-                //case StringConst.AbilityType.Event:
-                //{
-                //    CmbType.Text = StringConst.TypeEvent;
-                //    CmbRace.Text = StringConst.Hyphen;
-                //    TxtPower.Text = string.Empty;
-                //    break;
-                //}
-                //case StringConst.AbilityType.Extra:
-                //{
-                //    CmbType.Text = StringConst.TypeZxEx;
-                //    CmbSign.Text = StringConst.Hyphen;
-                //    break;
-                //}
+                case StringConst.AbilityType.Ig:
+                {
+                    CmbType.Text = StringConst.TypeZx;
+                    CmbSign.Text = StringConst.SignIg;
+                    break;
+                }
+                case StringConst.AbilityType.Start:
+                {
+                    CmbType.Text = StringConst.TypeZx;
+                    CmbSign.Text = StringConst.Hyphen;
+                    break;
+                }
+                case StringConst.AbilityType.Event:
+                {
+                    CmbType.Text = StringConst.TypeEvent;
+                    CmbRace.Text = StringConst.Hyphen;
+                    TxtPower.Text = string.Empty;
+                    break;
+                }
+                case StringConst.AbilityType.Extra:
+                {
+                    CmbType.Text = StringConst.TypeZxEx;
+                    CmbSign.Text = StringConst.Hyphen;
+                    break;
+                }
             }
         }
 
@@ -189,7 +190,9 @@ namespace CardEditor.View
         public void UpdateCampLinkage(List<object> itemList)
         {
             CmbRace.Items.Clear();
+            CmbRace.Text = StringConst.NotApplicable;
             itemList.ForEach(race => CmbRace.Items.Add(race.ToString()));
+            CmbRace.IsEnabled = itemList.Count >= 2;
         }
 
         public void SetPackItems(List<object> itemList)
@@ -356,13 +359,8 @@ namespace CardEditor.View
             _presenter.AbilityChanged(TxtAbility.Text.Trim());
         }
 
-        /// <summary>类型选择（因为Style关系,下拉不会触发改事件）</summary> 
+        /// <summary>类型选择（因为Style关系,下拉不会触发改事件）</summary>
         private void CmbType_TextChanged(object sender, RoutedEventArgs e)
-        {
-            _presenter.TypeChanged(CmbType.Text.Trim());
-        }
-
-        private void CmbType_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.TypeChanged(CmbType.Text.Trim());
         }
@@ -391,6 +389,5 @@ namespace CardEditor.View
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-
     }
 }

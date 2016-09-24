@@ -3,6 +3,7 @@ using CardEditor.Constant;
 using CardEditor.Model;
 using CardEditor.Utils;
 using CardEditor.View;
+using Dialog;
 
 namespace CardEditor.Presenter
 {
@@ -46,7 +47,7 @@ namespace CardEditor.Presenter
             else
             {
                 _view.SetPasswordVisibility(true, false);
-                DialogUtils.ShowDlgOk(StringConst.DbOpenError);
+                BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
             }
         }
 
@@ -54,7 +55,7 @@ namespace CardEditor.Presenter
         {
             if (pack.Equals(StringConst.NotApplicable) || pack.Contains(StringConst.Series))
             {
-                DialogUtils.ShowDlgOk(StringConst.PackChoiceNone);
+                BaseDialogUtils.ShowDlgOk(StringConst.PackChoiceNone);
                 return;
             }
             var sql = SqlUtils.GetExportSql(pack);
@@ -62,7 +63,7 @@ namespace CardEditor.Presenter
             var exportPath = DialogUtils.ShowExport(pack);
             if (exportPath.Equals(string.Empty)) return;
             var isExport = ExcelHelper.ExportPackToExcel(exportPath, DataCache.DsPartCache);
-            DialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
+            BaseDialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
         public void PackChanged(string pack)
@@ -78,8 +79,6 @@ namespace CardEditor.Presenter
 
         public void CampChanged(string camp)
         {
-            if (camp.Equals(StringConst.NotApplicable))
-                return;
             _view.UpdateCampLinkage(CardUtils.GetPartRace(camp));
         }
 
@@ -105,7 +104,7 @@ namespace CardEditor.Presenter
             {
                 if (pack.Equals(string.Empty))
                 {
-                    DialogUtils.ShowDlg(StringConst.PackChoiceNone);
+                    BaseDialogUtils.ShowDlg(StringConst.PackChoiceNone);
                     return;
                 }
                 UpdateCacheAndUi(_query.GetEditorSql(cardModel, order));
@@ -118,10 +117,10 @@ namespace CardEditor.Presenter
             var cardModel = _view.GetCardEntity();
             if (CardUtils.IsNumberExist(cardModel.Number))
             {
-                DialogUtils.ShowDlg(StringConst.CardIsExitst);
+                BaseDialogUtils.ShowDlg(StringConst.CardIsExitst);
                 return;
             }
-            if (!DialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
 
             var sql = _query.GetAddSql(cardModel);
             if (SqliteUtils.Execute(sql))
@@ -131,10 +130,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                DialogUtils.ShowDlg(StringConst.AddSucceed);
+                BaseDialogUtils.ShowDlg(StringConst.AddSucceed);
                 return;
             }
-            DialogUtils.ShowDlg(StringConst.AddFailed);
+            BaseDialogUtils.ShowDlg(StringConst.AddFailed);
         }
 
         /// <summary>重置</summary>
@@ -148,10 +147,10 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                DialogUtils.ShowDlg(StringConst.CardChioceNone);
+                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
-            if (!DialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
 
             var number = Query.CardList[selectIndex].Number;
             var updateSql = _query.GetUpdateSql(_view.GetCardEntity(), number);
@@ -162,10 +161,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                DialogUtils.ShowDlg(StringConst.UpdateSucceed);
+                BaseDialogUtils.ShowDlg(StringConst.UpdateSucceed);
                 return;
             }
-            DialogUtils.ShowDlg(StringConst.UpdateFailed);
+            BaseDialogUtils.ShowDlg(StringConst.UpdateFailed);
         }
 
         /// <summary>删除</summary>
@@ -173,10 +172,10 @@ namespace CardEditor.Presenter
         {
             if (-1 == selectIndex)
             {
-                DialogUtils.ShowDlg(StringConst.CardChioceNone);
+                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
-            if (!DialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
 
             var number = Query.CardList[selectIndex].Number;
             var deleteSql = _query.GetDeleteSql(number);
@@ -187,10 +186,10 @@ namespace CardEditor.Presenter
                                  (order.Equals(StringConst.OrderNumber)
                                      ? SqliteConst.NumberOrderSql
                                      : SqliteConst.ValueOrderSql));
-                DialogUtils.ShowDlg(StringConst.DeleteSucceed);
+                BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
                 return;
             }
-            DialogUtils.ShowDlg(StringConst.DeleteFailed);
+            BaseDialogUtils.ShowDlg(StringConst.DeleteFailed);
         }
 
         /// <summary>排序发生变化</summary>
@@ -213,32 +212,32 @@ namespace CardEditor.Presenter
         {
             if (password.Equals(string.Empty))
             {
-                DialogUtils.ShowDlgOk(StringConst.PasswordNone);
+                BaseDialogUtils.ShowDlgOk(StringConst.PasswordNone);
                 return;
             }
             if (SqliteUtils.Encrypt(DataCache.DsAllCache))
             {
                 _view.SetPasswordVisibility(false, true);
-                DialogUtils.ShowDlg(StringConst.EncryptSucced);
+                BaseDialogUtils.ShowDlg(StringConst.EncryptSucced);
                 return;
             }
-            DialogUtils.ShowDlgOk(StringConst.EncryptFailed);
+            BaseDialogUtils.ShowDlgOk(StringConst.EncryptFailed);
         }
 
         public void DecryptDatabaseClick(string password)
         {
             if (password.Equals(string.Empty))
             {
-                DialogUtils.ShowDlgOk(StringConst.PasswordNone);
+                BaseDialogUtils.ShowDlgOk(StringConst.PasswordNone);
                 return;
             }
             if (SqliteUtils.Decrypt())
             {
                 _view.SetPasswordVisibility(true, false);
-                DialogUtils.ShowDlg(StringConst.DncryptSucced);
+                BaseDialogUtils.ShowDlg(StringConst.DncryptSucced);
                 return;
             }
-            DialogUtils.ShowDlgOk(StringConst.DncryptFailed);
+            BaseDialogUtils.ShowDlgOk(StringConst.DncryptFailed);
         }
 
         public void AbilityChanged(string ability)

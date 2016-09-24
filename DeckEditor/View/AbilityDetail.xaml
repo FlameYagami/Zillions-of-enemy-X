@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="能力分类" Height="175" Width="450" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" Style="{DynamicResource ChildWindow}">
-    <Border Style="{DynamicResource BorderWindow}"  Name="BorderView" Background="#1A1A1A">
+        Title="能力分类" Height="175" Width="450" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner"
+        Style="{DynamicResource ChildWindow}">
+    <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -14,13 +15,14 @@
             </Grid.RowDefinitions>
             <Border Style="{DynamicResource BorderTitle}">
                 <Grid Name="GridTitle" Height="30">
-                    <Label Content="能力分类" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16"/>
+                    <Label Content="能力分类" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
                 </Grid>
             </Border>
             <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="5">
-                <ListBox Style="{DynamicResource ControlTransparent}"  x:Name="LstAbilityDetail" SelectionMode="Multiple"
-                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityDetail"
+                         SelectionMode="Multiple"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="5" />
@@ -53,10 +55,10 @@
                     <CheckBox x:Name="ChkAbilityDetail24" Content="特殊胜利" />
                 </ListBox>
             </Border>
-            <Button x:Name="BtnCancel" Content="取消" Margin="100,0,0,5" Grid.Row="2" 
-                HorizontalAlignment="Left" Width="100" Click="BtnCancel_Click" />
-        <Button x:Name="BtnOk" Content="确定" Margin="0,0,100,5" Grid.Row="2"
-                HorizontalAlignment="Right" Width="100" Click="BtnOK_Click" />
-    </Grid>
+            <Button x:Name="BtnCancel" Content="取消" Margin="100,0,0,5" Grid.Row="2"
+                    HorizontalAlignment="Left" Width="100" Click="BtnCancel_Click" />
+            <Button x:Name="BtnOk" Content="确定" Margin="0,0,100,5" Grid.Row="2"
+                    HorizontalAlignment="Right" Width="100" Click="BtnOK_Click" />
+        </Grid>
     </Border>
 </Window>

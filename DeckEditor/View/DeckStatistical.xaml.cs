@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 using Visifire.Charts;
 
 namespace DeckEditor.View
@@ -55,7 +56,7 @@ namespace DeckEditor.View
             ChartDeck.Series.Add(dataSeries);
         }
 
-        private void Exit_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Exit_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             Close();
         }

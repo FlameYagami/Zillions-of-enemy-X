@@ -2,7 +2,9 @@
 using System.Data;
 using System.Data.SQLite;
 using System.Windows;
+using ConfigLib;
 using DeckEditor.Constant;
+using StringLib;
 
 namespace DeckEditor.Utils
 {
@@ -21,7 +23,7 @@ namespace DeckEditor.Utils
                     var cmd = new SQLiteCommand(sql, con);
                     var dap = new SQLiteDataAdapter(cmd);
                     dts.Clear();
-                    dap.Fill(dts, TableCard);
+                    dap.Fill(dts, TableName);
                     con.Close();
                 }
                 catch (Exception e)

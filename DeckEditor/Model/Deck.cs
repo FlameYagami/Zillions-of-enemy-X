@@ -7,6 +7,8 @@ using System.Text;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
+using Dialog;
+using JsonLib;
 
 namespace DeckEditor.Model
 {
@@ -102,7 +104,7 @@ namespace DeckEditor.Model
         {
             if (deckName.Equals(string.Empty))
             {
-                DialogUtils.ShowDlg(StringConst.DeckNameNone);
+                BaseDialogUtils.ShowDlg(StringConst.DeckNameNone);
                 return false;
             }
             var deckPath = CardUtils.GetDeckPath(deckName);
@@ -125,7 +127,7 @@ namespace DeckEditor.Model
         public bool Delete(string deckName)
         {
             if (deckName.Equals(string.Empty)) return false;
-            if (!DialogUtils.ShowDlgOkCancel(StringConst.DeleteHint)) return false;
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteHint)) return false;
             var deckPath = CardUtils.GetDeckPath(deckName);
             if (!File.Exists(deckPath)) return false;
             File.Delete(deckPath);
@@ -137,7 +139,7 @@ namespace DeckEditor.Model
             if (deckName.Equals(string.Empty)) return false;
             var deckPath = CardUtils.GetDeckPath(deckName);
             if (!File.Exists(deckPath)) return Save(deckName);
-            DialogUtils.ShowDlg(StringConst.DeckNameExist);
+            BaseDialogUtils.ShowDlg(StringConst.DeckNameExist);
             return false;
         }
 
@@ -160,7 +162,7 @@ namespace DeckEditor.Model
             }
             catch (Exception exception)
             {
-                DialogUtils.ShowDlg(exception.Message);
+                BaseDialogUtils.ShowDlg(exception.Message);
             }
         }
 
@@ -190,7 +192,7 @@ namespace DeckEditor.Model
 
         private static void AddEntityToColl(string number, string thumbnailPath, ICollection<DeckEntity> collection)
         {
-            var row = DataCache.DsAllCache.Tables[TableCard].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             var camp = row[ColumnCamp].ToString();
             var cost = row[ColumnCost].ToString();

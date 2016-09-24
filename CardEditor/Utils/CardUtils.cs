@@ -13,7 +13,7 @@ namespace CardEditor.Utils
     {
         public static CardEntity GetCardModel(string number)
         {
-            var row = DataCache.DsAllCache.Tables[CardTable].Rows
+            var row = DataCache.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
                 .First(column => column[Number].Equals(number));
             return new CardEntity
@@ -57,7 +57,7 @@ namespace CardEditor.Utils
         public static bool IsNumberExist(string number)
         {
             return
-                DataCache.DsAllCache.Tables[CardTable].Rows.Cast<DataRow>()
+                DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>()
                     .Any(row => row[Number].ToString().Equals(number));
         }
 
@@ -78,7 +78,7 @@ namespace CardEditor.Utils
         private static IEnumerable<object> GetPartPack(string packType)
         {
             var packlist = new List<object> {packType + StringConst.Series};
-            var tempList = DataCache.DsAllCache.Tables[CardTable].AsEnumerable()
+            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => column[Pack])
                 .Distinct()
                 .Where(value => value.ToString().Contains(packType))
@@ -91,8 +91,9 @@ namespace CardEditor.Utils
         public static List<object> GetPartRace(string camp)
         {
             var packlist = new List<object> {StringConst.NotApplicable};
+            if (camp.Equals(StringConst.NotApplicable)) return packlist;
             var tempList =
-                (from row in DataCache.DsAllCache.Tables[CardTable].Rows.Cast<DataRow>()
+                (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>()
                         where row[Camp].Equals(camp)
                         select row[Race])
                     .ToList()
