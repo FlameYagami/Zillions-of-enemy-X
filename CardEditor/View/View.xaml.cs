@@ -10,7 +10,7 @@ using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Presenter;
 using CardEditor.Utils;
-using JsonLib;
+using Common;
 
 namespace CardEditor.View
 {

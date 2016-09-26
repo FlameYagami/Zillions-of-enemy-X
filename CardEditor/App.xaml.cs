@@ -1,11 +1,10 @@
-﻿using System.Windows;
-
-namespace DeckEditor
+﻿namespace CardEditor
 {
     /// <summary>
     ///     App.xaml 的交互逻辑
     /// </summary>
-    public class App : Application
+    public partial class App
     {
+
     }
 }

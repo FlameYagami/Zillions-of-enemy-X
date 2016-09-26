@@ -4,11 +4,11 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Common;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
 using Dialog;
-using JsonLib;
 
 namespace DeckEditor.Model
 {

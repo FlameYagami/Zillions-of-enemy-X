@@ -40,7 +40,8 @@
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
                         <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvwPreview" Grid.Row="1"
-                                  Background="Transparent"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
                             <ListView.ItemTemplate>
                                 <DataTemplate>

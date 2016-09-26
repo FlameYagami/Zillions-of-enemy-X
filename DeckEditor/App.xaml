@@ -51,7 +51,7 @@
 
         <!-- ListViewItem的换行模板-->
         <ItemsPanelTemplate x:Key="ListViewItemPanel">
-            <WrapPanel />
+            <WrapPanel/>
         </ItemsPanelTemplate>
 
         <!-- LabelCenter模板-->
@@ -147,7 +147,6 @@
             <Setter Property="MinHeight" Value="25" />
             <Setter Property="Margin" Value="5,2.5,5,2.5" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="BorderBrush">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
@@ -162,7 +161,7 @@
                             <Rectangle RadiusX="5" RadiusY="5" Fill="{TemplateBinding Background}" Stroke="#66afe9"
                                        StrokeThickness="2" />
                             <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="Hidden"
-                                          VerticalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden" Margin="2,0"
                                           Padding="{TemplateBinding Padding}" Focusable="false" />
                         </Grid>
                     </ControlTemplate>

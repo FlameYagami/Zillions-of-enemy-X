@@ -126,10 +126,19 @@ namespace CardEditor.Presenter
             if (SqliteUtils.Execute(sql))
             {
                 SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache);
-                UpdateCacheAndUi(Query.MemoryQuerySql +
-                                 (order.Equals(StringConst.OrderNumber)
-                                     ? SqliteConst.NumberOrderSql
-                                     : SqliteConst.ValueOrderSql));
+                if (Query.MemoryQuerySql.Equals(string.Empty))
+                {
+                    var cardEntity = _view.GetCardEntity();
+                    sql = _query.GetQuerySql(cardEntity, order);
+                    UpdateCacheAndUi(sql);
+                }
+                else
+                {
+                    sql = Query.MemoryQuerySql + (order.Equals(StringConst.OrderNumber)
+                              ? SqliteConst.NumberOrderSql
+                              : SqliteConst.ValueOrderSql);
+                    UpdateCacheAndUi(sql);
+                }
                 BaseDialogUtils.ShowDlg(StringConst.AddSucceed);
                 return;
             }

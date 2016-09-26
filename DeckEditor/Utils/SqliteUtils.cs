@@ -2,9 +2,8 @@
 using System.Data;
 using System.Data.SQLite;
 using System.Windows;
-using ConfigLib;
+using Common;
 using DeckEditor.Constant;
-using StringLib;
 
 namespace DeckEditor.Utils
 {

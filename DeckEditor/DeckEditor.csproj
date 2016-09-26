@@ -146,21 +146,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConfigLib\ConfigLib.csproj">
-      <Project>{94F7AEE4-28A6-4B7E-9815-34A79C0D17D8}</Project>
-      <Name>ConfigLib</Name>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{19f76f0e-577e-417a-a2f2-f27ca4728068}</Project>
+      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dialog\DialogLib.csproj">
-      <Project>{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}</Project>
+      <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
       <Name>DialogLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JsonLib\JsonLib.csproj">
-      <Project>{1A6BBAE5-6814-49DD-80CB-4F20A741FC6B}</Project>
-      <Name>JsonLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StringLib\StringLib.csproj">
-      <Project>{023BF28C-A18E-4D7E-BF6D-A1006A9A7B3A}</Project>
-      <Name>StringLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -171,4 +163,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterResolveReferences">
+    <ItemGroup>
+      <EmbeddedResource Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.Extension)' == '.dll'">
+        <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
 </Project>

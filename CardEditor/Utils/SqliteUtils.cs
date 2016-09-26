@@ -3,8 +3,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using CardEditor.Constant;
-using ConfigLib;
-using StringLib;
+using Common;
 
 namespace CardEditor.Utils
 {

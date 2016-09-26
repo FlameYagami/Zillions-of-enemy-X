@@ -5,7 +5,7 @@ using System.Text;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
-using JsonLib;
+using Common;
 
 namespace CardEditor.Model
 {

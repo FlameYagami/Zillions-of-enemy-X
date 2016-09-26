@@ -1,4 +1,4 @@
-﻿<Application x:Class="Dialog.App"
+﻿<Application x:Class="CardEditor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="/View/View.xaml">
@@ -336,6 +336,5 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Application.Resources>
 </Application>
