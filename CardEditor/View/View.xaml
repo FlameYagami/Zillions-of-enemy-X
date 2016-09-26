@@ -137,19 +137,18 @@
                             </ListBox>
                         </Border>
                     </StackPanel>
-                    <TabControl Grid.Row="2" Width="256" x:Name="TabControl" Background="#B0F0F8FF"
-                                VerticalAlignment="Bottom" Margin="0,0,0,5">
-                        <TabItem Header="A" Name="TabItem0" Background="#B0F0F8FF">
-                            <Image x:Name="Img0" Width="250" Height="350" />
+                    <TabControl Grid.Row="2" Width="256" x:Name="TabControl" Margin="0,0,0,5">
+                        <TabItem Header="A" Name="TabItem0">
+                            <Image x:Name="Img0" Width="250" Height="350" Margin="-3,0" />
                         </TabItem>
-                        <TabItem Header="B" Name="TabItem1" Background="#B0F0F8FF">
-                            <Image x:Name="Img1" Width="250" Height="350" />
+                        <TabItem Header="B" Name="TabItem1">
+                            <Image x:Name="Img1" Width="250" Height="350" Margin="-3,0"/>
                         </TabItem>
-                        <TabItem Header="C" Name="TabItem2" Background="#B0F0F8FF">
-                            <Image x:Name="Img2" Width="250" Height="350" />
+                        <TabItem Header="C" Name="TabItem2">
+                            <Image x:Name="Img2" Width="250" Height="350" Margin="-3,0"/>
                         </TabItem>
-                        <TabItem Header="D" Name="TabItem3" Background="#B0F0F8FF">
-                            <Image x:Name="Img3" Width="250" Height="350" />
+                        <TabItem Header="D" Name="TabItem3">
+                            <Image x:Name="Img3" Width="250" Height="350" Margin="-3,0"/>
                         </TabItem>
                     </TabControl>
                 </Grid>

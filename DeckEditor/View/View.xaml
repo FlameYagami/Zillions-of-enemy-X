@@ -32,20 +32,20 @@
                             <ColumnDefinition Width="210" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TabControl x:Name="TcImage" Height="280" Width="190" Background="#B0F0F8FF">
-                            <TabItem Header="A" Name="TbiPicture1" Background="#B0F0F8FF">
+                        <TabControl x:Name="TcImage" Height="280" Width="190">
+                            <TabItem Header="A" Name="TbiPicture1">
                                 <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="B" Name="TbiPicture2" Background="#B0F0F8FF">
+                            <TabItem Header="B" Name="TbiPicture2">
                                 <Image x:Name="ImgPicture2" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="C" Name="TbiPicture3" Background="#B0F0F8FF">
+                            <TabItem Header="C" Name="TbiPicture3">
                                 <Image x:Name="ImgPicture3" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
-                            <TabItem Header="D" Name="TbiPicture4" Background="#B0F0F8FF">
+                            <TabItem Header="D" Name="TbiPicture4">
                                 <Image x:Name="ImgPicture4" Width="180" Height="252" ToolTip="右键添加"
                                        MouseRightButtonDown="Picture_MouseRightButtonDown" />
                             </TabItem>
@@ -103,8 +103,8 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <TabControl Grid.Row="1" Background="#B0F0F8FF" Margin="10">
-                        <TabItem Header="基础信息" Background="#B0F0F8FF">
+                    <TabControl Grid.Row="1"  Margin="10">
+                        <TabItem Header="基础信息">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
@@ -150,7 +150,7 @@
                                 <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
                             </Grid>
                         </TabItem>
-                        <TabItem Header="扩展信息" Background="#B0F0F8FF">
+                        <TabItem Header="扩展信息">
                             <StackPanel Margin="5">
                                 <Label x:Name="LblIJName" HorizontalContentAlignment="Center" FontSize="16"
                                        VerticalContentAlignment="Center" Margin="0" Height="30" />
@@ -310,7 +310,7 @@
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
+                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
@@ -334,7 +334,7 @@
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
+                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
@@ -358,7 +358,7 @@
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
+                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
