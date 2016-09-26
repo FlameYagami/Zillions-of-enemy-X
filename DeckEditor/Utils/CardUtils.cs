@@ -329,9 +329,26 @@ namespace DeckEditor.Utils
             return Const.DeckFolderPath + deckName + StringConst.DeckExtension;
         }
 
+        /// <summary>
+        ///     获取缩略图路径
+        /// </summary>
+        /// <param name="number">卡编</param>
+        /// <returns>缩略图路径</returns>
         public static string GetThumbnailPath(string number)
         {
             return Const.ThumbnailPath + number + StringConst.ImageExtension;
+        }
+
+        /// <summary>
+        ///      获取卡名
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns>卡名</returns>
+        public static string GetName(string number)
+        {
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+                .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
+            return row[ColumnCName].ToString();
         }
     }
 }

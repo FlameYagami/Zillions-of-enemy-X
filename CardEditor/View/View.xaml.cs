@@ -114,7 +114,7 @@ namespace CardEditor.View
             CmbSign.Text = cardEntity.Sign;
             CmbRare.Text = cardEntity.Rare;
             CmbPack.Text = cardEntity.Pack;
-            CmbRestrict.Text = cardEntity.Restrict.Equals("4") ? StringConst.NotApplicable : "0";
+            CmbRestrict.Text = cardEntity.Restrict.Equals("4") ? StringConst.NotApplicable : cardEntity.Restrict;
 
             TxtCName.Text = cardEntity.CName;
             TxtJName.Text = cardEntity.JName;
@@ -164,6 +164,7 @@ namespace CardEditor.View
             TxtAbility.Text = string.Empty;
             TxtLines.Text = string.Empty;
             TxtFaq.Text = string.Empty;
+            CmbRestrict.Text = StringConst.NotApplicable;
             CmbRace.IsEnabled = false;
         }
 

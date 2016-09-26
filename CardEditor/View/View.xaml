@@ -83,10 +83,12 @@
                                 </ComboBox>
                                 <Label Name="LblMode" Grid.Column="0" Grid.Row="0" Content="模式选择:"
                                        Style="{DynamicResource LblCenter}" />
-                                <ComboBox Name="CmbRestrict" Grid.Column="1" Grid.Row="1">
+                                <ComboBox Name="CmbRestrict" Grid.Column="1" Grid.Row="1" Text="(N/A)">
                                     <ComboBoxItem>(N/A)</ComboBoxItem>
-                                    <ComboBoxItem>禁止</ComboBoxItem>
-                                    <ComboBoxItem>无制限</ComboBoxItem>
+                                    <ComboBoxItem>0</ComboBoxItem>
+                                    <ComboBoxItem>4</ComboBoxItem>
+                                    <ComboBoxItem>20</ComboBoxItem>
+                                    <ComboBoxItem>30</ComboBoxItem>
                                 </ComboBox>
                                 <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制"
                                        Style="{DynamicResource LblCenter}" />

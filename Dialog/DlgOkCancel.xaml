@@ -20,7 +20,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="BtnCacncel" Content="取消" Margin="10,0,5,10" Click="BtnCacncel_Click" />
-                <Button Grid.Column="1" x:Name="BtnConfirm" Content="确定" Margin="5,0,10,10" Click="BtnConfirm_Click" />
+                <Button Grid.Column="1" x:Name="BtnConfirm" Content="确定" Margin="5,0,10,10" Click="BtnConfirm_Click" IsDefault="True" />
             </Grid>
         </Grid>
     </Border>

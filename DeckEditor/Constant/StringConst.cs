@@ -43,7 +43,6 @@
         public const string ModeQuery = "检索";
         public const string ModeDevelop = "开发";
         public const string NotApplicable = "(N/A)";
-        public const string Ban = "禁止";
         public const string TypeZx = "Z/X";
         public const string TypePlayer = "玩家";
         public const string TypeEvent = "事件";

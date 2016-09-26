@@ -194,6 +194,7 @@ namespace DeckEditor.Model
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
+            var name = row[ColumnCName].ToString();
             var camp = row[ColumnCamp].ToString();
             var cost = row[ColumnCost].ToString();
             var power = row[ColumnPower].ToString();
@@ -201,6 +202,7 @@ namespace DeckEditor.Model
             var restrictPath = CardUtils.GetRestrictPath(limit);
             var deckEntity = new DeckEntity
             {
+                CName = name,
                 Camp = camp,
                 Cost = cost.Equals(string.Empty) ? StringConst.Hyphen : cost,
                 Power = power.Equals(string.Empty) ? StringConst.Hyphen : power,
@@ -239,7 +241,7 @@ namespace DeckEditor.Model
         /// <returns>true|false</returns>
         private static bool CheckAreaEx(string number)
         {
-            return (DataCache.ExColl.AsParallel().Count(deckEntity => number.Contains(deckEntity.Number)) <
+            return (DataCache.ExColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
                     CardUtils.GetMaxCount(number)) && (DataCache.ExColl.Count < 10);
         }
 
@@ -250,7 +252,7 @@ namespace DeckEditor.Model
         /// <returns>true|false</returns>
         private static bool CheckAreaUg(string number)
         {
-            return (DataCache.UgColl.AsParallel().Count(deckEntity => number.Contains(deckEntity.Number)) <
+            return (DataCache.UgColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
                     CardUtils.GetMaxCount(number)) && (DataCache.UgColl.Count < 30);
         }
 
@@ -264,7 +266,7 @@ namespace DeckEditor.Model
             // 根据卡编获取卡片在点燃区的枚举类型
             var igType = CardUtils.GetIgType(number);
             // 判断卡片是否超出自身添加数量以及点燃区总数量
-            var canAdd = (DataCache.IgColl.AsParallel().Count(deckEntity => number.Contains(deckEntity.Number)) <
+            var canAdd = (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
                           CardUtils.GetMaxCount(number)) && (DataCache.IgColl.Count < 20);
             switch (igType)
             {

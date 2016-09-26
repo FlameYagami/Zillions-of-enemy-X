@@ -149,7 +149,7 @@ namespace DeckEditor.Presenter
             var number = label.Content.ToString();
             var thumbnailPath = _deck.GetAddThumbnailPath(number, selectIndex);
 
-            AddCard(number, thumbnailPath);
+            BaseAdd(number, thumbnailPath);
         }
 
         public void ImgAreaMouseRightClick(Grid grid)
@@ -199,7 +199,7 @@ namespace DeckEditor.Presenter
         {
             var number = image.Tag.ToString();
             var thumbnailPath = Const.ThumbnailPath + number + StringConst.ImageExtension;
-            AddCard(number, thumbnailPath);
+            BaseAdd(number, thumbnailPath);
         }
 
         public void CampChanged(string camp)
@@ -244,14 +244,15 @@ namespace DeckEditor.Presenter
 
             var number = label.Content.ToString();
             var thumbnailPath = image.Source.ToString();
-            AddCard(number, thumbnailPath);
+            BaseAdd(number, thumbnailPath);
         }
 
-        private void AddCard(string number, string thumbnailPath)
+        private void BaseAdd(string number, string thumbnailPath)
         {
             var areaType = CardUtils.GetAreaType(number);
             // 添加卡
-            if (StringConst.AreaType.None.Equals(_deck.AddCard(areaType, number, thumbnailPath))) return;
+            var isAddSucceed = _deck.AddCard(areaType, number, thumbnailPath);
+            if (StringConst.AreaType.None.Equals(isAddSucceed)) return;
             // 添加成功则更新该区域
             switch (areaType)
             {

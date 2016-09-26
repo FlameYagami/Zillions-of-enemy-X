@@ -181,7 +181,7 @@
                         <Button Name="BtnClear" Grid.Column="0" Click="BtnClear_Click" Content="清空" />
                         <Button Name="BtnDelete" Grid.Column="1" Click="Delete_Click" Content="删除" />
                         <ComboBox Name="CmbDeck" Grid.Column="2" DropDownClosed="CmbDeck_DropDownClosed"
-                                  DropDownOpened="CmbDeck_DropDownOpened" />
+                                  DropDownOpened="CmbDeck_DropDownOpened" Text=""/>
                         <Button Name="BtnSava" Grid.Column="3" Click="Sava_Click" Content="保存" />
                         <Button Name="BtnResava" Grid.Column="4" Click="Resave_Click" Content="另存" />
                     </Grid>
@@ -309,7 +309,7 @@
                                       ItemsPanel="{DynamicResource ListViewItemPanel}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid
+                                        <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                             MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
@@ -333,7 +333,7 @@
                                       ItemsPanel="{DynamicResource ListViewItemPanel}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid
+                                        <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                             MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
@@ -351,11 +351,13 @@
                         <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Height="72" Width="556"
                                 VerticalAlignment="Bottom">
                             <ListView x:Name="ExListView"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       Style="{DynamicResource ControlTransparent}"
                                       ItemsPanel="{DynamicResource ListViewItemPanel}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid
+                                        <Grid Width="45" Height="63"
                                             MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
                                             MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"

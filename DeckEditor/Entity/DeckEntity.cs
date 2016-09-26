@@ -8,5 +8,6 @@
         public string Power { get; set; }
         public string Number { get; set; }
         public string Restrict { get; set; }
+        public string CName { get; set; }
     }
 }

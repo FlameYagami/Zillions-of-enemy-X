@@ -74,24 +74,24 @@ namespace CardEditor.Model
             builder.Append("INSERT INTO " + TableName);
             builder.Append(ColumnCard);
             builder.Append("VALUES(");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Type) + "',");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Camp) + "',");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Race) + "',");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Sign) + "',");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Rare) + "',");
-            builder.Append("'" + SqlUtils.GetBaseValue(cardEntity.Pack) + "',");
-            builder.Append("'" + (cardEntity.Restrict.Equals(StringConst.Ban) ? "0" : "4") + "',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Type)}',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Camp)}',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Race)}',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Sign)}',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Rare)}',");
+            builder.Append($"'{SqlUtils.GetBaseValue(cardEntity.Pack)}',");
+            builder.Append($"{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)},");
 
-            builder.Append("'" + cardEntity.CName + "',");
-            builder.Append("'" + cardEntity.JName + "',");
-            builder.Append("'" + cardEntity.Illust + "',");
-            builder.Append("'" + cardEntity.Number + "',");
-            builder.Append("'" + cardEntity.Cost + "',");
-            builder.Append("'" + cardEntity.Power + "',");
-            builder.Append("'" + cardEntity.Ability + "',");
-            builder.Append("'" + cardEntity.Lines + "',");
-            builder.Append("'" + cardEntity.Faq + "',");
-            builder.Append("'" + JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity) + "'"); // 详细能力处理
+            builder.Append($"'{cardEntity.CName}',");
+            builder.Append($"'{cardEntity.JName}',");
+            builder.Append($"'{cardEntity.Illust}',");
+            builder.Append($"'{cardEntity.Number}',");
+            builder.Append($"{cardEntity.Cost},");
+            builder.Append($"{cardEntity.Power},");
+            builder.Append($"'{cardEntity.Ability}',");
+            builder.Append($"'{cardEntity.Lines}',");
+            builder.Append($"'{cardEntity.Faq}',");
+            builder.Append($"'{JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity)}'"); // 详细能力处理
             builder.Append(")");
             return builder.ToString();
         }
@@ -142,7 +142,7 @@ namespace CardEditor.Model
             builder.Append(Sign + "= '" + cardEntity.Sign + "',");
             builder.Append(Rare + "= '" + cardEntity.Rare + "',");
             builder.Append(Pack + "= '" + cardEntity.Pack + "',");
-            builder.Append(Restrict + "='" + (cardEntity.Restrict.Equals(StringConst.Ban) ? "0" : "4") + "',");
+            builder.Append(Restrict + "='" + (cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4": cardEntity.Restrict) + "',");
 
             builder.Append(CName + "= '" + cardEntity.CName + "',");
             builder.Append(JName + "= '" + cardEntity.JName + "',");
