@@ -16,10 +16,9 @@ namespace DeckEditor.View
 {
     public interface IView
     {
-        CardEntity GetCardModel();
         void Init();
         void Reset();
-        void UpdateCardPreviewListView(List<PreviewEntity> cardList);
+        void UpdatePreviewListView(List<PreviewEntity> cardList);
         void UpdateDeckListView(StringConst.AreaType areaType, List<DeckEntity> deckColl);
         void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid);
         void SetPicture(List<string> numberList, List<string> picturePathList);
@@ -174,7 +173,7 @@ namespace DeckEditor.View
             tabItemList[0].Visibility = Visibility.Hidden;
         }
 
-        public void UpdateCardPreviewListView(List<PreviewEntity> cardList)
+        public void UpdatePreviewListView(List<PreviewEntity> cardList)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = cardList;
@@ -251,17 +250,13 @@ namespace DeckEditor.View
         /// <summary>查询区域查询事件</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.QueryClick(CmbOrder.Text.Trim().Equals(StringConst.OrderNumber)
-                ? StringConst.PreviewOrderType.Number
-                : StringConst.PreviewOrderType.Value);
+            _presenter.QueryClick(GetCardModel(),CmbOrder.Text.Trim());
         }
 
         /// <summary>列表区域排序事件</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.OrderClick(CmbOrder.Text.Trim().Equals(StringConst.OrderNumber)
-                ? StringConst.PreviewOrderType.Number
-                : StringConst.PreviewOrderType.Value);
+            _presenter.OrderClick(CmbOrder.Text.Trim());
         }
 
         /// <summary>查询区域能力分类事件</summary>

@@ -29,9 +29,13 @@ namespace DeckEditor.Model
     internal class Deck : SqliteConst, IDeck
     {
         /// <summary>
-        ///     添加卡片到卡组
+        ///  添加卡片到组卡区
         /// </summary>
-        public StringConst.AreaType AddCard(StringConst.AreaType areaType, string number, string thumbnailPath)
+        /// <param name="areaType">卡片添加区域枚举类型</param>
+        /// <param name="number">卡编</param>
+        /// <param name="thumbnailPath">缩略图路径</param>
+        /// <returns></returns>
+        public StringConst.AreaType AddCard(StringConst.AreaType areaType, string number,string thumbnailPath)
         {
             switch (areaType)
             {
@@ -179,8 +183,8 @@ namespace DeckEditor.Model
         public Dictionary<int, int> DekcStatistical()
         {
             var dekcStatisticalDic = new Dictionary<int, int>();
-            var costIgList = DataCache.IgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
-            var costUgList = DataCache.UgColl.Select(deckEntity => int.Parse(deckEntity.Cost));
+            var costIgList = DataCache.IgColl.Select(deckEntity => deckEntity.Cost);
+            var costUgList = DataCache.UgColl.Select(deckEntity => deckEntity.Cost);
             var costDeckList = new List<int>();
             costDeckList.AddRange(costIgList);
             costDeckList.AddRange(costUgList);
@@ -202,22 +206,23 @@ namespace DeckEditor.Model
             var restrictPath = CardUtils.GetRestrictPath(limit);
             var deckEntity = new DeckEntity
             {
-                CName = name,
                 Camp = camp,
-                Cost = cost.Equals(string.Empty) ? StringConst.Hyphen : cost,
-                Power = power.Equals(string.Empty) ? StringConst.Hyphen : power,
+                Cost = cost.Equals(string.Empty) ? 0 : int.Parse(cost),
+                Power = power.Equals(string.Empty) ? 0 : int.Parse(power),
                 Number = number,
+                CName = name,
                 ImagePath = thumbnailPath,
-                Restrict = restrictPath
+                RestrictPath = restrictPath
             };
             collection.Add(deckEntity);
         }
 
         private static void Value(List<DeckEntity> deckEntityList)
         {
-            var tempDeckEntityList = deckEntityList.OrderBy(tempDeckEntity => tempDeckEntity.Camp)
-                .OrderByDescending(tempDeckEntity => tempDeckEntity.Cost)
-                .OrderByDescending(tempDeckEntity => tempDeckEntity.Power)
+            var tempDeckEntityList = deckEntityList
+                .OrderBy(tempDeckEntity => tempDeckEntity.Camp)
+                .ThenByDescending(tempDeckEntity => tempDeckEntity.Cost)
+                .ThenByDescending(tempDeckEntity => tempDeckEntity.Power)
                 .ThenBy(tempDeckEntity => tempDeckEntity.Number)
                 .ToList();
             deckEntityList.Clear();
@@ -241,7 +246,8 @@ namespace DeckEditor.Model
         /// <returns>true|false</returns>
         private static bool CheckAreaEx(string number)
         {
-            return (DataCache.ExColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
+            var name = CardUtils.GetName(number);
+            return (DataCache.ExColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
                     CardUtils.GetMaxCount(number)) && (DataCache.ExColl.Count < 10);
         }
 
@@ -252,7 +258,8 @@ namespace DeckEditor.Model
         /// <returns>true|false</returns>
         private static bool CheckAreaUg(string number)
         {
-            return (DataCache.UgColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
+            var name = CardUtils.GetName(number);
+            return (DataCache.UgColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
                     CardUtils.GetMaxCount(number)) && (DataCache.UgColl.Count < 30);
         }
 
@@ -263,10 +270,11 @@ namespace DeckEditor.Model
         /// <returns>true|false</returns>
         private static bool CheckAreaIg(string number)
         {
+            var name = CardUtils.GetName(number);
             // 根据卡编获取卡片在点燃区的枚举类型
             var igType = CardUtils.GetIgType(number);
             // 判断卡片是否超出自身添加数量以及点燃区总数量
-            var canAdd = (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.GetName(number).Equals(deckEntity.CName)) <
+            var canAdd = (DataCache.IgColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
                           CardUtils.GetMaxCount(number)) && (DataCache.IgColl.Count < 20);
             switch (igType)
             {

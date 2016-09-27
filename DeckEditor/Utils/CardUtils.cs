@@ -11,6 +11,18 @@ namespace DeckEditor.Utils
 {
     internal class CardUtils : SqliteConst
     {
+        /// <summary>
+        /// 获取排序的枚举类型
+        /// </summary>
+        /// <param name="order">排序方式</param>
+        /// <returns></returns>
+        public static StringConst.PreviewOrderType GetPreviewOrderType(string order)
+        {
+            return order.Equals(StringConst.OrderNumber)
+                ? StringConst.PreviewOrderType.Number
+                : StringConst.PreviewOrderType.Value;
+        }
+
         public static CardEntity GetCardModel(string number)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.AsParallel()

@@ -9,13 +9,56 @@ namespace DeckEditor.Utils
 {
     internal class SqlUtils : SqliteConst
     {
+        public static string GetQueryAllSql()
+        {
+            return "SELECT * FROM " + TableName + " ORDER BY " + ColumnNumber + " ASC";
+        }
+
+        /// <summary>
+        /// 获取头部查询语句
+        /// </summary>
+        /// <returns></returns>
+        public static string GetHeaderSql()
+        {
+            return "SELECT * FROM " + TableName + " WHERE 1=1";
+        }
+
+        /// <summary>
+        /// 获取尾部查询语句
+        /// </summary>
+        /// <param name="previewOrderType">排序枚举类型</param>
+        /// <returns></returns>
+        public static string GetFooterSql(StringConst.PreviewOrderType previewOrderType)
+        {
+            return previewOrderType.Equals(StringConst.PreviewOrderType.Number) ? GetOrderNumberSql() : GetOrderValueSql();
+        }
+
+        /// <summary>
+        /// 获取卡编排序方式查询语句
+        /// </summary>
+        /// <returns></returns>
+        private static string GetOrderNumberSql()
+        {
+            return " ORDER BY " + ColumnNumber + " ASC";
+        }
+
+        /// <summary>
+        /// 获取数值排序方式查询语句
+        /// </summary>
+        /// <returns></returns>
+        private static string GetOrderValueSql()
+        {
+            return " ORDER BY " + ColumnCamp + " DESC," + ColumnRace + " ASC," + ColumnCost + " DESC," + ColumnPower + " DESC," +
+            ColumnJName + " DESC";
+        }     
+
         /// <summary>
         ///     获取精确查询语句
         /// </summary>
         /// <param name="value"></param>
         /// <param name="column">数据库字段</param>
         /// <returns>数据库查询语句</returns>
-        public static string GetBaseSql(string value, string column)
+        public static string GetAccurateSql(string value, string column)
         {
             return !StringConst.NotApplicable.Equals(value) ? $" AND {column}='{value}'" : string.Empty;
         }

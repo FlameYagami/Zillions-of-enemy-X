@@ -40,8 +40,6 @@
         public const string SaveSucceed = "保存->成功";
         public const string OrderNumber = "编号";
         public const string SignIg = "点燃";
-        public const string ModeQuery = "检索";
-        public const string ModeDevelop = "开发";
         public const string NotApplicable = "(N/A)";
         public const string TypeZx = "Z/X";
         public const string TypePlayer = "玩家";
@@ -54,9 +52,7 @@
         public const string AbilityLife = "【常】生命恢复";
         public const string AbilityVoid = "【常】虚空使者";
 
-        /// <summary>卡组扩展名</summary>
         public const string DeckExtension = ".zx";
-
         public const string ImageExtension = ".jpg";
 
         public const string LblPreviewNumber = "LblPreviewNumber";

@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using System.Windows.Controls;
 using DeckEditor.Constant;
+using DeckEditor.Entity;
 using DeckEditor.Model;
 using DeckEditor.Utils;
 using DeckEditor.View;
@@ -14,7 +15,7 @@ namespace DeckEditor.Presenter
     {
         void ExitClick();
         void ResetClick();
-        void QueryClick(StringConst.PreviewOrderType previewOrderType);
+        void QueryClick(CardEntity cardEntity, string order);
         void SaveClick(string deckName);
         void ResaveClick(string deckName);
         void DeleteClick(string deckName);
@@ -25,7 +26,7 @@ namespace DeckEditor.Presenter
         void Init();
         void ShowAbilityDetail();
         void PreivewListViewChanged(int selectIndex);
-        void OrderClick(StringConst.PreviewOrderType previewOrderType);
+        void OrderClick(string oder);
         void PreviewMouseRightClick(Grid grid, int selectedIndex);
         void ImgAreaMouseRightClick(Grid grid);
         void ImgAreaMouseLeftClick(Grid grid);
@@ -51,7 +52,7 @@ namespace DeckEditor.Presenter
 
         public void Init()
         {
-            if (SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache))
+            if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
             {
                 _view.Init();
                 if (!Directory.Exists(Const.DeckFolderPath))
@@ -71,21 +72,17 @@ namespace DeckEditor.Presenter
             _view.Reset();
         }
 
-        public void QueryClick(StringConst.PreviewOrderType previewOrderType)
+        public void QueryClick(CardEntity cardEntity, string order)
         {
-            var cardModel = _view.GetCardModel();
-            var querySql = _query.GetQuerySql(cardModel, previewOrderType);
+            var querySql = _query.GetQuerySql(cardEntity, CardUtils.GetPreviewOrderType(order));
             UpdateCacheAndUi(querySql);
         }
 
-        public void OrderClick(StringConst.PreviewOrderType previewOrderType)
+        public void OrderClick(string order)
         {
             var memorySql = _query.QuerySqlMemory;
             if (memorySql.Equals(string.Empty)) return;
-            UpdateCacheAndUi(memorySql +
-                             (previewOrderType.Equals(StringConst.PreviewOrderType.Number)
-                                 ? SqliteConst.OrderNumberSql
-                                 : SqliteConst.OrderValueSql));
+            UpdateCacheAndUi(memorySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
         }
 
         public void ResaveClick(string deckName)
@@ -107,13 +104,13 @@ namespace DeckEditor.Presenter
         public void ValueOrder()
         {
             _deck.Order(StringConst.DeckOrderType.Value);
-            UpdateDeckUi();
+            UpdateDeckListView();
         }
 
         public void RandomOrder()
         {
             _deck.Order(StringConst.DeckOrderType.Random);
-            UpdateDeckUi();
+            UpdateDeckListView();
         }
 
         public void ClearClick()
@@ -122,7 +119,7 @@ namespace DeckEditor.Presenter
             DataCache.IgColl.Clear();
             DataCache.UgColl.Clear();
             DataCache.ExColl.Clear();
-            UpdateDeckUi();
+            UpdateDeckListView();
         }
 
         public void ShowAbilityDetail()
@@ -144,9 +141,9 @@ namespace DeckEditor.Presenter
 
         public void PreviewMouseRightClick(Grid grid, int selectIndex)
         {
-            var label = (Label) grid?.FindName(StringConst.LblPreviewNumber);
-            if (label == null) return;
-            var number = label.Content.ToString();
+            var lblNumber = (Label) grid?.FindName(StringConst.LblPreviewNumber);
+            if (lblNumber == null) return;
+            var number = lblNumber.Content.ToString();
             var thumbnailPath = _deck.GetAddThumbnailPath(number, selectIndex);
 
             BaseAdd(number, thumbnailPath);
@@ -218,7 +215,7 @@ namespace DeckEditor.Presenter
             if (deckName.Equals(string.Empty)) return;
             ClearClick();
             _deck.Load(deckName);
-            UpdateDeckUi();
+            UpdateDeckListView();
         }
 
         public void ShowAllDeckName()
@@ -238,16 +235,15 @@ namespace DeckEditor.Presenter
         public void ImgAreaMouseDoubleClick(Grid grid)
         {
             var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
-            if (label == null) return;
-            var image = (Image) grid?.FindName(StringConst.ImgAreaThumbnail);
-            if (image == null) return;
+            var image = (Image)grid?.FindName(StringConst.ImgAreaThumbnail);
+            if (label == null  || image == null) return;
 
             var number = label.Content.ToString();
             var thumbnailPath = image.Source.ToString();
             BaseAdd(number, thumbnailPath);
         }
 
-        private void BaseAdd(string number, string thumbnailPath)
+        private void BaseAdd(string number,string thumbnailPath)
         {
             var areaType = CardUtils.GetAreaType(number);
             // 添加卡
@@ -279,13 +275,13 @@ namespace DeckEditor.Presenter
         /// <param name="sql">查询语句</param>
         private void UpdateCacheAndUi(string sql)
         {
-            var dsPartCache = new DataSet(); // 部分数据
-            SqliteUtils.FillDataToDataSet(sql, dsPartCache);
-            _query.SetCardList(dsPartCache);
-            _view.UpdateCardPreviewListView(DataCache.InfoColl);
+            var dataSet = new DataSet();
+            SqliteUtils.FillDataToDataSet(sql, dataSet);
+            _query.SetCardList(dataSet);
+            _view.UpdatePreviewListView(DataCache.InfoColl);
         }
 
-        private void UpdateDeckUi()
+        private void UpdateDeckListView()
         {
             _view.UpdateDeckListView(StringConst.AreaType.Pl, DataCache.PlColl);
             _view.UpdateDeckListView(StringConst.AreaType.Ig, DataCache.IgColl);
