@@ -40,8 +40,8 @@
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
                         <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvwPreview" Grid.Row="1"
-                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -142,13 +142,13 @@
                             <Image x:Name="Img0" Width="250" Height="350" Margin="-3,0" />
                         </TabItem>
                         <TabItem Header="B" Name="TabItem1">
-                            <Image x:Name="Img1" Width="250" Height="350" Margin="-3,0"/>
+                            <Image x:Name="Img1" Width="250" Height="350" Margin="-3,0" />
                         </TabItem>
                         <TabItem Header="C" Name="TabItem2">
-                            <Image x:Name="Img2" Width="250" Height="350" Margin="-3,0"/>
+                            <Image x:Name="Img2" Width="250" Height="350" Margin="-3,0" />
                         </TabItem>
                         <TabItem Header="D" Name="TabItem3">
-                            <Image x:Name="Img3" Width="250" Height="350" Margin="-3,0"/>
+                            <Image x:Name="Img3" Width="250" Height="350" Margin="-3,0" />
                         </TabItem>
                     </TabControl>
                 </Grid>

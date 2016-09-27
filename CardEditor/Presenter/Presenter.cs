@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Windows.Forms;
 using CardEditor.Constant;
 using CardEditor.Model;
 using CardEditor.Utils;
@@ -40,7 +42,7 @@ namespace CardEditor.Presenter
 
         public void Init()
         {
-            if (SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache))
+            if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
             {
                 _view.SetPackItems(CardUtils.GetAllPack());
             }
@@ -58,11 +60,14 @@ namespace CardEditor.Presenter
                 BaseDialogUtils.ShowDlgOk(StringConst.PackChoiceNone);
                 return;
             }
-            var sql = SqlUtils.GetExportSql(pack);
-            if (!SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache)) return;
             var exportPath = DialogUtils.ShowExport(pack);
             if (exportPath.Equals(string.Empty)) return;
-            var isExport = ExcelHelper.ExportPackToExcel(exportPath, DataCache.DsPartCache);
+
+            var sql = SqlUtils.GetExportSql(pack);
+            var dataSet = new DataSet();
+            if (!SqliteUtils.FillDataToDataSet(sql, dataSet)) return;
+
+            var isExport = ExcelHelper.ExportPackToExcel(exportPath, dataSet);
             BaseDialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
@@ -84,12 +89,13 @@ namespace CardEditor.Presenter
 
         public void PreviewChanged(int selectIndex)
         {
-            if (0 > selectIndex) return;
-            var listViewMode = Query.CardList[selectIndex];
-            var cardmodel = CardUtils.GetCardModel(listViewMode.Number);
-            var imageListUri = CardUtils.GetImageUriList(listViewMode.Number);
-            _view.SetCardEntity(cardmodel);
-            _view.SetPicture(imageListUri);
+            if (selectIndex.Equals(-1)) return;
+            var previewEntity = Query.PreviewList[selectIndex];
+            var cardEntity = CardUtils.GetCardEntity(previewEntity.Number);
+            var picturePathList = CardUtils.GetPicturePathList(previewEntity.Number);
+            Query.MemoryNumber = previewEntity.Number;
+            _view.SetCardEntity(cardEntity);
+            _view.SetPicture(picturePathList);
         }
 
         /// <summary>检索</summary>
@@ -98,7 +104,7 @@ namespace CardEditor.Presenter
             var cardModel = _view.GetCardEntity();
             if (mode.Equals(StringConst.ModeQuery))
             {
-                UpdateCacheAndUi(_query.GetQuerySql(cardModel, order));
+                UpdateCacheAndUi(_query.GetQuerySql(cardModel, CardUtils.GetPreviewOrderType(order)));
             }
             else if (mode.Equals(StringConst.ModeEditor))
             {
@@ -107,7 +113,7 @@ namespace CardEditor.Presenter
                     BaseDialogUtils.ShowDlg(StringConst.PackChoiceNone);
                     return;
                 }
-                UpdateCacheAndUi(_query.GetEditorSql(cardModel, order));
+                UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
             }
         }
 
@@ -125,18 +131,16 @@ namespace CardEditor.Presenter
             var sql = _query.GetAddSql(cardModel);
             if (SqliteUtils.Execute(sql))
             {
-                SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache);
+                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
                 if (Query.MemoryQuerySql.Equals(string.Empty))
                 {
                     var cardEntity = _view.GetCardEntity();
-                    sql = _query.GetQuerySql(cardEntity, order);
+                    sql = _query.GetQuerySql(cardEntity, CardUtils.GetPreviewOrderType(order));
                     UpdateCacheAndUi(sql);
                 }
                 else
                 {
-                    sql = Query.MemoryQuerySql + (order.Equals(StringConst.OrderNumber)
-                              ? SqliteConst.NumberOrderSql
-                              : SqliteConst.ValueOrderSql);
+                    sql = Query.MemoryQuerySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order));
                     UpdateCacheAndUi(sql);
                 }
                 BaseDialogUtils.ShowDlg(StringConst.AddSucceed);
@@ -161,15 +165,13 @@ namespace CardEditor.Presenter
             }
             if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
 
-            var number = Query.CardList[selectIndex].Number;
+            var number = Query.PreviewList[selectIndex].Number;
             var updateSql = _query.GetUpdateSql(_view.GetCardEntity(), number);
+            MessageBox.Show(updateSql);
             if (SqliteUtils.Execute(updateSql))
             {
-                SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache);
-                UpdateCacheAndUi(Query.MemoryQuerySql +
-                                 (order.Equals(StringConst.OrderNumber)
-                                     ? SqliteConst.NumberOrderSql
-                                     : SqliteConst.ValueOrderSql));
+                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+                UpdateCacheAndUi(Query.MemoryQuerySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
                 BaseDialogUtils.ShowDlg(StringConst.UpdateSucceed);
                 return;
             }
@@ -186,15 +188,12 @@ namespace CardEditor.Presenter
             }
             if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
 
-            var number = Query.CardList[selectIndex].Number;
+            var number = Query.PreviewList[selectIndex].Number;
             var deleteSql = _query.GetDeleteSql(number);
             if (SqliteUtils.Execute(deleteSql))
             {
-                SqliteUtils.FillDataToDataSet(SqliteConst.QueryAllSql, DataCache.DsAllCache);
-                UpdateCacheAndUi(Query.MemoryQuerySql +
-                                 (order.Equals(StringConst.OrderNumber)
-                                     ? SqliteConst.NumberOrderSql
-                                     : SqliteConst.ValueOrderSql));
+                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+                UpdateCacheAndUi(Query.MemoryQuerySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
                 BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
                 return;
             }
@@ -205,11 +204,8 @@ namespace CardEditor.Presenter
         public void OrderChanged(string order)
         {
             var memorySql = Query.MemoryQuerySql;
-            if (!memorySql.Equals(string.Empty))
-                UpdateCacheAndUi(memorySql +
-                                 (order.Equals(StringConst.OrderNumber)
-                                     ? SqliteConst.NumberOrderSql
-                                     : SqliteConst.ValueOrderSql));
+            if (memorySql.Equals(string.Empty)) return;
+            UpdateCacheAndUi(memorySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
         }
 
         public void ExitClick()
@@ -263,7 +259,7 @@ namespace CardEditor.Presenter
         {
             SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache);
             _query.SetCardList();
-            _view.UpdateListView(Query.CardList);
+            _view.UpdateListView(Query.PreviewList, Query.MemoryNumber);
         }
     }
 }

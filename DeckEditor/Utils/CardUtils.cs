@@ -23,7 +23,7 @@ namespace DeckEditor.Utils
                 : StringConst.PreviewOrderType.Value;
         }
 
-        public static CardEntity GetCardModel(string number)
+        public static CardEntity GetCardEntity(string number)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.AsParallel()
                 .Cast<DataRow>()
@@ -50,7 +50,7 @@ namespace DeckEditor.Utils
             };
         }
 
-        public static AbilityDetialEntity GetAbilityDetialModel(ListBox listBox)
+        public static AbilityDetialEntity GetAbilityDetialEntity(ListBox listBox)
         {
             var abilityDetialModel = new AbilityDetialEntity();
             abilityDetialModel.SetAbilityDetailDic(listBox.Items.Cast<CheckBox>());

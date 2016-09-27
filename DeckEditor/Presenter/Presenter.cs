@@ -132,7 +132,7 @@ namespace DeckEditor.Presenter
             if (selectIndex.Equals(-1)) return;
             var infoMode = DataCache.InfoColl[selectIndex];
             var number = infoMode.Number;
-            var cardmodel = CardUtils.GetCardModel(number);
+            var cardmodel = CardUtils.GetCardEntity(number);
             var numberList = CardUtils.GetNumberList(number);
             var picturePathList = CardUtils.GetPicturePathList(number);
             _view.SetCardModel(cardmodel);
@@ -185,7 +185,7 @@ namespace DeckEditor.Presenter
             var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
             if (label == null) return;
             var number = label.Content.ToString();
-            var cardmodel = CardUtils.GetCardModel(number);
+            var cardmodel = CardUtils.GetCardEntity(number);
             var numberList = CardUtils.GetNumberList(number);
             var picturePathList = CardUtils.GetPicturePathList(number);
             _view.SetCardModel(cardmodel);

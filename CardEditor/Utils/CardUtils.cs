@@ -11,41 +11,53 @@ namespace CardEditor.Utils
 {
     public class CardUtils : SqliteConst
     {
-        public static CardEntity GetCardModel(string number)
+        /// <summary>
+        ///     获取排序的枚举类型
+        /// </summary>
+        /// <param name="order">排序方式</param>
+        /// <returns></returns>
+        public static StringConst.PreviewOrderType GetPreviewOrderType(string order)
+        {
+            return order.Equals(StringConst.OrderNumber)
+                ? StringConst.PreviewOrderType.Number
+                : StringConst.PreviewOrderType.Value;
+        }
+
+        public static CardEntity GetCardEntity(string number)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
-                .First(column => column[Number].Equals(number));
+                .First(column => column[ColumnNumber].Equals(number));
             return new CardEntity
             {
-                Type = row[Type].ToString(),
-                Camp = row[Camp].ToString(),
-                Race = row[Race].ToString(),
-                Sign = row[Sign].ToString(),
-                Rare = row[Rare].ToString(),
-                CName = row[CName].ToString(),
-                JName = row[JName].ToString(),
-                Illust = row[Illust].ToString(),
-                Pack = row[Pack].ToString(),
-                Cost = row[Cost].ToString(),
-                Power = row[Power].ToString(),
-                Number = row[Number].ToString(),
-                Ability = row[Ability].ToString(),
-                Lines = row[Lines].ToString(),
-                Faq = row[Faq].ToString(),
-                Restrict = row[Restrict].ToString(),
-                AbilityDetail = row[AbilityDetail].ToString()
+                Type = row[ColumnType].ToString(),
+                Camp = row[ColumnCamp].ToString(),
+                Race = row[ColumnRace].ToString(),
+                Sign = row[ColumnSign].ToString(),
+                Rare = row[ColumnRare].ToString(),
+                CName = row[ColumnCName].ToString(),
+                JName = row[ColumnJName].ToString(),
+                Illust = row[ColumnIllust].ToString(),
+                Pack = row[ColumnPack].ToString(),
+                Cost = row[ColumnCost].ToString(),
+                Power = row[ColumnPower].ToString(),
+                Number = row[ColumnNumber].ToString(),
+                Ability = row[ColumnAbility].ToString(),
+                Lines = row[ColumnLines].ToString(),
+                Faq = row[ColumnFaq].ToString(),
+                Restrict = row[ColumnRestrict].ToString(),
+                AbilityDetail = row[ColumnAbilityDetail].ToString()
             };
         }
 
-        public static AbilityDetialEntity GetAbilityDetialModel(ListBox listBox)
+        public static AbilityDetialEntity GetAbilityDetialEntity(ListBox listBox)
         {
             var abilityDetialEntity = new AbilityDetialEntity();
             abilityDetialEntity.SetAbilityDetailDic(listBox.Items.Cast<CheckBox>());
             return abilityDetialEntity;
         }
 
-        public static List<string> GetImageUriList(string number)
+        public static List<string> GetPicturePathList(string number)
         {
             var theFolder = new DirectoryInfo(Const.PicturePath);
             var fileInfo = theFolder.GetFiles();
@@ -58,7 +70,7 @@ namespace CardEditor.Utils
         {
             return
                 DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>()
-                    .Any(row => row[Number].ToString().Equals(number));
+                    .Any(row => row[ColumnNumber].ToString().Equals(number));
         }
 
         public static List<object> GetAllPack()
@@ -79,7 +91,7 @@ namespace CardEditor.Utils
         {
             var packlist = new List<object> {packType + StringConst.Series};
             var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
-                .Select(column => column[Pack])
+                .Select(column => column[ColumnPack])
                 .Distinct()
                 .Where(value => value.ToString().Contains(packType))
                 .OrderBy(value => value)
@@ -94,8 +106,8 @@ namespace CardEditor.Utils
             if (camp.Equals(StringConst.NotApplicable)) return packlist;
             var tempList =
                 (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>()
-                        where row[Camp].Equals(camp)
-                        select row[Race])
+                        where row[ColumnCamp].Equals(camp)
+                        select row[ColumnRace])
                     .ToList()
                     .Distinct()
                     .OrderBy(value => value.ToString().Length)

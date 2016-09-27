@@ -21,7 +21,7 @@ namespace CardEditor.View
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
         void Reset();
-        void UpdateListView(List<PreviewEntity> previewEntityList);
+        void UpdateListView(List<PreviewEntity> previewEntityList, string number);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
@@ -78,7 +78,7 @@ namespace CardEditor.View
 
         public CardEntity GetCardEntity()
         {
-            var abilityDetialEntity = CardUtils.GetAbilityDetialModel(LstAbilityDetail);
+            var abilityDetialEntity = CardUtils.GetAbilityDetialEntity(LstAbilityDetail);
             return new CardEntity
             {
                 Type = CmbType.Text.Trim(),
@@ -98,10 +98,10 @@ namespace CardEditor.View
                 Lines = TxtLines.Text.Trim(),
                 Faq = TxtFaq.Text.Trim(),
                 AbilityType =
-                    SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.Ability),
+                    SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
                 AbilityDetail =
                     SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(),
-                        SqliteConst.AbilityDetail),
+                        SqliteConst.ColumnAbilityDetail),
                 AbilityDetialEntity = abilityDetialEntity
             };
         }
@@ -202,11 +202,18 @@ namespace CardEditor.View
             CmbPack.ItemsSource = itemList;
         }
 
-        public void UpdateListView(List<PreviewEntity> previewEntityList)
+        public void UpdateListView(List<PreviewEntity> previewEntityList, string number)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
+            if (number.Equals(string.Empty)) return;
+            var position = previewEntityList
+                .Select((previewEntity, index) => new { Number = previewEntity.Number, Index = index })
+                .First(i => i.Number.Equals(number)).Index;
+            LvwPreview.SelectedIndex = position;
+            LvwPreview.ScrollIntoView(LvwPreview.SelectedItem);
+
         }
 
         public void UpdatePackLinkage(string packNumber)

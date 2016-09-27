@@ -35,9 +35,9 @@ namespace DeckEditor.Model
                 var race = row[ColumnRace].ToString();
                 race = race.Equals(string.Empty) ? StringConst.Hyphen : race;
                 var cost = row[ColumnCost].ToString();
-                cost = cost.Equals(string.Empty) ? StringConst.Hyphen : cost;
+                cost = cost.Equals(string.Empty) || cost.Equals("0") ? StringConst.Hyphen : cost;
                 var power = row[ColumnPower].ToString();
-                power = power.Equals(string.Empty) ? StringConst.Hyphen : power;
+                power = power.Equals(string.Empty) || power.Equals("0") ? StringConst.Hyphen : power;
                 var number = row[ColumnNumber].ToString();
                 var restrict = row[ColumnRestrict].ToString();
                 var thumbnailPathList = CardUtils.GetThumbnailPathList(number, filePathlist);

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Data;
 using System.Data.SQLite;
-using System.Windows.Forms;
 using CardEditor.Constant;
 using Common;
 
 namespace CardEditor.Utils
 {
-    public class SqliteUtils : SqliteConst
+    public class SqliteUtils
     {
+        public const string DatabaseName = "Data.db";
+        public const string DatabasePassword = "DatabasePassword";
+
+        public static string DatabasePath = $"Data Source='{Const.RootPath + DatabaseName}'";
+
         /// <summary>数据填充至DataSet</summary>
         public static bool FillDataToDataSet(string sql, DataSet dts)
         {
@@ -22,7 +26,7 @@ namespace CardEditor.Utils
                     var cmd = new SQLiteCommand(sql, con);
                     var dap = new SQLiteDataAdapter(cmd);
                     dts.Clear();
-                    dap.Fill(dts, TableName);
+                    dap.Fill(dts, SqliteConst.TableName);
                     con.Close();
                 }
                 catch (Exception)
@@ -46,9 +50,8 @@ namespace CardEditor.Utils
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    MessageBox.Show(e.ToString());
                     return false;
                 }
                 return true;
@@ -70,12 +73,11 @@ namespace CardEditor.Utils
                     con.ChangePassword(pwdT);
                     con.Close();
                 }
-                FillDataToDataSet(QueryAllSql, ds); // 加密完数据库后，重新读取数据
+                FillDataToDataSet(SqlUtils.GetQueryAllSql(), ds); // 加密完数据库后，重新读取数据
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.ToString());
                 return false;
             }
         }
@@ -98,9 +100,8 @@ namespace CardEditor.Utils
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.ToString());
                 return false;
             }
         }

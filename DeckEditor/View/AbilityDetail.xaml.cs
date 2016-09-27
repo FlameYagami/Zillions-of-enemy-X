@@ -23,7 +23,7 @@ namespace DeckEditor.View
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            DataCache.AbilityDetialEntity = CardUtils.GetAbilityDetialModel(LstAbilityDetail);
+            DataCache.AbilityDetialEntity = CardUtils.GetAbilityDetialEntity(LstAbilityDetail);
             Close();
         }
 

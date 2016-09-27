@@ -11,6 +11,12 @@
             Extra = 4
         }
 
+        public enum PreviewOrderType
+        {
+            Number = 0,
+            Value = 1
+        }
+
         public const string DbOpenError = "打开数据库->错误";
         public const string AddSucceed = "添加->成功";
         public const string AddFailed = "添加->失败";
@@ -32,7 +38,6 @@
         public const string ExportSucceed = "导出->成功";
         public const string ExportFailed = "导出->失败";
         public const string OrderNumber = "编号";
-        public const string OrderValue = "数值";
         public const string ModeQuery = "检索";
         public const string ModeEditor = "编辑";
         public const string ModeDevelop = "开发";
@@ -46,8 +51,5 @@
         public const string Series = "系列";
         public const string QueryResult = "检索结果: ";
         public const string SignIg = "点燃";
-        public const string AbilityLife = "【常】生命恢复";
-        public const string AbilityVoid = "【常】虚空使者";
-        public const string AbilityStart = "【常】起始卡";
     }
 }
