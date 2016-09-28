@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SQLite;
+using System.Windows;
 using CardEditor.Constant;
 using Common;
 
@@ -50,8 +51,9 @@ namespace CardEditor.Utils
                     cmd.ExecuteNonQuery();
                     con.Close();
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    MessageBox.Show(exception.Message);
                     return false;
                 }
                 return true;

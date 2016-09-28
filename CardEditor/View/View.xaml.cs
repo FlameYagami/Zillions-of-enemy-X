@@ -20,7 +20,7 @@ namespace CardEditor.View
         void SetCardEntity(CardEntity cardEntity);
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
-        void Reset();
+        void Reset(StringConst.ModeType modeType);
         void UpdateListView(List<PreviewEntity> previewEntityList, string number);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
@@ -146,26 +146,40 @@ namespace CardEditor.View
                 }
         }
 
-        public void Reset()
+        public void Reset(StringConst.ModeType modeType)
         {
-            foreach (var control in GridQuery.Children)
+            switch (modeType)
             {
-                var box = control as ComboBox;
-                if (box != null)
-                    box.Text = StringConst.NotApplicable;
-                var textBox = control as TextBox;
-                if (textBox != null)
-                    textBox.Text = string.Empty;
+                case StringConst.ModeType.Query:
+                    TxtNumber.Text = string.Empty;
+                    CmbPack.Text = StringConst.NotApplicable;
+                    break;
+                case StringConst.ModeType.Editor:
+                    break;
             }
+
+            TxtCName.Text = string.Empty;
+            TxtJName.Text = string.Empty;
+            TxtIllust.Text = string.Empty;
+            TxtCost.Text = string.Empty;
+            TxtPower.Text = string.Empty;
+            TxtAbility.Text = string.Empty;
+            TxtLines.Text = string.Empty;
+            TxtFaq.Text = string.Empty;
+
+            CmbType.Text = StringConst.NotApplicable;
+            CmbCamp.Text = StringConst.NotApplicable;
+            CmbRace.Text = StringConst.NotApplicable;
+            CmbSign.Text = StringConst.NotApplicable;
+            CmbRare.Text = StringConst.NotApplicable;
+            CmbRestrict.Text = StringConst.NotApplicable;
+
+            CmbRace.IsEnabled = false;
+
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
-            TxtAbility.Text = string.Empty;
-            TxtLines.Text = string.Empty;
-            TxtFaq.Text = string.Empty;
-            CmbRestrict.Text = StringConst.NotApplicable;
-            CmbRace.IsEnabled = false;
         }
 
         public void SetPicture(List<string> picturePathList)
@@ -208,10 +222,15 @@ namespace CardEditor.View
             LvwPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
             if (number.Equals(string.Empty)) return;
-            var position = previewEntityList
+            var firstOrDefault = previewEntityList
                 .Select((previewEntity, index) => new { Number = previewEntity.Number, Index = index })
-                .First(i => i.Number.Equals(number)).Index;
-            LvwPreview.SelectedIndex = position;
+                .FirstOrDefault(i => i.Number.Equals(number));
+            if (firstOrDefault != null)
+            {
+                var position = firstOrDefault.Index;
+                if (position == -1) return;
+                LvwPreview.SelectedIndex = position;
+            }
             LvwPreview.ScrollIntoView(LvwPreview.SelectedItem);
 
         }
@@ -325,7 +344,7 @@ namespace CardEditor.View
         /// <summary>重置</summary>
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.ResetClick();
+            _presenter.ResetClick(CmbMode.Text.Trim());
         }
 
         /// <summary>列表选择</summary>

@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="Z/X CardEditor" Height="650" Width="970" WindowStartupLocation="CenterScreen"
         Style="{DynamicResource BaseWindow}"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" Icon="../icon.ico">
     <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
         <Grid>
             <Grid.RowDefinitions>
@@ -176,7 +176,7 @@
                                     <RowDefinition Height="150" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0" Name="GridQuery" Margin="5,0,5,0">
+                                <Grid Grid.Row="0" Margin="5,0,5,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />

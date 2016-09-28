@@ -23,6 +23,18 @@ namespace CardEditor.Utils
                 : StringConst.PreviewOrderType.Value;
         }
 
+        /// <summary>
+        ///     获取模式的枚举类型
+        /// </summary>
+        /// <param name="mode">模式</param>
+        /// <returns></returns>
+        public static StringConst.ModeType GetModeType(string mode)
+        {
+            return mode.Equals(StringConst.ModeQuery)
+                ? StringConst.ModeType.Query
+                : mode.Equals(StringConst.ModeEditor) ? StringConst.ModeType.Editor : StringConst.ModeType.Develop;
+        }
+
         public static CardEntity GetCardEntity(string number)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows

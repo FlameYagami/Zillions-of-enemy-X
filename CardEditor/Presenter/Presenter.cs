@@ -18,7 +18,7 @@ namespace CardEditor.Presenter
         void PreviewChanged(int selectIndex);
         void QueryClick(string mode, string order, string pack);
         void ExitClick();
-        void ResetClick();
+        void ResetClick(string mode);
         void AddClick(string order);
         void DeleteClick(int selectIndex, string order);
         void UpdateClick(int selectIndex, string order);
@@ -101,19 +101,23 @@ namespace CardEditor.Presenter
         /// <summary>检索</summary>
         public void QueryClick(string mode, string order, string pack)
         {
+            var modeType = CardUtils.GetModeType(mode);
             var cardModel = _view.GetCardEntity();
-            if (mode.Equals(StringConst.ModeQuery))
+            switch (modeType)
             {
-                UpdateCacheAndUi(_query.GetQuerySql(cardModel, CardUtils.GetPreviewOrderType(order)));
-            }
-            else if (mode.Equals(StringConst.ModeEditor))
-            {
-                if (pack.Equals(string.Empty))
-                {
+                case StringConst.ModeType.Query:
+                    UpdateCacheAndUi(_query.GetQuerySql(cardModel, CardUtils.GetPreviewOrderType(order)));
+                    break;
+                case StringConst.ModeType.Editor:
+                    if (!pack.Equals(string.Empty))
+                    {
+                        UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
+                        return;
+                    }
                     BaseDialogUtils.ShowDlg(StringConst.PackChoiceNone);
-                    return;
-                }
-                UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
+                    break;
+                case StringConst.ModeType.Develop:
+                    break;
             }
         }
 
@@ -132,6 +136,7 @@ namespace CardEditor.Presenter
             if (SqliteUtils.Execute(sql))
             {
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+                Query.MemoryNumber = cardModel.Number; // 添加成功后记录添加的编号，以便显示位置
                 if (Query.MemoryQuerySql.Equals(string.Empty))
                 {
                     var cardEntity = _view.GetCardEntity();
@@ -150,9 +155,11 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>重置</summary>
-        public void ResetClick()
+        public void ResetClick(string mode)
         {
-            _view.Reset();
+            var modeType = CardUtils.GetModeType(mode);
+            Query.MemoryNumber = string.Empty;
+            _view.Reset(modeType);
         }
 
         /// <summary>更新</summary>
@@ -167,7 +174,6 @@ namespace CardEditor.Presenter
 
             var number = Query.PreviewList[selectIndex].Number;
             var updateSql = _query.GetUpdateSql(_view.GetCardEntity(), number);
-            MessageBox.Show(updateSql);
             if (SqliteUtils.Execute(updateSql))
             {
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
@@ -193,6 +199,7 @@ namespace CardEditor.Presenter
             if (SqliteUtils.Execute(deleteSql))
             {
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+                Query.MemoryNumber = string.Empty;// 删除成功后清空记录的编号，不显示位置
                 UpdateCacheAndUi(Query.MemoryQuerySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
                 BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
                 return;

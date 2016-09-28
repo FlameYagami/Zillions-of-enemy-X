@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Utils;
@@ -89,14 +90,14 @@ namespace CardEditor.Model
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Sign)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Rare)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Pack)}',");
-            builder.Append($"{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)},");
+            builder.Append($"'{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)}',");
 
             builder.Append($"'{cardEntity.CName}',");
             builder.Append($"'{cardEntity.JName}',");
             builder.Append($"'{cardEntity.Illust}',");
             builder.Append($"'{cardEntity.Number}',");
-            builder.Append($"{cardEntity.Cost},");
-            builder.Append($"{cardEntity.Power},");
+            builder.Append($"'{cardEntity.Cost}',");
+            builder.Append($"'{cardEntity.Power}',");
             builder.Append($"'{cardEntity.Ability}',");
             builder.Append($"'{cardEntity.Lines}',");
             builder.Append($"'{cardEntity.Faq}',");
