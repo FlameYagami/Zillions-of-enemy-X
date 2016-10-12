@@ -31,6 +31,7 @@ namespace DeckEditor.Model
             var filePathlist = CardUtils.GetThumbnailFilePathList();
             foreach (var row in dsPartCache.Tables[TableName].Rows.Cast<DataRow>())
             {
+                var name = row[ColumnCName].ToString();
                 var camp = row[ColumnCamp].ToString();
                 var race = row[ColumnRace].ToString();
                 race = race.Equals(string.Empty) ? StringConst.Hyphen : race;
@@ -45,6 +46,7 @@ namespace DeckEditor.Model
                 var restrictPath = CardUtils.GetRestrictPath(restrict);
                 DataCache.InfoColl.Add(new PreviewEntity
                 {
+                    CName = name,
                     CampAndRace = camp + " / " + race,
                     PowerAndCost = power + " / "+ cost,
                     Number = number,

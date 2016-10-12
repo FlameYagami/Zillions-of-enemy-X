@@ -2,6 +2,7 @@
 {
     public class PreviewEntity
     {
+        public string CName { get; set; }
         public string ImagePath { get; set; }
         public string CampAndRace { get; set; }
         public string PowerAndCost { get; set; }
