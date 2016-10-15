@@ -77,7 +77,8 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0" Text="检索">
+                                <ComboBox Name="CmbMode" Grid.Column="1" Grid.Row="0" Text="检索"
+                                          TextBoxBase.TextChanged="CmbMode_TextChanged">
                                     <ComboBoxItem>检索</ComboBoxItem>
                                     <ComboBoxItem>编辑</ComboBoxItem>
                                     <ComboBoxItem>开发</ComboBoxItem>
@@ -259,7 +260,7 @@
                                              VerticalContentAlignment="Center" />
                                     <TextBox Name="TxtIllust" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2"
                                              VerticalContentAlignment="Center" />
-                                    <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="3"
+                                    <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="3" IsEditable="True"
                                               TextBoxBase.TextChanged="CmbPack_TextChanged" />
                                     <Label Name="LblNumber" Grid.Column="2" Grid.Row="4"
                                            Style="{DynamicResource LblCenter}" Content="卡编" />

@@ -36,6 +36,8 @@ namespace CardEditor.View
     {
         private readonly IPresenter _presenter;
 
+        private bool IsPreviewChanged { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -108,6 +110,7 @@ namespace CardEditor.View
 
         public void SetCardEntity(CardEntity cardEntity)
         {
+            IsPreviewChanged = true;
             CmbType.Text = cardEntity.Type;
             CmbCamp.Text = cardEntity.Camp;
             CmbRace.Text = cardEntity.Race;
@@ -144,6 +147,8 @@ namespace CardEditor.View
                     checkbox.IsChecked = abilityDetailItem.Value.Equals(1);
                     break;
                 }
+            UpdateTypeLinkage(cardEntity.Type);
+            IsPreviewChanged = false;
         }
 
         public void Reset(StringConst.ModeType modeType)
@@ -338,7 +343,7 @@ namespace CardEditor.View
         /// <summary>查询</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.QueryClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim(), CmbPack.Text.Trim());
+            _presenter.QueryClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
         /// <summary>重置</summary>
@@ -383,24 +388,28 @@ namespace CardEditor.View
         /// <summary>能力文本改变事件</summary>
         private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (IsPreviewChanged) return;
             _presenter.AbilityChanged(TxtAbility.Text.Trim());
         }
 
-        /// <summary>类型选择（因为Style关系,下拉不会触发改事件）</summary>
+        /// <summary>类型选择</summary>
         private void CmbType_TextChanged(object sender, RoutedEventArgs e)
         {
+            if (IsPreviewChanged) return;
             _presenter.TypeChanged(CmbType.Text.Trim());
         }
 
         /// <summary>阵营选择</summary>
         private void CmbCamp_TextChanged(object sender, EventArgs e)
         {
+            if (IsPreviewChanged) return;
             _presenter.CampChanged(CmbCamp.Text.Trim());
         }
 
         /// <summary>卡包选择</summary>
         private void CmbPack_TextChanged(object sender, RoutedEventArgs e)
         {
+            if (IsPreviewChanged) return;
             _presenter.PackChanged(CmbPack.Text.Trim());
         }
 
@@ -415,6 +424,11 @@ namespace CardEditor.View
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
+        }
+
+        private void CmbMode_TextChanged(object sender, RoutedEventArgs e)
+        {
+            _presenter.ModeChanged(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
     }
 }

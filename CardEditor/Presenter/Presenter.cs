@@ -16,7 +16,7 @@ namespace CardEditor.Presenter
         void CampChanged(string camp);
         void OrderChanged(string order);
         void PreviewChanged(int selectIndex);
-        void QueryClick(string mode, string order, string pack);
+        void QueryClick(string mode, string order);
         void ExitClick();
         void ResetClick(string mode);
         void AddClick(string order);
@@ -27,6 +27,7 @@ namespace CardEditor.Presenter
         void Init();
         void ExportClick(string pack);
         void AbilityChanged(string ability);
+        void ModeChanged(string mode,string order);
     }
 
     internal class Presenter : IPresenter
@@ -87,6 +88,12 @@ namespace CardEditor.Presenter
             _view.UpdateCampLinkage(CardUtils.GetPartRace(camp));
         }
 
+        public void AbilityChanged(string ability)
+        {
+            var abilityType = _query.AnalysisAbility(ability);
+            _view.UpdateAbilityLinkage(abilityType);
+        }
+
         public void PreviewChanged(int selectIndex)
         {
             if (selectIndex.Equals(-1)) return;
@@ -99,7 +106,7 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>检索</summary>
-        public void QueryClick(string mode, string order, string pack)
+        public void QueryClick(string mode, string order)
         {
             var modeType = CardUtils.GetModeType(mode);
             var cardModel = _view.GetCardEntity();
@@ -109,7 +116,7 @@ namespace CardEditor.Presenter
                     UpdateCacheAndUi(_query.GetQuerySql(cardModel, CardUtils.GetPreviewOrderType(order)));
                     break;
                 case StringConst.ModeType.Editor:
-                    if (!pack.Equals(string.Empty))
+                    if (!cardModel.Pack.Equals(string.Empty))
                     {
                         UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
                         return;
@@ -252,12 +259,6 @@ namespace CardEditor.Presenter
             BaseDialogUtils.ShowDlgOk(StringConst.DncryptFailed);
         }
 
-        public void AbilityChanged(string ability)
-        {
-            var abilityType = _query.AnalysisAbility(ability);
-            _view.UpdateAbilityLinkage(abilityType);
-        }
-
         /// <summary>
         ///     更新全部数据集合以及ListView
         /// </summary>
@@ -267,6 +268,24 @@ namespace CardEditor.Presenter
             SqliteUtils.FillDataToDataSet(sql, DataCache.DsPartCache);
             _query.SetCardList();
             _view.UpdateListView(Query.PreviewList, Query.MemoryNumber);
+        }
+
+        public void ModeChanged(string mode, string order)
+        {
+            var modeType = CardUtils.GetModeType(mode);
+            var cardModel = _view.GetCardEntity();
+            switch (modeType)
+            {
+                case StringConst.ModeType.Editor:
+                    {
+                        if (!cardModel.Pack.Equals(string.Empty))
+                        {
+                            UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
+                            return;
+                        }
+                        break;
+                    }
+            }
         }
     }
 }

@@ -39,6 +39,7 @@ namespace CardEditor.Utils
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
+                .AsParallel()
                 .First(column => column[ColumnNumber].Equals(number));
             return new CardEntity
             {
@@ -73,9 +74,11 @@ namespace CardEditor.Utils
         {
             var theFolder = new DirectoryInfo(Const.PicturePath);
             var fileInfo = theFolder.GetFiles();
-            return
-                (from nextFile in fileInfo where nextFile.Name.Contains(number) select nextFile.FullName).OrderBy(
-                    path => path.Length).ToList();
+            return fileInfo.AsParallel()
+                .Where(nextFile => nextFile.Name.Contains(number))
+                .Select(nextFile => nextFile.FullName)
+                .OrderBy(path => path.Length)
+                .ToList();
         }
 
         public static bool IsNumberExist(string number)
@@ -134,7 +137,11 @@ namespace CardEditor.Utils
                 return string.Empty;
             if (pack.Contains(StringConst.Series))
                 return pack.Substring(0, 1) + "XX-";
-            return pack.Substring(0, 3) + "-";
+            if (pack.Length >= 3)
+            {
+                return pack.Substring(0, 3) + "-";
+            }
+            return string.Empty;
         }
     }
 }
