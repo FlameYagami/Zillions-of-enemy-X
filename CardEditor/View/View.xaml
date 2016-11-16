@@ -236,6 +236,7 @@
                                         <ComboBoxItem>CVR</ComboBoxItem>
                                         <ComboBoxItem>IGR</ComboBoxItem>
                                         <ComboBoxItem>ZX/R</ComboBoxItem>
+                                        <ComboBoxItem>DR</ComboBoxItem>
                                         <ComboBoxItem>UR</ComboBoxItem>
                                         <ComboBoxItem>SR</ComboBoxItem>
                                         <ComboBoxItem>R</ComboBoxItem>
