@@ -43,10 +43,8 @@ namespace CardEditor.Utils
         public static bool Execute(string sql)
         {
             var pwd = StringUtils.Decrypt(ConfigUtils.Get(DatabasePassword));
-            ;
             using (var con = new SQLiteConnection(DatabasePath))
             {
-                SQLiteTransaction tran = con.BeginTransaction();
                 try
                 {
                     con.SetPassword(pwd);
@@ -54,12 +52,10 @@ namespace CardEditor.Utils
                     var cmd = new SQLiteCommand(sql, con);
                     cmd.ExecuteNonQuery();
                     con.Close();
-                    tran.Commit();
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show(exception.Message);
-                    tran.Rollback();
                     return false;
                 }
                 return true;

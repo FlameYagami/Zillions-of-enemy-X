@@ -197,7 +197,14 @@ namespace CardEditor.View
                 if (i < picturePathList.Count)
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
-                    imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
+                    try
+                    {
+                        imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
+                    }
+                    catch(Exception)
+                    {
+                        imageList[i].Source = new BitmapImage();
+                    }
                 }
                 else
                 {
