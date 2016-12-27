@@ -20,27 +20,9 @@
         public const string ColumnLimit = "Restrict";
         public const string ColumnLines = "Lines";
         public const string ColumnFaq = "Faq";
+        public const string ColumnImage = "Image";
         public const string ColumnAbility = "Ability";
         public const string ColumnAbilityDetail = "AbilityDetail"; // 存放Json数据的字段
-
-        public const string ColumnAll = " (" + 
-            ColumnType + "," + 
-            ColumnCamp + "," +
-            ColumnRace + "," + 
-            ColumnSign + "," + 
-            ColumnRare + "," +
-            ColumnPack + "," + 
-            ColumnRestrict + ","+ 
-            ColumnCName + "," + 
-            ColumnJName + "," + 
-            ColumnIllust + "," + 
-            ColumnNumber + "," + 
-            ColumnCost + "," +
-            ColumnPower + "," + 
-            ColumnAbility + "," +
-            ColumnLines + "," + 
-            ColumnFaq + "," + 
-            ColumnAbilityDetail + ")";
 
         public static string[] ColumKeyArray =
         {

@@ -28,7 +28,6 @@ namespace DeckEditor.Model
         public void SetCardList(DataSet dsPartCache)
         {
             DataCache.InfoColl.Clear();
-            var filePathlist = CardUtils.GetThumbnailFilePathList();
             foreach (var row in dsPartCache.Tables[TableName].Rows.Cast<DataRow>())
             {
                 var name = row[ColumnCName].ToString();
@@ -41,8 +40,8 @@ namespace DeckEditor.Model
                 power = power.Equals(string.Empty) || power.Equals("0") ? StringConst.Hyphen : power;
                 var number = row[ColumnNumber].ToString();
                 var restrict = row[ColumnRestrict].ToString();
-                var thumbnailPathList = CardUtils.GetThumbnailPathList(number, filePathlist);
-                var imagePath = thumbnailPathList.Count.Equals(0) ? string.Empty : thumbnailPathList[0];
+                var imageJson = row[ColumnImage].ToString();
+                var imagePath = CardUtils.GetThumbnailPathList(imageJson)[0];
                 var restrictPath = CardUtils.GetRestrictPath(restrict);
                 DataCache.InfoColl.Add(new PreviewEntity
                 {
@@ -50,6 +49,7 @@ namespace DeckEditor.Model
                     CampAndRace = camp + " / " + race,
                     PowerAndCost = power + " / "+ cost,
                     Number = number,
+                    ImageJson = imageJson,
                     ImagePath = imagePath,
                     RestrictPath = restrictPath
                 });

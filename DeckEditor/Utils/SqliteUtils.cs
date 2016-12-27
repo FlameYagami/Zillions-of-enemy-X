@@ -29,7 +29,7 @@ namespace DeckEditor.Utils
                     dap.Fill(dts, SqliteConst.TableName);
                     con.Close();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     return false;
                 }

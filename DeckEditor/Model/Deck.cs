@@ -14,7 +14,6 @@ namespace DeckEditor.Model
 {
     internal interface IDeck
     {
-        string GetAddThumbnailPath(string number, int selectIndex);
         StringConst.AreaType AddCard(StringConst.AreaType areaType, string number, string thumbnailPath);
         void DeleteEntityFromColl(string number, ICollection<DeckEntity> collection);
         void Order(StringConst.DeckOrderType value);
@@ -68,10 +67,10 @@ namespace DeckEditor.Model
             return StringConst.AreaType.None;
         }
 
-        public void DeleteEntityFromColl(string number, ICollection<DeckEntity> collection)
+        public void DeleteEntityFromColl(string numberEx, ICollection<DeckEntity> collection)
         {
             var deckEntity = collection.AsParallel()
-                .First(tempDeckEntity => tempDeckEntity.Number.Equals(number));
+                .First(tempDeckEntity => tempDeckEntity.NumberEx.Equals(numberEx));
             collection.Remove(deckEntity);
         }
 
@@ -92,18 +91,6 @@ namespace DeckEditor.Model
             }
         }
 
-        /// <summary>
-        ///     获取TcImg选中项中的缩略图路径
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <param name="selectIndex">TcImg选中索引</param>
-        /// <returns>缩略图路径</returns>
-        public string GetAddThumbnailPath(string number, int selectIndex)
-        {
-            var thumbnailFilePathList = CardUtils.GetThumbnailFilePathList();
-            return CardUtils.GetThumbnailPathList(number, thumbnailFilePathList)[selectIndex];
-        }
-
         public bool Save(string deckName)
         {
             if (deckName.Equals(string.Empty))
@@ -116,10 +103,10 @@ namespace DeckEditor.Model
             var sw = new StreamWriter(fs);
             var deckBuilder = new StringBuilder();
             var deckNumberList = new List<string>();
-            deckNumberList.AddRange(DataCache.PlColl.Select(deckEntity => deckEntity.Number).ToList());
-            deckNumberList.AddRange(DataCache.IgColl.Select(deckEntity => deckEntity.Number).ToList());
-            deckNumberList.AddRange(DataCache.UgColl.Select(deckEntity => deckEntity.Number).ToList());
-            deckNumberList.AddRange(DataCache.ExColl.Select(deckEntity => deckEntity.Number).ToList());
+            deckNumberList.AddRange(DataCache.PlColl.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(DataCache.IgColl.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(DataCache.UgColl.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(DataCache.ExColl.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.JsonSerializer(deckNumberList));
             sw.Write(deckBuilder.ToString());
             sw.Close();
@@ -194,24 +181,26 @@ namespace DeckEditor.Model
             return dekcStatisticalDic;
         }
 
-        private static void AddEntityToColl(string number, string thumbnailPath, ICollection<DeckEntity> collection)
+        private static void AddEntityToColl(string numberEx, string thumbnailPath, ICollection<DeckEntity> collection)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
-                .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
+                .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             var name = row[ColumnCName].ToString();
             var camp = row[ColumnCamp].ToString();
             var cost = row[ColumnCost].ToString();
             var power = row[ColumnPower].ToString();
             var limit = row[ColumnLimit].ToString();
+            var imageJson = row[ColumnImage].ToString();
             var restrictPath = CardUtils.GetRestrictPath(limit);
             var deckEntity = new DeckEntity
             {
                 Camp = camp,
                 Cost = cost.Equals(string.Empty) ? 0 : int.Parse(cost),
                 Power = power.Equals(string.Empty) ? 0 : int.Parse(power),
-                Number = number,
+                NumberEx = numberEx,
                 CName = name,
                 ImagePath = thumbnailPath,
+                ImageJson = imageJson,
                 RestrictPath = restrictPath
             };
             collection.Add(deckEntity);
@@ -223,7 +212,7 @@ namespace DeckEditor.Model
                 .OrderBy(tempDeckEntity => tempDeckEntity.Camp)
                 .ThenByDescending(tempDeckEntity => tempDeckEntity.Cost)
                 .ThenByDescending(tempDeckEntity => tempDeckEntity.Power)
-                .ThenBy(tempDeckEntity => tempDeckEntity.Number)
+                .ThenBy(tempDeckEntity => tempDeckEntity.NumberEx)
                 .ToList();
             deckEntityList.Clear();
             deckEntityList.AddRange(tempDeckEntityList);
@@ -280,11 +269,11 @@ namespace DeckEditor.Model
             {
                 case StringConst.IgType.Life:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.Number)) < 4);
+                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) < 4);
                     break;
                 case StringConst.IgType.Void:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.Number)) < 4);
+                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) < 4);
                     break;
                 case StringConst.IgType.Normal:
                     break;

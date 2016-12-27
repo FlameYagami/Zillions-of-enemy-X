@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Model;
+using Common;
 
 namespace DeckEditor.Utils
 {
@@ -62,13 +63,12 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns>../B01-001.JPG && ../B01-001SP.JPG</returns>
-        public static List<string> GetPicturePathList(string number)
+        public static List<string> GetPicturePathList(string imageJson)
         {
-            var theFolder = new DirectoryInfo(Const.PicturePath);
-            var fileInfo = theFolder.GetFiles();
-            return
-                (from nextFile in fileInfo.AsParallel() where nextFile.Name.Contains(number) select nextFile.FullName)
-                    .OrderBy(path => path.Length).ToList();
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(imageEx => Const.PicturePath + imageEx)
+                .ToList();
         }
 
         /// <summary>
@@ -76,23 +76,12 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns></returns>
-        public static List<string> GetNumberList(string number)
+        public static List<string> GetNumberExList(string imageJson)
         {
-            var theFolder = new DirectoryInfo(Const.PicturePath);
-            var fileInfo = theFolder.GetFiles();
-            return
-                (from nextFile in fileInfo.AsParallel() where nextFile.Name.Contains(number) select nextFile.Name)
-                    .OrderBy(path => path.Length).ToList();
-        }
-
-        /// <summary>
-        ///     获取小图路径集合
-        /// </summary>
-        /// <returns></returns>
-        public static List<string> GetThumbnailFilePathList()
-        {
-            var theFolder = new DirectoryInfo(Const.ThumbnailPath);
-            return theFolder.GetFiles().AsParallel().Select(file => file.FullName).ToList();
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(imageEx => imageEx.Replace("/","").Replace(StringConst.ImageExtension,""))
+                .ToList();
         }
 
         /// <summary>
@@ -101,15 +90,12 @@ namespace DeckEditor.Utils
         /// <param name="number">卡编</param>
         /// <param name="thumbnailFilePathList">小图路径集合</param>
         /// <returns></returns>
-        public static List<string> GetThumbnailPathList(string number, List<string> thumbnailFilePathList)
+        public static List<string> GetThumbnailPathList(string imageJson)
         {
-            var tempList = thumbnailFilePathList.AsParallel()
-                .Where(nextInfoPath => nextInfoPath.Contains(number))
-                .OrderBy(path => path.Length)
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(imageEx => Const.ThumbnailPath + imageEx)
                 .ToList();
-            if (tempList.Count.Equals(0))
-                tempList.Add(Const.ThumbnailUnknownPath);
-            return tempList;
         }
 
         /// <summary>
@@ -324,9 +310,9 @@ namespace DeckEditor.Utils
         {
             var list = new List<int>
             {
-                DataCache.UgColl.AsParallel().Count(deckEntity => IsStart(deckEntity.Number)),
-                DataCache.IgColl.AsParallel().Count(deckEntity => IsLife(deckEntity.Number)),
-                DataCache.IgColl.AsParallel().Count(deckEntity => IsVoid(deckEntity.Number))
+                DataCache.UgColl.AsParallel().Count(deckEntity => IsStart(deckEntity.NumberEx)),
+                DataCache.IgColl.AsParallel().Count(deckEntity => IsLife(deckEntity.NumberEx)),
+                DataCache.IgColl.AsParallel().Count(deckEntity => IsVoid(deckEntity.NumberEx))
             };
             return list;
         }

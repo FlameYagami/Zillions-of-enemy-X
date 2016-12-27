@@ -8,6 +8,8 @@ using DeckEditor.Model;
 using DeckEditor.Utils;
 using DeckEditor.View;
 using Dialog;
+using Common;
+using System.Collections.Generic;
 
 namespace DeckEditor.Presenter
 {
@@ -133,48 +135,48 @@ namespace DeckEditor.Presenter
             var infoMode = DataCache.InfoColl[selectIndex];
             var number = infoMode.Number;
             var cardmodel = CardUtils.GetCardEntity(number);
-            var numberList = CardUtils.GetNumberList(number);
-            var picturePathList = CardUtils.GetPicturePathList(number);
+            var numberExList = CardUtils.GetNumberExList(infoMode.ImageJson);
+            var picturePathList = CardUtils.GetPicturePathList(infoMode.ImageJson);
             _view.SetCardModel(cardmodel);
-            _view.SetPicture(numberList, picturePathList);
+            _view.SetPicture(numberExList, picturePathList);
         }
 
         public void PreviewMouseRightClick(Grid grid, int selectIndex)
         {
-            var lblNumber = (Label) grid?.FindName(StringConst.LblPreviewNumber);
-            if (lblNumber == null) return;
-            var number = lblNumber.Content.ToString();
-            var thumbnailPath = _deck.GetAddThumbnailPath(number, selectIndex);
-
-            BaseAdd(number, thumbnailPath);
+            var lblImageJson = (Label)grid?.FindName(StringConst.LblPreviewImageJson);
+            if (lblImageJson == null) return;
+            var imageJson = lblImageJson.Content.ToString();
+            var numberEx = JsonUtils.JsonDeserialize<List<string>>(imageJson)[selectIndex].Replace("/","").Replace(StringConst.ImageExtension,"");
+            var thumbnailPath = $"{Const.ThumbnailPath}/{ numberEx}{StringConst.ImageExtension}";
+            BaseAdd(numberEx, thumbnailPath);
         }
 
         public void ImgAreaMouseRightClick(Grid grid)
         {
-            var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
+            var label = (Label) grid?.FindName(StringConst.LblAreaNumberEx);
             if (label == null) return;
-            var number = label.Content.ToString();
-
-            var areaType = CardUtils.GetAreaType(number);
+            var numberEx = label.Content.ToString();
+            var areaType = CardUtils.GetAreaType(numberEx);
+            
             // 删除非玩家卡
             switch (areaType)
             {
                 case StringConst.AreaType.Pl:
-                    _deck.DeleteEntityFromColl(number, DataCache.PlColl);
+                    _deck.DeleteEntityFromColl(numberEx, DataCache.PlColl);
                     _view.UpdateDeckListView(areaType, DataCache.PlColl);
                     break;
                 case StringConst.AreaType.Ig:
-                    _deck.DeleteEntityFromColl(number, DataCache.IgColl);
+                    _deck.DeleteEntityFromColl(numberEx, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ug:
-                    _deck.DeleteEntityFromColl(number, DataCache.UgColl);
+                    _deck.DeleteEntityFromColl(numberEx, DataCache.UgColl);
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
                 case StringConst.AreaType.Ex:
-                    _deck.DeleteEntityFromColl(number, DataCache.ExColl);
+                    _deck.DeleteEntityFromColl(numberEx, DataCache.ExColl);
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
             }
@@ -182,14 +184,16 @@ namespace DeckEditor.Presenter
 
         public void ImgAreaMouseLeftClick(Grid grid)
         {
-            var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
-            if (label == null) return;
-            var number = label.Content.ToString();
-            var cardmodel = CardUtils.GetCardEntity(number);
-            var numberList = CardUtils.GetNumberList(number);
-            var picturePathList = CardUtils.GetPicturePathList(number);
+            var label = (Label) grid?.FindName(StringConst.LblAreaNumberEx);
+            var lblAreaImageJson = (Label)grid?.FindName(StringConst.LblAreaImageJson);
+            if (label == null || lblAreaImageJson == null) return;
+            var numberEx = label.Content.ToString();
+            var imageJson = lblAreaImageJson.Content.ToString();
+            var cardmodel = CardUtils.GetCardEntity(numberEx);
+            var numberExList = CardUtils.GetNumberExList(imageJson);
+            var picturePathList = CardUtils.GetPicturePathList(imageJson);
             _view.SetCardModel(cardmodel);
-            _view.SetPicture(numberList, picturePathList);
+            _view.SetPicture(numberExList, picturePathList);
         }
 
         public void PictureMouseRightClick(Image image)
@@ -234,7 +238,7 @@ namespace DeckEditor.Presenter
 
         public void ImgAreaMouseDoubleClick(Grid grid)
         {
-            var label = (Label) grid?.FindName(StringConst.LblAreaNumber);
+            var label = (Label) grid?.FindName(StringConst.LblAreaNumberEx);
             var image = (Image)grid?.FindName(StringConst.ImgAreaThumbnail);
             if (label == null  || image == null) return;
 

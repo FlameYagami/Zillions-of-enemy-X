@@ -161,7 +161,7 @@ namespace DeckEditor.View
                 if (i < picturePathList.Count)
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
-                    imageList[i].Tag = numberList[i].Replace(StringConst.ImageExtension, "");
+                    imageList[i].Tag = numberList[i];
                     imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
                 }
                 else

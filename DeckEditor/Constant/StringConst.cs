@@ -55,8 +55,9 @@
         public const string DeckExtension = ".zx";
         public const string ImageExtension = ".jpg";
 
-        public const string LblPreviewNumber = "LblPreviewNumber";
-        public const string LblAreaNumber = "LblAreaNumber";
+        public const string LblPreviewImageJson = "LblPreviewImageJson";
+        public const string LblAreaImageJson = "LblAreaImageJson";
+        public const string LblAreaNumberEx = "LblAreaNumberEx";
         public const string ImgAreaThumbnail = "ImgAreaThumbnail";
     }
 }

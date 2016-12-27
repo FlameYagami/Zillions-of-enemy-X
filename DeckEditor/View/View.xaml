@@ -316,7 +316,9 @@
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumber" Content="{Binding Number}"
+                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
+                                                   Visibility="Collapsed" />
+                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
                                                    Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
@@ -340,7 +342,9 @@
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumber" Content="{Binding Number}"
+                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
+                                                   Visibility="Collapsed" />
+                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
                                                    Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
@@ -364,7 +368,9 @@
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumber" Content="{Binding Number}"
+                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
+                                                   Visibility="Collapsed" />
+                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
                                                    Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
@@ -418,7 +424,7 @@
                                                            HorizontalAlignment="Center" Height="20"
                                                            LineStackingStrategy="BlockLineHeight"
                                                            Text="{Binding PowerAndCost}" />
-                                                    <Label Name="LblPreviewNumber" Content="{Binding Number}"
+                                                    <Label Name="LblPreviewImageJson" Content="{Binding ImageJson}"
                                                        Visibility="Collapsed" />
                                                 </StackPanel>
                                             </Grid>
