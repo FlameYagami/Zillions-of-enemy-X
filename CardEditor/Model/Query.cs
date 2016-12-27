@@ -91,7 +91,6 @@ namespace CardEditor.Model
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Rare)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Pack)}',");
             builder.Append($"'{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)}',");
-
             builder.Append($"'{cardEntity.CName}',");
             builder.Append($"'{cardEntity.JName}',");
             builder.Append($"'{cardEntity.Illust}',");
@@ -101,6 +100,7 @@ namespace CardEditor.Model
             builder.Append($"'{cardEntity.Ability}',");
             builder.Append($"'{cardEntity.Lines}',");
             builder.Append($"'{cardEntity.Faq}',");
+            builder.Append($"'{JsonUtils.JsonSerializer(new List<string> { cardEntity.Image })}',");
             builder.Append($"'{JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity)}'"); // 详细能力处理
             builder.Append(")");
             return builder.ToString();
@@ -118,12 +118,14 @@ namespace CardEditor.Model
                 cost = cost.Equals(string.Empty) || cost.Equals("0")  ? StringConst.Hyphen : cost;
                 var power = row[ColumnPower].ToString();
                 power = power.Equals(string.Empty) || power.Equals("0") ? StringConst.Hyphen : power;
+                var imageJson = row[ColumnImage].ToString();
                 PreviewList.Add(new PreviewEntity
                 {
                     CName = row[ColumnCName].ToString(),
                     Cost = cost,
                     Power = power,
-                    Number = row[ColumnNumber].ToString()
+                    Number = row[ColumnNumber].ToString(),
+                    ImageJson = imageJson
                 });
             }
         }
@@ -165,6 +167,7 @@ namespace CardEditor.Model
             builder.Append($"{ColumnAbility}= '{cardEntity.Ability}',");
             builder.Append($"{ColumnLines}= '{cardEntity.Lines}',");
             builder.Append($"{ColumnFaq}= '{cardEntity.Faq}',");
+            builder.Append($"{ColumnImage}= '{JsonUtils.JsonSerializer(new List<string> { cardEntity.Image })}',");
             builder.Append($"{ColumnAbilityDetail}= '{JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity)}'");
                 // 详细能力处理
             builder.Append($" WHERE {ColumnNumber}='{number}'");

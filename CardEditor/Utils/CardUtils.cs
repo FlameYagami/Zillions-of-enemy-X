@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using CardEditor.Constant;
 using CardEditor.Entity;
 using CardEditor.Model;
+using Common;
 
 namespace CardEditor.Utils
 {
@@ -70,14 +71,11 @@ namespace CardEditor.Utils
             return abilityDetialEntity;
         }
 
-        public static List<string> GetPicturePathList(string number)
+        public static List<string> GetPicturePathList(string imageJson)
         {
-            var theFolder = new DirectoryInfo(Const.PicturePath);
-            var fileInfo = theFolder.GetFiles();
-            return fileInfo.AsParallel()
-                .Where(nextFile => nextFile.Name.Contains(number))
-                .Select(nextFile => nextFile.FullName)
-                .OrderBy(path => path.Length)
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(imageEx => Const.PicturePath + imageEx)
                 .ToList();
         }
 
@@ -142,6 +140,14 @@ namespace CardEditor.Utils
                 return pack.Substring(0, 3) + "-";
             }
             return string.Empty;
+        }
+
+        public static List<string> GetPciturePathList()
+        {
+            var numberList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+                .Select(column => $"Update TableCard Set Image = '{JsonUtils.JsonSerializer(new List<string> { "/" + column[ColumnNumber].ToString() + ".jpg" })}' WHERE Number='{column[ColumnNumber].ToString()}'")
+                .ToList();
+            return numberList;
         }
     }
 }

@@ -49,7 +49,8 @@
                                         <Label Content="{Binding CName}" Width="155" />
                                         <Label Content="{Binding Power}" Width="40" HorizontalContentAlignment="Center" />
                                         <Label Content="{Binding Cost}" Width="20" HorizontalContentAlignment="Center" />
-                                        <Label Content="{Binding Number}" Width="0" />
+                                        <Label Content="{Binding Number}" Width="0"/>
+                                        <Label Content="{Binding ImageJson}" Width="0" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -92,16 +93,16 @@
                                     <ComboBoxItem>20</ComboBoxItem>
                                     <ComboBoxItem>30</ComboBoxItem>
                                 </ComboBox>
-                                <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制"
+                                <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制:"
                                        Style="{DynamicResource LblCenter}" />
                             </Grid>
                         </Border>
                         <Border Style="{DynamicResource ControlBorder}" Margin="5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="85" />
+                                    <ColumnDefinition Width="86*" />
+                                    <ColumnDefinition Width="85*" />
                                 </Grid.ColumnDefinitions>
                                 <Label Name="LblPassword" Grid.Column="0" Content="输入密码:"
                                        Style="{DynamicResource LblCenter}" />

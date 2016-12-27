@@ -19,6 +19,7 @@
         public const string ColumnPower = "Power";
         public const string ColumnLines = "Lines";
         public const string ColumnFaq = "Faq";
+        public const string ColumnImage = "Image";
         public const string ColumnAbility = "Ability";
         public const string ColumnAbilityDetail = "AbilityDetail";
 
@@ -39,6 +40,7 @@
                                          ColumnAbility + "," +
                                          ColumnLines + "," +
                                          ColumnFaq + "," +
+                                         ColumnImage + "," +
                                          ColumnAbilityDetail + ")";
     }
 }

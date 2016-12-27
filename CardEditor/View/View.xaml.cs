@@ -11,6 +11,7 @@ using CardEditor.Entity;
 using CardEditor.Presenter;
 using CardEditor.Utils;
 using Common;
+using CardEditor.Model;
 
 namespace CardEditor.View
 {
@@ -99,6 +100,7 @@ namespace CardEditor.View
                 Ability = TxtAbility.Text.Trim(),
                 Lines = TxtLines.Text.Trim(),
                 Faq = TxtFaq.Text.Trim(),
+                Image = $"/{TxtNumber.Text.Trim()}.jpg",
                 AbilityType =
                     SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
                 AbilityDetail =
@@ -320,6 +322,10 @@ namespace CardEditor.View
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
+            //var sqlList = CardUtils.GetPciturePathList();
+            //MessageBox.Show(sqlList[0]);
+            //var succeed = SqliteUtils.Execute(sqlList);
+            //MessageBox.Show(succeed ? "Succced" : "Failed");
         }
 
         /// <summary>添加</summary>

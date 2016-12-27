@@ -99,7 +99,7 @@ namespace CardEditor.Presenter
             if (selectIndex.Equals(-1)) return;
             var previewEntity = Query.PreviewList[selectIndex];
             var cardEntity = CardUtils.GetCardEntity(previewEntity.Number);
-            var picturePathList = CardUtils.GetPicturePathList(previewEntity.Number);
+            var picturePathList = CardUtils.GetPicturePathList(previewEntity.ImageJson);
             Query.MemoryNumber = previewEntity.Number;
             _view.SetCardEntity(cardEntity);
             _view.SetPicture(picturePathList);

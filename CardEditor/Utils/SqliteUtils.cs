@@ -4,6 +4,8 @@ using System.Data.SQLite;
 using System.Windows;
 using CardEditor.Constant;
 using Common;
+using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace CardEditor.Utils
 {
@@ -41,8 +43,10 @@ namespace CardEditor.Utils
         public static bool Execute(string sql)
         {
             var pwd = StringUtils.Decrypt(ConfigUtils.Get(DatabasePassword));
+            ;
             using (var con = new SQLiteConnection(DatabasePath))
             {
+                SQLiteTransaction tran = con.BeginTransaction();
                 try
                 {
                     con.SetPassword(pwd);
@@ -50,11 +54,46 @@ namespace CardEditor.Utils
                     var cmd = new SQLiteCommand(sql, con);
                     cmd.ExecuteNonQuery();
                     con.Close();
+                    tran.Commit();
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show(exception.Message);
+                    tran.Rollback();
                     return false;
+                }
+                return true;
+            }
+        }
+
+        public static bool Execute(List<string> sqlList)
+        {
+            var pwd = StringUtils.Decrypt(ConfigUtils.Get(DatabasePassword));
+            using (var con = new SQLiteConnection(DatabasePath))
+            {
+                con.SetPassword(pwd);
+                con.Open();
+                using (SQLiteTransaction trans = con.BeginTransaction())
+                {
+                    using (SQLiteCommand cmd = new SQLiteCommand(con))
+                    {
+                        try
+                        {
+                            cmd.Transaction = trans;
+                            foreach (var sql in sqlList)
+                            {
+                                cmd.CommandText = sql;
+                                cmd.ExecuteNonQuery();
+                            }
+                            trans.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            trans.Rollback();
+                            return false;
+                        }
+                    }
                 }
                 return true;
             }
