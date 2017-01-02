@@ -94,7 +94,7 @@ namespace DeckEditor.Utils
         {
             var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
             return imageExList.AsParallel()
-                .Select(imageEx => Const.ThumbnailPath + imageEx)
+                .Select(imageEx => File.Exists(Const.ThumbnailPath + imageEx)? Const.ThumbnailPath + imageEx : Const.ThumbnailUnknownPath)
                 .ToList();
         }
 
@@ -218,7 +218,10 @@ namespace DeckEditor.Utils
                         campUriList.Add(campItem.Value);
                         break;
                     }
-            if (!camp.Contains('/')) campUriList.Add(string.Empty);
+            while(campUriList.Count < 5)
+            {
+                campUriList.Add(string.Empty);
+            }
             return campUriList;
         }
 

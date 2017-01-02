@@ -11,6 +11,7 @@ using DeckEditor.Entity;
 using DeckEditor.Model;
 using DeckEditor.Presenter;
 using DeckEditor.Utils;
+using System.IO;
 
 namespace DeckEditor.View
 {
@@ -119,22 +120,14 @@ namespace DeckEditor.View
             LblIFaq.Text = cardmodel.Faq;
             var signUri = CardUtils.GetSignPath(cardmodel.Sign);
             var campUriList = CardUtils.GetCampPathList(cardmodel.Camp);
+            var imageCampList = new List<Image> { ImgICamp0, ImgICamp1, ImgICamp2, ImgICamp3, ImgICamp4 };
             try
             {
                 ImgISign.Source = signUri.Equals(string.Empty) ? new BitmapImage() : new BitmapImage(new Uri(signUri));
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            try
-            {
-                ImgICamp0.Source = campUriList[0].Equals(string.Empty)
-                    ? new BitmapImage()
-                    : new BitmapImage(new Uri(campUriList[0]));
-                ImgICamp1.Source = campUriList[1].Equals(string.Empty)
-                    ? new BitmapImage()
-                    : new BitmapImage(new Uri(campUriList[1]));
+                for (int i = 0; i != imageCampList.Count; i++)
+                {
+                    imageCampList[i].Source = campUriList[i].Equals(string.Empty) ? new BitmapImage() : new BitmapImage(new Uri(campUriList[i]));
+                }
             }
             catch (Exception e)
             {
@@ -162,7 +155,9 @@ namespace DeckEditor.View
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
                     imageList[i].Tag = numberList[i];
-                    imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
+                    imageList[i].Source = File.Exists(picturePathList[i]) 
+                        ? new BitmapImage(new Uri(picturePathList[i]))
+                        : new BitmapImage();
                 }
                 else
                 {
