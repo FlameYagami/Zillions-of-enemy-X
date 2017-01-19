@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 using CardEditor.Constant;
+using Enum = CardEditor.Constant.Enum;
 
 namespace CardEditor.Utils
 {
@@ -27,9 +28,9 @@ namespace CardEditor.Utils
         /// </summary>
         /// <param name="previewOrderType">排序枚举类型</param>
         /// <returns></returns>
-        public static string GetFooterSql(StringConst.PreviewOrderType previewOrderType)
+        public static string GetFooterSql(Enum.PreviewOrderType previewOrderType)
         {
-            return previewOrderType.Equals(StringConst.PreviewOrderType.Number)
+            return previewOrderType.Equals(Enum.PreviewOrderType.Number)
                 ? GetOrderNumberSql()
                 : GetOrderValueSql();
         }

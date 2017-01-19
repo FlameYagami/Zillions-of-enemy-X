@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Controls;
 using DeckEditor.Constant;
 using DeckEditor.Entity;
+using Enum = DeckEditor.Constant.Enum;
 
 namespace DeckEditor.Utils
 {
@@ -28,9 +29,9 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="previewOrderType">排序枚举类型</param>
         /// <returns></returns>
-        public static string GetFooterSql(StringConst.PreviewOrderType previewOrderType)
+        public static string GetFooterSql(Enum.PreviewOrderType previewOrderType)
         {
-            return previewOrderType.Equals(StringConst.PreviewOrderType.Number) ? GetOrderNumberSql() : GetOrderValueSql();
+            return previewOrderType.Equals(Enum.PreviewOrderType.Number) ? GetOrderNumberSql() : GetOrderValueSql();
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace DeckEditor.Utils
             var value = new StringBuilder();
             foreach (var checkbox in checkIEnumerable)
                 if ((checkbox.IsChecked != null) && (bool) checkbox.IsChecked)
-                    foreach (var abilityTypeItem in Const.AbilityTypeDic)
+                    foreach (var abilityTypeItem in Dictionary.AbilityTypeDic)
                         if (abilityTypeItem.Key.Equals(checkbox.Content))
                             value.Append($" AND {ColumnAbility} LIKE '%{abilityTypeItem.Value}%'");
             return value.ToString();

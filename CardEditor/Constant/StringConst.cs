@@ -2,28 +2,6 @@
 {
     public class StringConst
     {
-        public enum AbilityType
-        {
-            None = -1,
-            Ig = 1,
-            Event = 2,
-            Start = 3,
-            Extra = 4
-        }
-
-        public enum PreviewOrderType
-        {
-            Number = 0,
-            Value = 1
-        }
-
-        public enum ModeType
-        {
-            Query = 0,
-            Editor = 1,
-            Develop = 2
-        }
-
         public const string DbOpenError = "打开数据库->错误";
         public const string AddSucceed = "添加->成功";
         public const string AddFailed = "添加->失败";

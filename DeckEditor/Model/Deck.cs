@@ -9,14 +9,15 @@ using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
 using Dialog;
+using Enum = DeckEditor.Constant.Enum;
 
 namespace DeckEditor.Model
 {
     internal interface IDeck
     {
-        StringConst.AreaType AddCard(StringConst.AreaType areaType, string number, string thumbnailPath);
+        Enum.AreaType AddCard(Enum.AreaType areaType, string number, string thumbnailPath);
         void DeleteEntityFromColl(string number, ICollection<DeckEntity> collection);
-        void Order(StringConst.DeckOrderType value);
+        void Order(Enum.DeckOrderType value);
         bool Save(string deckName);
         bool Delete(string deckName);
         bool Resave(string deckName);
@@ -34,37 +35,37 @@ namespace DeckEditor.Model
         /// <param name="number">卡编</param>
         /// <param name="thumbnailPath">缩略图路径</param>
         /// <returns></returns>
-        public StringConst.AreaType AddCard(StringConst.AreaType areaType, string number,string thumbnailPath)
+        public Enum.AreaType AddCard(Enum.AreaType areaType, string number,string thumbnailPath)
         {
             switch (areaType)
             {
-                case StringConst.AreaType.Pl:
+                case Enum.AreaType.Pl:
                     DataCache.PlColl.Clear();
                     AddEntityToColl(number, thumbnailPath, DataCache.PlColl);
-                    return StringConst.AreaType.Pl;
-                case StringConst.AreaType.Ig:
+                    return Enum.AreaType.Pl;
+                case Enum.AreaType.Ig:
                     if (CheckAreaIg(number))
                     {
                         AddEntityToColl(number, thumbnailPath, DataCache.IgColl);
-                        return StringConst.AreaType.Ig;
+                        return Enum.AreaType.Ig;
                     }
                     break;
-                case StringConst.AreaType.Ug:
+                case Enum.AreaType.Ug:
                     if (CheckAreaUg(number))
                     {
                         AddEntityToColl(number, thumbnailPath, DataCache.UgColl);
-                        return StringConst.AreaType.Ug;
+                        return Enum.AreaType.Ug;
                     }
                     break;
-                case StringConst.AreaType.Ex:
+                case Enum.AreaType.Ex:
                     if (CheckAreaEx(number))
                     {
                         AddEntityToColl(number, thumbnailPath, DataCache.ExColl);
-                        return StringConst.AreaType.Ex;
+                        return Enum.AreaType.Ex;
                     }
                     break;
             }
-            return StringConst.AreaType.None;
+            return Enum.AreaType.None;
         }
 
         public void DeleteEntityFromColl(string numberEx, ICollection<DeckEntity> collection)
@@ -74,16 +75,16 @@ namespace DeckEditor.Model
             collection.Remove(deckEntity);
         }
 
-        public void Order(StringConst.DeckOrderType value)
+        public void Order(Enum.DeckOrderType value)
         {
             switch (value)
             {
-                case StringConst.DeckOrderType.Value:
+                case Enum.DeckOrderType.Value:
                     Value(DataCache.IgColl);
                     Value(DataCache.UgColl);
                     Value(DataCache.ExColl);
                     break;
-                case StringConst.DeckOrderType.Random:
+                case Enum.DeckOrderType.Random:
                     Random(DataCache.IgColl);
                     Random(DataCache.UgColl);
                     Random(DataCache.ExColl);
@@ -267,15 +268,15 @@ namespace DeckEditor.Model
                           CardUtils.GetMaxCount(number)) && (DataCache.IgColl.Count < 20);
             switch (igType)
             {
-                case StringConst.IgType.Life:
+                case Enum.IgType.Life:
                     canAdd = canAdd &&
                              (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) < 4);
                     break;
-                case StringConst.IgType.Void:
+                case Enum.IgType.Void:
                     canAdd = canAdd &&
                              (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) < 4);
                     break;
-                case StringConst.IgType.Normal:
+                case Enum.IgType.Normal:
                     break;
             }
             return canAdd;

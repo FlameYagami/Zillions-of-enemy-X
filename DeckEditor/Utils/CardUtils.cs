@@ -17,11 +17,11 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="order">排序方式</param>
         /// <returns></returns>
-        public static StringConst.PreviewOrderType GetPreviewOrderType(string order)
+        public static Enum.PreviewOrderType GetPreviewOrderType(string order)
         {
             return order.Equals(StringConst.OrderNumber)
-                ? StringConst.PreviewOrderType.Number
-                : StringConst.PreviewOrderType.Value;
+                ? Enum.PreviewOrderType.Number
+                : Enum.PreviewOrderType.Value;
         }
 
         public static CardEntity GetCardEntity(string number)
@@ -105,7 +105,7 @@ namespace DeckEditor.Utils
         /// <returns></returns>
         public static string GetRestrictPath(string limit)
         {
-            foreach (var item in Const.ImgRestrictPathDic)
+            foreach (var item in Dictionary.ImgRestrictPathDic)
                 if (limit.Equals(item.Key))
                     return item.Value;
             return string.Empty;
@@ -193,7 +193,7 @@ namespace DeckEditor.Utils
         public static string GetSignPath(string sign)
         {
             var signUri = string.Empty;
-            foreach (var signItem in Const.ImgSignPathDic)
+            foreach (var signItem in Dictionary.ImgSignPathDic)
                 if (signItem.Key.Equals(sign))
                 {
                     signUri = signItem.Value;
@@ -212,7 +212,7 @@ namespace DeckEditor.Utils
             var campUriList = new List<string>();
             var campArray = camp.Split('/');
             foreach (var tempcamp in campArray)
-                foreach (var campItem in Const.ImgCampPathDic)
+                foreach (var campItem in Dictionary.ImgCampPathDic)
                     if (campItem.Key.Equals(tempcamp))
                     {
                         campUriList.Add(campItem.Value);
@@ -230,17 +230,17 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static StringConst.AreaType GetAreaType(string number)
+        public static Enum.AreaType GetAreaType(string number)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             if (StringConst.SignIg.Equals(row[ColumnSign].ToString()))
-                return StringConst.AreaType.Ig;
+                return Enum.AreaType.Ig;
             if (StringConst.TypeZxEx.Equals(row[ColumnType].ToString()))
-                return StringConst.AreaType.Ex;
+                return Enum.AreaType.Ex;
             if (StringConst.TypePlayer.Equals(row[ColumnType].ToString()))
-                return StringConst.AreaType.Pl;
-            return StringConst.AreaType.Ug;
+                return Enum.AreaType.Pl;
+            return Enum.AreaType.Ug;
         }
 
         /// <summary>
@@ -296,13 +296,13 @@ namespace DeckEditor.Utils
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns>Life|Void|Normal</returns>
-        public static StringConst.IgType GetIgType(string number)
+        public static Enum.IgType GetIgType(string number)
         {
             var ability = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()))[ColumnAbility].ToString();
-            if (ability.Contains(StringConst.AbilityLife)) return StringConst.IgType.Life;
-            if (ability.Contains(StringConst.AbilityVoid)) return StringConst.IgType.Void;
-            return StringConst.IgType.Normal;
+            if (ability.Contains(StringConst.AbilityLife)) return Enum.IgType.Life;
+            if (ability.Contains(StringConst.AbilityVoid)) return Enum.IgType.Void;
+            return Enum.IgType.Normal;
         }
 
         /// <summary>

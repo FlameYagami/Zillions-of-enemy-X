@@ -14,17 +14,5 @@ namespace CardEditor.Constant
         public static string DeckPath = RootPath + "deck\\";
         public static string TexturesPath = RootPath + "textures\\";
         public static string BackgroundPath = TexturesPath + "Background.jpg";
-
-        public static Dictionary<string, string> AbilityTypeDic = new Dictionary<string, string>
-        {
-            {"Lv", "Lv"},
-            {"射程", "【常】射程"},
-            {"绝界", "【常】"},
-            {"起始卡", "【常】起始卡"},
-            {"生命恢复", "【常】生命恢复"},
-            {"虚空使者", "【常】虚空使者"},
-            {"进化原力", "【自】进化原力"},
-            {"零点优化", "【※】零点优化"}
-        };
     }
 }

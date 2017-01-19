@@ -6,6 +6,7 @@ using CardEditor.Model;
 using CardEditor.Utils;
 using CardEditor.View;
 using Dialog;
+using Enum = CardEditor.Constant.Enum;
 
 namespace CardEditor.Presenter
 {
@@ -112,10 +113,10 @@ namespace CardEditor.Presenter
             var cardModel = _view.GetCardEntity();
             switch (modeType)
             {
-                case StringConst.ModeType.Query:
+                case Enum.ModeType.Query:
                     UpdateCacheAndUi(_query.GetQuerySql(cardModel, CardUtils.GetPreviewOrderType(order)));
                     break;
-                case StringConst.ModeType.Editor:
+                case Enum.ModeType.Editor:
                     if (!cardModel.Pack.Equals(string.Empty))
                     {
                         UpdateCacheAndUi(_query.GetEditorSql(cardModel, CardUtils.GetPreviewOrderType(order)));
@@ -123,7 +124,7 @@ namespace CardEditor.Presenter
                     }
                     BaseDialogUtils.ShowDlg(StringConst.PackChoiceNone);
                     break;
-                case StringConst.ModeType.Develop:
+                case Enum.ModeType.Develop:
                     break;
             }
         }
@@ -276,7 +277,7 @@ namespace CardEditor.Presenter
             var cardModel = _view.GetCardEntity();
             switch (modeType)
             {
-                case StringConst.ModeType.Editor:
+                case Enum.ModeType.Editor:
                     {
                         if (!cardModel.Pack.Equals(string.Empty))
                         {

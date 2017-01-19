@@ -10,6 +10,7 @@ using DeckEditor.View;
 using Dialog;
 using Common;
 using System.Collections.Generic;
+using Enum = DeckEditor.Constant.Enum;
 
 namespace DeckEditor.Presenter
 {
@@ -105,13 +106,13 @@ namespace DeckEditor.Presenter
 
         public void ValueOrder()
         {
-            _deck.Order(StringConst.DeckOrderType.Value);
+            _deck.Order(Enum.DeckOrderType.Value);
             UpdateDeckListView();
         }
 
         public void RandomOrder()
         {
-            _deck.Order(StringConst.DeckOrderType.Random);
+            _deck.Order(Enum.DeckOrderType.Random);
             UpdateDeckListView();
         }
 
@@ -161,21 +162,21 @@ namespace DeckEditor.Presenter
             // 删除非玩家卡
             switch (areaType)
             {
-                case StringConst.AreaType.Pl:
+                case Enum.AreaType.Pl:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.PlColl);
                     _view.UpdateDeckListView(areaType, DataCache.PlColl);
                     break;
-                case StringConst.AreaType.Ig:
+                case Enum.AreaType.Ig:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case StringConst.AreaType.Ug:
+                case Enum.AreaType.Ug:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.UgColl);
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case StringConst.AreaType.Ex:
+                case Enum.AreaType.Ex:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.ExColl);
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
@@ -252,22 +253,22 @@ namespace DeckEditor.Presenter
             var areaType = CardUtils.GetAreaType(number);
             // 添加卡
             var isAddSucceed = _deck.AddCard(areaType, number, thumbnailPath);
-            if (StringConst.AreaType.None.Equals(isAddSucceed)) return;
+            if (Enum.AreaType.None.Equals(isAddSucceed)) return;
             // 添加成功则更新该区域
             switch (areaType)
             {
-                case StringConst.AreaType.Pl:
+                case Enum.AreaType.Pl:
                     _view.UpdateDeckListView(areaType, DataCache.PlColl);
                     break;
-                case StringConst.AreaType.Ig:
+                case Enum.AreaType.Ig:
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case StringConst.AreaType.Ug:
+                case Enum.AreaType.Ug:
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case StringConst.AreaType.Ex:
+                case Enum.AreaType.Ex:
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
             }
@@ -287,10 +288,10 @@ namespace DeckEditor.Presenter
 
         private void UpdateDeckListView()
         {
-            _view.UpdateDeckListView(StringConst.AreaType.Pl, DataCache.PlColl);
-            _view.UpdateDeckListView(StringConst.AreaType.Ig, DataCache.IgColl);
-            _view.UpdateDeckListView(StringConst.AreaType.Ug, DataCache.UgColl);
-            _view.UpdateDeckListView(StringConst.AreaType.Ex, DataCache.ExColl);
+            _view.UpdateDeckListView(Enum.AreaType.Pl, DataCache.PlColl);
+            _view.UpdateDeckListView(Enum.AreaType.Ig, DataCache.IgColl);
+            _view.UpdateDeckListView(Enum.AreaType.Ug, DataCache.UgColl);
+            _view.UpdateDeckListView(Enum.AreaType.Ex, DataCache.ExColl);
             _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
         }
     }

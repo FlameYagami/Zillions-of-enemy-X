@@ -13,12 +13,12 @@ namespace CardEditor.Model
     public interface IQuery
     {
         void SetCardList();
-        string GetQuerySql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType);
-        string GetEditorSql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType);
+        string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
+        string GetEditorSql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
         string GetUpdateSql(CardEntity cardEntity, string number);
         string GetAddSql(CardEntity cardEntity);
         string GetDeleteSql(string number);
-        StringConst.AbilityType AnalysisAbility(string ability);
+        Enum.AbilityType AnalysisAbility(string ability);
     }
 
     internal class Query : SqliteConst, IQuery
@@ -44,7 +44,7 @@ namespace CardEditor.Model
             set { _memoryNumber = value; }
         }
 
-        public string GetQuerySql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType)
+        public string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
         {
             var builder = new StringBuilder();
             builder.Append(SqlUtils.GetHeaderSql());
@@ -68,7 +68,7 @@ namespace CardEditor.Model
             return builder.ToString();
         }
 
-        public string GetEditorSql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType)
+        public string GetEditorSql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
         {
             var builder = new StringBuilder();
             builder.Append(SqlUtils.GetHeaderSql());
@@ -174,17 +174,17 @@ namespace CardEditor.Model
             return builder.ToString();
         }
 
-        public StringConst.AbilityType AnalysisAbility(string ability)
+        public Enum.AbilityType AnalysisAbility(string ability)
         {
             if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
-                return StringConst.AbilityType.Extra;
+                return Enum.AbilityType.Extra;
             if (ability.Contains("【★】"))
-                return StringConst.AbilityType.Event;
+                return Enum.AbilityType.Event;
             if (ability.Contains("【常】生命恢复") || ability.Contains("【常】虚空使者"))
-                return StringConst.AbilityType.Ig;
+                return Enum.AbilityType.Ig;
             if (ability.Contains("【常】起始卡"))
-                return StringConst.AbilityType.Start;
-            return StringConst.AbilityType.None;
+                return Enum.AbilityType.Start;
+            return Enum.AbilityType.None;
         }
 
         public List<PreviewEntity> GetCardList()

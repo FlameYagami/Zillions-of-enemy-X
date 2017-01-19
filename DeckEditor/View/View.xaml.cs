@@ -12,6 +12,7 @@ using DeckEditor.Model;
 using DeckEditor.Presenter;
 using DeckEditor.Utils;
 using System.IO;
+using Enum = DeckEditor.Constant.Enum;
 
 namespace DeckEditor.View
 {
@@ -20,7 +21,7 @@ namespace DeckEditor.View
         void Init();
         void Reset();
         void UpdatePreviewListView(List<PreviewEntity> cardList);
-        void UpdateDeckListView(StringConst.AreaType areaType, List<DeckEntity> deckColl);
+        void UpdateDeckListView(Enum.AreaType areaType, List<DeckEntity> deckColl);
         void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid);
         void SetPicture(List<string> numberList, List<string> picturePathList);
         void SetCardModel(CardEntity cardmodel);
@@ -175,23 +176,23 @@ namespace DeckEditor.View
             LblCardCount.Content = StringConst.QueryResult + cardList.Count;
         }
 
-        public void UpdateDeckListView(StringConst.AreaType areaType, List<DeckEntity> deckColl)
+        public void UpdateDeckListView(Enum.AreaType areaType, List<DeckEntity> deckColl)
         {
             switch (areaType)
             {
-                case StringConst.AreaType.Pl:
+                case Enum.AreaType.Pl:
                     PlayerListView.ItemsSource = null;
                     PlayerListView.ItemsSource = deckColl;
                     break;
-                case StringConst.AreaType.Ig:
+                case Enum.AreaType.Ig:
                     IgListView.ItemsSource = null;
                     IgListView.ItemsSource = deckColl;
                     break;
-                case StringConst.AreaType.Ug:
+                case Enum.AreaType.Ug:
                     UgListView.ItemsSource = null;
                     UgListView.ItemsSource = deckColl;
                     break;
-                case StringConst.AreaType.Ex:
+                case Enum.AreaType.Ex:
                     ExListView.ItemsSource = null;
                     ExListView.ItemsSource = deckColl;
                     break;

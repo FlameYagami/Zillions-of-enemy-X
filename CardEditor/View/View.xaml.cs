@@ -12,6 +12,7 @@ using CardEditor.Presenter;
 using CardEditor.Utils;
 using Common;
 using CardEditor.Model;
+using Enum = CardEditor.Constant.Enum;
 
 namespace CardEditor.View
 {
@@ -21,12 +22,12 @@ namespace CardEditor.View
         void SetCardEntity(CardEntity cardEntity);
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
-        void Reset(StringConst.ModeType modeType);
+        void Reset(Enum.ModeType modeType);
         void UpdateListView(List<PreviewEntity> previewEntityList, string number);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
-        void UpdateAbilityLinkage(StringConst.AbilityType abilityType);
+        void UpdateAbilityLinkage(Enum.AbilityType abilityType);
         CardEntity GetCardEntity();
     }
 
@@ -47,30 +48,30 @@ namespace CardEditor.View
 
         /************************************************** 接口实现 **************************************************/
 
-        public void UpdateAbilityLinkage(StringConst.AbilityType abilityType)
+        public void UpdateAbilityLinkage(Enum.AbilityType abilityType)
         {
             switch (abilityType)
             {
-                case StringConst.AbilityType.Ig:
+                case Enum.AbilityType.Ig:
                 {
                     CmbType.Text = StringConst.TypeZx;
                     CmbSign.Text = StringConst.SignIg;
                     break;
                 }
-                case StringConst.AbilityType.Start:
+                case Enum.AbilityType.Start:
                 {
                     CmbType.Text = StringConst.TypeZx;
                     CmbSign.Text = StringConst.Hyphen;
                     break;
                 }
-                case StringConst.AbilityType.Event:
+                case Enum.AbilityType.Event:
                 {
                     CmbType.Text = StringConst.TypeEvent;
                     CmbRace.Text = StringConst.Hyphen;
                     TxtPower.Text = string.Empty;
                     break;
                 }
-                case StringConst.AbilityType.Extra:
+                case Enum.AbilityType.Extra:
                 {
                     CmbType.Text = StringConst.TypeZxEx;
                     CmbSign.Text = StringConst.Hyphen;
@@ -102,7 +103,7 @@ namespace CardEditor.View
                 Faq = TxtFaq.Text.Trim(),
                 Image = $"/{TxtNumber.Text.Trim()}.jpg",
                 AbilityType =
-                    SqlUtils.GetAbilitySql(LstAbilityType, Const.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
+                    SqlUtils.GetAbilitySql(LstAbilityType, Dictionary.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
                 AbilityDetail =
                     SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(),
                         SqliteConst.ColumnAbilityDetail),
@@ -133,7 +134,7 @@ namespace CardEditor.View
             TxtFaq.Text = cardEntity.Faq;
 
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
-                foreach (var abilityType in Const.AbilityTypeDic)
+                foreach (var abilityType in Dictionary.AbilityTypeDic)
                 {
                     if (!checkbox.Content.Equals(abilityType.Key)) continue;
                     checkbox.IsChecked = cardEntity.Ability.Contains(abilityType.Value);
@@ -153,15 +154,15 @@ namespace CardEditor.View
             IsPreviewChanged = false;
         }
 
-        public void Reset(StringConst.ModeType modeType)
+        public void Reset(Enum.ModeType modeType)
         {
             switch (modeType)
             {
-                case StringConst.ModeType.Query:
+                case Enum.ModeType.Query:
                     TxtNumber.Text = string.Empty;
                     CmbPack.Text = StringConst.NotApplicable;
                     break;
-                case StringConst.ModeType.Editor:
+                case Enum.ModeType.Editor:
                     break;
             }
 
@@ -222,6 +223,8 @@ namespace CardEditor.View
             CmbRace.Text = StringConst.NotApplicable;
             itemList.ForEach(race => CmbRace.Items.Add(race.ToString()));
             CmbRace.IsEnabled = itemList.Count >= 2;
+            if (CmbType.Text.Equals(StringConst.TypeEvent) || CmbType.Text.Equals(StringConst.TypePlayer))
+                CmbRace.IsEnabled = false;
         }
 
         public void SetPackItems(List<object> itemList)

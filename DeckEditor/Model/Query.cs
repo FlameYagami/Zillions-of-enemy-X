@@ -12,7 +12,7 @@ namespace DeckEditor.Model
     {
         string QuerySqlMemory { get; set; }
         void SetCardList(DataSet dsPartCache);
-        string GetQuerySql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType);
+        string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
     }
 
     internal class Query : SqliteConst, IQuery
@@ -56,7 +56,7 @@ namespace DeckEditor.Model
             }
         }
 
-        public string GetQuerySql(CardEntity cardEntity, StringConst.PreviewOrderType previewOrderType)
+        public string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
         {
             var builder = new StringBuilder();
             builder.Append(SqlUtils.GetHeaderSql());// 基础查询语句

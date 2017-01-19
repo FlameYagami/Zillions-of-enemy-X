@@ -17,11 +17,11 @@ namespace CardEditor.Utils
         /// </summary>
         /// <param name="order">排序方式</param>
         /// <returns></returns>
-        public static StringConst.PreviewOrderType GetPreviewOrderType(string order)
+        public static Enum.PreviewOrderType GetPreviewOrderType(string order)
         {
             return order.Equals(StringConst.OrderNumber)
-                ? StringConst.PreviewOrderType.Number
-                : StringConst.PreviewOrderType.Value;
+                ? Enum.PreviewOrderType.Number
+                : Enum.PreviewOrderType.Value;
         }
 
         /// <summary>
@@ -29,11 +29,11 @@ namespace CardEditor.Utils
         /// </summary>
         /// <param name="mode">模式</param>
         /// <returns></returns>
-        public static StringConst.ModeType GetModeType(string mode)
+        public static Enum.ModeType GetModeType(string mode)
         {
             return mode.Equals(StringConst.ModeQuery)
-                ? StringConst.ModeType.Query
-                : mode.Equals(StringConst.ModeEditor) ? StringConst.ModeType.Editor : StringConst.ModeType.Develop;
+                ? Enum.ModeType.Query
+                : mode.Equals(StringConst.ModeEditor) ? Enum.ModeType.Editor : Enum.ModeType.Develop;
         }
 
         public static CardEntity GetCardEntity(string number)

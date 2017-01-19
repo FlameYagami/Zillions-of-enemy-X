@@ -70,6 +70,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constant\Const.cs" />
+    <Compile Include="Constant\Dictionary.cs" />
+    <Compile Include="Constant\Enum.cs" />
     <Compile Include="Constant\StringConst.cs" />
     <Compile Include="Entity\AbilityDetialEntity.cs" />
     <Compile Include="Entity\CardEntity.cs" />
