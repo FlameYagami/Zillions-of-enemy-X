@@ -164,7 +164,7 @@ namespace CardEditor.Utils
                     Cost = column[ColumnCost].ToString(),
                     Power = column[ColumnPower].ToString()
                 }).ToList();
-            return (from entity in cardEntities let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power) select $"UPDATE {TableName} SET Md5 = '{md5}' WHERE {ColumnNumber} = '{entity.Number}'").ToList();
+            return (from entity in cardEntities let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power).ToUpper() select $"UPDATE {TableName} SET Md5 = '{md5}' WHERE {ColumnNumber} = '{entity.Number}'").ToList();
         }
     }
 }
