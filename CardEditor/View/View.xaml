@@ -95,6 +95,7 @@
                                 </ComboBox>
                                 <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制:"
                                        Style="{DynamicResource LblCenter}" />
+                                <Button Name="BtnMd5" Grid.Column="2" Grid.Row="0" Click="Md5_Click" Content="Md5覆写" />
                             </Grid>
                         </Border>
                         <Border Style="{DynamicResource ControlBorder}" Margin="5">

@@ -7,6 +7,7 @@ using CardEditor.Utils;
 using CardEditor.View;
 using Dialog;
 using Enum = CardEditor.Constant.Enum;
+using MessageBox = System.Windows.MessageBox;
 
 namespace CardEditor.Presenter
 {
@@ -29,6 +30,7 @@ namespace CardEditor.Presenter
         void ExportClick(string pack);
         void AbilityChanged(string ability);
         void ModeChanged(string mode,string order);
+        void Md5Click();
     }
 
     internal class Presenter : IPresenter
@@ -287,6 +289,13 @@ namespace CardEditor.Presenter
                         break;
                     }
             }
+        }
+
+        public void Md5Click()
+        {
+            var sqlList = SqlUtils.GetMd5SqlList();
+            var succeed = SqliteUtils.Execute(sqlList);
+            BaseDialogUtils.ShowDlg(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
     }
 }

@@ -332,9 +332,6 @@ namespace CardEditor.View
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
-            //var sqlList = SqlUtils.GetMd5SqlList();
-            //var succeed = SqliteUtils.Execute(sqlList);
-            //MessageBox.Show(succeed ? "Succced" : "Failed");
         }
 
         /// <summary>添加</summary>
@@ -444,6 +441,12 @@ namespace CardEditor.View
         private void CmbMode_TextChanged(object sender, RoutedEventArgs e)
         {
             _presenter.ModeChanged(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+        }
+
+        /// <summary>Md5覆写事件</summary>
+        private void Md5_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.Md5Click();
         }
     }
 }
