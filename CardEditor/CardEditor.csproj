@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>F:\Zillions of enemy X\CardEditor\</OutputPath>
+    <OutputPath>D:\ZxPro\CardEditor\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -82,6 +82,7 @@
     <Compile Include="Utils\CardUtils.cs" />
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
+    <Compile Include="Utils\Md5Utils.cs" />
     <Compile Include="Utils\SqlUtils.cs" />
     <Compile Include="Constant\SqliteConst.cs" />
     <Compile Include="Utils\SqliteUtils.cs" />

@@ -141,13 +141,5 @@ namespace CardEditor.Utils
             }
             return string.Empty;
         }
-
-        public static List<string> GetPciturePathList()
-        {
-            var numberList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
-                .Select(column => $"Update TableCard Set Image = '{JsonUtils.JsonSerializer(new List<string> { "/" + column[ColumnNumber].ToString() + ".jpg" })}' WHERE Number='{column[ColumnNumber].ToString()}'")
-                .ToList();
-            return numberList;
-        }
     }
 }

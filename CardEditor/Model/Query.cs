@@ -84,6 +84,7 @@ namespace CardEditor.Model
             builder.Append("INSERT INTO " + TableName);
             builder.Append(ColumnCard);
             builder.Append("VALUES(");
+            builder.Append($"'{Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Type)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Camp)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Race)}',");
@@ -150,6 +151,7 @@ namespace CardEditor.Model
         {
             var builder = new StringBuilder();
             builder.Append($"UPDATE {TableName} SET ");
+            builder.Append($"{ColumnMd5}='{Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power)}',");
             builder.Append($"{ColumnType}='{cardEntity.Type}',");
             builder.Append($"{ColumnCamp}= '{cardEntity.Camp}',");
             builder.Append($"{ColumnRace}= '{cardEntity.Race}',");
@@ -185,11 +187,6 @@ namespace CardEditor.Model
             if (ability.Contains("【常】起始卡"))
                 return Enum.AbilityType.Start;
             return Enum.AbilityType.None;
-        }
-
-        public List<PreviewEntity> GetCardList()
-        {
-            return PreviewList;
         }
     }
 }

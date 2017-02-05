@@ -4,6 +4,7 @@
     {
         public const string TableName = "TableCard";
 
+        public const string ColumnMd5 = "Md5";
         public const string ColumnType = "Type";
         public const string ColumnCamp = "Camp";
         public const string ColumnRace = "Race";
@@ -24,6 +25,7 @@
         public const string ColumnAbilityDetail = "AbilityDetail";
 
         public const string ColumnCard = " (" +
+                                         ColumnMd5 + "," +
                                          ColumnType + "," +
                                          ColumnCamp + "," +
                                          ColumnRace + "," +

@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using CardEditor.Constant;
+using CardEditor.Entity;
+using CardEditor.Model;
+using Common;
 using Enum = CardEditor.Constant.Enum;
 
 namespace CardEditor.Utils
@@ -140,6 +145,26 @@ namespace CardEditor.Utils
         public static string GetExportSql(string pack)
         {
             return $"SELECT * FROM {TableName} WHERE {ColumnPack} LIKE '%{pack}%' {GetOrderNumberSql()}";
+        }
+
+        public static List<string> GetPciturePathList()
+        {
+            var numberList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+                .Select(column => $"Update TableCard Set Image = '{JsonUtils.JsonSerializer(new List<string> { "/" + column[ColumnNumber].ToString() + ".jpg" })}' WHERE Number='{column[ColumnNumber].ToString()}'")
+                .ToList();
+            return numberList;
+        }
+
+        public static List<string> GetMd5SqlList()
+        {
+            var cardEntities = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+                .Select(column => new CardEntity()
+                {
+                    Number = column[ColumnNumber].ToString(),
+                    Cost = column[ColumnCost].ToString(),
+                    Power = column[ColumnPower].ToString()
+                }).ToList();
+            return (from entity in cardEntities let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power) select $"UPDATE {TableName} SET Md5 = '{md5}' WHERE {ColumnNumber} = '{entity.Number}'").ToList();
         }
     }
 }
