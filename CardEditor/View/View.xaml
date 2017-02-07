@@ -40,7 +40,7 @@
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
                         <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvwPreview" Grid.Row="1"
-                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
                             <ListView.ItemTemplate>
@@ -283,11 +283,11 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="110" />
                                         <RowDefinition Height="25" />
-                                        <RowDefinition Height="1.5*" />
+                                        <RowDefinition Height="1.75*" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1*" />
                                         <RowDefinition Height="25" />
-                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="0.75*" />
                                     </Grid.RowDefinitions>
                                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="0" Margin="5,2.5,5,2.5">
                                         <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityDetail"
@@ -307,8 +307,8 @@
                                             <CheckBox x:Name="ChkAbilityDetail5" Content="卡片除外" />
                                             <CheckBox x:Name="ChkAbilityDetail6" Content="返回手牌" />
                                             <CheckBox x:Name="ChkAbilityDetail7" Content="返回卡组" />
-                                            <CheckBox x:Name="ChkAbilityDetail8" Content="资源放置" />
-                                            <CheckBox x:Name="ChkAbilityDetail9" Content="方阵置换" />
+                                            <CheckBox x:Name="ChkAbilityDetail8" Content="方阵置换" />
+                                            <CheckBox x:Name="ChkAbilityDetail9" Content="资源放置" />
                                             <CheckBox x:Name="ChkAbilityDetail10" Content="充能放置" />
                                             <CheckBox x:Name="ChkAbilityDetail11" Content="废弃放置" />
                                             <CheckBox x:Name="ChkAbilityDetail12" Content="重启休眠" />
