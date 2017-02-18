@@ -224,7 +224,10 @@ namespace CardEditor.View
             itemList.ForEach(race => CmbRace.Items.Add(race.ToString()));
             CmbRace.IsEnabled = itemList.Count >= 2;
             if (CmbType.Text.Equals(StringConst.TypeEvent) || CmbType.Text.Equals(StringConst.TypePlayer))
+            {
                 CmbRace.IsEnabled = false;
+                CmbRace.Text = StringConst.Hyphen;
+            }
         }
 
         public void SetPackItems(List<object> itemList)

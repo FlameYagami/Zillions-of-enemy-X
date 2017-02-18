@@ -244,11 +244,12 @@
                                 <ComboBoxItem>点燃</ComboBoxItem>
                                 <ComboBoxItem>觉醒之种</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox Name="CmbRare" Grid.Column="1" Grid.Row="4">
+                            <ComboBox Name="CmbRare" Grid.Column="1" Grid.Row="4" Margin="5,2">
                                 <ComboBoxItem>(N/A)</ComboBoxItem>
                                 <ComboBoxItem>CVR</ComboBoxItem>
                                 <ComboBoxItem>IGR</ComboBoxItem>
                                 <ComboBoxItem>ZX/R</ComboBoxItem>
+                                <ComboBoxItem>HR</ComboBoxItem>
                                 <ComboBoxItem>DR</ComboBoxItem>
                                 <ComboBoxItem>UR</ComboBoxItem>
                                 <ComboBoxItem>SR</ComboBoxItem>
