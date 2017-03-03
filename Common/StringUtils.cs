@@ -50,15 +50,5 @@ namespace Common
                 return decryptString;
             }
         }
-
-        public static string GetMd5(string value)
-        {
-            var md5 = new MD5CryptoServiceProvider();
-            var bytValue = Encoding.UTF8.GetBytes(value);
-            var bytHash = md5.ComputeHash(bytValue);
-            md5.Clear();
-            var sTemp = bytHash.Aggregate("", (current, t) => current + t.ToString("X").PadLeft(2, '0'));
-            return sTemp.ToUpper();
-        }
     }
 }

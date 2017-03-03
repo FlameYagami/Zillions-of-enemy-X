@@ -160,6 +160,7 @@ namespace CardEditor.Utils
             var cardEntities = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => new CardEntity()
                 {
+                    JName =  column[ColumnJName].ToString(),
                     Number = column[ColumnNumber].ToString(),
                     Cost = column[ColumnCost].ToString(),
                     Power = column[ColumnPower].ToString()

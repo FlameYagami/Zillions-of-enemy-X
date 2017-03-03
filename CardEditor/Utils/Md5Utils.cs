@@ -16,8 +16,7 @@ namespace CardEditor.Utils
             var fromData = Encoding.Unicode.GetBytes(str);
             //计算字节数组的哈希值  
             var toData = md5.ComputeHash(fromData);
-            var byteStr = toData.Aggregate("", (current, t) => current + t.ToString("x"));
-            return byteStr.Substring(0, 8);
+            return toData.Aggregate("", (current, t) => current + t.ToString("X2"));
         }
     }
 }
