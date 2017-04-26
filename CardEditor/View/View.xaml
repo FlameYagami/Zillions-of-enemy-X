@@ -243,9 +243,10 @@
                                         <ComboBoxItem>UR</ComboBoxItem>
                                         <ComboBoxItem>SR</ComboBoxItem>
                                         <ComboBoxItem>R</ComboBoxItem>
+                                        <ComboBoxItem>N</ComboBoxItem>
+                                        <ComboBoxItem>PR</ComboBoxItem>
                                         <ComboBoxItem>UC</ComboBoxItem>
                                         <ComboBoxItem>C</ComboBoxItem>
-                                        <ComboBoxItem>PR</ComboBoxItem>
                                         <ComboBoxItem>日本一R</ComboBoxItem>
                                     </ComboBox>
                                     <Label Name="LblCName" Grid.Column="2" Grid.Row="0"
