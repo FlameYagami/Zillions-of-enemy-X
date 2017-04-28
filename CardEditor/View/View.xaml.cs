@@ -23,7 +23,7 @@ namespace CardEditor.View
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
         void Reset(Enum.ModeType modeType);
-        void UpdateListView(List<PreviewEntity> previewEntityList, string number);
+        void UpdateListView(List<PreviewEntity> previewEntityList, string memoryNumber);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
@@ -101,13 +101,10 @@ namespace CardEditor.View
                 Ability = TxtAbility.Text.Trim(),
                 Lines = TxtLines.Text.Trim(),
                 Faq = TxtFaq.Text.Trim(),
-                Image = $"/{TxtNumber.Text.Trim()}.jpg",
-                AbilityType =
-                    SqlUtils.GetAbilitySql(LstAbilityType, Dictionary.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
-                AbilityDetail =
-                    SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(),
-                        SqliteConst.ColumnAbilityDetail),
-                AbilityDetialEntity = abilityDetialEntity
+                ImageJson = JsonUtils.JsonSerializer(new List<string> { $"/{TxtNumber.Text.Trim()}.jpg" }),
+                AbilityDetailJson = JsonUtils.JsonSerializer(abilityDetialEntity),
+                AbilityTypeSql = SqlUtils.GetAbilitySql(LstAbilityType, Dictionary.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
+                AbilityDetailSql = SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(), SqliteConst.ColumnAbilityDetail)
             };
         }
 
@@ -141,7 +138,7 @@ namespace CardEditor.View
                     break;
                 }
 
-            var abilityDetialModel = JsonUtils.JsonDeserialize<AbilityDetialEntity>(cardEntity.AbilityDetail);
+            var abilityDetialModel = JsonUtils.JsonDeserialize<AbilityDetialEntity>(cardEntity.AbilityDetailJson);
             var abilityDetialItems = abilityDetialModel.GetAbilityDetailDic();
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
                 foreach (var abilityDetailItem in abilityDetialItems)
@@ -236,23 +233,22 @@ namespace CardEditor.View
             CmbPack.ItemsSource = itemList;
         }
 
-        public void UpdateListView(List<PreviewEntity> previewEntityList, string number)
+        public void UpdateListView(List<PreviewEntity> previewEntityList, string memoryNumber)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
-            if (number.Equals(string.Empty)) return;
+            if (memoryNumber.Equals(string.Empty)) return;
             var firstOrDefault = previewEntityList
                 .Select((previewEntity, index) => new { Number = previewEntity.Number, Index = index })
-                .FirstOrDefault(i => i.Number.Equals(number));
-            if (firstOrDefault != null)
-            {
-                var position = firstOrDefault.Index;
-                if (position == -1) return;
-                LvwPreview.SelectedIndex = position;
-            }
+                .FirstOrDefault(i => i.Number.Equals(memoryNumber));
+            if (firstOrDefault == null) return;
+            var position = firstOrDefault.Index;
+            if (position == -1) return;
+            LvwPreview.SelectedIndex = position;
             LvwPreview.ScrollIntoView(LvwPreview.SelectedItem);
-
+            var item = LvwPreview.ItemContainerGenerator.ContainerFromIndex(position) as ListViewItem;
+            item?.Focus();
         }
 
         public void UpdatePackLinkage(string packNumber)
@@ -450,6 +446,14 @@ namespace CardEditor.View
         private void Md5_Click(object sender, RoutedEventArgs e)
         {
             _presenter.Md5Click();
+        }
+
+        /// <summary>
+        /// 卡包覆写事件
+        /// </summary>
+        private void PackCover_Click(object sender, RoutedEventArgs e)
+        {
+            _presenter.PackCoverClick();
         }
     }
 }

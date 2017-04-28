@@ -61,8 +61,8 @@ namespace CardEditor.Model
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Cost, ColumnCost)); // 费用
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Power, ColumnPower)); // 力量
             builder.Append(SqlUtils.GetAccurateSql(cardEntity.Restrict, ColumnRestrict)); // 限制
-            builder.Append(cardEntity.AbilityType); // 
-            builder.Append(cardEntity.AbilityDetail); //
+            builder.Append(cardEntity.AbilityTypeSql); // 
+            builder.Append(cardEntity.AbilityDetailSql); //
             MemoryQuerySql = builder.ToString(); // 除排序外的查询语句
             builder.Append(SqlUtils.GetFooterSql(previewOrderType)); // 完整的查询语句
             return builder.ToString();
@@ -101,8 +101,8 @@ namespace CardEditor.Model
             builder.Append($"'{cardEntity.Ability}',");
             builder.Append($"'{cardEntity.Lines}',");
             builder.Append($"'{cardEntity.Faq}',");
-            builder.Append($"'{JsonUtils.JsonSerializer(new List<string> { cardEntity.Image })}',");
-            builder.Append($"'{JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity)}'"); // 详细能力处理
+            builder.Append($"'{cardEntity.ImageJson}',");
+            builder.Append($"'{cardEntity.AbilityDetailJson}'"); // 详细能力处理
             builder.Append(")");
             return builder.ToString();
         }
@@ -159,7 +159,7 @@ namespace CardEditor.Model
             builder.Append($"{ColumnRare}= '{cardEntity.Rare}',");
             builder.Append($"{ColumnPack}= '{cardEntity.Pack}',");
             builder.Append(
-                $"{ColumnRestrict}='{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)}',");
+                $"{ColumnRestrict}='{((cardEntity.Restrict.Equals(StringConst.NotApplicable)) ? "4" : cardEntity.Restrict)}',");
             builder.Append($"{ColumnCName}= '{cardEntity.CName}',");
             builder.Append($"{ColumnJName}= '{cardEntity.JName}',");
             builder.Append($"{ColumnIllust}= '{cardEntity.Illust}',");
@@ -169,8 +169,8 @@ namespace CardEditor.Model
             builder.Append($"{ColumnAbility}= '{cardEntity.Ability}',");
             builder.Append($"{ColumnLines}= '{cardEntity.Lines}',");
             builder.Append($"{ColumnFaq}= '{cardEntity.Faq}',");
-            builder.Append($"{ColumnImage}= '{JsonUtils.JsonSerializer(new List<string> { cardEntity.Image })}',");
-            builder.Append($"{ColumnAbilityDetail}= '{JsonUtils.JsonSerializer(cardEntity.AbilityDetialEntity)}'");
+            builder.Append($"{ColumnImage}= '{cardEntity.ImageJson}',");
+            builder.Append($"{ColumnAbilityDetail}= '{cardEntity.AbilityDetailJson}'");
                 // 详细能力处理
             builder.Append($" WHERE {ColumnNumber}='{number}'");
             return builder.ToString();

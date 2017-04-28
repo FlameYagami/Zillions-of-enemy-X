@@ -31,6 +31,7 @@ namespace CardEditor.Presenter
         void AbilityChanged(string ability);
         void ModeChanged(string mode,string order);
         void Md5Click();
+        void PackCoverClick();
     }
 
     internal class Presenter : IPresenter
@@ -296,6 +297,11 @@ namespace CardEditor.Presenter
             var sqlList = SqlUtils.GetMd5SqlList();
             var succeed = SqliteUtils.Execute(sqlList);
             BaseDialogUtils.ShowDlg(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+        }
+
+        public void PackCoverClick()
+        {
+            DialogUtils.ShowPackCover();
         }
     }
 }

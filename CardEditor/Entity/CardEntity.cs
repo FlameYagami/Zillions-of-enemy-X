@@ -18,9 +18,9 @@ namespace CardEditor.Entity
         public string Ability { get; set; }
         public string Lines { get; set; }
         public string Faq { get; set; }
-        public string Image { get; set; }
-        public string AbilityType { get; set; }
-        public string AbilityDetail { get; set; }
-        public AbilityDetialEntity AbilityDetialEntity { get; set; }
+        public string ImageJson { get; set; }
+        public string AbilityDetailJson { get; set; }
+        public string AbilityTypeSql { get; set; }
+        public string AbilityDetailSql { get; set; }
     }
 }

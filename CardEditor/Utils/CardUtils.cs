@@ -60,7 +60,8 @@ namespace CardEditor.Utils
                 Lines = row[ColumnLines].ToString(),
                 Faq = row[ColumnFaq].ToString(),
                 Restrict = row[ColumnRestrict].ToString(),
-                AbilityDetail = row[ColumnAbilityDetail].ToString()
+                AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
+                ImageJson = row[ColumnImage].ToString()
             };
         }
 

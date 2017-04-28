@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using CardEditor.View;
+using Application = System.Windows.Application;
 
 namespace CardEditor.Utils
 {
@@ -14,6 +16,12 @@ namespace CardEditor.Utils
                 FileName = pack
             };
             return sfd.ShowDialog() != DialogResult.OK ? string.Empty : sfd.FileName;
+        }
+
+        public static void ShowPackCover()
+        {
+            var dlg = new PackCover() { Owner = Application.Current.MainWindow };
+            dlg.ShowDialog();
         }
     }
 }
