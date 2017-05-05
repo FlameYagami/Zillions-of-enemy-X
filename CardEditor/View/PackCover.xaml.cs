@@ -3,11 +3,12 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
-using CardEditor.Constant;
-using CardEditor.Entity;
 using CardEditor.Model;
 using CardEditor.Utils;
 using Dialog;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 using CheckBox = System.Windows.Controls.CheckBox;
 
 namespace CardEditor.View

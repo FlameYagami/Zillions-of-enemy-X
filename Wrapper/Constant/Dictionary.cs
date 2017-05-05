@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace DeckEditor.Constant
+namespace Wrapper.Constant
 {
     public class Dictionary
     {
+        // Common
         public static Dictionary<string, string> AbilityTypeDic = new Dictionary<string, string>
         {
             {"Lv", "Lv"},
@@ -20,26 +17,27 @@ namespace DeckEditor.Constant
             {"零点优化", "【※】零点优化"}
         };
 
+        // DeckEditor
         public static Dictionary<string, string> ImgSignPathDic = new Dictionary<string, string>
         {
-            {"-", String.Empty},
-            {"点燃", Const.TexturesPath + "Ig.png"},
-            {"觉醒之种", Const.TexturesPath + "El.png"}
+            {"-", string.Empty},
+            {"点燃", PathManager.TexturesPath + "Ig.png"},
+            {"觉醒之种", PathManager.TexturesPath + "El.png"}
         };
 
-        public static Dictionary<string, string> ImgRestrictPathDic = new Dictionary<string, string>
+        public static Dictionary<int, string> ImgRestrictPathDic = new Dictionary<int, string>
         {
-            {"0", Const.TexturesPath + "Restrict.png"}
+            {0, PathManager.TexturesPath + "restrict.png"}
         };
 
         public static Dictionary<string, string> ImgCampPathDic = new Dictionary<string, string>
         {
-            {"红", Const.TexturesPath + "Red.png"},
-            {"蓝", Const.TexturesPath + "Blue.png"},
-            {"白", Const.TexturesPath + "White.png"},
-            {"黑", Const.TexturesPath + "Black.png"},
-            {"绿", Const.TexturesPath + "Green.png"},
-            {"无", Const.TexturesPath + "Void.png"}
+            {"红", PathManager.TexturesPath + "Red.png"},
+            {"蓝", PathManager.TexturesPath + "Blue.png"},
+            {"白", PathManager.TexturesPath + "White.png"},
+            {"黑", PathManager.TexturesPath + "Black.png"},
+            {"绿", PathManager.TexturesPath + "Green.png"},
+            {"无", PathManager.TexturesPath + "Void.png"}
         };
     }
 }

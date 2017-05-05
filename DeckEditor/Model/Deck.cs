@@ -4,12 +4,13 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Common;
-using DeckEditor.Constant;
 using DeckEditor.Entity;
 using DeckEditor.Utils;
 using Dialog;
-using Enum = DeckEditor.Constant.Enum;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Utils;
+using Enum = CardEditor.Constant.Enum;
 
 namespace DeckEditor.Model
 {
@@ -29,13 +30,13 @@ namespace DeckEditor.Model
     internal class Deck : SqliteConst, IDeck
     {
         /// <summary>
-        ///  添加卡片到组卡区
+        ///     添加卡片到组卡区
         /// </summary>
         /// <param name="areaType">卡片添加区域枚举类型</param>
         /// <param name="number">卡编</param>
         /// <param name="thumbnailPath">缩略图路径</param>
         /// <returns></returns>
-        public Enum.AreaType AddCard(Enum.AreaType areaType, string number,string thumbnailPath)
+        public Enum.AreaType AddCard(Enum.AreaType areaType, string number, string thumbnailPath)
         {
             switch (areaType)
             {
@@ -160,7 +161,7 @@ namespace DeckEditor.Model
 
         public List<string> GetDeckNameList()
         {
-            var deckFolder = new DirectoryInfo(Const.DeckFolderPath);
+            var deckFolder = new DirectoryInfo(PathManager.DeckFolderPath);
             var deckFiles = deckFolder.GetFiles(); //遍历文件
             return deckFiles
                 .Where(deckFile => StringConst.DeckExtension.Equals(deckFile.Extension))
@@ -186,13 +187,14 @@ namespace DeckEditor.Model
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
+            var md5 = row[ColumnMd5].ToString();
             var name = row[ColumnCName].ToString();
             var camp = row[ColumnCamp].ToString();
             var cost = row[ColumnCost].ToString();
             var power = row[ColumnPower].ToString();
-            var limit = row[ColumnLimit].ToString();
             var imageJson = row[ColumnImage].ToString();
-            var restrictPath = CardUtils.GetRestrictPath(limit);
+            var restrict = RestrictUtils.GetRestrict(md5);
+            var restrictPath = CardUtils.GetRestrictPath(restrict);
             var deckEntity = new DeckEntity
             {
                 Camp = camp,
@@ -270,11 +272,13 @@ namespace DeckEditor.Model
             {
                 case Enum.IgType.Life:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) < 4);
+                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) <
+                              4);
                     break;
                 case Enum.IgType.Void:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) < 4);
+                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) <
+                              4);
                     break;
                 case Enum.IgType.Normal:
                     break;

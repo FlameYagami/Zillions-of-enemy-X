@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using DeckEditor.Model;
 using DeckEditor.Utils;
+using Wrapper;
+using Wrapper.Entity;
+using Wrapper.Utils;
 
 namespace DeckEditor.View
 {
@@ -23,7 +25,10 @@ namespace DeckEditor.View
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            DataCache.AbilityDetialEntity = CardUtils.GetAbilityDetialEntity(LstAbilityDetail);
+            var checkboxListDic = LstAbilityDetail.Items.Cast<CheckBox>()
+                .ToDictionary(checkbox => checkbox.Content.ToString(),
+                    checkbox => checkbox.IsChecked != null && (bool) checkbox.IsChecked);
+            DataCache.AbilityDetialEntity = new AbilityDetialEntity(checkboxListDic);
             Close();
         }
 

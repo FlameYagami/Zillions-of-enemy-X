@@ -1,13 +1,10 @@
-﻿namespace DeckEditor.Entity
+﻿namespace Wrapper.Entity
 {
-    public class PreviewEntity
+    public class PreviewEntity : CardEntity
     {
-        public string CName { get; set; }
         public string ImagePath { get; set; }
-        public string ImageJson { get; set; }
         public string CampAndRace { get; set; }
         public string PowerAndCost { get; set; }
-        public string Number { get; set; }
         public string RestrictPath { get; set; }
     }
 }

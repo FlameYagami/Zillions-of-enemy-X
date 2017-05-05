@@ -20,7 +20,7 @@ namespace CardEditor.Utils
 
         public static void ShowPackCover()
         {
-            var dlg = new PackCover() { Owner = Application.Current.MainWindow };
+            var dlg = new PackCover {Owner = Application.Current.MainWindow};
             dlg.ShowDialog();
         }
     }

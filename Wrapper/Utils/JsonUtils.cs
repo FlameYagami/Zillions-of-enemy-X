@@ -2,7 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace Common
+namespace Wrapper.Utils
 {
     public class JsonUtils
     {

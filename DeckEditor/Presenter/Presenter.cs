@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows.Controls;
-using DeckEditor.Constant;
-using DeckEditor.Entity;
 using DeckEditor.Model;
 using DeckEditor.Utils;
 using DeckEditor.View;
 using Dialog;
-using Common;
-using System.Collections.Generic;
-using Enum = DeckEditor.Constant.Enum;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 
 namespace DeckEditor.Presenter
 {
@@ -58,8 +58,8 @@ namespace DeckEditor.Presenter
             if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
             {
                 _view.Init();
-                if (!Directory.Exists(Const.DeckFolderPath))
-                    Directory.CreateDirectory(Const.DeckFolderPath);
+                if (!Directory.Exists(PathManager.DeckFolderPath))
+                    Directory.CreateDirectory(PathManager.DeckFolderPath);
             }
             else
                 BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
@@ -77,15 +77,14 @@ namespace DeckEditor.Presenter
 
         public void QueryClick(CardEntity cardEntity, string order)
         {
-            var querySql = _query.GetQuerySql(cardEntity, CardUtils.GetPreviewOrderType(order));
-            UpdateCacheAndUi(querySql);
+            UpdateCacheAndUi(cardEntity, order);
         }
 
         public void OrderClick(string order)
         {
-            var memorySql = _query.QuerySqlMemory;
-            if (memorySql.Equals(string.Empty)) return;
-            UpdateCacheAndUi(memorySql + SqlUtils.GetFooterSql(CardUtils.GetPreviewOrderType(order)));
+            var cardEntity = _query.MemoryCardEntity;
+            if (cardEntity.Equals(null)) return;
+            UpdateCacheAndUi(cardEntity, order);
         }
 
         public void ResaveClick(string deckName)
@@ -106,13 +105,13 @@ namespace DeckEditor.Presenter
 
         public void ValueOrder()
         {
-            _deck.Order(Enum.DeckOrderType.Value);
+            _deck.Order(CardEditor.Constant.Enum.DeckOrderType.Value);
             UpdateDeckListView();
         }
 
         public void RandomOrder()
         {
-            _deck.Order(Enum.DeckOrderType.Random);
+            _deck.Order(CardEditor.Constant.Enum.DeckOrderType.Random);
             UpdateDeckListView();
         }
 
@@ -133,7 +132,7 @@ namespace DeckEditor.Presenter
         public void PreivewListViewChanged(int selectIndex)
         {
             if (selectIndex.Equals(-1)) return;
-            var infoMode = DataCache.InfoColl[selectIndex];
+            var infoMode = DataCache.PreEntityList[selectIndex];
             var number = infoMode.Number;
             var cardmodel = CardUtils.GetCardEntity(number);
             var numberExList = CardUtils.GetNumberExList(infoMode.ImageJson);
@@ -144,11 +143,13 @@ namespace DeckEditor.Presenter
 
         public void PreviewMouseRightClick(Grid grid, int selectIndex)
         {
-            var lblImageJson = (Label)grid?.FindName(StringConst.LblPreviewImageJson);
+            var lblImageJson = (Label) grid?.FindName(StringConst.LblPreviewImageJson);
             if (lblImageJson == null) return;
             var imageJson = lblImageJson.Content.ToString();
-            var numberEx = JsonUtils.JsonDeserialize<List<string>>(imageJson)[selectIndex].Replace("/","").Replace(StringConst.ImageExtension,"");
-            var thumbnailPath = $"{Const.ThumbnailPath}/{ numberEx}{StringConst.ImageExtension}";
+            var numberEx =
+                JsonUtils.JsonDeserialize<List<string>>(imageJson)[selectIndex].Replace("/", "")
+                    .Replace(StringConst.ImageExtension, "");
+            var thumbnailPath = $"{PathManager.ThumbnailPath}/{numberEx}{StringConst.ImageExtension}";
             BaseAdd(numberEx, thumbnailPath);
         }
 
@@ -158,25 +159,25 @@ namespace DeckEditor.Presenter
             if (label == null) return;
             var numberEx = label.Content.ToString();
             var areaType = CardUtils.GetAreaType(numberEx);
-            
+
             // 删除非玩家卡
             switch (areaType)
             {
-                case Enum.AreaType.Pl:
+                case CardEditor.Constant.Enum.AreaType.Pl:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.PlColl);
                     _view.UpdateDeckListView(areaType, DataCache.PlColl);
                     break;
-                case Enum.AreaType.Ig:
+                case CardEditor.Constant.Enum.AreaType.Ig:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.IgColl);
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case Enum.AreaType.Ug:
+                case CardEditor.Constant.Enum.AreaType.Ug:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.UgColl);
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case Enum.AreaType.Ex:
+                case CardEditor.Constant.Enum.AreaType.Ex:
                     _deck.DeleteEntityFromColl(numberEx, DataCache.ExColl);
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
@@ -186,8 +187,8 @@ namespace DeckEditor.Presenter
         public void ImgAreaMouseLeftClick(Grid grid)
         {
             var label = (Label) grid?.FindName(StringConst.LblAreaNumberEx);
-            var lblAreaImageJson = (Label)grid?.FindName(StringConst.LblAreaImageJson);
-            if (label == null || lblAreaImageJson == null) return;
+            var lblAreaImageJson = (Label) grid?.FindName(StringConst.LblAreaImageJson);
+            if ((label == null) || (lblAreaImageJson == null)) return;
             var numberEx = label.Content.ToString();
             var imageJson = lblAreaImageJson.Content.ToString();
             var cardmodel = CardUtils.GetCardEntity(numberEx);
@@ -200,7 +201,7 @@ namespace DeckEditor.Presenter
         public void PictureMouseRightClick(Image image)
         {
             var number = image.Tag.ToString();
-            var thumbnailPath = Const.ThumbnailPath + number + StringConst.ImageExtension;
+            var thumbnailPath = PathManager.ThumbnailPath + number + StringConst.ImageExtension;
             BaseAdd(number, thumbnailPath);
         }
 
@@ -240,35 +241,35 @@ namespace DeckEditor.Presenter
         public void ImgAreaMouseDoubleClick(Grid grid)
         {
             var label = (Label) grid?.FindName(StringConst.LblAreaNumberEx);
-            var image = (Image)grid?.FindName(StringConst.ImgAreaThumbnail);
-            if (label == null  || image == null) return;
+            var image = (Image) grid?.FindName(StringConst.ImgAreaThumbnail);
+            if ((label == null) || (image == null)) return;
 
             var number = label.Content.ToString();
             var thumbnailPath = image.Source.ToString();
             BaseAdd(number, thumbnailPath);
         }
 
-        private void BaseAdd(string number,string thumbnailPath)
+        private void BaseAdd(string number, string thumbnailPath)
         {
             var areaType = CardUtils.GetAreaType(number);
             // 添加卡
             var isAddSucceed = _deck.AddCard(areaType, number, thumbnailPath);
-            if (Enum.AreaType.None.Equals(isAddSucceed)) return;
+            if (CardEditor.Constant.Enum.AreaType.None.Equals(isAddSucceed)) return;
             // 添加成功则更新该区域
             switch (areaType)
             {
-                case Enum.AreaType.Pl:
+                case CardEditor.Constant.Enum.AreaType.Pl:
                     _view.UpdateDeckListView(areaType, DataCache.PlColl);
                     break;
-                case Enum.AreaType.Ig:
+                case CardEditor.Constant.Enum.AreaType.Ig:
                     _view.UpdateDeckListView(areaType, DataCache.IgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case Enum.AreaType.Ug:
+                case CardEditor.Constant.Enum.AreaType.Ug:
                     _view.UpdateDeckListView(areaType, DataCache.UgColl);
                     _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
                     break;
-                case Enum.AreaType.Ex:
+                case CardEditor.Constant.Enum.AreaType.Ex:
                     _view.UpdateDeckListView(areaType, DataCache.ExColl);
                     break;
             }
@@ -277,21 +278,23 @@ namespace DeckEditor.Presenter
         /// <summary>
         ///     更新全部数据集合以及ListView
         /// </summary>
-        /// <param name="sql">查询语句</param>
-        private void UpdateCacheAndUi(string sql)
+        /// <param name="cardEntity">查询的实例</param>
+        /// <param name="preOrder">预览排序</param>
+        private void UpdateCacheAndUi(CardEntity cardEntity, string preOrder)
         {
+            var sql = _query.GetQuerySql(cardEntity, preOrder);
             var dataSet = new DataSet();
             SqliteUtils.FillDataToDataSet(sql, dataSet);
-            _query.SetCardList(dataSet);
-            _view.UpdatePreviewListView(DataCache.InfoColl);
+            _query.SetPreCardList(dataSet, cardEntity.Restrict);
+            _view.UpdatePreviewListView(DataCache.PreEntityList);
         }
 
         private void UpdateDeckListView()
         {
-            _view.UpdateDeckListView(Enum.AreaType.Pl, DataCache.PlColl);
-            _view.UpdateDeckListView(Enum.AreaType.Ig, DataCache.IgColl);
-            _view.UpdateDeckListView(Enum.AreaType.Ug, DataCache.UgColl);
-            _view.UpdateDeckListView(Enum.AreaType.Ex, DataCache.ExColl);
+            _view.UpdateDeckListView(CardEditor.Constant.Enum.AreaType.Pl, DataCache.PlColl);
+            _view.UpdateDeckListView(CardEditor.Constant.Enum.AreaType.Ig, DataCache.IgColl);
+            _view.UpdateDeckListView(CardEditor.Constant.Enum.AreaType.Ug, DataCache.UgColl);
+            _view.UpdateDeckListView(CardEditor.Constant.Enum.AreaType.Ex, DataCache.ExColl);
             _view.UpdateStartAndLifeAndVoid(CardUtils.GetStartAndLifeAndVoidCount());
         }
     }

@@ -23,53 +23,59 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button Name="BtnFileOpen" Click="FileOpen_Click" Content="文件选择" />
-                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5" Background="White">
-                        <TextBox Name="TxtFilePath" Grid.Column="1" Style="{DynamicResource ControlTransparent}" VerticalContentAlignment="Center"/>
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
+                            Background="White">
+                        <TextBox Name="TxtFilePath" Grid.Column="1" Style="{DynamicResource ControlTransparent}"
+                                 VerticalContentAlignment="Center" />
                     </Border>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Content="卡包名称:" Foreground="White" Margin="5,2.5,5,2.5" HorizontalContentAlignment="Center"/>
-                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5" Background="White">
-                        <TextBox Grid.Column="1" Name="TxtPackName"  Style="{DynamicResource ControlTransparent}" VerticalContentAlignment="Center"/>
+                    <Label Grid.Column="0" Content="卡包名称:" Foreground="White" Margin="5,2.5,5,2.5"
+                           HorizontalContentAlignment="Center" />
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
+                            Background="White">
+                        <TextBox Grid.Column="1" Name="TxtPackName" Style="{DynamicResource ControlTransparent}"
+                                 VerticalContentAlignment="Center" />
                     </Border>
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Label Content="字段:" Foreground="White" Margin="5,2.5,5,2.5" HorizontalContentAlignment="Center"/>
-                    <Border Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource ControlBorder}" Margin="5,2.5,5,2.5">
+                    <Label Content="字段:" Foreground="White" Margin="5,2.5,5,2.5" HorizontalContentAlignment="Center" />
+                    <Border Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource ControlBorder}"
+                            Margin="5,2.5,5,2.5">
                         <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstColumn"
-                         SelectionMode="Multiple"
-                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                 SelectionMode="Multiple"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <UniformGrid Columns="3" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-                            <CheckBox x:Name="ChkColumn0" Content="种类" Tag="种类" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn1" Content="阵营" Tag="色" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn2" Content="种族" Tag="种族" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn3" Content="标记" Tag="标记" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn4" Content="罕贵" Tag="罕贵度" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn5" Content="卡名" Tag="卡片名_中" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn6" Content="费用" Tag="COST" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn7" Content="力量" Tag="力量" IsChecked="True"/>
-                            <CheckBox x:Name="ChkColumn8" Content="能力" Tag="能力_中" IsChecked="True"/>
+                            <CheckBox x:Name="ChkColumn0" Content="种类" Tag="种类" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn1" Content="阵营" Tag="色" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn2" Content="种族" Tag="种族" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn3" Content="标记" Tag="标记" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn4" Content="罕贵" Tag="罕贵度" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn5" Content="卡名" Tag="卡片名_中" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn6" Content="费用" Tag="COST" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn7" Content="力量" Tag="力量" IsChecked="True" />
+                            <CheckBox x:Name="ChkColumn8" Content="能力" Tag="能力_中" IsChecked="True" />
                         </ListBox>
                     </Border>
                 </Grid>

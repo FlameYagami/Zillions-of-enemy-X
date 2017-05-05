@@ -3,34 +3,47 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using DeckEditor.Constant;
-using DeckEditor.Entity;
-using DeckEditor.Model;
-using Common;
+using CardEditor.Constant;
+using Wrapper.Constant;
+using Wrapper.Entity;
 
-namespace DeckEditor.Utils
+namespace Wrapper.Utils
 {
-    internal class CardUtils : SqliteConst
+    public class CardUtils : SqliteConst
     {
         /// <summary>
-        /// 获取排序的枚举类型
+        ///     获取排序的枚举类型
         /// </summary>
         /// <param name="order">排序方式</param>
         /// <returns></returns>
-        public static Enum.PreviewOrderType GetPreviewOrderType(string order)
+        public static Enum.PreviewOrderType GetPreOrderType(string order)
         {
             return order.Equals(StringConst.OrderNumber)
                 ? Enum.PreviewOrderType.Number
                 : Enum.PreviewOrderType.Value;
         }
 
+        /// <summary>
+        ///     获取模式的枚举类型
+        /// </summary>
+        /// <param name="mode">模式</param>
+        /// <returns></returns>
+        public static Enum.ModeType GetModeType(string mode)
+        {
+            return mode.Equals(StringConst.ModeQuery)
+                ? Enum.ModeType.Query
+                : mode.Equals(StringConst.ModeEditor) ? Enum.ModeType.Editor : Enum.ModeType.Develop;
+        }
+
         public static CardEntity GetCardEntity(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.AsParallel()
+            var row = DataCache.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
+                .AsParallel()
                 .First(column => column[ColumnNumber].Equals(number));
             return new CardEntity
             {
+                Md5 = row[ColumnMd5].ToString(),
                 Type = row[ColumnType].ToString(),
                 Camp = row[ColumnCamp].ToString(),
                 Race = row[ColumnRace].ToString(),
@@ -46,69 +59,23 @@ namespace DeckEditor.Utils
                 Ability = row[ColumnAbility].ToString(),
                 Lines = row[ColumnLines].ToString(),
                 Faq = row[ColumnFaq].ToString(),
-                Restrict = row[ColumnRestrict].ToString(),
-                AbilityDetail = row[ColumnAbilityDetail].ToString()
+                AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
+                ImageJson = row[ColumnImage].ToString(),
+                Restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString()).ToString()
             };
-        }
-
-        public static AbilityDetialEntity GetAbilityDetialEntity(ListBox listBox)
-        {
-            var abilityDetialModel = new AbilityDetialEntity();
-            abilityDetialModel.SetAbilityDetailDic(listBox.Items.Cast<CheckBox>());
-            return abilityDetialModel;
         }
 
         /// <summary>
         ///     获取卡编相关的大图路径集合
         /// </summary>
-        /// <param name="number">卡编</param>
-        /// <returns>../B01-001.JPG && ../B01-001SP.JPG</returns>
+        /// <param name="imageJson">图片Json</param>
+        /// <returns></returns>
         public static List<string> GetPicturePathList(string imageJson)
         {
             var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
             return imageExList.AsParallel()
-                .Select(imageEx => Const.PicturePath + imageEx)
+                .Select(imageEx => PathManager.PicturePath + imageEx)
                 .ToList();
-        }
-
-        /// <summary>
-        ///     获取卡编相关卡编集合
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <returns></returns>
-        public static List<string> GetNumberExList(string imageJson)
-        {
-            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
-            return imageExList.AsParallel()
-                .Select(imageEx => imageEx.Replace("/","").Replace(StringConst.ImageExtension,""))
-                .ToList();
-        }
-
-        /// <summary>
-        ///     获取卡编相关的小图路径集合
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <param name="thumbnailFilePathList">小图路径集合</param>
-        /// <returns></returns>
-        public static List<string> GetThumbnailPathList(string imageJson)
-        {
-            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
-            return imageExList.AsParallel()
-                .Select(imageEx => File.Exists(Const.ThumbnailPath + imageEx)? Const.ThumbnailPath + imageEx : Const.ThumbnailUnknownPath)
-                .ToList();
-        }
-
-        /// <summary>
-        ///     获取限制的图标路径
-        /// </summary>
-        /// <param name="limit">数量</param>
-        /// <returns></returns>
-        public static string GetRestrictPath(string limit)
-        {
-            foreach (var item in Dictionary.ImgRestrictPathDic)
-                if (limit.Equals(item.Key))
-                    return item.Value;
-            return string.Empty;
         }
 
         /// <summary>
@@ -125,7 +92,7 @@ namespace DeckEditor.Utils
 
         public static List<object> GetAllPack()
         {
-            var packlist = new List<object> {StringConst.NotApplicable};
+            var packlist = new List<object> { StringConst.NotApplicable };
             packlist.AddRange(GetPartPack("B"));
             packlist.AddRange(GetPartPack("C"));
             packlist.AddRange(GetPartPack("E"));
@@ -137,22 +104,10 @@ namespace DeckEditor.Utils
             return packlist;
         }
 
-        public static List<object> GetIllust()
-        {
-            var packlist = new List<object> {StringConst.NotApplicable};
-            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
-                .Select(column => column[ColumnIllust])
-                .Distinct()
-                .OrderBy(value => value.ToString().Length)
-                .ToList();
-            packlist.AddRange(tempList);
-            return packlist;
-        }
-
         private static IEnumerable<object> GetPartPack(string packType)
         {
             var packlist = new List<object> {packType + StringConst.Series};
-            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
+            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => column[ColumnPack])
                 .Distinct()
                 .Where(value => value.ToString().Contains(packType))
@@ -164,10 +119,14 @@ namespace DeckEditor.Utils
 
         public static List<object> GetPartRace(string camp)
         {
-            var packlist = new List<object> {StringConst.NotApplicable};
+            var packlist = new List<object> { StringConst.NotApplicable };
+            if (camp.Equals(StringConst.NotApplicable))
+            {
+                return packlist;
+            }
             var tempList = (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
-                    where row[ColumnCamp].Equals(camp)
-                    select row[ColumnRace])
+                            where row[ColumnCamp].Equals(camp)
+                            select row[ColumnRace])
                 .ToList()
                 .Distinct()
                 .OrderBy(value => value.ToString().Length)
@@ -182,7 +141,64 @@ namespace DeckEditor.Utils
                 return string.Empty;
             if (pack.Contains(StringConst.Series))
                 return pack.Substring(0, 1) + "XX-";
-            return pack.Substring(0, 3) + "-";
+            if (pack.Length >= 3)
+                return pack.Substring(0, 3) + "-";
+            return string.Empty;
+        }
+
+        /// <summary>
+        ///     获取卡编相关卡编集合
+        /// </summary>
+        /// <param name="imageJson">图片Json</param>
+        /// <returns></returns>
+        public static List<string> GetNumberExList(string imageJson)
+        {
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(imageEx => imageEx.Replace("/", "").Replace(StringConst.ImageExtension, ""))
+                .ToList();
+        }
+
+        /// <summary>
+        ///     获取卡编相关的小图路径集合
+        /// </summary>
+        /// <param name="imageJson">图片Json</param>
+        /// <returns></returns>
+        public static List<string> GetThumbnailPathList(string imageJson)
+        {
+            var imageExList = JsonUtils.JsonDeserialize<List<string>>(imageJson);
+            return imageExList.AsParallel()
+                .Select(
+                    imageEx =>
+                        File.Exists(PathManager.ThumbnailPath + imageEx)
+                            ? PathManager.ThumbnailPath + imageEx
+                            : PathManager.ThumbnailUnknownPath)
+                .ToList();
+        }
+
+        /// <summary>
+        ///     获取限制的图标路径
+        /// </summary>
+        /// <param name="restrict">制限数量</param>
+        /// <returns></returns>
+        public static string GetRestrictPath(int restrict)
+        {
+            foreach (var item in Dictionary.ImgRestrictPathDic)
+                if (restrict.Equals(item.Key))
+                    return item.Value;
+            return string.Empty;
+        }
+
+        public static List<object> GetIllust()
+        {
+            var packlist = new List<object> { StringConst.NotApplicable };
+            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
+                .Select(column => column[ColumnIllust])
+                .Distinct()
+                .OrderBy(value => value.ToString().Length)
+                .ToList();
+            packlist.AddRange(tempList);
+            return packlist;
         }
 
         /// <summary>
@@ -218,10 +234,8 @@ namespace DeckEditor.Utils
                         campUriList.Add(campItem.Value);
                         break;
                     }
-            while(campUriList.Count < 5)
-            {
+            while (campUriList.Count < 5)
                 campUriList.Add(string.Empty);
-            }
             return campUriList;
         }
 
@@ -252,7 +266,7 @@ namespace DeckEditor.Utils
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
-            return row[ColumnRestrict].ToString().Equals(string.Empty) ? 4 : int.Parse(row[ColumnRestrict].ToString());
+            return RestrictUtils.GetRestrict(row[ColumnMd5].ToString());
         }
 
         /// <summary>
@@ -327,7 +341,7 @@ namespace DeckEditor.Utils
         /// <returns>卡组路径</returns>
         public static string GetDeckPath(string deckName)
         {
-            return Const.DeckFolderPath + deckName + StringConst.DeckExtension;
+            return PathManager.DeckFolderPath + deckName + StringConst.DeckExtension;
         }
 
         /// <summary>
@@ -337,11 +351,11 @@ namespace DeckEditor.Utils
         /// <returns>缩略图路径</returns>
         public static string GetThumbnailPath(string number)
         {
-            return Const.ThumbnailPath + number + StringConst.ImageExtension;
+            return PathManager.ThumbnailPath + number + StringConst.ImageExtension;
         }
 
         /// <summary>
-        ///      获取卡名
+        ///     获取卡名
         /// </summary>
         /// <param name="number"></param>
         /// <returns>卡名</returns>

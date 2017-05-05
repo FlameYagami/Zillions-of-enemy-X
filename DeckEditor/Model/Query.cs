@@ -1,35 +1,32 @@
 ﻿using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using DeckEditor.Constant;
-using DeckEditor.Entity;
+using CardEditor.Constant;
 using DeckEditor.Utils;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 
 namespace DeckEditor.Model
 {
     internal interface IQuery
     {
-        string QuerySqlMemory { get; set; }
-        void SetCardList(DataSet dsPartCache);
-        string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
+        CardEntity MemoryCardEntity { get; set; }
+        void SetPreCardList(DataSet dsPartCache,string restrictQuery);
+        string GetQuerySql(CardEntity cardEntity, string preOrder);
     }
 
     internal class Query : SqliteConst, IQuery
     {
-        private string _querySqlMemory;
+        public CardEntity MemoryCardEntity { get; set; }
 
-        public string QuerySqlMemory
+        public void SetPreCardList(DataSet dsPartCache, string restrictQuery)
         {
-            get { return _querySqlMemory ?? string.Empty; }
-            set { _querySqlMemory = value; }
-        }
-
-        public void SetCardList(DataSet dsPartCache)
-        {
-            DataCache.InfoColl.Clear();
+            DataCache.PreEntityList.Clear();
             foreach (var row in dsPartCache.Tables[TableName].Rows.Cast<DataRow>())
             {
+                var md5 = row[ColumnMd5].ToString();
                 var name = row[ColumnCName].ToString();
                 var camp = row[ColumnCamp].ToString();
                 var race = row[ColumnRace].ToString();
@@ -39,27 +36,30 @@ namespace DeckEditor.Model
                 var power = row[ColumnPower].ToString();
                 power = power.Equals(string.Empty) || power.Equals("0") ? StringConst.Hyphen : power;
                 var number = row[ColumnNumber].ToString();
-                var restrict = row[ColumnRestrict].ToString();
                 var imageJson = row[ColumnImage].ToString();
                 var imagePath = CardUtils.GetThumbnailPathList(imageJson)[0];
+                var restrict = RestrictUtils.GetRestrict(md5);
                 var restrictPath = CardUtils.GetRestrictPath(restrict);
-                DataCache.InfoColl.Add(new PreviewEntity
+                DataCache.PreEntityList.Add(new PreviewEntity
                 {
                     CName = name,
                     CampAndRace = camp + " / " + race,
-                    PowerAndCost = power + " / "+ cost,
+                    PowerAndCost = power + " / " + cost,
                     Number = number,
                     ImageJson = imageJson,
                     ImagePath = imagePath,
                     RestrictPath = restrictPath
                 });
             }
+            DataCache.PreEntityList = RestrictUtils.GetRestrictCardList(DataCache.PreEntityList, restrictQuery);
         }
 
-        public string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
+        public string GetQuerySql(CardEntity cardEntity, string preOrder)
         {
+            MemoryCardEntity = cardEntity; // 保存查询的实例
+            var previewOrderType = CardUtils.GetPreOrderType(preOrder);
             var builder = new StringBuilder();
-            builder.Append(SqlUtils.GetHeaderSql());// 基础查询语句
+            builder.Append(SqlUtils.GetHeaderSql()); // 基础查询语句
             builder.Append(SqlUtils.GetAllKeySql(cardEntity.Key)); // 关键字
             builder.Append(SqlUtils.GetAccurateSql(cardEntity.Type, ColumnType)); // 种类
             builder.Append(SqlUtils.GetAccurateSql(cardEntity.Camp, ColumnCamp)); // 阵营
@@ -70,9 +70,8 @@ namespace DeckEditor.Model
             builder.Append(SqlUtils.GetPackSql(cardEntity.Pack, ColumnPack)); // 卡包
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Cost, ColumnCost)); // 费用
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Power, ColumnPower)); // 力量
-            builder.Append(cardEntity.AbilityType); //  能力类型
-            builder.Append(cardEntity.AbilityDetail); // 详细能力
-            QuerySqlMemory = builder.ToString(); // 将排序之前的查询语句记录在内存当中
+            builder.Append(cardEntity.AbilityTypeSql); //  能力类型
+            builder.Append(cardEntity.AbilityDetailSql); // 详细能力
             builder.Append(SqlUtils.GetFooterSql(previewOrderType)); // 排序
             return builder.ToString(); // 完整的查询语句
         }

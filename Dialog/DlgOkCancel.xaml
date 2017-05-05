@@ -9,18 +9,19 @@
     <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="35"/>
+                <RowDefinition />
+                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" x:Name="LblHint" Margin="10" HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Center" FontSize="14" Foreground="White" />
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="BtnCacncel" Content="取消" Margin="10,0,5,10" Click="BtnCacncel_Click" />
-                <Button Grid.Column="1" x:Name="BtnConfirm" Content="确定" Margin="5,0,10,10" Click="BtnConfirm_Click" IsDefault="True" />
+                <Button Grid.Column="1" x:Name="BtnConfirm" Content="确定" Margin="5,0,10,10" Click="BtnConfirm_Click"
+                        IsDefault="True" />
             </Grid>
         </Grid>
     </Border>

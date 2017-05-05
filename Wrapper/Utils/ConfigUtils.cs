@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Common
+namespace Wrapper.Utils
 {
     public class ConfigUtils
     {

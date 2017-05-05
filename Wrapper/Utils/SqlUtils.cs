@@ -4,15 +4,13 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
-using CardEditor.Constant;
-using CardEditor.Entity;
-using CardEditor.Model;
-using Common;
+using Wrapper.Constant;
+using Wrapper.Entity;
 using Enum = CardEditor.Constant.Enum;
 
-namespace CardEditor.Utils
+namespace Wrapper.Utils
 {
-    internal class SqlUtils : SqliteConst
+    public class SqlUtils : SqliteConst
     {
         public static string GetQueryAllSql()
         {
@@ -59,7 +57,6 @@ namespace CardEditor.Utils
                    " DESC," +
                    ColumnJName + " DESC";
         }
-
 
         /// <summary>
         ///     获取精确取值
@@ -123,25 +120,6 @@ namespace CardEditor.Utils
             return $" AND {column} LIKE '%{value}%'";
         }
 
-        /// <summary>
-        ///     获取能力查询语句（适用范围:能力类型、详细能力）
-        /// </summary>
-        /// <param name="listbox"></param>
-        /// <param name="abilityitems"></param>
-        /// <param name="column"></param>
-        /// <returns></returns>
-        public static string GetAbilitySql(ItemsControl listbox, List<string> abilityitems, string column)
-        {
-            var value = new StringBuilder();
-            for (var i = 0; i != listbox.Items.Count; i++)
-            {
-                var isChecked = ((CheckBox) listbox.Items[i]).IsChecked;
-                if ((isChecked != null) && (bool) isChecked)
-                    value.Append($" AND {column} LIKE '%{abilityitems[i]}%'");
-            }
-            return value.ToString();
-        }
-
         public static string GetExportSql(string pack)
         {
             return $"SELECT * FROM {TableName} WHERE {ColumnPack} LIKE '%{pack}%' {GetOrderNumberSql()}";
@@ -150,7 +128,9 @@ namespace CardEditor.Utils
         public static List<string> GetPciturePathList()
         {
             var numberList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
-                .Select(column => $"Update TableCard Set ImageJson = '{JsonUtils.JsonSerializer(new List<string> { "/" + column[ColumnNumber].ToString() + ".jpg" })}' WHERE Number='{column[ColumnNumber].ToString()}'")
+                .Select(
+                    column =>
+                            $"Update TableCard Set ImageJson = '{JsonUtils.JsonSerializer(new List<string> {"/" + column[ColumnNumber].ToString() + ".jpg"})}' WHERE Number='{column[ColumnNumber].ToString()}'")
                 .ToList();
             return numberList;
         }
@@ -158,14 +138,69 @@ namespace CardEditor.Utils
         public static List<string> GetMd5SqlList()
         {
             var cardEntities = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
-                .Select(column => new CardEntity()
+                .Select(column => new CardEntity
                 {
-                    JName =  column[ColumnJName].ToString(),
+                    JName = column[ColumnJName].ToString(),
                     Number = column[ColumnNumber].ToString(),
                     Cost = column[ColumnCost].ToString(),
                     Power = column[ColumnPower].ToString()
                 }).ToList();
-            return (from entity in cardEntities let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power).ToUpper() select $"UPDATE {TableName} SET Md5 = '{md5}' WHERE {ColumnNumber} = '{entity.Number}'").ToList();
+            return (from entity in cardEntities
+                let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power).ToUpper()
+                select $"UPDATE {TableName} SET md5 = '{md5}' WHERE {ColumnNumber} = '{entity.Number}'").ToList();
+        }
+
+        /// <summary>
+        ///     获取能力类型的查询语句
+        /// </summary>
+        /// <param name="abilityTypeDic">能力类型字典</param>
+        /// <returns></returns>
+        public static string GetAbilityTypeSql(Dictionary<string, bool> abilityTypeDic)
+        {
+            var value = new StringBuilder();
+            foreach (var entity in abilityTypeDic)
+                if (entity.Value)
+                    foreach (var abilityTypeItem in Dictionary.AbilityTypeDic)
+                        if (abilityTypeItem.Key.Equals(entity.Key))
+                            value.Append($" AND {ColumnAbility} LIKE '%{abilityTypeItem.Value}%'");
+            return value.ToString();
+        }
+
+        /// <summary>
+        ///     获取详细能力的查询语句
+        /// </summary>
+        /// <param name="abilityDetialEntity">能力分类模型</param>
+        /// <returns></returns>
+        public static string GetAbilityDetailSql(AbilityDetialEntity abilityDetialEntity)
+        {
+            var value = new StringBuilder();
+            var abilityDetialDic = abilityDetialEntity.GetAbilityDetailDic();
+            foreach (var abilityDetialItem in abilityDetialDic)
+                if (abilityDetialItem.Value.Equals(1))
+                    value.Append($" AND {ColumnAbilityDetail} LIKE '%\"{abilityDetialItem.Key}\":1%'");
+            return value.ToString();
+        }
+
+        /// <summary>
+        ///     获取关键字段取值
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAllKeySql(string value)
+        {
+            if (value.Equals(string.Empty)) return string.Empty;
+            var tempValue = new StringBuilder();
+            var keyList = value.Split(' '); // 以空格分割关键字
+            foreach (var key in keyList)
+                tempValue.Append($" AND ( JName LIKE '%{key}%' " + GetPartKeySql(key) + ")");
+            return tempValue.ToString();
+        }
+
+        private static string GetPartKeySql(string value)
+        {
+            var tempValue = new StringBuilder();
+            foreach (var column in ColumKeyArray)
+                tempValue.Append($" OR {column} LIKE '%{value}%'");
+            return tempValue.ToString();
         }
     }
 }

@@ -2,19 +2,23 @@
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Windows;
 using CardEditor.Constant;
-using CardEditor.Entity;
 using CardEditor.Utils;
-using Common;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 
 namespace CardEditor.Model
 {
     public interface IQuery
     {
-        void SetCardList();
-        string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
-        string GetEditorSql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType);
+        string MemoryNumber { get; set; }
+        CardEntity MemoryCardEntity { get; set; }
+        void SetPreCardList(DataSet dataSet, string restrictQuery);
+        string GetQuerySql(CardEntity cardEntity, string preOrder);
+        string GetEditorSql(CardEntity cardEntity, string preOrder);
         string GetUpdateSql(CardEntity cardEntity, string number);
         string GetAddSql(CardEntity cardEntity);
         string GetDeleteSql(string number);
@@ -23,29 +27,19 @@ namespace CardEditor.Model
 
     internal class Query : SqliteConst, IQuery
     {
-        private static string _memoryQuerySql;
+        private string _memoryNumber;
 
-        private static string _memoryNumber;
+        public CardEntity MemoryCardEntity { get; set; }
 
-        /// <summary>ListView数据缓存</summary>
-        public static List<PreviewEntity> PreviewList { get; set; }
-
-        /// <summary>记忆中的查询语句</summary>
-        public static string MemoryQuerySql
-        {
-            get { return _memoryQuerySql ?? string.Empty; }
-            set { _memoryQuerySql = value; }
-        }
-
-        /// <summary>记忆中的编号</summary>
-        public static string MemoryNumber
-        {
+        public string MemoryNumber {
             get { return _memoryNumber ?? string.Empty; }
             set { _memoryNumber = value; }
         }
 
-        public string GetQuerySql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
+        public string GetQuerySql(CardEntity cardEntity, string preOrder)
         {
+            MemoryCardEntity = cardEntity;
+            var preOrderType = CardUtils.GetPreOrderType(preOrder);
             var builder = new StringBuilder();
             builder.Append(SqlUtils.GetHeaderSql());
             builder.Append(SqlUtils.GetAccurateSql(cardEntity.Type, ColumnType)); // 种类
@@ -60,21 +54,20 @@ namespace CardEditor.Model
             builder.Append(SqlUtils.GetSimilarSql(cardEntity.Number, ColumnNumber)); // 卡编
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Cost, ColumnCost)); // 费用
             builder.Append(SqlUtils.GetIntervalSql(cardEntity.Power, ColumnPower)); // 力量
-            builder.Append(SqlUtils.GetAccurateSql(cardEntity.Restrict, ColumnRestrict)); // 限制
             builder.Append(cardEntity.AbilityTypeSql); // 
             builder.Append(cardEntity.AbilityDetailSql); //
-            MemoryQuerySql = builder.ToString(); // 除排序外的查询语句
-            builder.Append(SqlUtils.GetFooterSql(previewOrderType)); // 完整的查询语句
+            builder.Append(SqlUtils.GetFooterSql(preOrderType)); // 完整的查询语句
             return builder.ToString();
         }
 
-        public string GetEditorSql(CardEntity cardEntity, Enum.PreviewOrderType previewOrderType)
+        public string GetEditorSql(CardEntity cardEntity, string preOrder)
         {
+            MemoryCardEntity = cardEntity;
+            var preOrderType = CardUtils.GetPreOrderType(preOrder);
             var builder = new StringBuilder();
             builder.Append(SqlUtils.GetHeaderSql());
             builder.Append(SqlUtils.GetPackSql(cardEntity.Pack, ColumnPack)); // 卡包
-            MemoryQuerySql = builder.ToString(); // 除排序外的查询语句
-            builder.Append(SqlUtils.GetFooterSql(previewOrderType)); // 完整的查询语句
+            builder.Append(SqlUtils.GetFooterSql(preOrderType)); // 完整的查询语句
             return builder.ToString();
         }
 
@@ -91,7 +84,6 @@ namespace CardEditor.Model
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Sign)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Rare)}',");
             builder.Append($"'{SqlUtils.GetAccurateValue(cardEntity.Pack)}',");
-            builder.Append($"'{(cardEntity.Restrict.Equals(StringConst.NotApplicable) ? "4" : cardEntity.Restrict)}',");
             builder.Append($"'{cardEntity.CName}',");
             builder.Append($"'{cardEntity.JName}',");
             builder.Append($"'{cardEntity.Illust}',");
@@ -107,28 +99,29 @@ namespace CardEditor.Model
             return builder.ToString();
         }
 
-        public void SetCardList()
+        public void SetPreCardList(DataSet dataSet, string restrictQuery)
         {
-            if (null == PreviewList)
-                PreviewList = new List<PreviewEntity>();
-            else
-                PreviewList.Clear();
-            foreach (var row in DataCache.DsPartCache.Tables[TableName].Rows.Cast<DataRow>())
+            DataCache.PreEntityList.Clear();
+            foreach (var row in dataSet.Tables[TableName].Rows.Cast<DataRow>())
             {
+                var md5 = row[ColumnMd5].ToString();
                 var cost = row[ColumnCost].ToString();
-                cost = cost.Equals(string.Empty) || cost.Equals("0")  ? StringConst.Hyphen : cost;
+                cost = cost.Equals(string.Empty) || cost.Equals("0") ? StringConst.Hyphen : cost;
                 var power = row[ColumnPower].ToString();
                 power = power.Equals(string.Empty) || power.Equals("0") ? StringConst.Hyphen : power;
                 var imageJson = row[ColumnImage].ToString();
-                PreviewList.Add(new PreviewEntity
+                var restrict = RestrictUtils.GetRestrict(md5);
+                DataCache.PreEntityList.Add(new PreviewEntity
                 {
                     CName = row[ColumnCName].ToString(),
                     Cost = cost,
                     Power = power,
                     Number = row[ColumnNumber].ToString(),
-                    ImageJson = imageJson
+                    ImageJson = imageJson,
+                    Restrict = restrict.ToString()
                 });
             }
+            DataCache.PreEntityList = RestrictUtils.GetRestrictCardList(DataCache.PreEntityList, restrictQuery);
         }
 
         /// <summary>
@@ -152,14 +145,13 @@ namespace CardEditor.Model
             var builder = new StringBuilder();
             builder.Append($"UPDATE {TableName} SET ");
             builder.Append($"{ColumnMd5}='{Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power)}',");
+            MessageBox.Show(Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power));
             builder.Append($"{ColumnType}='{cardEntity.Type}',");
             builder.Append($"{ColumnCamp}= '{cardEntity.Camp}',");
             builder.Append($"{ColumnRace}= '{cardEntity.Race}',");
             builder.Append($"{ColumnSign}= '{cardEntity.Sign}',");
             builder.Append($"{ColumnRare}= '{cardEntity.Rare}',");
             builder.Append($"{ColumnPack}= '{cardEntity.Pack}',");
-            builder.Append(
-                $"{ColumnRestrict}='{((cardEntity.Restrict.Equals(StringConst.NotApplicable)) ? "4" : cardEntity.Restrict)}',");
             builder.Append($"{ColumnCName}= '{cardEntity.CName}',");
             builder.Append($"{ColumnJName}= '{cardEntity.JName}',");
             builder.Append($"{ColumnIllust}= '{cardEntity.Illust}',");
@@ -171,7 +163,7 @@ namespace CardEditor.Model
             builder.Append($"{ColumnFaq}= '{cardEntity.Faq}',");
             builder.Append($"{ColumnImage}= '{cardEntity.ImageJson}',");
             builder.Append($"{ColumnAbilityDetail}= '{cardEntity.AbilityDetailJson}'");
-                // 详细能力处理
+            // 详细能力处理
             builder.Append($" WHERE {ColumnNumber}='{number}'");
             return builder.ToString();
         }

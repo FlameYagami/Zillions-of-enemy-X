@@ -54,13 +54,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40" />
                                 <RowDefinition Height="75" />
-                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="90" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid Grid.Column="0" Margin="0,2.5,0,2.5">
                                 <Button Margin="5" Name="BtnExit" Click="Exit_Click" Content="退出编辑" />
                             </Grid>
-                            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Width="60" Height="72" VerticalAlignment="Top">
+                            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Width="60" Height="72"
+                                    VerticalAlignment="Top">
                                 <ListView x:Name="PlayerListView" Style="{DynamicResource ControlTransparent}"
                                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -103,7 +104,7 @@
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <TabControl Grid.Row="1"  Margin="10">
+                    <TabControl Grid.Row="1" Margin="10">
                         <TabItem Header="基础信息">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
@@ -187,7 +188,7 @@
                         <Button Name="BtnClear" Grid.Column="0" Click="BtnClear_Click" Content="清空" />
                         <Button Name="BtnDelete" Grid.Column="1" Click="Delete_Click" Content="删除" />
                         <ComboBox Name="CmbDeck" Grid.Column="2" DropDownClosed="CmbDeck_DropDownClosed"
-                                  DropDownOpened="CmbDeck_DropDownOpened" Text=""/>
+                                  DropDownOpened="CmbDeck_DropDownOpened" Text="" />
                         <Button Name="BtnSava" Grid.Column="3" Click="Sava_Click" Content="保存" />
                         <Button Name="BtnResava" Grid.Column="4" Click="Resave_Click" Content="另存" />
                     </Grid>
@@ -270,7 +271,8 @@
                                    Content="费用" />
                             <Label Name="LblPower" Grid.Column="2" Grid.Row="4" Style="{DynamicResource LblCenter}"
                                    Content="力量" />
-                            <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" ToolTip="字段以空格分开（A B C）" />
+                            <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0"
+                                     ToolTip="字段以空格分开（A B C）" />
                             <ComboBox Name="CmbIllust" Grid.Column="3" Grid.Row="2" />
                             <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="1" />
                             <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" ToolTip="区间以连接号分开（A-B）" />
@@ -320,8 +322,9 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                            MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
@@ -346,8 +349,9 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                            MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
@@ -372,8 +376,9 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                            MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                            MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
+                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
@@ -423,18 +428,18 @@
                                             <Grid VerticalAlignment="Center">
                                                 <StackPanel Orientation="Vertical" Width="120" Margin="5,0,0,0">
                                                     <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
-                                                           HorizontalAlignment="Center" Height="20"
-                                                           LineStackingStrategy="BlockLineHeight" />
+                                                               HorizontalAlignment="Center" Height="20"
+                                                               LineStackingStrategy="BlockLineHeight" />
                                                     <TextBlock TextTrimming="CharacterEllipsis"
-                                                           HorizontalAlignment="Center" Height="20"
-                                                           LineStackingStrategy="BlockLineHeight"
-                                                           Text="{Binding CampAndRace}"/>
+                                                               HorizontalAlignment="Center" Height="20"
+                                                               LineStackingStrategy="BlockLineHeight"
+                                                               Text="{Binding CampAndRace}" />
                                                     <TextBlock TextTrimming="CharacterEllipsis"
-                                                           HorizontalAlignment="Center" Height="20"
-                                                           LineStackingStrategy="BlockLineHeight"
-                                                           Text="{Binding PowerAndCost}" />
+                                                               HorizontalAlignment="Center" Height="20"
+                                                               LineStackingStrategy="BlockLineHeight"
+                                                               Text="{Binding PowerAndCost}" />
                                                     <Label Name="LblPreviewImageJson" Content="{Binding ImageJson}"
-                                                       Visibility="Collapsed" />
+                                                           Visibility="Collapsed" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>

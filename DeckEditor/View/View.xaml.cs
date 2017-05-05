@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using DeckEditor.Constant;
 using DeckEditor.Entity;
-using DeckEditor.Model;
 using DeckEditor.Presenter;
 using DeckEditor.Utils;
-using System.IO;
-using Enum = DeckEditor.Constant.Enum;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 
 namespace DeckEditor.View
 {
@@ -21,7 +22,7 @@ namespace DeckEditor.View
         void Init();
         void Reset();
         void UpdatePreviewListView(List<PreviewEntity> cardList);
-        void UpdateDeckListView(Enum.AreaType areaType, List<DeckEntity> deckColl);
+        void UpdateDeckListView(CardEditor.Constant.Enum.AreaType areaType, List<DeckEntity> deckColl);
         void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid);
         void SetPicture(List<string> numberList, List<string> picturePathList);
         void SetCardModel(CardEntity cardmodel);
@@ -40,27 +41,6 @@ namespace DeckEditor.View
             _presenter = new Presenter.Presenter(this);
         }
 
-        /************************************************** 接口实现 **************************************************/
-
-        public CardEntity GetCardModel()
-        {
-            return new CardEntity
-            {
-                Type = CmbType.Text.Trim(),
-                Camp = CmbCamp.Text.Trim(),
-                Race = CmbRace.Text.Trim(),
-                Sign = CmbSign.Text.Trim(),
-                Rare = CmbRare.Text.Trim(),
-                Pack = CmbPack.Text.Trim(),
-                Illust = CmbIllust.Text.Trim(),
-                Key = TxtKey.Text.Trim(),
-                Cost = TxtCost.Text.Trim(),
-                Power = TxtPower.Text.Trim(),
-                AbilityType = SqlUtils.GetAbilityTypeSql(LstAbilityType.Items.Cast<CheckBox>()),
-                AbilityDetail = SqlUtils.GetAbilityDetailSql(DataCache.AbilityDetialEntity)
-            };
-        }
-
         public void Init()
         {
             CmbPack.Text = StringConst.NotApplicable;
@@ -68,7 +48,7 @@ namespace DeckEditor.View
             CmbIllust.Text = StringConst.NotApplicable;
             CmbIllust.ItemsSource = CardUtils.GetIllust();
             CmbRace.IsEnabled = false;
-            var uri = new Uri(Const.BackgroundPath, UriKind.Relative);
+            var uri = new Uri(PathManager.BackgroundPath, UriKind.Relative);
             var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
             BorderView.Background = imageBrush;
         }
@@ -121,14 +101,14 @@ namespace DeckEditor.View
             LblIFaq.Text = cardmodel.Faq;
             var signUri = CardUtils.GetSignPath(cardmodel.Sign);
             var campUriList = CardUtils.GetCampPathList(cardmodel.Camp);
-            var imageCampList = new List<Image> { ImgICamp0, ImgICamp1, ImgICamp2, ImgICamp3, ImgICamp4 };
+            var imageCampList = new List<Image> {ImgICamp0, ImgICamp1, ImgICamp2, ImgICamp3, ImgICamp4};
             try
             {
                 ImgISign.Source = signUri.Equals(string.Empty) ? new BitmapImage() : new BitmapImage(new Uri(signUri));
-                for (int i = 0; i != imageCampList.Count; i++)
-                {
-                    imageCampList[i].Source = campUriList[i].Equals(string.Empty) ? new BitmapImage() : new BitmapImage(new Uri(campUriList[i]));
-                }
+                for (var i = 0; i != imageCampList.Count; i++)
+                    imageCampList[i].Source = campUriList[i].Equals(string.Empty)
+                        ? new BitmapImage()
+                        : new BitmapImage(new Uri(campUriList[i]));
             }
             catch (Exception e)
             {
@@ -156,7 +136,7 @@ namespace DeckEditor.View
                 {
                     tabItemList[i].Visibility = Visibility.Visible;
                     imageList[i].Tag = numberList[i];
-                    imageList[i].Source = File.Exists(picturePathList[i]) 
+                    imageList[i].Source = File.Exists(picturePathList[i])
                         ? new BitmapImage(new Uri(picturePathList[i]))
                         : new BitmapImage();
                 }
@@ -176,23 +156,23 @@ namespace DeckEditor.View
             LblCardCount.Content = StringConst.QueryResult + cardList.Count;
         }
 
-        public void UpdateDeckListView(Enum.AreaType areaType, List<DeckEntity> deckColl)
+        public void UpdateDeckListView(CardEditor.Constant.Enum.AreaType areaType, List<DeckEntity> deckColl)
         {
             switch (areaType)
             {
-                case Enum.AreaType.Pl:
+                case CardEditor.Constant.Enum.AreaType.Pl:
                     PlayerListView.ItemsSource = null;
                     PlayerListView.ItemsSource = deckColl;
                     break;
-                case Enum.AreaType.Ig:
+                case CardEditor.Constant.Enum.AreaType.Ig:
                     IgListView.ItemsSource = null;
                     IgListView.ItemsSource = deckColl;
                     break;
-                case Enum.AreaType.Ug:
+                case CardEditor.Constant.Enum.AreaType.Ug:
                     UgListView.ItemsSource = null;
                     UgListView.ItemsSource = deckColl;
                     break;
-                case Enum.AreaType.Ex:
+                case CardEditor.Constant.Enum.AreaType.Ex:
                     ExListView.ItemsSource = null;
                     ExListView.ItemsSource = deckColl;
                     break;
@@ -224,6 +204,29 @@ namespace DeckEditor.View
                     : new SolidColorBrush(Colors.Lime);
         }
 
+        /************************************************** 接口实现 **************************************************/
+
+        public CardEntity GetCardModel()
+        {
+            var abbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>()
+                .ToDictionary(checkbox => checkbox.Name, checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
+            return new CardEntity
+            {
+                Type = CmbType.Text.Trim(),
+                Camp = CmbCamp.Text.Trim(),
+                Race = CmbRace.Text.Trim(),
+                Sign = CmbSign.Text.Trim(),
+                Rare = CmbRare.Text.Trim(),
+                Pack = CmbPack.Text.Trim(),
+                Illust = CmbIllust.Text.Trim(),
+                Key = TxtKey.Text.Trim(),
+                Cost = TxtCost.Text.Trim(),
+                Power = TxtPower.Text.Trim(),
+                AbilityTypeSql = SqlUtils.GetAbilityTypeSql(abbilityTypeDic),
+                AbilityDetailSql = SqlUtils.GetAbilityDetailSql(DataCache.AbilityDetialEntity)
+            };
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _presenter.Init();
@@ -246,7 +249,7 @@ namespace DeckEditor.View
         /// <summary>查询区域查询事件</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.QueryClick(GetCardModel(),CmbOrder.Text.Trim());
+            _presenter.QueryClick(GetCardModel(), CmbOrder.Text.Trim());
         }
 
         /// <summary>列表区域排序事件</summary>

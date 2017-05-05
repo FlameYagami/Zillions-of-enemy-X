@@ -1,20 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Windows;
-using CardEditor.Constant;
-using Common;
-using System.Data.SqlClient;
-using System.Collections.Generic;
+using Wrapper.Constant;
 
-namespace CardEditor.Utils
+namespace Wrapper.Utils
 {
     public class SqliteUtils
     {
         public const string DatabaseName = "Data.db";
         public const string DatabasePassword = "DatabasePassword";
 
-        public static string DatabasePath = $"Data Source='{Const.RootPath + DatabaseName}'";
+        public static string DatabasePath = $"Data Source='{PathManager.RootPath + DatabaseName}'";
 
         /// <summary>数据填充至DataSet</summary>
         public static bool FillDataToDataSet(string sql, DataSet dts)
@@ -69,9 +67,9 @@ namespace CardEditor.Utils
             {
                 con.SetPassword(pwd);
                 con.Open();
-                using (SQLiteTransaction trans = con.BeginTransaction())
+                using (var trans = con.BeginTransaction())
                 {
-                    using (SQLiteCommand cmd = new SQLiteCommand(con))
+                    using (var cmd = new SQLiteCommand(con))
                     {
                         try
                         {

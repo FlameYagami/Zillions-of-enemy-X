@@ -49,7 +49,7 @@
                                         <Label Content="{Binding CName}" Width="155" />
                                         <Label Content="{Binding Power}" Width="40" HorizontalContentAlignment="Center" />
                                         <Label Content="{Binding Cost}" Width="20" HorizontalContentAlignment="Center" />
-                                        <Label Content="{Binding Number}" Width="0"/>
+                                        <Label Content="{Binding Number}" Width="0" />
                                         <Label Content="{Binding ImageJson}" Width="0" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -96,7 +96,8 @@
                                 <Label Name="LblRestrict" Grid.Column="0" Grid.Row="1" Content="禁限规制:"
                                        Style="{DynamicResource LblCenter}" />
                                 <Button Name="BtnMd5" Grid.Column="2" Grid.Row="0" Click="Md5_Click" Content="Md5覆写" />
-                                <Button Name="BtnPackCover" Grid.Column="2" Grid.Row="1" Click="PackCover_Click" Content="卡包覆写" />
+                                <Button Name="BtnPackCover" Grid.Column="2" Grid.Row="1" Click="PackCover_Click"
+                                        Content="卡包覆写" />
                             </Grid>
                         </Border>
                         <Border Style="{DynamicResource ControlBorder}" Margin="5">

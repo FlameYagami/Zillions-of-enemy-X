@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckEditor", "DeckEditor\De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogLib", "Dialog\DialogLib.csproj", "{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{19F76F0E-577E-417A-A2F2-F27CA4728068}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper", "Wrapper\Wrapper.csproj", "{96748966-BE90-425F-A8C8-E8708E45B77E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19F76F0E-577E-417A-A2F2-F27CA4728068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19F76F0E-577E-417A-A2F2-F27CA4728068}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19F76F0E-577E-417A-A2F2-F27CA4728068}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19F76F0E-577E-417A-A2F2-F27CA4728068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96748966-BE90-425F-A8C8-E8708E45B77E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96748966-BE90-425F-A8C8-E8708E45B77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96748966-BE90-425F-A8C8-E8708E45B77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96748966-BE90-425F-A8C8-E8708E45B77E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

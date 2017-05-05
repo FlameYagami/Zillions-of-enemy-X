@@ -6,12 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using CardEditor.Constant;
-using CardEditor.Entity;
 using CardEditor.Presenter;
 using CardEditor.Utils;
-using Common;
-using CardEditor.Model;
+using Wrapper.Constant;
+using Wrapper.Entity;
+using Wrapper.Utils;
 using Enum = CardEditor.Constant.Enum;
 
 namespace CardEditor.View
@@ -23,7 +22,7 @@ namespace CardEditor.View
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
         void Reset(Enum.ModeType modeType);
-        void UpdateListView(List<PreviewEntity> previewEntityList, string memoryNumber);
+        void UpdatePreListView(List<PreviewEntity> previewEntityList, string memoryNumber);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
@@ -38,13 +37,13 @@ namespace CardEditor.View
     {
         private readonly IPresenter _presenter;
 
-        private bool IsPreviewChanged { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
             _presenter = new Presenter.Presenter(this);
         }
+
+        private bool IsPreviewChanged { get; set; }
 
         /************************************************** 接口实现 **************************************************/
 
@@ -82,7 +81,11 @@ namespace CardEditor.View
 
         public CardEntity GetCardEntity()
         {
-            var abilityDetialEntity = CardUtils.GetAbilityDetialEntity(LstAbilityDetail);
+            var abbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>()
+                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
+            var abilityDetialDic = LstAbilityDetail.Items.Cast<CheckBox>()
+                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
+            var abilityDetialEntity = new AbilityDetialEntity(abilityDetialDic, true);
             return new CardEntity
             {
                 Type = CmbType.Text.Trim(),
@@ -101,10 +104,11 @@ namespace CardEditor.View
                 Ability = TxtAbility.Text.Trim(),
                 Lines = TxtLines.Text.Trim(),
                 Faq = TxtFaq.Text.Trim(),
-                ImageJson = JsonUtils.JsonSerializer(new List<string> { $"/{TxtNumber.Text.Trim()}.jpg" }),
+                ImageJson = JsonUtils.JsonSerializer(new List<string> {$"/{TxtNumber.Text.Trim()}.jpg"}),
                 AbilityDetailJson = JsonUtils.JsonSerializer(abilityDetialEntity),
-                AbilityTypeSql = SqlUtils.GetAbilitySql(LstAbilityType, Dictionary.AbilityTypeDic.Keys.ToList(), SqliteConst.ColumnAbility),
-                AbilityDetailSql = SqlUtils.GetAbilitySql(LstAbilityDetail, abilityDetialEntity.GetAbilityDetailDic().Keys.ToList(), SqliteConst.ColumnAbilityDetail)
+
+                AbilityTypeSql = SqlUtils.GetAbilityTypeSql(abbilityTypeDic),
+                AbilityDetailSql = SqlUtils.GetAbilityDetailSql(abilityDetialEntity)
             };
         }
 
@@ -139,7 +143,7 @@ namespace CardEditor.View
                 }
 
             var abilityDetialModel = JsonUtils.JsonDeserialize<AbilityDetialEntity>(cardEntity.AbilityDetailJson);
-            var abilityDetialItems = abilityDetialModel.GetAbilityDetailDic();
+            var abilityDetialItems = abilityDetialModel.GetAbilityDetailDic(true);
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
                 foreach (var abilityDetailItem in abilityDetialItems)
                 {
@@ -147,6 +151,7 @@ namespace CardEditor.View
                     checkbox.IsChecked = abilityDetailItem.Value.Equals(1);
                     break;
                 }
+
             UpdateTypeLinkage(cardEntity.Type);
             IsPreviewChanged = false;
         }
@@ -199,7 +204,7 @@ namespace CardEditor.View
                     {
                         imageList[i].Source = new BitmapImage(new Uri(picturePathList[i]));
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         imageList[i].Source = new BitmapImage();
                     }
@@ -220,11 +225,9 @@ namespace CardEditor.View
             CmbRace.Text = StringConst.NotApplicable;
             itemList.ForEach(race => CmbRace.Items.Add(race.ToString()));
             CmbRace.IsEnabled = itemList.Count >= 2;
-            if (CmbType.Text.Equals(StringConst.TypeEvent) || CmbType.Text.Equals(StringConst.TypePlayer))
-            {
-                CmbRace.IsEnabled = false;
-                CmbRace.Text = StringConst.Hyphen;
-            }
+            if (!CmbType.Text.Equals(StringConst.TypeEvent) && !CmbType.Text.Equals(StringConst.TypePlayer)) return;
+            CmbRace.IsEnabled = false;
+            CmbRace.Text = StringConst.Hyphen;
         }
 
         public void SetPackItems(List<object> itemList)
@@ -233,14 +236,14 @@ namespace CardEditor.View
             CmbPack.ItemsSource = itemList;
         }
 
-        public void UpdateListView(List<PreviewEntity> previewEntityList, string memoryNumber)
+        public void UpdatePreListView(List<PreviewEntity> previewEntityList, string memoryNumber)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = previewEntityList;
             LblCardCount.Content = StringConst.QueryResult + previewEntityList.Count;
             if (memoryNumber.Equals(string.Empty)) return;
             var firstOrDefault = previewEntityList
-                .Select((previewEntity, index) => new { Number = previewEntity.Number, Index = index })
+                .Select((previewEntity, index) => new {previewEntity.Number, Index = index})
                 .FirstOrDefault(i => i.Number.Equals(memoryNumber));
             if (firstOrDefault == null) return;
             var position = firstOrDefault.Index;
@@ -387,7 +390,7 @@ namespace CardEditor.View
         /// <summary>改变排序方式</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.OrderChanged(CmbOrder.Text.Trim());
+            _presenter.PreOrderChanged(CmbOrder.Text.Trim());
         }
 
         /// <summary>一键导出事件</summary>
@@ -449,7 +452,7 @@ namespace CardEditor.View
         }
 
         /// <summary>
-        /// 卡包覆写事件
+        ///     卡包覆写事件
         /// </summary>
         private void PackCover_Click(object sender, RoutedEventArgs e)
         {

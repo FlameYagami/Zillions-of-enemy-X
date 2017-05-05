@@ -43,7 +43,7 @@
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="CornerRadius" Value="15" />
         </Style>
-        
+
         <!-- 标题Border样式模板-->
         <Style TargetType="Border" x:Key="BorderTitle">
             <Setter Property="Background" Value="#D03F3F46" />
@@ -401,9 +401,10 @@
                                     </LinearGradientBrush>
                                 </Border.Background>
                                 <Border.BorderBrush>
-                                    <SolidColorBrush Color="#66AEF9"/>
+                                    <SolidColorBrush Color="#66AEF9" />
                                 </Border.BorderBrush>
-                                <ContentPresenter x:Name="PART_SelectedContentHost" Margin="4" ContentSource="SelectedContent" />
+                                <ContentPresenter x:Name="PART_SelectedContentHost" Margin="4"
+                                                  ContentSource="SelectedContent" />
                             </Border>
                         </Grid>
                     </ControlTemplate>
@@ -420,8 +421,8 @@
                                     <VisualState x:Name="Unselected" />
                                     <VisualState x:Name="Selected">
                                         <Storyboard>
-                                            <ColorAnimationUsingKeyFrames 
-                                                Storyboard.TargetName="Border" 
+                                            <ColorAnimationUsingKeyFrames
+                                                Storyboard.TargetName="Border"
                                                 Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
                                                 <EasingColorKeyFrame KeyTime="0" Value="White" />
                                             </ColorAnimationUsingKeyFrames>
@@ -438,12 +439,12 @@
                                     <VisualState x:Name="MouseOver" />
                                     <VisualState x:Name="Disabled">
                                         <Storyboard>
-                                            <ColorAnimationUsingKeyFrames 
+                                            <ColorAnimationUsingKeyFrames
                                                 Storyboard.TargetName="Border"
                                                 Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
                                                 <EasingColorKeyFrame KeyTime="0" Value="Black" />
                                             </ColorAnimationUsingKeyFrames>
-                                            <ColorAnimationUsingKeyFrames 
+                                            <ColorAnimationUsingKeyFrames
                                                 Storyboard.TargetName="Border"
                                                 Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                                 <EasingColorKeyFrame KeyTime="0" Value="Black" />
