@@ -266,6 +266,7 @@ namespace CardEditor.Presenter
         {
             var modeType = CardUtils.GetModeType(mode);
             var cardEntity = _view.GetCardEntity();
+            _query.MemoryCardEntity = cardEntity;
             switch (modeType)
             {
                 case Enum.ModeType.Editor:

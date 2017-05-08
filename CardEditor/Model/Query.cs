@@ -73,6 +73,7 @@ namespace CardEditor.Model
 
         public string GetAddSql(CardEntity cardEntity)
         {
+            MemoryCardEntity = cardEntity;
             var builder = new StringBuilder();
             builder.Append("INSERT INTO " + TableName);
             builder.Append(ColumnCard);
