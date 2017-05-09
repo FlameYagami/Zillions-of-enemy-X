@@ -146,7 +146,6 @@ namespace CardEditor.Model
             var builder = new StringBuilder();
             builder.Append($"UPDATE {TableName} SET ");
             builder.Append($"{ColumnMd5}='{Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power)}',");
-            MessageBox.Show(Md5Utils.GetMd5(cardEntity.JName + cardEntity.Cost + cardEntity.Power));
             builder.Append($"{ColumnType}='{cardEntity.Type}',");
             builder.Append($"{ColumnCamp}= '{cardEntity.Camp}',");
             builder.Append($"{ColumnRace}= '{cardEntity.Race}',");

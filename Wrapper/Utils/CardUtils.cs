@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using CardEditor.Constant;
 using Wrapper.Constant;
 using Wrapper.Entity;
+using Enum = CardEditor.Constant.Enum;
 
 namespace Wrapper.Utils
 {
@@ -90,11 +91,16 @@ namespace Wrapper.Utils
                     .Any(row => row[ColumnNumber].ToString().Equals(number));
         }
 
+        /// <summary>
+        /// 获取卡包集合
+        /// </summary>
+        /// <returns></returns>
         public static List<object> GetAllPack()
         {
             var packlist = new List<object> { StringConst.NotApplicable };
             packlist.AddRange(GetPartPack("B"));
             packlist.AddRange(GetPartPack("C"));
+            packlist.AddRange(GetPartPack("CP"));
             packlist.AddRange(GetPartPack("E"));
             packlist.AddRange(GetPartPack("P"));
             packlist.AddRange(GetPartPack("L"));
@@ -104,19 +110,29 @@ namespace Wrapper.Utils
             return packlist;
         }
 
+        /// <summary>
+        /// 获取部分卡包集合
+        /// </summary>
+        /// <param name="packType">卡包系列</param>
+        /// <returns></returns>
         private static IEnumerable<object> GetPartPack(string packType)
         {
             var packlist = new List<object> {packType + StringConst.Series};
             var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => column[ColumnPack])
                 .Distinct()
-                .Where(value => value.ToString().Contains(packType))
+                .Where(value => value.ToString().Contains(packType) && StringUtils.IsNumber(value.ToString().Substring(packType.Length, 1)))
                 .OrderBy(value => value)
                 .ToList();
             packlist.AddRange(tempList);
             return packlist;
         }
 
+        /// <summary>
+        /// 获取部分种族集合
+        /// </summary>
+        /// <param name="camp">阵营</param>
+        /// <returns></returns>
         public static List<object> GetPartRace(string camp)
         {
             var packlist = new List<object> { StringConst.NotApplicable };
@@ -135,14 +151,19 @@ namespace Wrapper.Utils
             return packlist;
         }
 
+        /// <summary>
+        /// 获取卡编
+        /// </summary>
+        /// <param name="pack">卡包</param>
+        /// <returns></returns>
         public static string GetPackNumber(string pack)
         {
-            if (pack.Contains(StringConst.NotApplicable))
-                return string.Empty;
             if (pack.Contains(StringConst.Series))
-                return pack.Substring(0, 1) + "XX-";
-            if (pack.Length >= 3)
-                return pack.Substring(0, 3) + "-";
+                return pack.Substring(0, pack.IndexOf(StringConst.Series, StringComparison.Ordinal)) + "XX" + StringConst.Hyphen;
+            if (pack.Contains("CP"))
+                return pack + StringConst.Hyphen;
+            if (pack.Length >= 3 && !pack.Contains(StringConst.NotApplicable))
+                return pack.Substring(0, 3) + StringConst.Hyphen;
             return string.Empty;
         }
 
@@ -189,6 +210,11 @@ namespace Wrapper.Utils
             return string.Empty;
         }
 
+        /// <summary>
+        /// 获取画师集合
+        /// </summary>
+        /// <param name="pack"></param>
+        /// <returns></returns>
         public static List<object> GetIllust()
         {
             var packlist = new List<object> { StringConst.NotApplicable };

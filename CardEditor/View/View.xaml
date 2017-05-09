@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Z/X CardEditor" Height="650" Width="970" WindowStartupLocation="CenterScreen"
+        Title="Z/X CardEditor" Height="680" Width="970" WindowStartupLocation="CenterScreen"
         Style="{DynamicResource BaseWindow}"
         Loaded="Window_Loaded" Icon="../icon.ico">
     <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
@@ -85,7 +85,7 @@
                                     <ComboBoxItem>开发</ComboBoxItem>
                                 </ComboBox>
                                 <Label Name="LblMode" Grid.Column="0" Grid.Row="0" Content="模式选择:"
-                                       Style="{DynamicResource LblCenter}" />
+                                       Style="{DynamicResource LblCenter}" HorizontalAlignment="Left" Margin="12,2,0,2" />
                                 <ComboBox Name="CmbRestrict" Grid.Column="1" Grid.Row="1" Text="(N/A)">
                                     <ComboBoxItem>(N/A)</ComboBoxItem>
                                     <ComboBoxItem>0</ComboBoxItem>
@@ -121,7 +121,7 @@
                                         Content="解密" />
                             </Grid>
                         </Border>
-                        <Border Style="{DynamicResource ControlBorder}" Margin="5,0">
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5,0,5,5">
                             <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityType"
                                      SelectionMode="Multiple"
                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -286,6 +286,7 @@
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="35" />
                                         <RowDefinition Height="110" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1.75*" />
@@ -294,7 +295,16 @@
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="0.75*" />
                                     </Grid.RowDefinitions>
-                                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="0" Margin="5,2.5,5,2.5">
+                                    <Grid Margin="5,2.5" Height="30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="35" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Name="LblMd5" Grid.Column="0" Content="卡密" Style="{DynamicResource LblCenter}"/>
+                                        <TextBox Name="TxtMd5" Grid.Column="1" IsEnabled="False"
+                                                 VerticalContentAlignment="Center" />
+                                    </Grid>
+                                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,2.5,5,2.5">
                                         <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstAbilityDetail"
                                                  SelectionMode="Multiple" Background="Transparent"
                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -331,16 +341,16 @@
                                             <CheckBox x:Name="ChkAbilityDetail24" Content="特殊胜利" />
                                         </ListBox>
                                     </Border>
-                                    <Label Grid.Row="1" Name="LblAbility" Content="能力:" Margin="5,0,5,0" />
-                                    <TextBox Grid.Row="2" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Grid.Row="2" Name="LblAbility" Content="能力:" Margin="5,0,5,0" />
+                                    <TextBox Grid.Row="3" x:Name="TxtAbility" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
-                                    <Label Name="LblLines" Grid.Row="3" Content="台词:" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtLines" Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Name="LblLines" Grid.Row="4" Content="台词:" Margin="5,0,5,0" />
+                                    <TextBox x:Name="TxtLines" Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
-                                    <Label Name="LblFaq" Grid.Row="5" Content="调整:" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtFaq" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Name="LblFaq" Grid.Row="6" Content="调整:" Margin="5,0,5,0" />
+                                    <TextBox x:Name="TxtFaq" Grid.Row="7" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
                                 </Grid>

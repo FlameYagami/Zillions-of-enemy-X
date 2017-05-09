@@ -133,6 +133,7 @@ namespace CardEditor.View
             TxtAbility.Text = cardEntity.Ability;
             TxtLines.Text = cardEntity.Lines;
             TxtFaq.Text = cardEntity.Faq;
+            TxtMd5.Text = cardEntity.Md5;
 
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 foreach (var abilityType in Dictionary.AbilityTypeDic)
@@ -176,6 +177,7 @@ namespace CardEditor.View
             TxtAbility.Text = string.Empty;
             TxtLines.Text = string.Empty;
             TxtFaq.Text = string.Empty;
+            TxtMd5.Text = string.Empty;
 
             CmbType.Text = StringConst.NotApplicable;
             CmbCamp.Text = StringConst.NotApplicable;
@@ -256,13 +258,8 @@ namespace CardEditor.View
 
         public void UpdatePackLinkage(string packNumber)
         {
-            if (packNumber.Equals(string.Empty))
-                TxtNumber.Text = string.Empty;
-            else
-                TxtNumber.Text = TxtNumber.Text.Length >= 4
-                    ? TxtNumber.Text.Replace(TxtNumber.Text.Substring(0, 4), packNumber)
-                    : packNumber;
-            if (packNumber.Contains("P"))
+            TxtNumber.Text = packNumber;
+            if (packNumber.IndexOf("P", StringComparison.Ordinal) == 0)
                 CmbRare.Text = StringConst.RarePr;
         }
 
@@ -424,7 +421,7 @@ namespace CardEditor.View
         private void CmbPack_TextChanged(object sender, RoutedEventArgs e)
         {
             if (IsPreviewChanged) return;
-            _presenter.PackChanged(CmbPack.Text.Trim());
+            _presenter.PackChanged(CmbPack.Text.Trim() ,TxtNumber.Text.Trim());
         }
 
         /// <summary>窗口最小化事件</summary>

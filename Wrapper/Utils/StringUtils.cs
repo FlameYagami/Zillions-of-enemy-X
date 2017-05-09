@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using static System.Int32;
 
 namespace Wrapper.Utils
 {
@@ -47,6 +48,24 @@ namespace Wrapper.Utils
             catch
             {
                 return decryptString;
+            }
+        }
+
+        /// <summary>
+        /// 判断输入参数是否为数字
+        /// </summary>
+        /// <param name="str">参数</param>
+        /// <returns></returns>
+        public static bool IsNumber(string str)
+        {
+            try
+            {
+                var number = Parse(str);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

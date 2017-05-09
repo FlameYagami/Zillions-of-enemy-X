@@ -14,7 +14,7 @@ namespace CardEditor.Presenter
 {
     public interface IPresenter
     {
-        void PackChanged(string pack);
+        void PackChanged(string pack , string number);
         void TypeChanged(string type);
         void CampChanged(string camp);
         void PreOrderChanged(string preOrder);
@@ -77,9 +77,11 @@ namespace CardEditor.Presenter
             BaseDialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
-        public void PackChanged(string pack)
+        public void PackChanged(string pack, string number)
         {
             var packNumber = CardUtils.GetPackNumber(pack);
+            if (number.Contains(StringConst.Hyphen))
+                packNumber += number.Substring(number.IndexOf(StringConst.Hyphen, StringComparison.Ordinal) + 1);
             _view.UpdatePackLinkage(packNumber);
         }
 
