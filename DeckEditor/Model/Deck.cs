@@ -101,8 +101,6 @@ namespace DeckEditor.Model
                 return false;
             }
             var deckPath = CardUtils.GetDeckPath(deckName);
-            var fs = new FileStream(deckPath, FileMode.Create);
-            var sw = new StreamWriter(fs);
             var deckBuilder = new StringBuilder();
             var deckNumberList = new List<string>();
             deckNumberList.AddRange(DataCache.PlColl.Select(deckEntity => deckEntity.NumberEx).ToList());
@@ -110,11 +108,7 @@ namespace DeckEditor.Model
             deckNumberList.AddRange(DataCache.UgColl.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckNumberList.AddRange(DataCache.ExColl.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.JsonSerializer(deckNumberList));
-            sw.Write(deckBuilder.ToString());
-            sw.Close();
-            fs.Close();
-            fs.Dispose();
-            return true;
+            return FileUtils.SaveFile(deckPath , deckBuilder.ToString());
         }
 
         public bool Delete(string deckName)

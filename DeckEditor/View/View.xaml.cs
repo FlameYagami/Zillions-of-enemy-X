@@ -209,7 +209,7 @@ namespace DeckEditor.View
         public CardEntity GetCardModel()
         {
             var abbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>()
-                .ToDictionary(checkbox => checkbox.Name, checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
+                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
             return new CardEntity
             {
                 Type = CmbType.Text.Trim(),

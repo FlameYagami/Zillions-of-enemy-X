@@ -336,19 +336,19 @@ namespace CardEditor.View
         /// <summary>添加</summary>
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.AddClick(CmbOrder.Text.Trim());
+            _presenter.AddClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
         /// <summary>更新</summary>
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.UpdateClick(LvwPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.UpdateClick(LvwPreview.SelectedIndex, CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
         /// <summary>删除</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DeleteClick(LvwPreview.SelectedIndex, CmbOrder.Text.Trim());
+            _presenter.DeleteClick(LvwPreview.SelectedIndex, CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
         /// <summary>查询</summary>
@@ -387,7 +387,7 @@ namespace CardEditor.View
         /// <summary>改变排序方式</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
-            _presenter.PreOrderChanged(CmbOrder.Text.Trim());
+            _presenter.PreOrderChanged(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
         /// <summary>一键导出事件</summary>

@@ -20,5 +20,23 @@ namespace Wrapper.Utils
             content.Append(File.ReadAllText(filePath));
             return content.ToString();
         }
+
+        public static bool SaveFile(string filePath, string content)
+        {
+            try
+            {
+                var fs = new FileStream(filePath, FileMode.Create);
+                var sw = new StreamWriter(fs);
+                sw.Write(content);
+                sw.Close();
+                fs.Close();
+                fs.Dispose();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

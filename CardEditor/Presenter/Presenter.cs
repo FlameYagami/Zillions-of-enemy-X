@@ -17,14 +17,14 @@ namespace CardEditor.Presenter
         void PackChanged(string pack , string number);
         void TypeChanged(string type);
         void CampChanged(string camp);
-        void PreOrderChanged(string preOrder);
+        void PreOrderChanged(string mode, string preOrder);
         void PreviewChanged(int selectIndex);
         void QueryClick(string mode, string preOrder);
         void ExitClick();
         void ResetClick(string mode);
-        void AddClick(string preOrder);
-        void DeleteClick(int selectIndex, string preOrder);
-        void UpdateClick(int selectIndex, string preOrder);
+        void AddClick(string mode, string preOrder);
+        void DeleteClick(int selectIndex, string mode, string preOrder);
+        void UpdateClick(int selectIndex, string mode, string preOrder);
         void EncryptDatabaseClick(string password);
         void DecryptDatabaseClick(string password);
         void Init();
@@ -121,7 +121,7 @@ namespace CardEditor.Presenter
             switch (modeType)
             {
                 case Enum.ModeType.Query:
-                    UpdateCacheAndUi(cardEntity, preOrder);
+                    UpdateCacheAndUi(cardEntity, mode, preOrder);
                     break;
                 case Enum.ModeType.Editor:
                     if (!cardEntity.Pack.Equals(string.Empty))
@@ -138,7 +138,7 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>添加</summary>
-        public void AddClick(string preOrder)
+        public void AddClick(string mode,string preOrder)
         {
             var cardEntity = _view.GetCardEntity();
             // 卡编是否重复判断
@@ -158,7 +158,7 @@ namespace CardEditor.Presenter
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache); // 刷新总数据缓存
                 _query.MemoryNumber = cardEntity.Number; // 添加成功后记录添加的编号，以便显示位置
                 var memoryCardEntity = _query.MemoryCardEntity;
-                UpdateCacheAndUi(memoryCardEntity.Equals(null) ? cardEntity : memoryCardEntity, preOrder);
+                UpdateCacheAndUi(memoryCardEntity.Equals(null) ? cardEntity : memoryCardEntity, mode, preOrder);
                 BaseDialogUtils.ShowDlg(StringConst.AddSucceed);
                 return;
             }
@@ -174,7 +174,7 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>更新</summary>
-        public void UpdateClick(int selectIndex, string preOrder)
+        public void UpdateClick(int selectIndex, string mode, string preOrder)
         {
             if (-1 == selectIndex)
             {
@@ -189,7 +189,7 @@ namespace CardEditor.Presenter
             {
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
                 var cardEntity = _query.MemoryCardEntity;
-                UpdateCacheAndUi(cardEntity , preOrder);
+                UpdateCacheAndUi(cardEntity , mode, preOrder);
                 BaseDialogUtils.ShowDlg(StringConst.UpdateSucceed);
                 return;
             }
@@ -197,7 +197,7 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>删除</summary>
-        public void DeleteClick(int selectIndex, string preOrder)
+        public void DeleteClick(int selectIndex, string mode, string preOrder)
         {
             if (-1 == selectIndex)
             {
@@ -212,7 +212,7 @@ namespace CardEditor.Presenter
             {
                 SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
                 _query.MemoryNumber = string.Empty; // 删除成功后清空记录的编号，不显示位置
-                UpdateCacheAndUi(_query.MemoryCardEntity, preOrder);
+                UpdateCacheAndUi(_query.MemoryCardEntity, mode, preOrder);
                 BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
                 return;
             }
@@ -220,11 +220,11 @@ namespace CardEditor.Presenter
         }
 
         /// <summary>排序发生变化</summary>
-        public void PreOrderChanged(string preOrder)
+        public void PreOrderChanged(string mode, string preOrder)
         {
             var memoryCardEntity = _query.MemoryCardEntity;
             if(memoryCardEntity.Equals(null)) return;
-            UpdateCacheAndUi(memoryCardEntity ,preOrder);
+            UpdateCacheAndUi(memoryCardEntity , mode, preOrder);
         }
 
         public void ExitClick()
@@ -274,7 +274,7 @@ namespace CardEditor.Presenter
                 case Enum.ModeType.Editor:
                 {
                     if (!cardEntity.Pack.Equals(string.Empty))
-                        UpdateCacheAndUi(cardEntity, preOrder);
+                        UpdateCacheAndUi(cardEntity, mode, preOrder);
                     break;
                 }
             }
@@ -311,9 +311,21 @@ namespace CardEditor.Presenter
         /// </summary>
         /// <param name="cardEntity">查询的实例</param>
         /// <param name="preOrder">预览排序</param>
-        private void UpdateCacheAndUi(CardEntity cardEntity, string preOrder)
+        private void UpdateCacheAndUi(CardEntity cardEntity, string mode, string preOrder)
         {
-            var sql = _query.GetQuerySql(cardEntity, preOrder);
+            var modeType = CardUtils.GetModeType(mode);
+            var sql = string.Empty;
+            switch (modeType)
+            {
+                case Enum.ModeType.Query:
+                    sql = _query.GetQuerySql(cardEntity, preOrder);
+                    break;
+                case Enum.ModeType.Editor:
+                    sql = _query.GetEditorSql(cardEntity, preOrder);
+                    break;
+                case Enum.ModeType.Develop:
+                    break;
+            }
             UpdateCacheAndUi(sql, cardEntity.Restrict);
         }
     }
