@@ -159,9 +159,9 @@ namespace Wrapper.Utils
         public static string GetPackNumber(string pack)
         {
             if (pack.Contains(StringConst.Series))
-                return pack.Substring(0, pack.IndexOf(StringConst.Series, StringComparison.Ordinal)) + "XX" + StringConst.Hyphen;
+                return pack.Substring(0, pack.IndexOf(StringConst.Series, StringComparison.Ordinal));
             if (pack.Contains("CP"))
-                return pack + StringConst.Hyphen;
+                return pack.Substring(0,4) + StringConst.Hyphen;
             if (pack.Length >= 3 && !pack.Contains(StringConst.NotApplicable))
                 return pack.Substring(0, 3) + StringConst.Hyphen;
             return string.Empty;
