@@ -301,7 +301,7 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Label Name="LblMd5" Grid.Column="0" Content="卡密" Style="{DynamicResource LblCenter}"/>
-                                        <TextBox Name="TxtMd5" Grid.Column="1" IsEnabled="False"
+                                        <TextBox Name="TxtMd5" Grid.Column="1"
                                                  VerticalContentAlignment="Center" />
                                     </Grid>
                                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,2.5,5,2.5">
