@@ -1,9 +1,8 @@
-﻿namespace DeckEditor.Entity
+﻿namespace Wrapper.Model
 {
-    public class DeckEntity
+    public class DeckModel
     {
         public string ImagePath { get; set; }
-        public string ImageJson { get; set; }
         public string RestrictPath { get; set; }
         public string CName { get; set; }
         public string Camp { get; set; }

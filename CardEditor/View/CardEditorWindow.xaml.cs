@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -6,32 +6,31 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using CardEditor.Model;
 using CardEditor.Presenter;
-using CardEditor.Utils;
 using Wrapper.Constant;
-using Wrapper.Entity;
+using Wrapper.Model;
 using Wrapper.Utils;
-using Enum = CardEditor.Constant.Enum;
+using Enum = Wrapper.Constant.Enum;
 
 namespace CardEditor.View
 {
     public interface IView
     {
         void SetPackItems(List<object> itemList);
-        void SetCardEntity(CardEntity cardEntity);
+        void SetCardModel(CardModel card);
         void SetPasswordVisibility(bool isEncryptVisible, bool isDecryptVisible);
         void SetPicture(List<string> picturePathList);
         void Reset(Enum.ModeType modeType);
-        void UpdatePreListView(List<PreviewEntity> previewEntityList, string memoryNumber);
+        void UpdatePreListView(List<CardPreviewModel> previewEntityList, string memoryNumber);
         void UpdatePackLinkage(string packNumber);
         void UpdateTypeLinkage(string type);
         void UpdateCampLinkage(List<object> itemList);
         void UpdateAbilityLinkage(Enum.AbilityType abilityType);
-        CardEntity GetCardEntity();
     }
 
     /// <summary>
-    ///     MainWindow.xaml çš„äº¤äº’é€»è¾‘
+    ///     MainWindow.xaml µÄ½»»¥Âß¼­
     /// </summary>
     public partial class MainWindow : IView
     {
@@ -45,7 +44,7 @@ namespace CardEditor.View
 
         private bool IsPreviewChanged { get; set; }
 
-        /************************************************** æ¥å£å®ç° **************************************************/
+        /************************************************** ½Ó¿ÚÊµÏÖ **************************************************/
 
         public void UpdateAbilityLinkage(Enum.AbilityType abilityType)
         {
@@ -79,14 +78,12 @@ namespace CardEditor.View
             }
         }
 
-        public CardEntity GetCardEntity()
+        /// <summary>
+        /// ´ËÄ£ĞÍÓÃÓÚÔö¡¢É¾¡¢¸Ä¡¢²é
+        /// </summary>
+        public CardEditorModel GetCardEditorModel()
         {
-            var abbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>()
-                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
-            var abilityDetialDic = LstAbilityDetail.Items.Cast<CheckBox>()
-                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
-            var abilityDetialEntity = new AbilityDetialEntity(abilityDetialDic, true);
-            return new CardEntity
+            return new CardEditorModel
             {
                 Type = CmbType.Text.Trim(),
                 Camp = CmbCamp.Text.Trim(),
@@ -94,66 +91,68 @@ namespace CardEditor.View
                 Sign = CmbSign.Text.Trim(),
                 Rare = CmbRare.Text.Trim(),
                 Pack = CmbPack.Text.Trim(),
-                Restrict = CmbRestrict.Text.Trim(),
                 CName = TxtCName.Text.Trim(),
                 JName = TxtJName.Text.Trim(),
                 Illust = TxtIllust.Text.Trim(),
                 Number = TxtNumber.Text.Trim(),
-                Cost = TxtCost.Text.Trim(),
-                Power = TxtPower.Text.Trim(),
                 Ability = TxtAbility.Text.Trim(),
                 Lines = TxtLines.Text.Trim(),
-                Faq = TxtFaq.Text.Trim(),
-                ImageJson = JsonUtils.JsonSerializer(new List<string> {$"/{TxtNumber.Text.Trim()}.jpg"}),
-                AbilityDetailJson = JsonUtils.JsonSerializer(abilityDetialEntity),
+                Cost = TxtCost.Text.Trim().Equals(string.Empty) ? 0 : int.Parse(TxtCost.Text.Trim()),
+                Power = TxtPower.Text.Trim().Equals(string.Empty) ? 0 : int.Parse(TxtPower.Text.Trim()),
+                ImageJson = JsonUtils.JsonSerializer(new List<string> { $"/{TxtNumber.Text.Trim()}.jpg" }),
 
-                AbilityTypeSql = SqlUtils.GetAbilityTypeSql(abbilityTypeDic),
-                AbilityDetailSql = SqlUtils.GetAbilityDetailSql(abilityDetialEntity)
+                AbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>().ToDictionary(
+                    checkbox => checkbox.Content.ToString(),
+                    checkbox => (null != checkbox.IsChecked) && (bool)checkbox.IsChecked),
+                AbilityDetailDic = LstAbilityDetail.Items.Cast<CheckBox>().ToDictionary(
+                    checkbox => checkbox.Content.ToString(),
+                    checkbox => (null != checkbox.IsChecked) && (bool)checkbox.IsChecked),
+
+                Mode = CmbMode.Text.Trim(),
+                Order = CmbOrder.Text.Trim(),
+                Restrict = CmbRestrict.Text.Trim()
             };
         }
 
-        public void SetCardEntity(CardEntity cardEntity)
+        public void SetCardModel(CardModel card)
         {
             IsPreviewChanged = true;
-            CmbType.Text = cardEntity.Type;
-            CmbCamp.Text = cardEntity.Camp;
-            CmbRace.Text = cardEntity.Race;
-            CmbSign.Text = cardEntity.Sign;
-            CmbRare.Text = cardEntity.Rare;
-            CmbPack.Text = cardEntity.Pack;
-            CmbRestrict.Text = cardEntity.Restrict.Equals("4") ? StringConst.NotApplicable : cardEntity.Restrict;
+            CmbType.Text = card.Type;
+            CmbCamp.Text = card.Camp;
+            CmbRace.Text = card.Race;
+            CmbSign.Text = card.Sign;
+            CmbRare.Text = card.Rare;
+            CmbPack.Text = card.Pack;
+            CmbRestrict.Text = card.Restrict.Equals("4") ? StringConst.NotApplicable : card.Restrict;
 
-            TxtCName.Text = cardEntity.CName;
-            TxtJName.Text = cardEntity.JName;
-            TxtIllust.Text = cardEntity.Illust;
-            TxtNumber.Text = cardEntity.Number;
-            TxtCost.Text = cardEntity.Cost;
-            TxtPower.Text = cardEntity.Power;
+            TxtCName.Text = card.CName;
+            TxtJName.Text = card.JName;
+            TxtIllust.Text = card.Illust;
+            TxtNumber.Text = card.Number;
+            TxtCost.Text = 0 == card.Cost  ? string.Empty: card.Cost.ToString();
+            TxtPower.Text = 0 == card.Power ? string.Empty : card.Power.ToString();
 
-            TxtAbility.Text = cardEntity.Ability;
-            TxtLines.Text = cardEntity.Lines;
-            TxtFaq.Text = cardEntity.Faq;
-            TxtMd5.Text = cardEntity.Md5;
+            TxtAbility.Text = card.Ability;
+            TxtLines.Text = card.Lines;
+            TxtMd5.Text = card.Md5;
 
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 foreach (var abilityType in Dictionary.AbilityTypeDic)
                 {
                     if (!checkbox.Content.Equals(abilityType.Key)) continue;
-                    checkbox.IsChecked = cardEntity.Ability.Contains(abilityType.Value);
+                    checkbox.IsChecked = card.Ability.Contains(abilityType.Value);
                     break;
                 }
 
-            var abilityDetialModel = JsonUtils.JsonDeserialize<AbilityDetialEntity>(cardEntity.AbilityDetailJson);
-            var abilityDetialItems = abilityDetialModel.GetAbilityDetailDic(true);
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>())
-                foreach (var abilityDetailItem in abilityDetialItems)
+                foreach (var abilityDetailItem in card.AbilityDetailDic)
                 {
                     if (!abilityDetailItem.Key.Equals(checkbox.Content)) continue;
-                    checkbox.IsChecked = abilityDetailItem.Value.Equals(1);
+                    checkbox.IsChecked = abilityDetailItem.Value;
                     break;
                 }
 
-            UpdateTypeLinkage(cardEntity.Type);
+            UpdateTypeLinkage(card.Type);
             IsPreviewChanged = false;
         }
 
@@ -176,7 +175,6 @@ namespace CardEditor.View
             TxtPower.Text = string.Empty;
             TxtAbility.Text = string.Empty;
             TxtLines.Text = string.Empty;
-            TxtFaq.Text = string.Empty;
             TxtMd5.Text = string.Empty;
 
             CmbType.Text = StringConst.NotApplicable;
@@ -238,7 +236,7 @@ namespace CardEditor.View
             CmbPack.ItemsSource = itemList;
         }
 
-        public void UpdatePreListView(List<PreviewEntity> previewEntityList, string memoryNumber)
+        public void UpdatePreListView(List<CardPreviewModel> previewEntityList, string memoryNumber)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = previewEntityList;
@@ -319,118 +317,118 @@ namespace CardEditor.View
             BtnDecrypt.Visibility = isDecryptVisible ? Visibility.Visible : Visibility.Hidden;
         }
 
-        /************************************************** äº‹ä»¶ **************************************************/
+        /************************************************** ÊÂ¼ş **************************************************/
 
-        /// <summary>ç¨‹åºè½½å…¥</summary>
+        /// <summary>³ÌĞòÔØÈë</summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _presenter.Init();
         }
 
-        /// <summary>é€€å‡º</summary>
+        /// <summary>ÍË³ö</summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();
         }
 
-        /// <summary>æ·»åŠ </summary>
+        /// <summary>Ìí¼Ó</summary>
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.AddClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+            _presenter.AddClick(GetCardEditorModel());
         }
 
-        /// <summary>æ›´æ–°</summary>
+        /// <summary>¸üĞÂ</summary>
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.UpdateClick(LvwPreview.SelectedIndex, CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+            _presenter.UpdateClick(GetCardEditorModel(), LvwPreview.SelectedItem);
         }
 
-        /// <summary>åˆ é™¤</summary>
+        /// <summary>É¾³ı</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.DeleteClick(LvwPreview.SelectedIndex, CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+            _presenter.DeleteClick(GetCardEditorModel(), LvwPreview.SelectedItem);
         }
 
-        /// <summary>æŸ¥è¯¢</summary>
+        /// <summary>²éÑ¯</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.QueryClick(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+            _presenter.QueryClick(GetCardEditorModel());
         }
 
-        /// <summary>é‡ç½®</summary>
+        /// <summary>ÖØÖÃ</summary>
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ResetClick(CmbMode.Text.Trim());
         }
 
-        /// <summary>åˆ—è¡¨é€‰æ‹©</summary>
+        /// <summary>ÁĞ±íÑ¡Ôñ</summary>
         private void LvCardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.PreviewChanged(LvwPreview.SelectedIndex);
+            _presenter.PreviewChanged(LvwPreview.SelectedItem);
         }
 
-        /// <summary>åŠ å¯†æ•°æ®åº“</summary>
+        /// <summary>¼ÓÃÜÊı¾İ¿â</summary>
         private void Encrypt_Click(object sender, RoutedEventArgs e)
         {
-            // ä½¿ç”¨.NETå†…éƒ¨ç®—æ³•æŠŠIntPtræŒ‡å‘å¤„çš„å­—ç¬¦é›†åˆè½¬æ¢æˆå­—ç¬¦ä¸²  
+            // Ê¹ÓÃ.NETÄÚ²¿Ëã·¨°ÑIntPtrÖ¸Ïò´¦µÄ×Ö·û¼¯ºÏ×ª»»³É×Ö·û´®  
             _presenter.EncryptDatabaseClick(
                 Marshal.PtrToStringBSTR(Marshal.SecureStringToBSTR(TxtPassword.SecurePassword)));
         }
 
-        /// <summary>è§£å¯†æ•°æ®åº“</summary>
+        /// <summary>½âÃÜÊı¾İ¿â</summary>
         private void Decrypt_Click(object sender, RoutedEventArgs e)
         {
             _presenter.DecryptDatabaseClick(
                 Marshal.PtrToStringBSTR(Marshal.SecureStringToBSTR(TxtPassword.SecurePassword)));
         }
 
-        /// <summary>æ”¹å˜æ’åºæ–¹å¼</summary>
+        /// <summary>¸Ä±äÅÅĞò·½Ê½</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.PreOrderChanged(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
         }
 
-        /// <summary>ä¸€é”®å¯¼å‡ºäº‹ä»¶</summary>
+        /// <summary>Ò»¼üµ¼³öÊÂ¼ş</summary>
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExportClick(CmbPack.Text.Trim());
         }
 
-        /// <summary>èƒ½åŠ›æ–‡æœ¬æ”¹å˜äº‹ä»¶</summary>
+        /// <summary>ÄÜÁ¦ÎÄ±¾¸Ä±äÊÂ¼ş</summary>
         private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (IsPreviewChanged) return;
             _presenter.AbilityChanged(TxtAbility.Text.Trim());
         }
 
-        /// <summary>ç±»å‹é€‰æ‹©</summary>
+        /// <summary>ÀàĞÍÑ¡Ôñ</summary>
         private void CmbType_TextChanged(object sender, RoutedEventArgs e)
         {
             if (IsPreviewChanged) return;
             _presenter.TypeChanged(CmbType.Text.Trim());
         }
 
-        /// <summary>é˜µè¥é€‰æ‹©</summary>
+        /// <summary>ÕóÓªÑ¡Ôñ</summary>
         private void CmbCamp_TextChanged(object sender, EventArgs e)
         {
             if (IsPreviewChanged) return;
             _presenter.CampChanged(CmbCamp.Text.Trim());
         }
 
-        /// <summary>å¡åŒ…é€‰æ‹©</summary>
+        /// <summary>¿¨°üÑ¡Ôñ</summary>
         private void CmbPack_TextChanged(object sender, RoutedEventArgs e)
         {
             if (IsPreviewChanged) return;
-            _presenter.PackChanged(CmbPack.Text.Trim() ,TxtNumber.Text.Trim());
+            _presenter.PackChanged(CmbPack.Text.Trim(), TxtNumber.Text.Trim());
         }
 
-        /// <summary>çª—å£æœ€å°åŒ–äº‹ä»¶</summary>
+        /// <summary>´°¿Ú×îĞ¡»¯ÊÂ¼ş</summary>
         private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        /// <summary>æ ‡é¢˜æ‹–æ‹½äº‹ä»¶</summary>
+        /// <summary>±êÌâÍÏ×§ÊÂ¼ş</summary>
         private void Title_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -439,17 +437,17 @@ namespace CardEditor.View
 
         private void CmbMode_TextChanged(object sender, RoutedEventArgs e)
         {
-            _presenter.ModeChanged(CmbMode.Text.Trim(), CmbOrder.Text.Trim());
+            _presenter.ModeChanged(GetCardEditorModel());
         }
 
-        /// <summary>Md5è¦†å†™äº‹ä»¶</summary>
+        /// <summary>Md5¸²Ğ´ÊÂ¼ş</summary>
         private void Md5_Click(object sender, RoutedEventArgs e)
         {
             _presenter.Md5Click();
         }
 
         /// <summary>
-        ///     å¡åŒ…è¦†å†™äº‹ä»¶
+        ///     ¿¨°ü¸²Ğ´ÊÂ¼ş
         /// </summary>
         private void PackCover_Click(object sender, RoutedEventArgs e)
         {

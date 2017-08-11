@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
+using System.Windows;
 using Wrapper.Constant;
-using Wrapper.Entity;
-using Enum = CardEditor.Constant.Enum;
+using Wrapper.Model;
+using Enum = Wrapper.Constant.Enum;
 
 namespace Wrapper.Utils
 {
@@ -36,13 +36,13 @@ namespace Wrapper.Utils
                 : mode.Equals(StringConst.ModeEditor) ? Enum.ModeType.Editor : Enum.ModeType.Develop;
         }
 
-        public static CardEntity GetCardEntity(string number)
+        public static CardModel GetCardModel(string numberEx)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
                 .AsParallel()
-                .First(column => column[ColumnNumber].Equals(number));
-            return new CardEntity
+                .First(column => numberEx.Contains(column[ColumnNumber].ToString()));
+            return new CardModel
             {
                 Md5 = row[ColumnMd5].ToString(),
                 Type = row[ColumnType].ToString(),
@@ -54,13 +54,12 @@ namespace Wrapper.Utils
                 JName = row[ColumnJName].ToString(),
                 Illust = row[ColumnIllust].ToString(),
                 Pack = row[ColumnPack].ToString(),
-                Cost = row[ColumnCost].ToString(),
-                Power = row[ColumnPower].ToString(),
+                Cost = int.Parse(row[ColumnCost].ToString()),
+                Power = int.Parse(row[ColumnPower].ToString()),
                 Number = row[ColumnNumber].ToString(),
                 Ability = row[ColumnAbility].ToString(),
                 Lines = row[ColumnLines].ToString(),
-                Faq = row[ColumnFaq].ToString(),
-                AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
+                AbilityDetailDic = JsonUtils.JsonDeserialize<AbilityDetialModel>(row[ColumnAbilityDetail].ToString()).GetAbilityDetailExDic(),
                 ImageJson = row[ColumnImage].ToString(),
                 Restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString()).ToString()
             };
@@ -92,15 +91,17 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取卡包集合
+        ///     获取卡包集合
         /// </summary>
         /// <returns></returns>
         public static List<object> GetAllPack()
         {
-            var packlist = new List<object> { StringConst.NotApplicable };
+            var packlist = new List<object> {StringConst.NotApplicable};
+            packlist.AddRange(GetPartPack("AC"));
             packlist.AddRange(GetPartPack("B"));
             packlist.AddRange(GetPartPack("C"));
             packlist.AddRange(GetPartPack("CP"));
+            packlist.AddRange(GetPartPack("D"));
             packlist.AddRange(GetPartPack("E"));
             packlist.AddRange(GetPartPack("P"));
             packlist.AddRange(GetPartPack("L"));
@@ -111,7 +112,7 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取部分卡包集合
+        ///     获取部分卡包集合
         /// </summary>
         /// <param name="packType">卡包系列</param>
         /// <returns></returns>
@@ -121,7 +122,10 @@ namespace Wrapper.Utils
             var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => column[ColumnPack])
                 .Distinct()
-                .Where(value => value.ToString().Contains(packType) && StringUtils.IsNumber(value.ToString().Substring(packType.Length, 1)))
+                .Where(
+                    value =>
+                        value.ToString().Contains(packType) &&
+                        StringUtils.IsNumber(value.ToString().Substring(packType.Length, 1)))
                 .OrderBy(value => value)
                 .ToList();
             packlist.AddRange(tempList);
@@ -129,20 +133,18 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取部分种族集合
+        ///     获取部分种族集合
         /// </summary>
         /// <param name="camp">阵营</param>
         /// <returns></returns>
         public static List<object> GetPartRace(string camp)
         {
-            var packlist = new List<object> { StringConst.NotApplicable };
+            var packlist = new List<object> {StringConst.NotApplicable};
             if (camp.Equals(StringConst.NotApplicable))
-            {
                 return packlist;
-            }
             var tempList = (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
-                            where row[ColumnCamp].Equals(camp)
-                            select row[ColumnRace])
+                    where row[ColumnCamp].Equals(camp)
+                    select row[ColumnRace])
                 .ToList()
                 .Distinct()
                 .OrderBy(value => value.ToString().Length)
@@ -152,7 +154,7 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取卡编
+        ///     获取卡编
         /// </summary>
         /// <param name="pack">卡包</param>
         /// <returns></returns>
@@ -160,9 +162,11 @@ namespace Wrapper.Utils
         {
             if (pack.Contains(StringConst.Series))
                 return pack.Substring(0, pack.IndexOf(StringConst.Series, StringComparison.Ordinal));
+            if (pack.Contains("AC"))
+                return pack.Substring(0, 4) + StringConst.Hyphen;
             if (pack.Contains("CP"))
-                return pack.Substring(0,4) + StringConst.Hyphen;
-            if (pack.Length >= 3 && !pack.Contains(StringConst.NotApplicable))
+                return pack.Substring(0, 4) + StringConst.Hyphen;
+            if ((pack.Length >= 3) && !pack.Contains(StringConst.NotApplicable))
                 return pack.Substring(0, 3) + StringConst.Hyphen;
             return string.Empty;
         }
@@ -211,13 +215,12 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取画师集合
+        ///     获取画师集合
         /// </summary>
-        /// <param name="pack"></param>
         /// <returns></returns>
         public static List<object> GetIllust()
         {
-            var packlist = new List<object> { StringConst.NotApplicable };
+            var packlist = new List<object> {StringConst.NotApplicable};
             var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
                 .Select(column => column[ColumnIllust])
                 .Distinct()
@@ -346,21 +349,6 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        ///     获取卡组中生命恢复和虚空使者总数的集合
-        /// </summary>
-        /// <returns></returns>
-        public static List<int> GetStartAndLifeAndVoidCount()
-        {
-            var list = new List<int>
-            {
-                DataCache.UgColl.AsParallel().Count(deckEntity => IsStart(deckEntity.NumberEx)),
-                DataCache.IgColl.AsParallel().Count(deckEntity => IsLife(deckEntity.NumberEx)),
-                DataCache.IgColl.AsParallel().Count(deckEntity => IsVoid(deckEntity.NumberEx))
-            };
-            return list;
-        }
-
-        /// <summary>
         ///     获取卡组路径
         /// </summary>
         /// <param name="deckName">卡组名称</param>
@@ -373,11 +361,11 @@ namespace Wrapper.Utils
         /// <summary>
         ///     获取缩略图路径
         /// </summary>
-        /// <param name="number">卡编</param>
+        /// <param name="numberEx">卡编</param>
         /// <returns>缩略图路径</returns>
-        public static string GetThumbnailPath(string number)
+        public static string GetThumbnailPath(string numberEx)
         {
-            return PathManager.ThumbnailPath + number + StringConst.ImageExtension;
+            return $"{PathManager.ThumbnailPath}/{numberEx}{StringConst.ImageExtension}";
         }
 
         /// <summary>

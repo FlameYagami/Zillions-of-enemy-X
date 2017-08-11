@@ -1,49 +1,50 @@
 ﻿using System;
 using System.Data;
+using System.Windows;
 using CardEditor.Model;
 using CardEditor.Utils;
 using CardEditor.View;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
-using Wrapper.Entity;
+using Wrapper.Model;
 using Wrapper.Utils;
-using Enum = CardEditor.Constant.Enum;
+using Enum = Wrapper.Constant.Enum;
 
 namespace CardEditor.Presenter
 {
     public interface IPresenter
     {
-        void PackChanged(string pack , string number);
+        void PackChanged(string pack, string number);
         void TypeChanged(string type);
         void CampChanged(string camp);
         void PreOrderChanged(string mode, string preOrder);
-        void PreviewChanged(int selectIndex);
-        void QueryClick(string mode, string preOrder);
+        void PreviewChanged(object selectItem);
         void ExitClick();
         void ResetClick(string mode);
-        void AddClick(string mode, string preOrder);
-        void DeleteClick(int selectIndex, string mode, string preOrder);
-        void UpdateClick(int selectIndex, string mode, string preOrder);
+        void AddClick(CardEditorModel cardEditorModel);
+        void DeleteClick(CardEditorModel cardEditorModel, object selectItem);
+        void UpdateClick(CardEditorModel cardEditorModel, object selectItem);
+        void QueryClick(CardEditorModel cardEditorModel);
         void EncryptDatabaseClick(string password);
         void DecryptDatabaseClick(string password);
         void Init();
         void ExportClick(string pack);
         void AbilityChanged(string ability);
-        void ModeChanged(string mode, string preOrder);
+        void ModeChanged(CardEditorModel cardEditorModel);
         void Md5Click();
         void PackCoverClick();
     }
 
     internal class Presenter : IPresenter
     {
-        private readonly IQuery _query;
+        private readonly ICardEditor _cardEditor;
         private readonly IView _view;
 
         public Presenter(IView view)
         {
             _view = view;
-            _query = new Query();
+            _cardEditor = new Model.CardEditor();
         }
 
         public void Init()
@@ -97,134 +98,85 @@ namespace CardEditor.Presenter
 
         public void AbilityChanged(string ability)
         {
-            var abilityType = _query.AnalysisAbility(ability);
+            var abilityType = _cardEditor.AnalysisAbility(ability);
             _view.UpdateAbilityLinkage(abilityType);
         }
 
-        public void PreviewChanged(int selectIndex)
+        public void PreviewChanged(object selectItem)
         {
-            if (selectIndex.Equals(-1)) return;
-            var previewEntity = DataCache.PreEntityList[selectIndex];
-            var cardEntity = CardUtils.GetCardEntity(previewEntity.Number);
-            var picturePathList = CardUtils.GetPicturePathList(previewEntity.ImageJson);
-            _query.MemoryNumber = previewEntity.Number;
-            _view.SetCardEntity(cardEntity);
+            var cardPreviewModel = selectItem as CardPreviewModel;
+            if (null == cardPreviewModel) return;
+            var cardModel = CardUtils.GetCardModel(cardPreviewModel.Number);
+            var picturePathList = CardUtils.GetPicturePathList(cardPreviewModel.ImageJson);
+            _cardEditor.MemoryNumber = cardPreviewModel.Number;
+            _view.SetCardModel(cardModel);
             _view.SetPicture(picturePathList);
-        }
-
-        /// <summary>检索</summary>
-        public void QueryClick(string mode, string preOrder)
-        {
-            var modeType = CardUtils.GetModeType(mode);
-            var cardEntity = _view.GetCardEntity();
-            var restrictQuery = cardEntity.Restrict;
-            switch (modeType)
-            {
-                case Enum.ModeType.Query:
-                    UpdateCacheAndUi(cardEntity, mode, preOrder);
-                    break;
-                case Enum.ModeType.Editor:
-                    if (!cardEntity.Pack.Equals(string.Empty))
-                    {
-                        var sql = _query.GetEditorSql(cardEntity, preOrder);
-                        UpdateCacheAndUi(sql, restrictQuery);
-                        return;
-                    }
-                    BaseDialogUtils.ShowDlg(StringConst.PackChoiceNone);
-                    break;
-                case Enum.ModeType.Develop:
-                    break;
-            }
-        }
-
-        /// <summary>添加</summary>
-        public void AddClick(string mode,string preOrder)
-        {
-            var cardEntity = _view.GetCardEntity();
-            // 卡编是否重复判断
-            if (CardUtils.IsNumberExist(cardEntity.Number))
-            {
-                BaseDialogUtils.ShowDlg(StringConst.CardIsExitst);
-                return;
-            }
-            // 添加确认
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
-            // 获取添加的Sql
-            var sql = _query.GetAddSql(cardEntity);
-
-            // 添加数据是否成功
-            if (SqliteUtils.Execute(sql))
-            {
-                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache); // 刷新总数据缓存
-                _query.MemoryNumber = cardEntity.Number; // 添加成功后记录添加的编号，以便显示位置
-                var memoryCardEntity = _query.MemoryCardEntity;
-                UpdateCacheAndUi(memoryCardEntity.Equals(null) ? cardEntity : memoryCardEntity, mode, preOrder);
-                BaseDialogUtils.ShowDlg(StringConst.AddSucceed);
-                return;
-            }
-            BaseDialogUtils.ShowDlg(StringConst.AddFailed);
         }
 
         /// <summary>重置</summary>
         public void ResetClick(string mode)
         {
             var modeType = CardUtils.GetModeType(mode);
-            _query.MemoryNumber = string.Empty;
+            _cardEditor.MemoryNumber = string.Empty;
             _view.Reset(modeType);
         }
 
-        /// <summary>更新</summary>
-        public void UpdateClick(int selectIndex, string mode, string preOrder)
-        {
-            if (-1 == selectIndex)
-            {
-                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
-                return;
-            }
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
 
-            var number = DataCache.PreEntityList[selectIndex].Number;
-            var updateSql = _query.GetUpdateSql(_view.GetCardEntity(), number);
-            if (SqliteUtils.Execute(updateSql))
+        /// <summary>添加</summary>
+        public void AddClick(CardEditorModel cardEditorModel)
+        {
+            // 卡编是否重复判断
+            if (CardUtils.IsNumberExist(cardEditorModel.Number))
             {
-                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
-                var cardEntity = _query.MemoryCardEntity;
-                UpdateCacheAndUi(cardEntity , mode, preOrder);
-                BaseDialogUtils.ShowDlg(StringConst.UpdateSucceed);
+                BaseDialogUtils.ShowDlg(StringConst.CardIsExitst);
                 return;
             }
-            BaseDialogUtils.ShowDlg(StringConst.UpdateFailed);
+            // 添加确认
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
+
+            var isAdd = _cardEditor.AddCard(cardEditorModel);
+            if (isAdd) UpdateCacheAndUi(_cardEditor.MemoryEditorCardModel);
+            BaseDialogUtils.ShowDlg(isAdd ? StringConst.AddSucceed : StringConst.AddFailed);
         }
 
         /// <summary>删除</summary>
-        public void DeleteClick(int selectIndex, string mode, string preOrder)
+        public void DeleteClick(CardEditorModel cardEditorModel, object selectItem)
         {
-            if (-1 == selectIndex)
+            var previewModel = selectItem as CardPreviewModel;
+            if (null == previewModel)
             {
                 BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
             if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
 
-            var number = DataCache.PreEntityList[selectIndex].Number;
-            var deleteSql = _query.GetDeleteSql(number);
-            if (SqliteUtils.Execute(deleteSql))
+            var isDelete = _cardEditor.DeleteCard(previewModel.Number);
+            if (isDelete) UpdateCacheAndUi(_cardEditor.MemoryEditorCardModel);
+            BaseDialogUtils.ShowDlg(isDelete ? StringConst.DeleteSucceed : StringConst.DeleteFailed);
+        }
+
+        /// <summary>更新</summary>
+        public void UpdateClick(CardEditorModel cardEditorModel,object selectItem)
+        {
+            var previewModel = selectItem as CardPreviewModel;
+            if (null == previewModel)
             {
-                SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
-                _query.MemoryNumber = string.Empty; // 删除成功后清空记录的编号，不显示位置
-                UpdateCacheAndUi(_query.MemoryCardEntity, mode, preOrder);
-                BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
+                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
                 return;
             }
-            BaseDialogUtils.ShowDlg(StringConst.DeleteFailed);
+            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
+
+            var isUpdate = _cardEditor.UpdateCard(cardEditorModel, previewModel.Number);
+            if (isUpdate) UpdateCacheAndUi(_cardEditor.MemoryEditorCardModel);
+            BaseDialogUtils.ShowDlg(isUpdate ? StringConst.UpdateSucceed  : StringConst.UpdateFailed);
         }
 
         /// <summary>排序发生变化</summary>
         public void PreOrderChanged(string mode, string preOrder)
         {
-            var memoryCardEntity = _query.MemoryCardEntity;
-            if(memoryCardEntity.Equals(null)) return;
-            UpdateCacheAndUi(memoryCardEntity , mode, preOrder);
+            var memoryEditorCardModel = _cardEditor.MemoryEditorCardModel;
+            if (memoryEditorCardModel.Equals(null)) return;
+            UpdateCacheAndUi(memoryEditorCardModel);
         }
 
         public void ExitClick()
@@ -264,17 +216,16 @@ namespace CardEditor.Presenter
             BaseDialogUtils.ShowDlgOk(StringConst.DncryptFailed);
         }
 
-        public void ModeChanged(string mode, string preOrder)
+        public void ModeChanged(CardEditorModel cardEditorModel)
         {
-            var modeType = CardUtils.GetModeType(mode);
-            var cardEntity = _view.GetCardEntity();
-            _query.MemoryCardEntity = cardEntity;
+            var modeType = CardUtils.GetModeType(cardEditorModel.Mode);
+            _cardEditor.MemoryEditorCardModel = cardEditorModel;
             switch (modeType)
             {
                 case Enum.ModeType.Editor:
                 {
-                    if (!cardEntity.Pack.Equals(string.Empty))
-                        UpdateCacheAndUi(cardEntity, mode, preOrder);
+                    if (!cardEditorModel.Pack.Equals(string.Empty))
+                        UpdateCacheAndUi(cardEditorModel);
                     break;
                 }
             }
@@ -292,41 +243,33 @@ namespace CardEditor.Presenter
             DialogUtils.ShowPackCover();
         }
 
-        /// <summary>
-        ///     更新全部数据集合以及ListView
-        /// </summary>
-        /// <param name="sql">查询的Sql</param>
-        /// <param name="queryRestrict">查询的制限</param>
-        private void UpdateCacheAndUi(string sql, string queryRestrict)
+        /// <summary>检索</summary>
+        public void QueryClick(CardEditorModel cardEditorModel)
         {
-            var dataSet = new DataSet();
-            SqliteUtils.FillDataToDataSet(sql, dataSet);
-            _query.SetPreCardList(dataSet, queryRestrict);
-            var memoryNumber = _query.MemoryNumber == null ? string.Empty : _query.MemoryNumber;
-            _view.UpdatePreListView(DataCache.PreEntityList, _query.MemoryNumber);
+            UpdateCacheAndUi(cardEditorModel);
         }
 
         /// <summary>
         ///     更新全部数据集合以及ListView
         /// </summary>
-        /// <param name="cardEntity">查询的实例</param>
-        /// <param name="preOrder">预览排序</param>
-        private void UpdateCacheAndUi(CardEntity cardEntity, string mode, string preOrder)
+        private void UpdateCacheAndUi(CardEditorModel cardEditorModel)
         {
-            var modeType = CardUtils.GetModeType(mode);
+            var modeType = CardUtils.GetModeType(cardEditorModel.Mode);
             var sql = string.Empty;
             switch (modeType)
             {
                 case Enum.ModeType.Query:
-                    sql = _query.GetQuerySql(cardEntity, preOrder);
+                    sql = _cardEditor.GetQuerySql(cardEditorModel);
                     break;
                 case Enum.ModeType.Editor:
-                    sql = _query.GetEditorSql(cardEntity, preOrder);
+                    if (cardEditorModel.Pack.Equals(string.Empty)) return;
+                    sql = _cardEditor.GetEditorSql(cardEditorModel);
                     break;
                 case Enum.ModeType.Develop:
                     break;
             }
-            UpdateCacheAndUi(sql, cardEntity.Restrict);
+            var previewModelList = _cardEditor.GetCardPreviewList(sql, cardEditorModel.Restrict);
+            _view.UpdatePreListView(previewModelList, _cardEditor.MemoryNumber);
         }
     }
 }

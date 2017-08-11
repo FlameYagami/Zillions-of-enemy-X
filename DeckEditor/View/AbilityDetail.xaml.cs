@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using DeckEditor.Utils;
 using Wrapper;
-using Wrapper.Entity;
-using Wrapper.Utils;
+using Wrapper.Model;
 
 namespace DeckEditor.View
 {
@@ -27,14 +25,14 @@ namespace DeckEditor.View
         {
             var checkboxListDic = LstAbilityDetail.Items.Cast<CheckBox>()
                 .ToDictionary(checkbox => checkbox.Content.ToString(),
-                    checkbox => checkbox.IsChecked != null && (bool) checkbox.IsChecked);
-            DataCache.AbilityDetialEntity = new AbilityDetialEntity(checkboxListDic);
+                    checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
+            DataCache.AbilityDetialModel = new AbilityDetialModel(checkboxListDic);
             Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var abilityDetialDic = DataCache.AbilityDetialEntity.GetAbilityDetailDic();
+            var abilityDetialDic = DataCache.AbilityDetialModel.GetAbilityDetailDic();
             foreach (var checkbox in LstAbilityDetail.Items.Cast<CheckBox>()) // 根据能力分类模型勾选对应的能力
                 foreach (var abilityDetailItem in abilityDetialDic)
                 {

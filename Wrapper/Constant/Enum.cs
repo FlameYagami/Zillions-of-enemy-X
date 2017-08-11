@@ -1,4 +1,4 @@
-﻿namespace CardEditor.Constant
+﻿namespace Wrapper.Constant
 {
     public class Enum
     {

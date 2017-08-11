@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,13 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using DeckEditor.Entity;
 using DeckEditor.Presenter;
-using DeckEditor.Utils;
 using Wrapper;
 using Wrapper.Constant;
-using Wrapper.Entity;
+using Wrapper.Model;
 using Wrapper.Utils;
+using Enum = Wrapper.Constant.Enum;
 
 namespace DeckEditor.View
 {
@@ -21,11 +20,11 @@ namespace DeckEditor.View
     {
         void Init();
         void Reset();
-        void UpdatePreviewListView(List<PreviewEntity> cardList);
-        void UpdateDeckListView(CardEditor.Constant.Enum.AreaType areaType, List<DeckEntity> deckColl);
+        void UpdatePreviewListView(List<CardPreviewModel> cardList);
+        void UpdateDeckListView(Enum.AreaType areaType, List<DeckModel> deckColl);
         void UpdateStartAndLifeAndVoid(List<int> countStartAandLifeAndVoid);
         void SetPicture(List<string> numberList, List<string> picturePathList);
-        void SetCardModel(CardEntity cardmodel);
+        void SetCardModel(CardModel cardmodel);
         void SetRaceItems(List<object> itemList);
         void SetDeckName(string name);
         void SetDeckName(List<string> deckNameList);
@@ -68,7 +67,7 @@ namespace DeckEditor.View
             }
             foreach (var checkbox in LstAbilityType.Items.Cast<CheckBox>())
                 checkbox.IsChecked = false;
-            DataCache.AbilityDetialEntity.ResetAbilityDetailDic();
+            DataCache.AbilityDetialModel.ResetAbilityDetailDic();
         }
 
         public void SetRaceItems(List<object> itemList)
@@ -84,7 +83,7 @@ namespace DeckEditor.View
             CmbRace.IsEnabled = true;
         }
 
-        public void SetCardModel(CardEntity cardmodel)
+        public void SetCardModel(CardModel cardmodel)
         {
             LblICName.Content = cardmodel.CName;
             LblINumber.Content = cardmodel.Number;
@@ -98,7 +97,6 @@ namespace DeckEditor.View
             LblIPack.Content = cardmodel.Pack;
             LblIIllust.Content = cardmodel.Illust;
             LblILines.Text = cardmodel.Lines;
-            LblIFaq.Text = cardmodel.Faq;
             var signUri = CardUtils.GetSignPath(cardmodel.Sign);
             var campUriList = CardUtils.GetCampPathList(cardmodel.Camp);
             var imageCampList = new List<Image> {ImgICamp0, ImgICamp1, ImgICamp2, ImgICamp3, ImgICamp4};
@@ -149,30 +147,30 @@ namespace DeckEditor.View
             tabItemList[0].Visibility = Visibility.Hidden;
         }
 
-        public void UpdatePreviewListView(List<PreviewEntity> cardList)
+        public void UpdatePreviewListView(List<CardPreviewModel> cardList)
         {
             LvwPreview.ItemsSource = null;
             LvwPreview.ItemsSource = cardList;
             LblCardCount.Content = StringConst.QueryResult + cardList.Count;
         }
 
-        public void UpdateDeckListView(CardEditor.Constant.Enum.AreaType areaType, List<DeckEntity> deckColl)
+        public void UpdateDeckListView(Enum.AreaType areaType, List<DeckModel> deckColl)
         {
             switch (areaType)
             {
-                case CardEditor.Constant.Enum.AreaType.Pl:
+                case Enum.AreaType.Pl:
                     PlayerListView.ItemsSource = null;
                     PlayerListView.ItemsSource = deckColl;
                     break;
-                case CardEditor.Constant.Enum.AreaType.Ig:
+                case Enum.AreaType.Ig:
                     IgListView.ItemsSource = null;
                     IgListView.ItemsSource = deckColl;
                     break;
-                case CardEditor.Constant.Enum.AreaType.Ug:
+                case Enum.AreaType.Ug:
                     UgListView.ItemsSource = null;
                     UgListView.ItemsSource = deckColl;
                     break;
-                case CardEditor.Constant.Enum.AreaType.Ex:
+                case Enum.AreaType.Ex:
                     ExListView.ItemsSource = null;
                     ExListView.ItemsSource = deckColl;
                     break;
@@ -204,13 +202,11 @@ namespace DeckEditor.View
                     : new SolidColorBrush(Colors.Lime);
         }
 
-        /************************************************** æ¥å£å®ç° **************************************************/
+        /************************************************** ½Ó¿ÚÊµÏÖ **************************************************/
 
-        public CardEntity GetCardModel()
+        public CardQueryModel GetCardQueryModel()
         {
-            var abbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>()
-                .ToDictionary(checkbox => checkbox.Content.ToString(), checkbox => checkbox.IsChecked != null && (bool)checkbox.IsChecked);
-            return new CardEntity
+            return new CardQueryModel()
             {
                 Type = CmbType.Text.Trim(),
                 Camp = CmbCamp.Text.Trim(),
@@ -222,8 +218,12 @@ namespace DeckEditor.View
                 Key = TxtKey.Text.Trim(),
                 Cost = TxtCost.Text.Trim(),
                 Power = TxtPower.Text.Trim(),
-                AbilityTypeSql = SqlUtils.GetAbilityTypeSql(abbilityTypeDic),
-                AbilityDetailSql = SqlUtils.GetAbilityDetailSql(DataCache.AbilityDetialEntity)
+                AbilityTypeDic = LstAbilityType.Items.Cast<CheckBox>().ToDictionary(
+                    checkbox => checkbox.Content.ToString(),
+                    checkbox => (checkbox.IsChecked != null) && (bool)checkbox.IsChecked),
+                AbilityDetailDic = DataCache.AbilityDetialModel.GetAbilityDetailExDic(),
+                Order = CmbOrder.Text.Trim()
+               
             };
         }
 
@@ -232,130 +232,138 @@ namespace DeckEditor.View
             _presenter.Init();
         }
 
-        /************************************************** æŸ¥è¯¢æ“ä½œ **************************************************/
+        /************************************************** ²éÑ¯²Ù×÷ **************************************************/
 
-        /// <summary>é˜µè¥é€‰æ‹©äº‹ä»¶</summary>
+        /// <summary>ÕóÓªÑ¡ÔñÊÂ¼ş</summary>
         private void Camp_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.CampChanged(CmbCamp.Text.Trim());
         }
 
-        /// <summary>æŸ¥è¯¢åŒºåŸŸé‡ç½®äº‹ä»¶</summary>
+        /// <summary>²éÑ¯ÇøÓòÖØÖÃÊÂ¼ş</summary>
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ResetClick();
         }
 
-        /// <summary>æŸ¥è¯¢åŒºåŸŸæŸ¥è¯¢äº‹ä»¶</summary>
+        /// <summary>²éÑ¯ÇøÓò²éÑ¯ÊÂ¼ş</summary>
         private void Query_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.QueryClick(GetCardModel(), CmbOrder.Text.Trim());
+            _presenter.QueryClick(GetCardQueryModel());
         }
 
-        /// <summary>åˆ—è¡¨åŒºåŸŸæ’åºäº‹ä»¶</summary>
+        /// <summary>ÁĞ±íÇøÓòÅÅĞòÊÂ¼ş</summary>
         private void CmbOrder_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.OrderClick(CmbOrder.Text.Trim());
         }
 
-        /// <summary>æŸ¥è¯¢åŒºåŸŸèƒ½åŠ›åˆ†ç±»äº‹ä»¶</summary>
+        /// <summary>²éÑ¯ÇøÓòÄÜÁ¦·ÖÀàÊÂ¼ş</summary>
         private void BtnAbilityDetail_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ShowAbilityDetail();
         }
 
-        /************************************************** ç»„å¡æ“ä½œ **************************************************/
+        /************************************************** ×é¿¨²Ù×÷ **************************************************/
 
-        /// <summary>åˆ—è¡¨åŒºåŸŸåˆ‡æ¢äº‹ä»¶</summary>
-        private void PreviewListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>ÁĞ±íÇøÓòÇĞ»»ÊÂ¼ş</summary>
+        private void CardPreview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _presenter.PreivewListViewChanged(LvwPreview.SelectedIndex);
+            _presenter.PreivewListViewChanged(LvwPreview.SelectedItem);
         }
 
-        /// <summary>åˆ—è¡¨åŒºåŸŸå³é”®äº‹ä»¶</summary>
-        private void PreviewGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        /// <summary>ÁĞ±íÇøÓòÓÒ¼üÊÂ¼ş</summary>
+        private void CardPreviewItem_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _presenter.PreviewMouseRightClick(sender as Grid, TcImage.SelectedIndex);
+            var grid = sender as Grid;
+            if (null == grid) return;
+            _presenter.CardPreviewItemMouseRightClick(grid.Tag.ToString(), TcImage.SelectedIndex);
         }
 
-        /// <summary>ç»„å¡åŒºåŸŸå·¦é”®äº‹ä»¶</summary>
-        private void AreaGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        /// <summary>×é¿¨ÇøÓò×ó¼üÊÂ¼ş</summary>
+        private void DeckItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            var grid = sender as Grid;
+            if (null == grid) return;
             if (e.ClickCount == 2)
-                _presenter.ImgAreaMouseDoubleClick(sender as Grid);
+                _presenter.DeckItemMouseDoubleClick(grid.Tag.ToString());
             else
-                _presenter.ImgAreaMouseLeftClick(sender as Grid);
+                _presenter.DeckItemMouseLeftClick(grid.Tag.ToString());
         }
 
-        /// <summary>ç»„å¡åŒºåŸŸå³é”®äº‹ä»¶</summary>
-        private void AreaGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        /// <summary>×é¿¨ÇøÓòÓÒ¼üÊÂ¼ş</summary>
+        private void DeckItem_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _presenter.ImgAreaMouseRightClick(sender as Grid);
+            var grid = sender as Grid;
+            if (null == grid) return;
+            _presenter.DeckItemMouseRightClick(grid.Uid);
         }
 
-        /// <summary>å¤§å›¾åŒºé¼ æ ‡å³å‡»äº‹ä»¶</summary>
+        /// <summary>´óÍ¼ÇøÊó±êÓÒ»÷ÊÂ¼ş</summary>
         private void Picture_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _presenter.PictureMouseRightClick(sender as Image);
+            var image = sender as Image;
+            if (null == image) return;
+            _presenter.PictureMouseRightClick(image.Tag.ToString());
         }
 
-        /************************************************** å¡ç»„æ“ä½œ **************************************************/
+        /************************************************** ¿¨×é²Ù×÷ **************************************************/
 
-        /// <summary>å¡ç»„ä¿å­˜äº‹ä»¶</summary>
+        /// <summary>¿¨×é±£´æÊÂ¼ş</summary>
         private void Sava_Click(object sender, RoutedEventArgs e)
         {
             _presenter.SaveClick(CmbDeck.Text.Trim());
         }
 
-        /// <summary>å¦å­˜å¡ç»„äº‹ä»¶</summary>
+        /// <summary>Áí´æ¿¨×éÊÂ¼ş</summary>
         private void Resave_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ResaveClick(CmbDeck.Text.Trim());
         }
 
-        /// <summary>å¡ç»„æ¸…ç©ºäº‹ä»¶</summary>
+        /// <summary>¿¨×éÇå¿ÕÊÂ¼ş</summary>
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            _presenter.ClearClick();
+            _presenter.DeckClearClick();
         }
 
-        /// <summary>å¡ç»„åˆ é™¤äº‹ä»¶</summary>
+        /// <summary>¿¨×éÉ¾³ıÊÂ¼ş</summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             _presenter.DeleteClick(CmbDeck.Text.Trim());
         }
 
-        /// <summary>å¡ç»„åŠ è½½äº‹ä»¶</summary>
+        /// <summary>¿¨×é¼ÓÔØÊÂ¼ş</summary>
         private void CmbDeck_DropDownClosed(object sender, EventArgs e)
         {
             _presenter.DeckNameChanged(CmbDeck.Text.Trim());
         }
 
-        /// <summary>å¡ç»„æµè§ˆäº‹ä»¶</summary>
+        /// <summary>¿¨×éä¯ÀÀÊÂ¼ş</summary>
         private void CmbDeck_DropDownOpened(object sender, EventArgs e)
         {
             _presenter.ShowAllDeckName();
         }
 
-        /// <summary>æ•°å€¼æ’åºäº‹ä»¶</summary>
+        /// <summary>ÊıÖµÅÅĞòÊÂ¼ş</summary>
         private void BtnValueOrder_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ValueOrder();
         }
 
-        /// <summary>éšæœºæ’åºäº‹ä»¶</summary>
+        /// <summary>Ëæ»úÅÅĞòÊÂ¼ş</summary>
         private void BtnRandomOrder_Click(object sender, RoutedEventArgs e)
         {
             _presenter.RandomOrder();
         }
 
-        /// <summary>å¡ç»„ç»Ÿè®¡äº‹ä»¶</summary>
+        /// <summary>¿¨×éÍ³¼ÆÊÂ¼ş</summary>
         private void BtnDeckStatistical_Click(object sender, RoutedEventArgs e)
         {
             _presenter.DeckStatisticalClick();
         }
 
-        /// <summary>é€€å‡º</summary>
+        /// <summary>ÍË³ö</summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             _presenter.ExitClick();

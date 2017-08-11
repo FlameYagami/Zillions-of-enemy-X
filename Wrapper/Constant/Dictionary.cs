@@ -7,37 +7,40 @@ namespace Wrapper.Constant
         // Common
         public static Dictionary<string, string> AbilityTypeDic = new Dictionary<string, string>
         {
-            {"Lv", "Lv"},
-            {"射程", "【常】射程"},
-            {"绝界", "【常】绝界"},
-            {"起始卡", "【常】起始卡"},
-            {"生命恢复", "【常】生命恢复"},
-            {"虚空使者", "【常】虚空使者"},
-            {"进化原力", "【自】进化原力"},
-            {"零点优化", "【※】零点优化"}
+            {StringConst.Lv, StringConst.AbilityLv},
+            {StringConst.Range, StringConst.AbilityRange},
+            {StringConst.InsulateWards, StringConst.AbilityInsulateWards},
+            {StringConst.Start, StringConst.AbilityStart},
+            {StringConst.Life, StringConst.AbilityLife},
+            {StringConst.Void, StringConst.AbilityVoid},
+            {StringConst.Evo, StringConst.AbilityEvo},
+            {StringConst.ZeroOptima, StringConst.AbilityZeroOptima}
         };
 
         // DeckEditor
         public static Dictionary<string, string> ImgSignPathDic = new Dictionary<string, string>
         {
-            {"-", string.Empty},
-            {"点燃", PathManager.TexturesPath + "Ig.png"},
-            {"觉醒之种", PathManager.TexturesPath + "El.png"}
+            {StringConst.Hyphen, string.Empty},
+            {StringConst.SignIg, PathManager.ImageIgPath},
+            {StringConst.SignEl, PathManager.ImageElPath}
         };
 
         public static Dictionary<int, string> ImgRestrictPathDic = new Dictionary<int, string>
         {
-            {0, PathManager.TexturesPath + "restrict.png"}
+            {0, PathManager.ImageRestrictPath},
+            {4, string.Empty},
+            {20, string.Empty},
+            {30, string.Empty}
         };
 
         public static Dictionary<string, string> ImgCampPathDic = new Dictionary<string, string>
         {
-            {"红", PathManager.TexturesPath + "Red.png"},
-            {"蓝", PathManager.TexturesPath + "Blue.png"},
-            {"白", PathManager.TexturesPath + "White.png"},
-            {"黑", PathManager.TexturesPath + "Black.png"},
-            {"绿", PathManager.TexturesPath + "Green.png"},
-            {"无", PathManager.TexturesPath + "Void.png"}
+            {StringConst.CampRed, PathManager.ImageCampRedPath},
+            {StringConst.CampBlue, PathManager.ImageCampBluePath},
+            {StringConst.CampWhite, PathManager.ImageCampWhitePath},
+            {StringConst.CampBlack, PathManager.ImageCampBlackPath},
+            {StringConst.CampGreen, PathManager.ImageCampGreenPath},
+            {StringConst.CampVoid, PathManager.ImageCampVoidPath}
         };
     }
 }

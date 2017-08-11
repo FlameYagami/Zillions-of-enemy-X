@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
 using Wrapper.Constant;
-using Wrapper.Entity;
-using Enum = CardEditor.Constant.Enum;
+using Wrapper.Model;
+using Enum = Wrapper.Constant.Enum;
 
 namespace Wrapper.Utils
 {
@@ -80,6 +79,18 @@ namespace Wrapper.Utils
             return !StringConst.NotApplicable.Equals(value) ? $" AND {column}='{value}'" : string.Empty;
         }
 
+
+        /// <summary>
+        ///     获取精确查询语句
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="column">数据库字段</param>
+        /// <returns>数据库查询语句</returns>
+        public static string GetAccurateSql(int value, string column)
+        {
+            return !0.Equals(value) ? $" AND {column}='{value}'" : string.Empty;
+        }
+
         /// <summary>
         ///     获取模糊查询语句
         /// </summary>
@@ -138,12 +149,12 @@ namespace Wrapper.Utils
         public static List<string> GetMd5SqlList()
         {
             var cardEntities = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
-                .Select(column => new CardEntity
+                .Select(column => new CardModel
                 {
                     JName = column[ColumnJName].ToString(),
                     Number = column[ColumnNumber].ToString(),
-                    Cost = column[ColumnCost].ToString(),
-                    Power = column[ColumnPower].ToString()
+                    Cost = int.Parse(column[ColumnCost].ToString()),
+                    Power = int.Parse(column[ColumnPower].ToString())
                 }).ToList();
             return (from entity in cardEntities
                 let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power).ToUpper()
@@ -167,14 +178,24 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
+        ///     获取能力类型的查询语句
+        /// </summary>
+        /// <param name="abilityDetailDic">能力类型字典</param>
+        /// <returns></returns>
+        public static string GetAbilityDetailSql(Dictionary<string, bool> abilityDetailDic)
+        {
+            return GetAbilityDetailSql(new AbilityDetialModel(abilityDetailDic, true));
+        }
+
+        /// <summary>
         ///     获取详细能力的查询语句
         /// </summary>
-        /// <param name="abilityDetialEntity">能力分类模型</param>
+        /// <param name="abilityDetialModel">能力分类模型</param>
         /// <returns></returns>
-        public static string GetAbilityDetailSql(AbilityDetialEntity abilityDetialEntity)
+        public static string GetAbilityDetailSql(AbilityDetialModel abilityDetialModel)
         {
             var value = new StringBuilder();
-            var abilityDetialDic = abilityDetialEntity.GetAbilityDetailDic();
+            var abilityDetialDic = abilityDetialModel.GetAbilityDetailDic();
             foreach (var abilityDetialItem in abilityDetialDic)
                 if (abilityDetialItem.Value.Equals(1))
                     value.Append($" AND {ColumnAbilityDetail} LIKE '%\"{abilityDetialItem.Key}\":1%'");

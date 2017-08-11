@@ -18,7 +18,6 @@
         public const string ColumnCost = "Cost";
         public const string ColumnPower = "Power";
         public const string ColumnLines = "Lines";
-        public const string ColumnFaq = "Faq";
         public const string ColumnImage = "Image";
         public const string ColumnAbility = "Ability";
         public const string ColumnAbilityDetail = "AbilityDetail"; // 存放Json数据的字段
@@ -26,9 +25,9 @@
         // CardeDitor
         public const string ColumnCard =
             " (" + ColumnMd5 + "," + ColumnType + "," + ColumnCamp + "," + ColumnRace + "," + ColumnSign + "," +
-            ColumnRare + "," + ColumnPack  + "," + ColumnCName + "," + ColumnJName + "," +
+            ColumnRare + "," + ColumnPack + "," + ColumnCName + "," + ColumnJName + "," +
             ColumnIllust + "," + ColumnNumber + "," + ColumnCost + "," + ColumnPower + "," + ColumnAbility + "," +
-            ColumnLines + "," + ColumnFaq + "," + ColumnImage + "," + ColumnAbilityDetail + ")";
+            ColumnLines + ","  + ColumnImage + "," + ColumnAbilityDetail + ")";
 
         //DeckEditor
         public static string[] ColumKeyArray =

@@ -1,38 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Wrapper.Entity;
+using Wrapper.Model;
 
 namespace Wrapper.Utils
 {
     public class RestrictUtils
     {
-        private static List<RestricEntity> _mRestrictList = new List<RestricEntity>();
-
-        private enum RestrictType
-        {
-            None,
-            Restrict0,
-            Restrict4,
-            Restrict20,
-            Restrict30
-        }
+        private static List<RestricModel> _mRestrictList = new List<RestricModel>();
 
         /// <summary>
-        /// 获取制限数量
+        ///     获取制限数量
         /// </summary>
         /// <param name="md5">卡牌Md5</param>
         /// <returns></returns>
         public static int GetRestrict(string md5)
         {
-            return (GetRestrictList().FirstOrDefault(entity => entity.md5.Equals(md5)) ?? new RestricEntity()).restrict;
+            return (GetRestrictList().FirstOrDefault(entity => entity.md5.Equals(md5)) ?? new RestricModel()).restrict;
         }
 
         /// <summary>
-        /// 获取制限枚举类型
+        ///     获取制限枚举类型
         /// </summary>
         /// <param name="restrict">制限数量字符串</param>
         /// <returns>限制枚举类型</returns>
@@ -54,34 +41,41 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 获取制限列表
+        ///     获取制限列表
         /// </summary>
         /// <returns>限制列表</returns>
-        private static IEnumerable<RestricEntity> GetRestrictList()
+        private static IEnumerable<RestricModel> GetRestrictList()
         {
             if (_mRestrictList.Count != 0) return _mRestrictList;
             var restrictJson = FileUtils.GetFileContent(PathManager.RestrictPath);
-            _mRestrictList = JsonUtils.JsonDeserialize<List<RestricEntity>>(restrictJson);
+            _mRestrictList = JsonUtils.JsonDeserialize<List<RestricModel>>(restrictJson);
             return _mRestrictList;
         }
 
         /// <summary>
-        /// 获取制限后的卡牌集合
+        ///     获取制限后的卡牌集合
         /// </summary>
         /// <param name="preList">预览卡牌集合</param>
         /// <param name="restrict">制限数量</param>
         /// <returns>制限后的卡牌集合</returns>
-        public static List<PreviewEntity> GetRestrictCardList(List<PreviewEntity> preList, string restrict)
+        public static List<CardPreviewModel> GetRestrictCardList(List<CardPreviewModel> preList, string restrict)
         {
             var mRestrictType = GetRestrictType(restrict);
             if (mRestrictType.Equals(RestrictType.None))
-            {
                 return preList;
-            }
-            var restrictCardList = new List<PreviewEntity>();
+            var restrictCardList = new List<CardPreviewModel>();
             var tempCardList = preList.Where(entity => GetRestrictType(entity.Restrict).Equals(mRestrictType)).ToList();
             restrictCardList.AddRange(tempCardList);
             return restrictCardList;
+        }
+
+        private enum RestrictType
+        {
+            None,
+            Restrict0,
+            Restrict4,
+            Restrict20,
+            Restrict30
         }
     }
 }

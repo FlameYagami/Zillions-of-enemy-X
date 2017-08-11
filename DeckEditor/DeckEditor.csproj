@@ -79,7 +79,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\View.xaml">
+    <Page Include="View\DeckEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -88,8 +88,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Presenter\Presenter.cs" />
-    <Compile Include="View\View.xaml.cs">
-      <DependentUpon>View.xaml</DependentUpon>
+    <Compile Include="View\DeckEditorView.xaml.cs">
+      <DependentUpon>DeckEditorView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AbilityDetail.xaml">

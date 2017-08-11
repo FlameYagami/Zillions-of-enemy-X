@@ -85,7 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Query.cs" />
+    <Compile Include="Model\CardEditor.cs" />
     <Compile Include="Presenter\Presenter.cs" />
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
@@ -93,7 +93,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\View.xaml">
+    <Page Include="View\CardEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -104,8 +104,8 @@
     <Compile Include="View\PackCover.xaml.cs">
       <DependentUpon>PackCover.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\View.xaml.cs">
-      <DependentUpon>View.xaml</DependentUpon>
+    <Compile Include="View\CardEditorWindow.xaml.cs">
+      <DependentUpon>CardEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

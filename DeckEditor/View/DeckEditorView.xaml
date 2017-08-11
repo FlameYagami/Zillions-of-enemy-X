@@ -67,8 +67,8 @@
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                                  MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown" ToolTip="右键删除">
+                                            <Grid MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                                  MouseLeftButtonDown="DeckItem_MouseLeftButtonDown" ToolTip="右键删除">
                                                 <Label Name="LblAreaNumber" Content="{Binding Number}"
                                                        Visibility="Collapsed" />
                                                 <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
@@ -322,16 +322,12 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding NumberEx}">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
-                                                   Visibility="Collapsed" />
-                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
-                                                   Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
                                         </Grid>
@@ -349,16 +345,12 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding NumberEx}">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
-                                                   Visibility="Collapsed" />
-                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
-                                                   Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
                                         </Grid>
@@ -376,16 +368,12 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Width="45" Height="63"
-                                              MouseRightButtonDown="AreaGrid_MouseRightButtonDown"
-                                              MouseLeftButtonDown="AreaGrid_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除">
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding NumberEx}">
                                             <Image Source="{Binding RestrictPath}" Height="23" Width="23"
                                                    VerticalAlignment="Top"
                                                    HorizontalAlignment="Left" />
-                                            <Label Name="LblAreaNumberEx" Content="{Binding NumberEx}"
-                                                   Visibility="Collapsed" />
-                                            <Label Name="LblAreaImageJson" Content="{Binding ImageJson}"
-                                                   Visibility="Collapsed" />
                                             <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                    Height="63" />
                                         </Grid>
@@ -411,14 +399,14 @@
                         </ComboBox>
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="10,0,10,10">
-                        <ListView x:Name="LvwPreview" SelectionChanged="PreviewListView_SelectionChanged"
+                        <ListView x:Name="LvwPreview" SelectionChanged="CardPreview_SelectionChanged"
                                   Style="{DynamicResource ControlTransparent}"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Height="63" MouseRightButtonDown="PreviewGrid_MouseRightButtonDown"
-                                          ToolTip="右键添加">
+                                    <Grid Height="63" MouseRightButtonDown="CardPreviewItem_MouseRightButtonDown"
+                                          ToolTip="右键添加" Tag="{Binding ImageJson}">
                                         <StackPanel Orientation="Horizontal">
                                             <Grid>
                                                 <Image Source="{Binding ImagePath}" Width="45" Height="63" />
@@ -438,8 +426,6 @@
                                                                HorizontalAlignment="Center" Height="20"
                                                                LineStackingStrategy="BlockLineHeight"
                                                                Text="{Binding PowerAndCost}" />
-                                                    <Label Name="LblPreviewImageJson" Content="{Binding ImageJson}"
-                                                           Visibility="Collapsed" />
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>

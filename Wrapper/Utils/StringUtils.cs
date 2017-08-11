@@ -52,7 +52,7 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        /// 判断输入参数是否为数字
+        ///     判断输入参数是否为数字
         /// </summary>
         /// <param name="str">参数</param>
         /// <returns></returns>

@@ -4,31 +4,82 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DeckEditor.Entity;
-using DeckEditor.Utils;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
+using Wrapper.Model;
 using Wrapper.Utils;
-using Enum = CardEditor.Constant.Enum;
+using Enum = Wrapper.Constant.Enum;
 
 namespace DeckEditor.Model
 {
     internal interface IDeck
     {
         Enum.AreaType AddCard(Enum.AreaType areaType, string number, string thumbnailPath);
-        void DeleteEntityFromColl(string number, ICollection<DeckEntity> collection);
+        void DeleteCard(string number, Enum.AreaType areaType);
         void Order(Enum.DeckOrderType value);
         bool Save(string deckName);
         bool Delete(string deckName);
         bool Resave(string deckName);
         void Load(string deckName);
+        void ClearDeck();
         List<string> GetDeckNameList();
         Dictionary<int, int> DekcStatistical();
+        List<DeckModel> GetDeckModelList(Enum.AreaType areaType);
+        List<int> GetStartAndLifeAndVoidCount();
     }
 
     internal class Deck : SqliteConst, IDeck
     {
+        public Deck()
+        {
+            PlayerList = new List<DeckModel>();
+            IgList = new List<DeckModel>();
+            UgList = new List<DeckModel>();
+            ExList = new List<DeckModel>();
+        }
+
+        /// <summary>玩家数据缓存</summary>
+        private List<DeckModel> PlayerList { get; }
+
+        /// <summary>点燃数据缓存</summary>
+        private List<DeckModel> IgList { get; }
+
+        /// <summary>非点燃数据缓存</summary>
+        private List<DeckModel> UgList { get; }
+
+        /// <summary>额外数据缓存</summary>
+        private List<DeckModel> ExList { get; }
+
+        public void ClearDeck()
+        {
+            PlayerList.Clear();
+            IgList.Clear();
+            UgList.Clear();
+            ExList.Clear();
+        }
+
+        public List<DeckModel> GetDeckModelList(Enum.AreaType areaType)
+        {
+            var tempDeckModelList = new List<DeckModel>();
+            switch (areaType)
+            {
+                case Enum.AreaType.Pl:
+                    tempDeckModelList.AddRange(PlayerList);
+                    break;
+                case Enum.AreaType.Ig:
+                    tempDeckModelList.AddRange(IgList);
+                    break;
+                case Enum.AreaType.Ug:
+                    tempDeckModelList.AddRange(UgList);
+                    break;
+                case Enum.AreaType.Ex:
+                    tempDeckModelList.AddRange(ExList);
+                    break;
+            }
+            return tempDeckModelList;
+        }
+
         /// <summary>
         ///     添加卡片到组卡区
         /// </summary>
@@ -41,27 +92,27 @@ namespace DeckEditor.Model
             switch (areaType)
             {
                 case Enum.AreaType.Pl:
-                    DataCache.PlColl.Clear();
-                    AddEntityToColl(number, thumbnailPath, DataCache.PlColl);
+                    PlayerList.Clear();
+                    AddDeckModel(number, thumbnailPath, PlayerList);
                     return Enum.AreaType.Pl;
                 case Enum.AreaType.Ig:
                     if (CheckAreaIg(number))
                     {
-                        AddEntityToColl(number, thumbnailPath, DataCache.IgColl);
+                        AddDeckModel(number, thumbnailPath, IgList);
                         return Enum.AreaType.Ig;
                     }
                     break;
                 case Enum.AreaType.Ug:
                     if (CheckAreaUg(number))
                     {
-                        AddEntityToColl(number, thumbnailPath, DataCache.UgColl);
+                        AddDeckModel(number, thumbnailPath, UgList);
                         return Enum.AreaType.Ug;
                     }
                     break;
                 case Enum.AreaType.Ex:
                     if (CheckAreaEx(number))
                     {
-                        AddEntityToColl(number, thumbnailPath, DataCache.ExColl);
+                        AddDeckModel(number, thumbnailPath, ExList);
                         return Enum.AreaType.Ex;
                     }
                     break;
@@ -69,11 +120,12 @@ namespace DeckEditor.Model
             return Enum.AreaType.None;
         }
 
-        public void DeleteEntityFromColl(string numberEx, ICollection<DeckEntity> collection)
+        public void DeleteCard(string numberEx, Enum.AreaType areaType)
         {
-            var deckEntity = collection.AsParallel()
+            var deckModelList = GetDeckModelList(areaType);
+            var deckEntity = deckModelList.AsParallel()
                 .First(tempDeckEntity => tempDeckEntity.NumberEx.Equals(numberEx));
-            collection.Remove(deckEntity);
+            deckModelList.Remove(deckEntity);
         }
 
         public void Order(Enum.DeckOrderType value)
@@ -81,14 +133,14 @@ namespace DeckEditor.Model
             switch (value)
             {
                 case Enum.DeckOrderType.Value:
-                    Value(DataCache.IgColl);
-                    Value(DataCache.UgColl);
-                    Value(DataCache.ExColl);
+                    Value(IgList);
+                    Value(UgList);
+                    Value(ExList);
                     break;
                 case Enum.DeckOrderType.Random:
-                    Random(DataCache.IgColl);
-                    Random(DataCache.UgColl);
-                    Random(DataCache.ExColl);
+                    Random(IgList);
+                    Random(UgList);
+                    Random(ExList);
                     break;
             }
         }
@@ -103,12 +155,12 @@ namespace DeckEditor.Model
             var deckPath = CardUtils.GetDeckPath(deckName);
             var deckBuilder = new StringBuilder();
             var deckNumberList = new List<string>();
-            deckNumberList.AddRange(DataCache.PlColl.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(DataCache.IgColl.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(DataCache.UgColl.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(DataCache.ExColl.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(PlayerList.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(IgList.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(UgList.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(ExList.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.JsonSerializer(deckNumberList));
-            return FileUtils.SaveFile(deckPath , deckBuilder.ToString());
+            return FileUtils.SaveFile(deckPath, deckBuilder.ToString());
         }
 
         public bool Delete(string deckName)
@@ -166,8 +218,8 @@ namespace DeckEditor.Model
         public Dictionary<int, int> DekcStatistical()
         {
             var dekcStatisticalDic = new Dictionary<int, int>();
-            var costIgList = DataCache.IgColl.Select(deckEntity => deckEntity.Cost);
-            var costUgList = DataCache.UgColl.Select(deckEntity => deckEntity.Cost);
+            var costIgList = IgList.Select(deckEntity => deckEntity.Cost);
+            var costUgList = UgList.Select(deckEntity => deckEntity.Cost);
             var costDeckList = new List<int>();
             costDeckList.AddRange(costIgList);
             costDeckList.AddRange(costUgList);
@@ -177,7 +229,22 @@ namespace DeckEditor.Model
             return dekcStatisticalDic;
         }
 
-        private static void AddEntityToColl(string numberEx, string thumbnailPath, ICollection<DeckEntity> collection)
+        /// <summary>
+        ///     获取卡组中生命恢复和虚空使者总数的集合
+        /// </summary>
+        /// <returns></returns>
+        public List<int> GetStartAndLifeAndVoidCount()
+        {
+            var list = new List<int>
+            {
+                UgList.AsParallel().Count(deckEntity => CardUtils.IsStart(deckEntity.NumberEx)),
+                IgList.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)),
+                IgList.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx))
+            };
+            return list;
+        }
+
+        private static void AddDeckModel(string numberEx, string thumbnailPath, ICollection<DeckModel> collection)
         {
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
@@ -186,10 +253,9 @@ namespace DeckEditor.Model
             var camp = row[ColumnCamp].ToString();
             var cost = row[ColumnCost].ToString();
             var power = row[ColumnPower].ToString();
-            var imageJson = row[ColumnImage].ToString();
             var restrict = RestrictUtils.GetRestrict(md5);
             var restrictPath = CardUtils.GetRestrictPath(restrict);
-            var deckEntity = new DeckEntity
+            var deckEntity = new DeckModel
             {
                 Camp = camp,
                 Cost = cost.Equals(string.Empty) ? 0 : int.Parse(cost),
@@ -197,13 +263,12 @@ namespace DeckEditor.Model
                 NumberEx = numberEx,
                 CName = name,
                 ImagePath = thumbnailPath,
-                ImageJson = imageJson,
                 RestrictPath = restrictPath
             };
             collection.Add(deckEntity);
         }
 
-        private static void Value(List<DeckEntity> deckEntityList)
+        private static void Value(List<DeckModel> deckEntityList)
         {
             var tempDeckEntityList = deckEntityList
                 .OrderBy(tempDeckEntity => tempDeckEntity.Camp)
@@ -215,9 +280,9 @@ namespace DeckEditor.Model
             deckEntityList.AddRange(tempDeckEntityList);
         }
 
-        private static void Random(List<DeckEntity> deckEntityList)
+        private static void Random(List<DeckModel> deckEntityList)
         {
-            var tempEntityList = new List<DeckEntity>();
+            var tempEntityList = new List<DeckModel>();
             var random = new Random();
             deckEntityList.ForEach(
                 deckEntity => tempEntityList.Insert(random.Next(tempEntityList.Count + 1), deckEntity));
@@ -230,11 +295,11 @@ namespace DeckEditor.Model
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns>true|false</returns>
-        private static bool CheckAreaEx(string number)
+        private bool CheckAreaEx(string number)
         {
             var name = CardUtils.GetName(number);
-            return (DataCache.ExColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                    CardUtils.GetMaxCount(number)) && (DataCache.ExColl.Count < 10);
+            return (ExList.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
+                    CardUtils.GetMaxCount(number)) && (ExList.Count < 10);
         }
 
         /// <summary>
@@ -242,11 +307,11 @@ namespace DeckEditor.Model
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns>true|false</returns>
-        private static bool CheckAreaUg(string number)
+        private bool CheckAreaUg(string number)
         {
             var name = CardUtils.GetName(number);
-            return (DataCache.UgColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                    CardUtils.GetMaxCount(number)) && (DataCache.UgColl.Count < 30);
+            return (UgList.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
+                    CardUtils.GetMaxCount(number)) && (UgList.Count < 30);
         }
 
         /// <summary>
@@ -254,24 +319,24 @@ namespace DeckEditor.Model
         /// </summary>
         /// <param name="number">卡编</param>
         /// <returns>true|false</returns>
-        private static bool CheckAreaIg(string number)
+        private bool CheckAreaIg(string number)
         {
             var name = CardUtils.GetName(number);
             // 根据卡编获取卡片在点燃区的枚举类型
             var igType = CardUtils.GetIgType(number);
             // 判断卡片是否超出自身添加数量以及点燃区总数量
-            var canAdd = (DataCache.IgColl.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                          CardUtils.GetMaxCount(number)) && (DataCache.IgColl.Count < 20);
+            var canAdd = (IgList.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
+                          CardUtils.GetMaxCount(number)) && (IgList.Count < 20);
             switch (igType)
             {
                 case Enum.IgType.Life:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) <
+                             (IgList.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) <
                               4);
                     break;
                 case Enum.IgType.Void:
                     canAdd = canAdd &&
-                             (DataCache.IgColl.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) <
+                             (IgList.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) <
                               4);
                     break;
                 case Enum.IgType.Normal:

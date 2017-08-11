@@ -1,9 +1,10 @@
-namespace Wrapper.Entity
+using System.Collections.Generic;
+
+namespace Wrapper.Model
 {
-    public class CardEntity
+    public class CardModel
     {
         public string Md5 { get; set; }
-        public string Key { get; set; }
         public string Type { get; set; }
         public string Camp { get; set; }
         public string Race { get; set; }
@@ -15,14 +16,12 @@ namespace Wrapper.Entity
         public string JName { get; set; }
         public string Illust { get; set; }
         public string Number { get; set; }
-        public string Cost { get; set; }
-        public string Power { get; set; }
+        public int Cost { get; set; }
+        public int Power { get; set; }
         public string Ability { get; set; }
         public string Lines { get; set; }
-        public string Faq { get; set; }
         public string ImageJson { get; set; }
-        public string AbilityDetailJson { get; set; }
-        public string AbilityTypeSql { get; set; }
-        public string AbilityDetailSql { get; set; }
+        public Dictionary<string, bool> AbilityTypeDic { get; set; }
+        public Dictionary<string, bool> AbilityDetailDic { get; set; }
     }
 }

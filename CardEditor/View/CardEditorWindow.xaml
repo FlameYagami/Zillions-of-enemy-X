@@ -292,15 +292,14 @@
                                         <RowDefinition Height="1.75*" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1*" />
-                                        <RowDefinition Height="25" />
-                                        <RowDefinition Height="0.75*" />
                                     </Grid.RowDefinitions>
                                     <Grid Margin="5,2.5" Height="30">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="35" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Label Name="LblMd5" Grid.Column="0" Content="卡密" Style="{DynamicResource LblCenter}"/>
+                                        <Label Name="LblMd5" Grid.Column="0" Content="卡密"
+                                               Style="{DynamicResource LblCenter}" />
                                         <TextBox Name="TxtMd5" Grid.Column="1"
                                                  VerticalContentAlignment="Center" />
                                     </Grid>
@@ -347,10 +346,6 @@
                                              VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
                                     <Label Name="LblLines" Grid.Row="4" Content="台词:" Margin="5,0,5,0" />
                                     <TextBox x:Name="TxtLines" Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True"
-                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-                                             VerticalScrollBarVisibility="Auto" />
-                                    <Label Name="LblFaq" Grid.Row="6" Content="调整:" Margin="5,0,5,0" />
-                                    <TextBox x:Name="TxtFaq" Grid.Row="7" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
                                 </Grid>
