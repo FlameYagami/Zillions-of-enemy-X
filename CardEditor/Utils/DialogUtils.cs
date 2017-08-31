@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 using CardEditor.View;
-using Application = System.Windows.Application;
+using Dialog;
 
 namespace CardEditor.Utils
 {
-    internal class DialogUtils
+    internal class DialogUtils : BaseDialogUtils
     {
         public static string ShowExport(string pack)
         {
@@ -20,8 +20,8 @@ namespace CardEditor.Utils
 
         public static void ShowPackCover()
         {
-            var dlg = new PackCover {Owner = Application.Current.MainWindow};
-            dlg.ShowDialog();
+            var dialog = new PackCoverWindow {Owner = GetTopWindow()};
+            dialog.Show();
         }
     }
 }

@@ -8,7 +8,9 @@
         public const string DeleteSucceed = "删除->成功";
         public const string CoverHint = "覆写->确认";
         public const string SaveSucceed = "保存->成功";
+        public const string SaveFailed = "保存->失败";
         public const string OrderNumber = "编号";
+        public const string OrderValue = "数值";
         public const string NotApplicable = "(N/A)";
         public const string Hyphen = "-";
         public const string Series = "系列";
@@ -47,14 +49,6 @@
         public const string AbilityRange = "【常】射程";
         public const string AbilityEvo = "【自】进化原力";
         public const string AbilityZeroOptima = "【※】零点优化";
-        public const string Lv = "Lv";
-        public const string InsulateWards = "绝界";
-        public const string Start = "起始卡";
-        public const string Life = "生命恢复";
-        public const string Void = "虚空使者";
-        public const string Range = "射程";
-        public const string Evo = "进化原力";
-        public const string ZeroOptima = "零点优化";
 
         // CardEditor
         public const string AddSucceed = "添加->成功";

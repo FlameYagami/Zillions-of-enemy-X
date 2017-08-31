@@ -1,6 +1,6 @@
 ﻿namespace Wrapper.Constant
 {
-    public class Enum
+    public class Enums
     {
         // CardEditor
         public enum AbilityType

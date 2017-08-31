@@ -15,13 +15,17 @@ using CheckBox = System.Windows.Controls.CheckBox;
 namespace CardEditor.View
 {
     /// <summary>
-    ///     PackCover.xaml 的交互逻辑
+    ///     PackCoverWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class PackCover : Window
+    public partial class PackCoverWindow : Window
     {
-        public PackCover()
+        public PackCoverWindow()
         {
             InitializeComponent();
+        }
+
+        private void Border_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -57,40 +61,40 @@ namespace CardEditor.View
             // 获取源文件编号
             var dtNumberList =
                 dtSource.Tables[0].Rows.Cast<DataRow>().Select(column => column["编号"].ToString()).ToList();
-            var sourceCardModelList = GetSourceCardModelList(dtSource);
+            var sourceList = GetSourceCardModelList(dtSource);
             // 获取覆写所有的信息
-            var dataCardEntitys =
+            var dataList =
                 dtNumberList.Select(CardUtils.GetCardModel).ToList();
             var selectColumnList = GetSelectColumnList();
             // 填充覆写的数据
-            for (var i = 0; i != dataCardEntitys.Count; i++)
+            for (var i = 0; i != dataList.Count; i++)
             {
-                var dataNumber = dataCardEntitys[i].Number;
-                foreach (var dtSourceCardEntity in sourceCardModelList)
+                var dataNumber = dataList[i].Number;
+                foreach (var editorModel in sourceList)
                 {
-                    if (!dtSourceCardEntity.Number.Equals(dataNumber)) continue;
+                    if (!editorModel.Number.Equals(dataNumber)) continue;
                     if (selectColumnList.Contains("种类"))
-                        dataCardEntitys[i].Type = dtSourceCardEntity.Type;
+                        dataList[i].Type = editorModel.Type;
                     if (selectColumnList.Contains("色"))
-                        dataCardEntitys[i].Camp = dtSourceCardEntity.Camp;
+                        dataList[i].Camp = editorModel.Camp;
                     if (selectColumnList.Contains("种族"))
-                        dataCardEntitys[i].Race = dtSourceCardEntity.Race;
+                        dataList[i].Race = editorModel.Race;
                     if (selectColumnList.Contains("标记"))
-                        dataCardEntitys[i].Sign = dtSourceCardEntity.Sign;
+                        dataList[i].Sign = editorModel.Sign;
                     if (selectColumnList.Contains("罕贵度"))
-                        dataCardEntitys[i].Race = dtSourceCardEntity.Race;
+                        dataList[i].Race = editorModel.Race;
                     if (selectColumnList.Contains("卡片名_中"))
-                        dataCardEntitys[i].CName = dtSourceCardEntity.CName;
+                        dataList[i].CName = editorModel.CName;
                     if (selectColumnList.Contains("COST"))
-                        dataCardEntitys[i].Cost = dtSourceCardEntity.Cost;
+                        dataList[i].Cost = int.Parse(editorModel.CostValue);
                     if (selectColumnList.Contains("力量"))
-                        dataCardEntitys[i].Power = dtSourceCardEntity.Power;
+                        dataList[i].Power = int.Parse(editorModel.PowerValue);
                     if (selectColumnList.Contains("能力_中"))
-                        dataCardEntitys[i].Ability = dtSourceCardEntity.Ability;
+                        dataList[i].Ability = editorModel.Ability;
                 }
             }
             // 生成覆写的数据库语句集合
-            var updateSqlList = dataCardEntitys
+            var updateSqlList = dataList
                 .Select(cardEntity => GetUpdateSql(cardEntity, cardEntity.Number))
                 .ToList();
             // 数据库覆写
@@ -117,12 +121,11 @@ namespace CardEditor.View
             builder.Append($"{SqliteConst.ColumnPower}= '{card.Power}',");
             builder.Append($"{SqliteConst.ColumnAbility}= '{card.Ability}',");
             builder.Append($"{SqliteConst.ColumnLines}= '{card.Lines}',");
-            builder.Append($"{SqliteConst.ColumnImage}= '{card.ImageJson}',");
-            builder.Append($"{SqliteConst.ColumnAbilityDetail}= '{JsonUtils.JsonSerializer(new AbilityDetialModel(card.AbilityDetailDic,true))}'");
+            builder.Append($"{SqliteConst.ColumnImage}= '{card.ImageJson}'");
             // 详细能力处理
             builder.Append($" WHERE {SqliteConst.ColumnNumber}='{number}'");
             return builder.ToString();
-    }
+        }
 
         private void FileOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -132,10 +135,6 @@ namespace CardEditor.View
                 Filter = @"xls文件(*.xls)|*.xls|xlsm文件(*.xlsm)|*.xlsm"
             };
             TxtFilePath.Text = ofd.ShowDialog() != System.Windows.Forms.DialogResult.OK ? string.Empty : ofd.FileName;
-        }
-
-        private void Border_Loaded(object sender, RoutedEventArgs e)
-        {
         }
 
         private List<string> GetSelectColumnList()
@@ -152,7 +151,7 @@ namespace CardEditor.View
 
         private List<CardEditorModel> GetSourceCardModelList(DataSet dataSet)
         {
-            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CardEditorModel()
+            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CardEditorModel
             {
                 Type = row["种类"].ToString(),
                 Camp = row["色"].ToString(),
@@ -160,8 +159,8 @@ namespace CardEditor.View
                 Sign = row["标记"].ToString().Equals("IG") ? "点燃" : row["标记"].ToString(),
                 Rare = row["罕贵度"].ToString(),
                 CName = row["卡片名_中"].ToString(),
-                Cost = row["COST"].ToString().Equals("-") ? 0 : int.Parse(row["COST"].ToString()),
-                Power = row["力量"].ToString().Equals("-") ? 0 : int.Parse(row["力量"].ToString()),
+                CostValue = row["COST"].ToString().Equals("-") ? "0" : row["COST"].ToString(),
+                PowerValue = row["力量"].ToString().Equals("-") ? "0" : row["力量"].ToString(),
                 Number = row["编号"].ToString(),
                 Ability = row["能力_中"].ToString()
             }).ToList();

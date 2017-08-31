@@ -32,22 +32,23 @@
                             <ColumnDefinition Width="210" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TabControl x:Name="TcImage" Height="280" Width="190">
-                            <TabItem Header="A" Name="TbiPicture1">
-                                <Image x:Name="ImgPicture1" Width="180" Height="252" ToolTip="右键添加"
-                                       MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                        <TabControl x:Name="CardPictureView" Height="280" Width="190"
+                                    SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
+                            <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
+                                <Image Width="180" Height="252"
+                                       Source="{Binding CardPictureModel.PicturePathList[0]}" />
                             </TabItem>
-                            <TabItem Header="B" Name="TbiPicture2">
-                                <Image x:Name="ImgPicture2" Width="180" Height="252" ToolTip="右键添加"
-                                       MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                            <TabItem Header="B" Visibility="{Binding CardPictureModel.TabItemVisibilityList[1]}">
+                                <Image Width="180" Height="252" ToolTip="右键添加"
+                                       Source="{Binding CardPictureModel.PicturePathList[1]}" />
                             </TabItem>
-                            <TabItem Header="C" Name="TbiPicture3">
-                                <Image x:Name="ImgPicture3" Width="180" Height="252" ToolTip="右键添加"
-                                       MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                            <TabItem Header="C" Visibility="{Binding CardPictureModel.TabItemVisibilityList[2]}">
+                                <Image Width="180" Height="252" ToolTip="右键添加"
+                                       Source="{Binding CardPictureModel.PicturePathList[2]}" />
                             </TabItem>
-                            <TabItem Header="D" Name="TbiPicture4">
-                                <Image x:Name="ImgPicture4" Width="180" Height="252" ToolTip="右键添加"
-                                       MouseRightButtonDown="Picture_MouseRightButtonDown" />
+                            <TabItem Header="D" Visibility="{Binding CardPictureModel.TabItemVisibilityList[3]}">
+                                <Image Width="180" Height="252" ToolTip="右键添加"
+                                       Source="{Binding CardPictureModel.PicturePathList[3]}" />
                             </TabItem>
                         </TabControl>
                         <Grid Grid.Column="1">
@@ -60,17 +61,18 @@
                             <Grid Grid.Column="0" Margin="0,2.5,0,2.5">
                                 <Button Margin="5" Name="BtnExit" Click="Exit_Click" Content="退出编辑" />
                             </Grid>
-                            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Width="60" Height="72"
+                            <Border Name="PlayerView" Grid.Row="1" Style="{DynamicResource ControlBorder}" Width="60"
+                                    Height="72"
                                     VerticalAlignment="Top">
-                                <ListView x:Name="PlayerListView" Style="{DynamicResource ControlTransparent}"
+                                <ListView Name="LvPlayer" Style="{DynamicResource ControlTransparent}"
+                                          ItemsSource="{Binding PlayerModels}"
                                           ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid MouseRightButtonDown="DeckItem_MouseRightButtonDown"
-                                                  MouseLeftButtonDown="DeckItem_MouseLeftButtonDown" ToolTip="右键删除">
-                                                <Label Name="LblAreaNumber" Content="{Binding Number}"
-                                                       Visibility="Collapsed" />
+                                                  MouseLeftButtonDown="DeckItem_MouseLeftButtonDown" ToolTip="右键删除"
+                                                  Tag="{Binding NumberEx}">
                                                 <Image Name="ImgAreaThumbnail" Source="{Binding ImagePath}" Width="45"
                                                        Height="63" />
                                             </Grid>
@@ -78,33 +80,41 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </Border>
-                            <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Margin="5,5,5,5">
+                            <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Margin="5,5,5,5"
+                                    Name="DeckStatsView">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Height="25">
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStart"
+                                        <Label Style="{DynamicResource ControlTransparent}"
                                                Content="起始卡" />
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStartCount" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblStartCount"
+                                               Content="{Binding DeckStatsModel.StartCount,Mode=TwoWay}"
+                                               Foreground="{Binding DeckStatsModel.StartForeground,Mode=TwoWay}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Height="25">
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLife"
+                                        <Label Style="{DynamicResource ControlTransparent}"
                                                Content="生命恢复" />
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLifeCount" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblLifeCount"
+                                               Content="{Binding DeckStatsModel.LifeCount,Mode=TwoWay}"
+                                               Foreground="{Binding DeckStatsModel.LifeForeground,Mode=TwoWay}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Height="25">
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoid"
+                                        <Label Style="{DynamicResource ControlTransparent}"
                                                Content="虚空使者" />
-                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoidCount" />
+                                        <Label Style="{DynamicResource ControlTransparent}" x:Name="LblVoidCount"
+                                               Content="{Binding DeckStatsModel.VoidCount,Mode=TwoWay}"
+                                               Foreground="{Binding DeckStatsModel.VoidForeground,Mode=TwoWay}" />
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-                            <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center">
-                                <Button Name="BtnValueOrder" Content="数值排序" Click="BtnValueOrder_Click" />
-                                <Button Name="BtnRandomOrder" Content="随机排序" Click="BtnRandomOrder_Click" />
-                                <Button Name="BtnDekcStatistical" Content="卡组统计" Click="BtnDeckStatistical_Click" />
+                            <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center"
+                                        Name="DeckOrderView">
+                                <Button Content="数值排序" Command="{Binding CmdValueOrder}" />
+                                <Button Content="随机排序" Command="{Binding CmdRandomOrder}" />
+                                <Button Content="卡组统计" Command="{Binding CmdDeckStats}" />
                             </StackPanel>
                         </Grid>
                     </Grid>
-                    <TabControl Grid.Row="1" Margin="10">
+                    <TabControl Grid.Row="1" Margin="10" Name="CardDetailView">
                         <TabItem Header="基础信息">
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
@@ -113,8 +123,8 @@
                                     <RowDefinition Height="30" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Label x:Name="LblICName" Grid.Row="0" HorizontalContentAlignment="Center"
-                                       FontSize="16"
+                                <Label Grid.Row="0" HorizontalContentAlignment="Center"
+                                       FontSize="16" Content="{Binding CardDetailModel.CName}"
                                        VerticalContentAlignment="Center" Margin="0" />
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
@@ -127,46 +137,57 @@
                                         <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image x:Name="ImgICamp0" Margin="0,5,5,5" />
-                                    <Image x:Name="ImgICamp1" Margin="0,5,5,5" Grid.Column="1" />
-                                    <Image x:Name="ImgICamp2" Margin="0,5,5,5" Grid.Column="2" />
-                                    <Image x:Name="ImgICamp3" Margin="0,5,5,5" Grid.Column="3" />
-                                    <Image x:Name="ImgICamp4" Margin="0,5,5,5" Grid.Column="4" />
-                                    <Image x:Name="ImgISign" Margin="0,5,5,5" Grid.Column="5" />
-                                    <Label x:Name="LblIType" Grid.Column="6" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
-                                    <Label x:Name="LblIRare" Grid.Column="7" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
+                                    <Image Margin="0,5,5,5" Source="{Binding CardDetailModel.CampPathList[0]}" />
+                                    <Image Margin="0,5,5,5" Grid.Column="1"
+                                           Source="{Binding CardDetailModel.CampPathList[1]}" />
+                                    <Image Margin="0,5,5,5" Grid.Column="2"
+                                           Source="{Binding CardDetailModel.CampPathList[2]}" />
+                                    <Image Margin="0,5,5,5" Grid.Column="3"
+                                           Source="{Binding CardDetailModel.CampPathList[3]}" />
+                                    <Image Margin="0,5,5,5" Grid.Column="4"
+                                           Source="{Binding CardDetailModel.CampPathList[4]}" />
+                                    <Image Margin="0,5,5,5" Grid.Column="5" Source="{Binding CardDetailModel.SignPath}" />
+                                    <Label Grid.Column="6" HorizontalContentAlignment="Center"
+                                           VerticalContentAlignment="Center"
+                                           Content="{Binding CardDetailModel.Type}" />
+                                    <Image Grid.Column="7"
+                                           Source="{Binding CardDetailModel.RarePath}" />
                                 </Grid>
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="2.5*" />
                                         <ColumnDefinition Width="2*" />
                                         <ColumnDefinition Width="1.5*" />
                                         <ColumnDefinition Width="4.5*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label x:Name="LblINumber" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
-                                    <Label x:Name="LblIPower" Grid.Column="1" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
+                                    <Label HorizontalContentAlignment="Center"
+                                           VerticalContentAlignment="Center" Content="{Binding CardDetailModel.Number}" />
+                                    <Label Grid.Column="1" HorizontalContentAlignment="Center"
+                                           VerticalContentAlignment="Center"
+                                           Content="{Binding CardDetailModel.PowerValue}" />
                                     <Label x:Name="LblICost" Grid.Column="2" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
+                                           VerticalContentAlignment="Center"
+                                           Content="{Binding CardDetailModel.CostValue}" />
                                     <Label x:Name="LblIRace" Grid.Column="3" HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center" Margin="0" />
+                                           VerticalContentAlignment="Center" Content="{Binding CardDetailModel.Race}" />
                                 </Grid>
-                                <TextBlock x:Name="LblIAbility" Grid.Row="3" TextWrapping="Wrap" Margin="0" />
+                                <TextBlock Grid.Row="3" TextWrapping="Wrap" Margin="0"
+                                           Text="{Binding CardDetailModel.Ability}" />
                             </Grid>
                         </TabItem>
                         <TabItem Header="扩展信息">
                             <StackPanel Margin="5">
-                                <Label x:Name="LblIJName" HorizontalContentAlignment="Center" FontSize="16"
-                                       VerticalContentAlignment="Center" Margin="0" Height="30" />
-                                <Label x:Name="LblIPack" HorizontalContentAlignment="Center"
-                                       VerticalContentAlignment="Center" Margin="0" Height="30" />
-                                <Label x:Name="LblIIllust" HorizontalContentAlignment="Center"
-                                       VerticalContentAlignment="Center" Margin="0" Height="30" />
-                                <TextBlock x:Name="LblILines" TextWrapping="Wrap" Margin="0" Height="auto" />
-                                <TextBlock x:Name="LblIFaq" TextWrapping="Wrap" Margin="0" Height="auto" />
+                                <Label HorizontalContentAlignment="Center" FontSize="16"
+                                       VerticalContentAlignment="Center" Height="30"
+                                       Content="{Binding CardDetailModel.JName}" />
+                                <Label HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center" Height="30"
+                                       Content="{Binding CardDetailModel.Pack}" />
+                                <Label HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center" Height="30"
+                                       Content="{Binding CardDetailModel.Illust}" />
+                                <TextBlock TextWrapping="Wrap" Margin="0" Height="auto"
+                                           Text="{Binding CardDetailModel.Lines}" />
                             </StackPanel>
                         </TabItem>
                     </TabControl>
@@ -177,7 +198,7 @@
                         <RowDefinition Height="160" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Grid Height="30" Margin="0,2.5,0,2.5" Width="564">
+                    <Grid Height="30" Margin="0,2.5,0,2.5" Width="564" Name="DeckOperationView">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
@@ -185,15 +206,16 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Button Name="BtnClear" Grid.Column="0" Click="BtnClear_Click" Content="清空" />
-                        <Button Name="BtnDelete" Grid.Column="1" Click="Delete_Click" Content="删除" />
-                        <ComboBox Name="CmbDeck" Grid.Column="2" DropDownClosed="CmbDeck_DropDownClosed"
-                                  DropDownOpened="CmbDeck_DropDownOpened" Text="" />
-                        <Button Name="BtnSava" Grid.Column="3" Click="Sava_Click" Content="保存" />
-                        <Button Name="BtnResava" Grid.Column="4" Click="Resave_Click" Content="另存" />
+                        <Button Grid.Column="0" Content="清空" Command="{Binding CmdClear}" />
+                        <Button Grid.Column="1" Content="删除" Command="{Binding CmdDelete}" />
+                        <ComboBox Name="CmbDeckName" Grid.Column="2" DropDownClosed="CmbDeck_DropDownClosed"
+                                  DropDownOpened="CmbDeck_DropDownOpened" Text="{Binding DeckName}"
+                                  ItemsSource="{Binding DeckNameList}" />
+                        <Button Grid.Column="3" Content="保存" Command="{Binding CmdSave}" />
+                        <Button Grid.Column="4" Content="另存" Command="{Binding CmdResave}" />
                     </Grid>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Width="556">
-                        <Grid Name="GridQuery" VerticalAlignment="Center" Height="150">
+                        <Grid Name="CardQueryView" VerticalAlignment="Center" Height="150">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="30" />
@@ -209,25 +231,27 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Label Name="LblType" Grid.Column="0" Grid.Row="0" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource LblCenter}"
                                    Content="种类" />
-                            <Label Name="LblCamp" Grid.Column="0" Grid.Row="1" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource LblCenter}"
                                    Content="阵营" />
-                            <Label Name="LblRace" Grid.Column="0" Grid.Row="2" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource LblCenter}"
                                    Content="种族" />
-                            <Label Name="LblSign" Grid.Column="0" Grid.Row="3" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource LblCenter}"
                                    Content="标记" />
-                            <Label Name="LblRare" Grid.Column="0" Grid.Row="4" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource LblCenter}"
                                    Content="罕贵" />
-                            <ComboBox Name="CmbType" Grid.Column="1" Grid.Row="0">
+                            <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding CardQueryModel.Type}"
+                                      IsEditable="False" SelectedIndex="0">
                                 <ComboBoxItem>(N/A)</ComboBoxItem>
                                 <ComboBoxItem>Z/X</ComboBoxItem>
                                 <ComboBoxItem>事件</ComboBoxItem>
                                 <ComboBoxItem>玩家</ComboBoxItem>
                                 <ComboBoxItem>Z/X EX</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox Name="CmbCamp" Grid.Column="1" Grid.Row="1"
-                                      DropDownClosed="Camp_DropDownClosed">
+                            <ComboBox Grid.Column="1" Grid.Row="1"
+                                      DropDownClosed="Camp_DropDownClosed" Text="{Binding CardQueryModel.Camp}"
+                                      IsEditable="False" SelectedIndex="0">
                                 <ComboBoxItem>(N/A)</ComboBoxItem>
                                 <ComboBoxItem>红</ComboBoxItem>
                                 <ComboBoxItem>蓝</ComboBoxItem>
@@ -236,16 +260,19 @@
                                 <ComboBoxItem>绿</ComboBoxItem>
                                 <ComboBoxItem>无</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox Name="CmbRace" Grid.Column="1" Grid.Row="2">
-                                <ComboBoxItem>(N/A)</ComboBoxItem>
-                            </ComboBox>
-                            <ComboBox Name="CmbSign" Grid.Column="1" Grid.Row="3">
+                            <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding RaceList}"
+                                      Text="{Binding CardQueryModel.Race}"
+                                      IsEditable="False"
+                                      SelectedIndex="0" />
+                            <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Sign}"
+                                      IsEditable="False" SelectedIndex="0">
                                 <ComboBoxItem>(N/A)</ComboBoxItem>
                                 <ComboBoxItem>-</ComboBoxItem>
                                 <ComboBoxItem>点燃</ComboBoxItem>
                                 <ComboBoxItem>觉醒之种</ComboBoxItem>
                             </ComboBox>
-                            <ComboBox Name="CmbRare" Grid.Column="1" Grid.Row="4" Margin="5,2">
+                            <ComboBox Grid.Column="1" Grid.Row="4" Margin="5,2" Text="{Binding CardQueryModel.Rare}"
+                                      IsEditable="False">
                                 <ComboBoxItem>(N/A)</ComboBoxItem>
                                 <ComboBoxItem>CVR</ComboBoxItem>
                                 <ComboBoxItem>IGR</ComboBoxItem>
@@ -261,31 +288,35 @@
                                 <ComboBoxItem>C</ComboBoxItem>
                                 <ComboBoxItem>日本一R</ComboBoxItem>
                             </ComboBox>
-                            <Label Name="LblKey" Grid.Column="2" Grid.Row="0" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="2" Grid.Row="0" Style="{DynamicResource LblCenter}"
                                    Content="字段" />
-                            <Label Name="LblIllust" Grid.Column="2" Grid.Row="2" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="2" Grid.Row="2" Style="{DynamicResource LblCenter}"
                                    Content="画师" />
-                            <Label Name="LblPack" Grid.Column="2" Grid.Row="1" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="2" Grid.Row="1" Style="{DynamicResource LblCenter}"
                                    Content="卡包" />
-                            <Label Name="LblCost" Grid.Column="2" Grid.Row="3" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="2" Grid.Row="3" Style="{DynamicResource LblCenter}"
                                    Content="费用" />
-                            <Label Name="LblPower" Grid.Column="2" Grid.Row="4" Style="{DynamicResource LblCenter}"
+                            <Label Grid.Column="2" Grid.Row="4" Style="{DynamicResource LblCenter}"
                                    Content="力量" />
-                            <TextBox Name="TxtKey" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0"
-                                     ToolTip="字段以空格分开（A B C）" />
-                            <ComboBox Name="CmbIllust" Grid.Column="3" Grid.Row="2" />
-                            <ComboBox Name="CmbPack" Grid.Column="3" Grid.Row="1" />
-                            <TextBox Name="TxtCost" Grid.Column="3" Grid.Row="3" ToolTip="区间以连接号分开（A-B）" />
-                            <TextBox Name="TxtPower" Grid.Column="3" Grid.Row="4" ToolTip="区间以连接号分开（A-B）" />
-                            <Button Name="BtnAbilityDetail" Grid.Column="4" Grid.Row="4" Content="能力分类"
-                                    Click="BtnAbilityDetail_Click" />
-                            <Button Name="BtnQuery" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
-                                    Click="Query_Click" Content="检索" IsDefault="True" />
-                            <Button Name="BtnReset" Grid.Column="4" Grid.Row="3" Click="Reset_Click" Content="重置" />
+                            <TextBox Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0"
+                                     ToolTip="字段以空格分开（A B C）" Text="{Binding CardQueryModel.Key}" />
+                            <ComboBox Grid.Column="3" Grid.Row="2" ItemsSource="{Binding IllustList}"
+                                      Text="{Binding CardQueryModel.Illust}" IsEditable="False" SelectedIndex="0" />
+                            <ComboBox Grid.Column="3" Grid.Row="1" ItemsSource="{Binding PackList}"
+                                      Text="{Binding CardQueryModel.Pack}" IsEditable="False" SelectedIndex="0" />
+                            <TextBox Grid.Column="3" Grid.Row="3" ToolTip="区间以连接号分开（A-B）"
+                                     Text="{Binding CardQueryModel.CostValue}" />
+                            <TextBox Grid.Column="3" Grid.Row="4" ToolTip="区间以连接号分开（A-B）"
+                                     Text="{Binding CardQueryModel.PowerValue}" />
+                            <Button Grid.Column="4" Grid.Row="4" Content="能力分类" Command="{Binding CmdAlilityDetail}" />
+                            <Button Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Margin="5"
+                                    Command="{Binding CmdQuery}" Content="检索" IsDefault="True" />
+                            <Button Grid.Column="4" Grid.Row="3" Command="{Binding CmdReset}" Content="重置" />
                             <Border Style="{DynamicResource ControlBorder}" Width="90" Grid.RowSpan="5" Grid.Column="5"
                                     Grid.Row="0">
-                                <ListBox x:Name="LstAbilityType" Style="{DynamicResource ControlTransparent}"
-                                         SelectionMode="Multiple"
+                                <ListBox SelectionMode="Multiple"
+                                         ItemsSource="{Binding CardQueryModel.AbilityTypeModels}"
+                                         Style="{DynamicResource ControlTransparent}"
                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListBox.ItemsPanel>
@@ -293,20 +324,17 @@
                                             <UniformGrid Columns="1" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
-                                    <CheckBox x:Name="ChkAbilityType0" Content="Lv" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType1" Content="射程" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType2" Content="绝界" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType4" Content="起始卡" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType5" Content="生命恢复" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType6" Content="虚空使者" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType7" Content="进化原力" Foreground="Black" />
-                                    <CheckBox x:Name="ChkAbilityType8" Content="零点优化" Foreground="Black" />
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Content="{Binding Name}" Foreground="Black"
+                                                      IsChecked="{Binding Checked}" />
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
                                 </ListBox>
                             </Border>
-
                         </Grid>
                     </Border>
-                    <Grid Grid.Row="2" Margin="0,10,0,10">
+                    <Grid Grid.Row="2" Margin="0,10,0,10" Name="DeckView">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="140*" />
                             <RowDefinition Height="207*" />
@@ -314,7 +342,7 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Style="{DynamicResource ControlBorder}" Height="140" Width="556"
                                 VerticalAlignment="Top">
-                            <ListView x:Name="IgListView"
+                            <ListView ItemsSource="{Binding IgModels}"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       Style="{DynamicResource ControlTransparent}"
@@ -337,7 +365,7 @@
                         </Border>
                         <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Height="207" Width="556"
                                 VerticalAlignment="Center">
-                            <ListView x:Name="UgListView"
+                            <ListView ItemsSource="{Binding UgModels}"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       Style="{DynamicResource ControlTransparent}"
@@ -360,7 +388,7 @@
                         </Border>
                         <Border Grid.Row="2" Style="{DynamicResource ControlBorder}" Height="72" Width="556"
                                 VerticalAlignment="Bottom">
-                            <ListView x:Name="ExListView"
+                            <ListView ItemsSource="{Binding ExModels}"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       Style="{DynamicResource ControlTransparent}"
@@ -383,24 +411,24 @@
                         </Border>
                     </Grid>
                 </Grid>
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Name="CardPreviewView">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" Margin="5,0,5,0" Height="30">
                         <Border Style="{DynamicResource ControlBorder}" Margin="5,2.5">
-                            <Label x:Name="LblCardCount" Width="110" Height="20" />
+                            <Label Content="{Binding CardPreviewCountValue}" Width="110" Height="20" />
                         </Border>
-                        <ComboBox x:Name="CmbOrder" Margin="5,2.5" Width="70"
-                                  Text="数值" DropDownClosed="CmbOrder_DropDownClosed">
-                            <ComboBoxItem>编号</ComboBoxItem>
-                            <ComboBoxItem>数值</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox x:Name="CmbOrder" Margin="5,2.5" Width="70" SelectedIndex="0"
+                                  Text="{Binding CardPreviewOrder}" IsEditable="False"
+                                  ItemsSource="{Binding PreviewOrderValues}"
+                                  DropDownClosed="CmbOrder_DropDownClosed" />
                     </StackPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="10,0,10,10">
-                        <ListView x:Name="LvwPreview" SelectionChanged="CardPreview_SelectionChanged"
+                        <ListView x:Name="LvCardPreview" SelectionChanged="CardPreview_SelectionChanged"
                                   Style="{DynamicResource ControlTransparent}"
+                                  ItemsSource="{Binding CardPreviewModels}"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.ItemTemplate>

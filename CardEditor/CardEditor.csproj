@@ -46,6 +46,10 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.dll</HintPath>
       <Private>True</Private>
@@ -85,11 +89,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\CardEditor.cs" />
-    <Compile Include="Presenter\Presenter.cs" />
+    <Compile Include="Model\CardEditorModel.cs" />
+    <Compile Include="Model\CardPictureModel.cs" />
+    <Compile Include="Model\CardQueryMdoel.cs" />
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
-    <Page Include="View\PackCover.xaml">
+    <Page Include="View\PackCoverWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,8 +106,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\PackCover.xaml.cs">
-      <DependentUpon>PackCover.xaml</DependentUpon>
+    <Compile Include="ViewModel\AbilityTypeVm.cs" />
+    <Compile Include="ViewModel\CardEditorVm.cs" />
+    <Compile Include="ViewModel\CardPictureVm.cs" />
+    <Compile Include="ViewModel\CardPreviewVm.cs" />
+    <Compile Include="ViewModel\DbOperationVm.cs" />
+    <Compile Include="ViewModel\ExternQueryVm.cs" />
+    <Compile Include="View\PackCoverWindow.xaml.cs">
+      <DependentUpon>PackCoverWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CardEditorWindow.xaml.cs">
       <DependentUpon>CardEditorWindow.xaml</DependentUpon>

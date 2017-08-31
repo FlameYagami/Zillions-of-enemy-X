@@ -1,7 +1,7 @@
 ﻿<Application x:Class="DeckEditor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="/View/DeckEditorView.xaml">
+             StartupUri="/View/DeckEditorWindow.xaml">
     <Application.Resources>
 
 
@@ -300,15 +300,15 @@
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                              Margin="3,3,23,3"
-                                              VerticalAlignment="Stretch"
+                                              Margin="5,5,25,5"
+                                              VerticalAlignment="Center"
                                               HorizontalAlignment="Left" />
                             <TextBox x:Name="PART_EditableTextBox"
                                      Style="{x:Null}"
                                      Template="{StaticResource ComboBoxTextBox}"
                                      HorizontalAlignment="Left"
-                                     VerticalAlignment="Bottom"
-                                     Margin="3,3,23,3"
+                                     VerticalAlignment="Center"
+                                     Margin="5,5,25,5"
                                      Focusable="True"
                                      Background="Transparent"
                                      Visibility="Hidden"

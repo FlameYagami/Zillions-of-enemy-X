@@ -27,7 +27,7 @@
             " (" + ColumnMd5 + "," + ColumnType + "," + ColumnCamp + "," + ColumnRace + "," + ColumnSign + "," +
             ColumnRare + "," + ColumnPack + "," + ColumnCName + "," + ColumnJName + "," +
             ColumnIllust + "," + ColumnNumber + "," + ColumnCost + "," + ColumnPower + "," + ColumnAbility + "," +
-            ColumnLines + ","  + ColumnImage + "," + ColumnAbilityDetail + ")";
+            ColumnLines + "," + ColumnImage + "," + ColumnAbilityDetail + ")";
 
         //DeckEditor
         public static string[] ColumKeyArray =

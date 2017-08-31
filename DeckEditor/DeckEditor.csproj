@@ -66,20 +66,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Deck.cs" />
-    <Compile Include="Model\Query.cs" />
-    <Compile Include="View\AbilityDetail.xaml.cs">
-      <DependentUpon>AbilityDetail.xaml</DependentUpon>
+    <Compile Include="Model\CardDetailModel.cs" />
+    <Compile Include="Model\CardPictureModel.cs" />
+    <Compile Include="Model\DeckStatsModel.cs" />
+    <Compile Include="Model\CardQueryModel.cs" />
+    <Compile Include="ViewModel\AbilityDetailVm.cs" />
+    <Compile Include="ViewModel\CardDetailVm.cs" />
+    <Compile Include="ViewModel\CardPictureVm.cs" />
+    <Compile Include="ViewModel\CardPreviewVm.cs" />
+    <Compile Include="ViewModel\DeckOperationVm.cs" />
+    <Compile Include="ViewModel\DeckOrderVm.cs" />
+    <Compile Include="ViewModel\DeckStatsVm.cs" />
+    <Compile Include="ViewModel\DeckVm.cs" />
+    <Compile Include="ViewModel\PlayerVm.cs" />
+    <Compile Include="ViewModel\CardQueryVm.cs" />
+    <Compile Include="View\AbilityDetailWindow.xaml.cs">
+      <DependentUpon>AbilityDetailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\DialogUtils.cs" />
-    <Compile Include="View\DeckStatistical.xaml.cs">
-      <DependentUpon>DeckStatistical.xaml</DependentUpon>
+    <Compile Include="View\DeckStatisticalWindow.xaml.cs">
+      <DependentUpon>DeckStatisticalWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\DeckStatistical.xaml">
+    <Page Include="View\DeckStatisticalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DeckEditorView.xaml">
+    <Page Include="View\DeckEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -87,12 +99,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Presenter\Presenter.cs" />
-    <Compile Include="View\DeckEditorView.xaml.cs">
-      <DependentUpon>DeckEditorView.xaml</DependentUpon>
+    <Compile Include="View\DeckEditorWindow.xaml.cs">
+      <DependentUpon>DeckEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\AbilityDetail.xaml">
+    <Page Include="View\AbilityDetailWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
