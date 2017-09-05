@@ -157,6 +157,7 @@ namespace CardEditor.ViewModel
         public void Reset_Click(object obj)
         {
             CardEditorModel = new CardEditorModel();
+            OnPropertyChanged(nameof(CardEditorModel));
             var mode = _externOpertaionVm.ModeValue;
             if (CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor))
             {
