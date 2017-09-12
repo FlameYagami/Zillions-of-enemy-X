@@ -30,13 +30,18 @@ namespace CardEditor.View
         /// <summary>≥Ã–Ú‘ÿ»Î</summary>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _dbOperationVm = new DbOperationVm();
+            _dbOperationVm = new DbOperationVm(this);
             DbOperationView.DataContext = _dbOperationVm;
             if (!_dbOperationVm.UpdateDataset())
             {
                 BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
                 return;
             }
+            InitView();
+        }
+
+        public void InitView()
+        {
             _cardPreviewVm = new CardPreviewVm();
             _cardPictureVm = new CardPictureVm();
             _abilityTypeVm = new AbilityTypeVm();

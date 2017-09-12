@@ -193,7 +193,6 @@ namespace DeckEditor.ViewModel
                         AddDeckModel(numberEx, _deckVm.ExModels);
                     break;
             }
-            UpdateDeckStatsView();
         }
 
         /// <summary>
@@ -207,13 +206,12 @@ namespace DeckEditor.ViewModel
             var deckModel = deckModelList.AsParallel()
                 .First(model => model.NumberEx.Equals(numberEx));
             deckModelList.Remove(deckModel);
-            UpdateDeckStatsView();
         }
 
         private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)
         {
             var thumbnailPath = CardUtils.GetThumbnailPath(numberEx);
-            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsEnumerable().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[SqliteConst.ColumnNumber].ToString()));
             var md5 = row[SqliteConst.ColumnMd5].ToString();
             var name = row[SqliteConst.ColumnCName].ToString();
@@ -247,7 +245,6 @@ namespace DeckEditor.ViewModel
                 case Enums.AreaType.Ex:
                     return _deckVm.ExModels;
             }
-            ;
             return new ObservableCollection<DeckModel>();
         }
 

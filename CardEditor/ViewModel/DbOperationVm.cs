@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CardEditor.View;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
@@ -14,9 +15,11 @@ namespace CardEditor.ViewModel
         private Visibility _encryptVisibility;
 
         private string _password;
+        private readonly MainWindow _cardEditor;
 
-        public DbOperationVm()
+        public DbOperationVm(MainWindow cardEditor)
         {
+            _cardEditor = cardEditor;
             CmdDecrypt = new DelegateCommand {ExecuteCommand = Decrypt_Click};
             CmdEncrypt = new DelegateCommand {ExecuteCommand = Encrypt_Click};
         }
@@ -76,6 +79,7 @@ namespace CardEditor.ViewModel
             {
                 UpdatePasswordVisibility(false, true);
                 BaseDialogUtils.ShowDlg(StringConst.EncryptSucced);
+                _cardEditor.InitView();
                 return;
             }
             BaseDialogUtils.ShowDlgOk(StringConst.EncryptFailed);

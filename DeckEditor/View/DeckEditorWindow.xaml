@@ -32,7 +32,7 @@
                             <ColumnDefinition Width="210" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TabControl x:Name="CardPictureView" Height="280" Width="190"
+                        <TabControl x:Name="CardPictureView" Height="285" Width="192"
                                     SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
                             <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
                                 <Image Width="180" Height="252"

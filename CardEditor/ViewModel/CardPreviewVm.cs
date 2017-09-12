@@ -143,6 +143,7 @@ namespace CardEditor.ViewModel
             builder.Append(SqlUtils.GetIntervalSql(card.PowerValue, SqliteConst.ColumnPower)); // 力量
             builder.Append(SqlUtils.GetAbilityTypeSql(card.AbilityTypeModels.ToList())); //  能力类型
             builder.Append(SqlUtils.GetAbilityDetailSql(card.AbilityDetailModels.ToList())); // 详细能力
+            builder.Append(SqlUtils.GetSimilarSql(card.Ability, SqliteConst.ColumnAbility)); // 详细能力
             builder.Append(SqlUtils.GetFooterSql(preOrderType)); // 完整的查询语句
             return builder.ToString();
         }

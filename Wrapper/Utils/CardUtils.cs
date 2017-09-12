@@ -79,7 +79,7 @@ namespace Wrapper.Utils
         {
             var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
             return imageExList.AsParallel()
-                .Select(imageEx => PathManager.PicturePath + imageEx)
+                .Select(imageEx => PathManager.PicturePath + imageEx + StringConst.ImageExtension)
                 .ToList();
         }
 
@@ -182,10 +182,7 @@ namespace Wrapper.Utils
         /// <returns></returns>
         public static List<string> GetNumberExList(string imageJson)
         {
-            var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
-            return imageExList.AsParallel()
-                .Select(imageEx => imageEx.Replace("/", "").Replace(StringConst.ImageExtension, ""))
-                .ToList();
+            return JsonUtils.Deserialize<List<string>>(imageJson);
         }
 
         /// <summary>
@@ -199,8 +196,8 @@ namespace Wrapper.Utils
             return imageExList.AsParallel()
                 .Select(
                     imageEx =>
-                        File.Exists(PathManager.ThumbnailPath + imageEx)
-                            ? PathManager.ThumbnailPath + imageEx
+                        File.Exists(PathManager.ThumbnailPath + imageEx + StringConst.ImageExtension)
+                            ? PathManager.ThumbnailPath + imageEx + StringConst.ImageExtension
                             : PathManager.ThumbnailUnknownPath)
                 .ToList();
         }
