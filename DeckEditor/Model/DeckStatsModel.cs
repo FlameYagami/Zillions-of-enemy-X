@@ -32,7 +32,7 @@ namespace DeckEditor.Model
             set
             {
                 _lifeCount = value;
-                OnPropertyChanged(nameof(StartCount));
+                OnPropertyChanged(nameof(LifeCount));
             }
         }
 
@@ -42,7 +42,7 @@ namespace DeckEditor.Model
             set
             {
                 _voidCount = value;
-                OnPropertyChanged(nameof(_voidCount));
+                OnPropertyChanged(nameof(VoidCount));
             }
         }
 
@@ -52,7 +52,7 @@ namespace DeckEditor.Model
             set
             {
                 _startForeground = value;
-                OnPropertyChanged(nameof(_startForeground));
+                OnPropertyChanged(nameof(StartForeground));
             }
         }
 
@@ -62,7 +62,7 @@ namespace DeckEditor.Model
             set
             {
                 _lifeForeground = value;
-                OnPropertyChanged(nameof(_lifeForeground));
+                OnPropertyChanged(nameof(LifeForeground));
             }
         }
 
@@ -72,7 +72,7 @@ namespace DeckEditor.Model
             set
             {
                 _voidForeground = value;
-                OnPropertyChanged(nameof(_voidForeground));
+                OnPropertyChanged(nameof(VoidForeground));
             }
         }
     }
