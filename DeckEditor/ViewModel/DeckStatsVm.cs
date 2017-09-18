@@ -1,5 +1,9 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media;
 using DeckEditor.Model;
+using DeckEditor.Utils;
+using Wrapper;
 using Wrapper.Model;
 
 namespace DeckEditor.ViewModel
@@ -13,11 +17,14 @@ namespace DeckEditor.ViewModel
 
         public DeckStatsModel DeckStatsModel { get; set; }
 
-        public void UpdateView(int startCount, int lifeCount, int voidCount)
+        public void UpdateView(int igCount, int ugCount, int exCount, int startCount, int lifeCount, int voidCount)
         {
-            DeckStatsModel.StartCount = startCount;
-            DeckStatsModel.LifeCount = lifeCount;
-            DeckStatsModel.VoidCount = voidCount;
+            DeckStatsModel.StartCountValue = $"{startCount} / 1";
+            DeckStatsModel.LifeCountValue = $"{lifeCount} / 4";
+            DeckStatsModel.VoidCountValue = $"{voidCount} / 4";
+            DeckStatsModel.IgCountValue = $"{igCount} / 20";
+            DeckStatsModel.UgCountValue = $"{ugCount} / 30";
+            DeckStatsModel.ExCountValue = $"{exCount} / 10";
 
             DeckStatsModel.StartForeground = startCount == 0
                 ? new SolidColorBrush(Colors.Red)

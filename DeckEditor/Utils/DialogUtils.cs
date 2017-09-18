@@ -11,7 +11,7 @@ namespace DeckEditor.Utils
         /// <summary>能力分类窗口</summary>
         public static void ShowAbilityDetail(ObservableCollection<AbilityModel> abilityDetailModels)
         {
-            var dlg = new AbilityDetail(abilityDetailModels) {Owner = GetTopWindow()};
+            var dlg = new AbilityDetailWindow(abilityDetailModels) {Owner = GetTopWindow()};
             dlg.ShowDialog();
         }
 

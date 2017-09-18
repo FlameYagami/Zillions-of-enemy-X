@@ -60,7 +60,7 @@ namespace DeckEditor.ViewModel
         public void Query_Click(object obj)
         {
             OnPropertyChanged(nameof(CardQueryModel));
-            _cardPreviewVm.UpdateCardPreviewList(CardQueryModel);
+            _cardPreviewVm.UpdateCardPreviewModels(CardQueryModel);
         }
 
         /// <summary>

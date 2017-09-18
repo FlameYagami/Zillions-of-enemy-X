@@ -40,6 +40,14 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.1.953, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.3.1.953\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -75,8 +83,8 @@
     <Compile Include="ViewModel\CardPictureVm.cs" />
     <Compile Include="ViewModel\CardPreviewVm.cs" />
     <Compile Include="ViewModel\DeckOperationVm.cs" />
-    <Compile Include="ViewModel\DeckOrderVm.cs" />
     <Compile Include="ViewModel\DeckStatsVm.cs" />
+    <Compile Include="ViewModel\DeckExVm.cs" />
     <Compile Include="ViewModel\DeckVm.cs" />
     <Compile Include="ViewModel\PlayerVm.cs" />
     <Compile Include="ViewModel\CardQueryVm.cs" />
@@ -126,6 +134,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

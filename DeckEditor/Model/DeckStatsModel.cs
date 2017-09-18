@@ -5,44 +5,74 @@ namespace DeckEditor.Model
 {
     public class DeckStatsModel : BaseModel
     {
-        private int _lifeCount;
-
         private SolidColorBrush _lifeForeground;
-        private int _startCount;
-
         private SolidColorBrush _startForeground;
-
-        private int _voidCount;
-
         private SolidColorBrush _voidForeground;
 
-        public int StartCount
+        private string _lifeCountValue;
+        private string _startCountValue;
+        private string _voidCountValue;
+        private string _igCountValue;
+        private string _ugCountValue;
+        private string _exCountValue;
+
+        public string StartCountValue
         {
-            get { return _startCount; }
+            get { return _startCountValue; }
             set
             {
-                _startCount = value;
-                OnPropertyChanged(nameof(StartCount));
+                _startCountValue = value;
+                OnPropertyChanged(nameof(StartCountValue));
             }
         }
 
-        public int LifeCount
+        public string LifeCountValue
         {
-            get { return _lifeCount; }
+            get { return _lifeCountValue; }
             set
             {
-                _lifeCount = value;
-                OnPropertyChanged(nameof(StartCount));
+                _lifeCountValue = value;
+                OnPropertyChanged(nameof(LifeCountValue));
             }
         }
 
-        public int VoidCount
+        public string VoidCountValue
         {
-            get { return _voidCount; }
+            get { return _voidCountValue; }
             set
             {
-                _voidCount = value;
-                OnPropertyChanged(nameof(_voidCount));
+                _voidCountValue = value;
+                OnPropertyChanged(nameof(VoidCountValue));
+            }
+        }
+
+        public string IgCountValue
+        {
+            get { return _igCountValue; }
+            set
+            {
+                _igCountValue = value;
+                OnPropertyChanged(nameof(IgCountValue));
+            }
+        }
+
+        public string UgCountValue
+        {
+            get { return _ugCountValue; }
+            set
+            {
+                _ugCountValue = value;
+                OnPropertyChanged(nameof(IgCountValue));
+            }
+        }
+
+        public string ExCountValue
+        {
+            get { return _exCountValue; }
+            set
+            {
+                _exCountValue = value;
+                OnPropertyChanged(nameof(IgCountValue));
             }
         }
 
@@ -52,7 +82,7 @@ namespace DeckEditor.Model
             set
             {
                 _startForeground = value;
-                OnPropertyChanged(nameof(_startForeground));
+                OnPropertyChanged(nameof(StartForeground));
             }
         }
 
@@ -62,7 +92,7 @@ namespace DeckEditor.Model
             set
             {
                 _lifeForeground = value;
-                OnPropertyChanged(nameof(_lifeForeground));
+                OnPropertyChanged(nameof(LifeForeground));
             }
         }
 
@@ -72,7 +102,7 @@ namespace DeckEditor.Model
             set
             {
                 _voidForeground = value;
-                OnPropertyChanged(nameof(_voidForeground));
+                OnPropertyChanged(nameof(VoidForeground));
             }
         }
     }

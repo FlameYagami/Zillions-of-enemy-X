@@ -5,7 +5,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using DeckEditor.Utils;
 using Dialog;
+using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -17,14 +20,16 @@ namespace DeckEditor.ViewModel
     {
         private readonly DeckStatsVm _deckStatsVm;
         private readonly DeckVm _deckVm;
+        private readonly DeckExVm _deckExVm;
         private readonly PlayerVm _playerVm;
 
         private string _deckName;
 
-        public DeckOperationVm(DeckVm deckVm, PlayerVm playerVm, DeckStatsVm deckStatsVm)
+        public DeckOperationVm(DeckExVm deckExVm, PlayerVm playerVm, DeckStatsVm deckStatsVm)
         {
+            _deckVm = deckExVm.GetDeckVm();
             _playerVm = playerVm;
-            _deckVm = deckVm;
+            _deckExVm = deckExVm;
             _deckStatsVm = deckStatsVm;
 
             DeckNameList = new ObservableCollection<string>();
@@ -33,6 +38,7 @@ namespace DeckEditor.ViewModel
             CmdResave = new DelegateCommand {ExecuteCommand = Resave_Click};
             CmdClear = new DelegateCommand {ExecuteCommand = Clear_Click};
             CmdDelete = new DelegateCommand {ExecuteCommand = Delete_Click};
+            CmdDeckStats = new DelegateCommand { ExecuteCommand = DeckStats_Click };
         }
 
         public string DeckName
@@ -49,6 +55,7 @@ namespace DeckEditor.ViewModel
         public DelegateCommand CmdResave { get; set; }
         public DelegateCommand CmdClear { get; set; }
         public DelegateCommand CmdDelete { get; set; }
+        public DelegateCommand CmdDeckStats { get; set; }
         public ObservableCollection<string> DeckNameList { get; set; }
 
         /// <summary>
@@ -101,6 +108,7 @@ namespace DeckEditor.ViewModel
             _deckVm.IgModels.Clear();
             _deckVm.UgModels.Clear();
             _deckVm.ExModels.Clear();
+            _deckExVm.Clear();
             UpdateDeckStatsView();
         }
 
@@ -111,6 +119,7 @@ namespace DeckEditor.ViewModel
         {
             ClearDeck();
             var deckPath = CardUtils.GetDeckPath(DeckName);
+            if (!File.Exists(deckPath)) return;
             try
             {
                 var numberListString = FileUtils.GetFileContent(deckPath);
@@ -122,6 +131,20 @@ namespace DeckEditor.ViewModel
             {
                 BaseDialogUtils.ShowDlg(exception.Message);
             }
+        }
+
+        public void DeckStats_Click(object obj)
+        {
+            var dekcStatisticalDic = new Dictionary<int, int>();
+            var costIgList = _deckVm.IgModels.Select(deckEntity => deckEntity.Cost);
+            var costUgList = _deckVm.UgModels.Select(deckEntity => deckEntity.Cost);
+            var costDeckList = new List<int>();
+            costDeckList.AddRange(costIgList);
+            costDeckList.AddRange(costUgList);
+            var costMax = costDeckList.Max();
+            for (var i = 0; i != costMax + 1; i++)
+                dekcStatisticalDic.Add(i + 1, costDeckList.Count(cost => cost.Equals(i + 1)));
+            DialogUtils.ShowDekcStatistical(dekcStatisticalDic);
         }
 
         public void UpdateDeckNameList()
@@ -164,7 +187,7 @@ namespace DeckEditor.ViewModel
             var startCount = _deckVm.UgModels.AsParallel().Count(deckEntity => CardUtils.IsStart(deckEntity.NumberEx));
             var lifeCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx));
             var voidCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx));
-            _deckStatsVm.UpdateView(startCount, lifeCount, voidCount);
+            _deckStatsVm.UpdateView(_deckVm.IgModels.Count, _deckVm.UgModels.Count, _deckVm.ExModels.Count, startCount, lifeCount, voidCount);
         }
 
         /// <summary>
@@ -182,15 +205,24 @@ namespace DeckEditor.ViewModel
                     break;
                 case Enums.AreaType.Ig:
                     if (CheckAreaIg(numberEx))
+                    {
                         AddDeckModel(numberEx, _deckVm.IgModels);
+                        _deckExVm.UpdateDeckExModels(areaType);
+                    }
                     break;
                 case Enums.AreaType.Ug:
                     if (CheckAreaUg(numberEx))
+                    {
                         AddDeckModel(numberEx, _deckVm.UgModels);
+                        _deckExVm.UpdateDeckExModels(areaType);
+                    }
                     break;
                 case Enums.AreaType.Ex:
                     if (CheckAreaEx(numberEx))
+                    {
                         AddDeckModel(numberEx, _deckVm.ExModels);
+                        _deckExVm.UpdateDeckExModels(areaType);
+                    }
                     break;
             }
         }
@@ -206,6 +238,7 @@ namespace DeckEditor.ViewModel
             var deckModel = deckModelList.AsParallel()
                 .First(model => model.NumberEx.Equals(numberEx));
             deckModelList.Remove(deckModel);
+            _deckExVm.UpdateDeckExModels(areaType);
         }
 
         private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)

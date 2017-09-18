@@ -8,26 +8,13 @@ namespace DeckEditor.View
     /// <summary>
     ///     ColumnAbilityDetail.xaml 的交互逻辑
     /// </summary>
-    public partial class AbilityDetail
+    public partial class AbilityDetailWindow
     {
-        private readonly AbilityDetailVm _abilityDetailVm;
-
-        public AbilityDetail(ObservableCollection<AbilityModel> abilityDetailModels)
+        public AbilityDetailWindow(ObservableCollection<AbilityModel> abilityDetailModels)
         {
             InitializeComponent();
-            _abilityDetailVm = new AbilityDetailVm(abilityDetailModels);
-            DataContext = _abilityDetailVm;
-        }
-
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void BtnOK_Click(object sender, RoutedEventArgs e)
-        {
-            _abilityDetailVm.Update();
-            Close();
+            var abilityDetailVm = new AbilityDetailVm(this, abilityDetailModels);
+            DataContext = abilityDetailVm;
         }
     }
 }

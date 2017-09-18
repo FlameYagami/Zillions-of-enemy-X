@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using DeckEditor.Model;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -47,7 +48,7 @@ namespace DeckEditor.ViewModel
 
         private CardQueryModel MemoryQueryModel { get; set; }
 
-        public void UpdateCardPreviewList(CardQueryModel queryModel)
+        public void UpdateCardPreviewModels(CardQueryModel queryModel)
         {
             MemoryQueryModel = queryModel; // 保存查询的实例
             var dataSet = new DataSet();
@@ -92,7 +93,7 @@ namespace DeckEditor.ViewModel
         public void Order()
         {
             if (null == MemoryQueryModel) return;
-            UpdateCardPreviewList(MemoryQueryModel);
+            UpdateCardPreviewModels(MemoryQueryModel);
         }
 
         public string GetQuerySql(CardQueryModel card)

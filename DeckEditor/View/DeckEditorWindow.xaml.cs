@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DeckEditor.ViewModel;
@@ -21,9 +22,8 @@ namespace DeckEditor.View
         private CardPreviewVm _cardPreviewVm;
         private CardQueryVm _cardQueryVm;
         private DeckOperationVm _deckOperationVm;
-        private DeckOrderVm _deckOrderVm;
         private DeckStatsVm _deckStatsVm;
-        private DeckVm _deckVm;
+        private DeckExVm _deckExVm;
         private PlayerVm _playerVm;
 
         public MainWindow()
@@ -32,9 +32,6 @@ namespace DeckEditor.View
 
             if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
             {
-                var uri = new Uri(PathManager.BackgroundPath, UriKind.Relative);
-                var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
-                BorderView.Background = imageBrush;
                 if (!Directory.Exists(PathManager.DeckFolderPath))
                     Directory.CreateDirectory(PathManager.DeckFolderPath);
             }
@@ -44,25 +41,22 @@ namespace DeckEditor.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _deckVm = new DeckVm();
+            _deckExVm = new DeckExVm();
             _playerVm = new PlayerVm();
-            _deckStatsVm = new DeckStatsVm();
             _cardPreviewVm = new CardPreviewVm();
             _cardPictureVm = new CardPictureVm();
             _cardQueryVm = new CardQueryVm(_cardPreviewVm);
             _cardDetailVm = new CardDetailVm(_cardPictureVm);
-            _deckOrderVm = new DeckOrderVm(_deckVm);
-            _deckOperationVm = new DeckOperationVm(_deckVm, _playerVm, _deckStatsVm);
+            _deckStatsVm = new DeckStatsVm();
+            _deckOperationVm = new DeckOperationVm(_deckExVm, _playerVm, _deckStatsVm);
 
-
-            DeckView.DataContext = _deckVm;
+            DeckView.DataContext = _deckExVm;
             PlayerView.DataContext = _playerVm;
             DeckStatsView.DataContext = _deckStatsVm;
             CardPreviewView.DataContext = _cardPreviewVm;
             CardPictureView.DataContext = _cardPictureVm;
             CardQueryView.DataContext = _cardQueryVm;
             CardDetailView.DataContext = _cardDetailVm;
-            DeckOrderView.DataContext = _deckOrderVm;
             DeckOperationView.DataContext = _deckOperationVm;
         }
 
@@ -140,12 +134,6 @@ namespace DeckEditor.View
 
         /************************************************** 其他操作 **************************************************/
 
-        /// <summary>退出</summary>
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
         private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -155,6 +143,12 @@ namespace DeckEditor.View
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
+        }
+
+        /// <summary>退出</summary>
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
