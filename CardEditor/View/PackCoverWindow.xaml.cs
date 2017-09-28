@@ -33,18 +33,18 @@ namespace CardEditor.View
             Close();
         }
 
-        private void BtnCover_Click(object sender, RoutedEventArgs e)
+        private async void BtnCover_Click(object sender, RoutedEventArgs e)
         {
             var filePath = TxtFilePath.Text.Trim();
             if (filePath.Equals(""))
             {
-                BaseDialogUtils.ShowDlg("源文件不存在");
+                BaseDialogUtils.ShowDialogAuto("源文件不存在");
                 return;
             }
             var packName = TxtPackName.Text.Trim();
             if (packName.Equals(""))
             {
-                BaseDialogUtils.ShowDlg("请输入卡包名称");
+                BaseDialogUtils.ShowDialogAuto("请输入卡包名称");
                 return;
             }
             // 获取源文件所有的信息
@@ -52,11 +52,11 @@ namespace CardEditor.View
             var isImport = ExcelHelper.ImportExcelToDataTable(filePath, packName, dtSource);
             if (!isImport)
             {
-                BaseDialogUtils.ShowDlg("文件中数据异常");
+                BaseDialogUtils.ShowDialogAuto("文件中数据异常");
                 return;
             }
             // 确认状态
-            if (!BaseDialogUtils.ShowDlgOkCancel("确认覆写?"))
+            if (!await BaseDialogUtils.ShowDialogConfirm("确认覆写?"))
                 return;
             // 获取源文件编号
             var dtNumberList =
@@ -99,7 +99,7 @@ namespace CardEditor.View
                 .ToList();
             // 数据库覆写
             var isExecute = SqliteUtils.Execute(updateSqlList);
-            BaseDialogUtils.ShowDlg(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+            BaseDialogUtils.ShowDialogAuto(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
 
         private string GetUpdateSql(CardModel card, string number)

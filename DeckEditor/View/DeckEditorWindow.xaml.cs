@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DeckEditor.ViewModel;
 using Dialog;
+using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -36,7 +37,7 @@ namespace DeckEditor.View
                     Directory.CreateDirectory(PathManager.DeckFolderPath);
             }
             else
-                BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
+                BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -146,7 +147,7 @@ namespace DeckEditor.View
         }
 
         /// <summary>ÍË³ö</summary>
-        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
         }

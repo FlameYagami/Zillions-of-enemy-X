@@ -4,405 +4,413 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
         Style="{DynamicResource BaseWindow}"
         mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
         Title="Z/X CardEditor" Height="720" Width="1280" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded" Icon="../icon.ico">
     <UserControl mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1200" >
         <Border Name="BorderView" Background="White">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <materialDesign:ColorZone Padding="16" ToolTip="右键最小化" MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone Padding="16" ToolTip="右键最小化" MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove"
                                           materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent" >
-                    <DockPanel>
-                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignCentres">
-                            <ListBox Width="100">
-                                <ListBoxItem MouseDown="UIElement_OnMouseDown">退出</ListBoxItem>
-                            </ListBox>
-                        </materialDesign:PopupBox>
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" >Z/X DeckEditor</TextBlock>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <DockPanel Grid.Row="1">
-                    <Grid DockPanel.Dock="Left" Width="320">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
                         <DockPanel>
-                            <TabControl x:Name="CardPictureView" Height="Auto" Width="186" Margin="16" HorizontalAlignment="Left" DockPanel.Dock="Left"
+                            <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignCentres">
+                                <StackPanel>
+                                    <Button Content=" 退出 " Click="Exit_Click"/>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="20" >Z/X DeckEditor</TextBlock>
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+                    <DockPanel Grid.Row="1">
+                        <Grid DockPanel.Dock="Left" Width="320">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel>
+                                <TabControl x:Name="CardPictureView" Height="Auto" Width="186" Margin="16" HorizontalAlignment="Left" DockPanel.Dock="Left"
                                     SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
-                                <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
-                                    <Image Width="180" Height="252"
+                                    <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
+                                        <Image Width="180" Height="252"
                                        Source="{Binding CardPictureModel.PicturePathList[0]}" />
-                                </TabItem>
-                                <TabItem Header="B" Visibility="{Binding CardPictureModel.TabItemVisibilityList[1]}">
-                                    <Image Width="180" Height="252" ToolTip="右键添加"
+                                    </TabItem>
+                                    <TabItem Header="B" Visibility="{Binding CardPictureModel.TabItemVisibilityList[1]}">
+                                        <Image Width="180" Height="252" ToolTip="右键添加"
                                        Source="{Binding CardPictureModel.PicturePathList[1]}" />
-                                </TabItem>
-                                <TabItem Header="C" Visibility="{Binding CardPictureModel.TabItemVisibilityList[2]}">
-                                    <Image Width="180" Height="252" ToolTip="右键添加"
+                                    </TabItem>
+                                    <TabItem Header="C" Visibility="{Binding CardPictureModel.TabItemVisibilityList[2]}">
+                                        <Image Width="180" Height="252" ToolTip="右键添加"
                                        Source="{Binding CardPictureModel.PicturePathList[2]}" />
-                                </TabItem>
-                                <TabItem Header="D" Visibility="{Binding CardPictureModel.TabItemVisibilityList[3]}">
-                                    <Image Width="180" Height="252" ToolTip="右键添加"
+                                    </TabItem>
+                                    <TabItem Header="D" Visibility="{Binding CardPictureModel.TabItemVisibilityList[3]}">
+                                        <Image Width="180" Height="252" ToolTip="右键添加"
                                        Source="{Binding CardPictureModel.PicturePathList[3]}" />
-                                </TabItem>
-                            </TabControl>
-                            <StackPanel Orientation="Vertical" Margin="0 16 16 16" Name="DeckOperationView" >
-                                <ComboBox Name="CmbDeckName" DropDownClosed="CmbDeck_DropDownClosed"
+                                    </TabItem>
+                                </TabControl>
+                                <StackPanel Orientation="Vertical" Margin="0 16 16 16" Name="DeckOperationView" >
+                                    <ComboBox Name="CmbDeckName" DropDownClosed="CmbDeck_DropDownClosed"
                                               materialDesign:HintAssist.Hint="请选择卡组" Margin="0"
                                   DropDownOpened="CmbDeck_DropDownOpened" Text="{Binding DeckName}"
                                   ItemsSource="{Binding DeckNameList}" />
-                                <materialDesign:PopupBox HorizontalAlignment="Center" Margin="0 16 0 0"
+                                    <materialDesign:PopupBox HorizontalAlignment="Center" Margin="0 16 0 0"
                                         Style="{StaticResource MaterialDesignMultiFloatingActionAccentPopupBox}"
                                      PlacementMode="BottomAndAlignCentres"    >
-                                    <materialDesign:PopupBox.ToggleCheckedContent>
-                                        <materialDesign:PackIcon Kind="Pencil" Width="24" Height="24" />
-                                    </materialDesign:PopupBox.ToggleCheckedContent>
-                                    <StackPanel>
-                                        <Button ToolTip="保存" Command="{Binding CmdSave}">
-                                            <materialDesign:PackIcon Kind="ContentSave" Height="20" Width="20" />
-                                        </Button>
-                                        <Button ToolTip="删除" Command="{Binding CmdDelete}">
-                                            <materialDesign:PackIcon Kind="Delete" Height="20" Width="20" />
-                                        </Button>
-                                        <Button ToolTip="另存" Command="{Binding CmdResave}">
-                                            <materialDesign:PackIcon Kind="ContentSaveAll" Height="20" Width="20" />
-                                        </Button>
-                                        <Button ToolTip="清空" Command="{Binding CmdClear}">
-                                            <materialDesign:PackIcon Kind="Broom" Height="20" Width="20" />
-                                        </Button>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
+                                        <materialDesign:PopupBox.ToggleCheckedContent>
+                                            <materialDesign:PackIcon Kind="Pencil" Width="24" Height="24" />
+                                        </materialDesign:PopupBox.ToggleCheckedContent>
+                                        <StackPanel>
+                                            <Button ToolTip="保存" Command="{Binding CmdSave}">
+                                                <materialDesign:PackIcon Kind="ContentSave" Height="20" Width="20" />
+                                            </Button>
+                                            <Button ToolTip="删除" Command="{Binding CmdDelete}">
+                                                <materialDesign:PackIcon Kind="Delete" Height="20" Width="20" />
+                                            </Button>
+                                            <Button ToolTip="另存" Command="{Binding CmdResave}">
+                                                <materialDesign:PackIcon Kind="ContentSaveAll" Height="20" Width="20" />
+                                            </Button>
+                                            <Button ToolTip="清空" Command="{Binding CmdClear}">
+                                                <materialDesign:PackIcon Kind="Broom" Height="20" Width="20" />
+                                            </Button>
+                                        </StackPanel>
+                                    </materialDesign:PopupBox>
 
-                            </StackPanel>
-                        </DockPanel>
-                        <materialDesign:Card Grid.Row="1" Margin="8,0,8,11" Width="Auto" VerticalAlignment="Stretch">
-                            <ScrollViewer>
-                                <StackPanel Orientation="Vertical" Name="CardDetailView">
-                                    <Expander HorizontalAlignment="Stretch" Header="{Binding CardDetailModel.CName}" IsExpanded="True">
-                                        <StackPanel Orientation="Vertical" Margin="24 0 24 0" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-                                            <StackPanel Orientation="Horizontal" Height="20" Margin="0 8 0 0">
-                                                <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[0]}" Width="20"/>
-                                                <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[1]}" Width="20"/>
-                                                <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[2]}" Width="20"/>
-                                                <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[3]}" Width="20"/>
-                                                <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[4]}" Width="20"/>
-                                                <DockPanel>
-                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.SignPath}" Width="20" DockPanel.Dock="Right"/>
-                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.RarePath}" Width="Auto"/>
-                                                </DockPanel>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
-                                                <TextBlock Text="{Binding CardDetailModel.Type}" />
-                                                <TextBlock Text="{Binding CardDetailModel.Race}" Margin="16 0 0 0"/>
-                                                <TextBlock Text="{Binding CardDetailModel.PowerValue}" Margin="16 0 0 0"/>
-                                                <TextBlock Text="{Binding CardDetailModel.CostValue}" Margin="16 0 0 0"/>
-                                            </StackPanel>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding CardDetailModel.Ability}" Margin="0 8 0 0"/>
-                                        </StackPanel>
-                                    </Expander>
-                                    <Expander HorizontalAlignment="Stretch" Header="{Binding CardDetailModel.JName}" IsExpanded="False">
-                                        <StackPanel Margin="24 0 24 0" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-                                            <TextBlock Text="{Binding CardDetailModel.Number}"/>
-                                            <TextBlock Margin="0 8 0 0" Text="{Binding CardDetailModel.Pack}" />
-                                            <TextBlock Margin="0 8 0 0" Text="{Binding CardDetailModel.Illust}" />
-                                            <TextBlock TextWrapping="Wrap" Margin="0 8 0 0" Text="{Binding CardDetailModel.Lines}" />
-                                        </StackPanel>
-                                    </Expander>
                                 </StackPanel>
-                            </ScrollViewer>
-
-                        </materialDesign:Card>
-                    </Grid>
-                    <Grid DockPanel.Dock="Right" Name="CardPreviewView" Width="240">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <materialDesign:Card VerticalAlignment="Center" Margin="8">
-                            <DockPanel Margin="4" Height="Auto">
-                                <ComboBox x:Name="CmbOrder" DockPanel.Dock="Right" Width="80" Height="Auto" SelectedIndex="0"
+                            </DockPanel>
+                            <materialDesign:Card Grid.Row="1" Margin="8,0,8,8" Width="Auto" VerticalAlignment="Stretch">
+                                <ScrollViewer>
+                                    <StackPanel Orientation="Vertical" Name="CardDetailView">
+                                        <Expander HorizontalAlignment="Stretch" Header="{Binding CardDetailModel.CName}" IsExpanded="True">
+                                            <StackPanel Orientation="Vertical" Margin="24 0 24 0" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                                                <StackPanel Orientation="Horizontal" Height="20" Margin="0 8 0 0">
+                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[0]}" Width="20"/>
+                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[1]}" Width="20"/>
+                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[2]}" Width="20"/>
+                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[3]}" Width="20"/>
+                                                    <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.CampPathList[4]}" Width="20"/>
+                                                    <DockPanel>
+                                                        <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.SignPath}" Width="20" DockPanel.Dock="Right"/>
+                                                        <Image Margin="0 0 5 0" Source="{Binding CardDetailModel.RarePath}" Width="Auto"/>
+                                                    </DockPanel>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                                                    <TextBlock Text="{Binding CardDetailModel.Type}" />
+                                                    <TextBlock Text="{Binding CardDetailModel.Race}" Margin="16 0 0 0"/>
+                                                    <TextBlock Text="{Binding CardDetailModel.PowerValue}" Margin="16 0 0 0"/>
+                                                    <TextBlock Text="{Binding CardDetailModel.CostValue}" Margin="16 0 0 0"/>
+                                                </StackPanel>
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding CardDetailModel.Ability}" Margin="0 8 0 0"/>
+                                            </StackPanel>
+                                        </Expander>
+                                        <Expander HorizontalAlignment="Stretch" Header="{Binding CardDetailModel.JName}" IsExpanded="False">
+                                            <StackPanel Margin="24 0 24 0" TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                                                <TextBlock Text="{Binding CardDetailModel.Number}"/>
+                                                <TextBlock Margin="0 8 0 0" Text="{Binding CardDetailModel.Pack}" />
+                                                <TextBlock Margin="0 8 0 0" Text="{Binding CardDetailModel.Illust}" />
+                                                <TextBlock TextWrapping="Wrap" Margin="0 8 0 0" Text="{Binding CardDetailModel.Lines}" />
+                                            </StackPanel>
+                                        </Expander>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </materialDesign:Card>
+                        </Grid>
+                        <Grid DockPanel.Dock="Right" Name="CardPreviewView" Width="240">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <materialDesign:Card VerticalAlignment="Center" Margin="8">
+                                <DockPanel Margin="4" Height="Auto">
+                                    <ComboBox x:Name="CmbOrder" DockPanel.Dock="Right" Width="80" Height="Auto" SelectedIndex="0"
                                   Text="{Binding CardPreviewOrder}" IsEditable="False"
                                   ItemsSource="{Binding PreviewOrderValues}"
                                   DropDownClosed="CmbOrder_DropDownClosed" materialDesign:HintAssist.Hint="排序"/>
-                                <Label Content="{Binding CardPreviewCountValue}" Margin="0 0 8 0"/>
-                            </DockPanel>
-                        </materialDesign:Card>
-                        <materialDesign:Card Grid.Row="1" Margin="8 0 8 8" Height="570">
-                            <ListView x:Name="LvCardPreview" SelectionChanged="CardPreview_SelectionChanged"
+                                    <Label Content="{Binding CardPreviewCountValue}" Margin="0 0 8 0"/>
+                                </DockPanel>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Row="1" Margin="8 0 8 8" Height="570">
+                                <ListView x:Name="LvCardPreview" SelectionChanged="CardPreview_SelectionChanged"
                                   Style="{DynamicResource ControlTransparent}"
                                   ItemsSource="{Binding CardPreviewModels}"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Height="63" MouseRightButtonDown="CardPreviewItem_MouseRightButtonDown"
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Height="63" MouseRightButtonDown="CardPreviewItem_MouseRightButtonDown"
                                           ToolTip="右键添加" Tag="{Binding ImageJson}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Grid>
-                                                    <Image Source="{Binding ImagePath}" Width="45" Height="63" />
-                                                    <Image Source="{Binding RestrictPath}" Height="15" Width="15"
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Grid>
+                                                        <Image Source="{Binding ImagePath}" Width="45" Height="63" />
+                                                        <Image Source="{Binding RestrictPath}" Height="15" Width="15"
                                                        VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                                </Grid>
-                                                <Grid VerticalAlignment="Center">
-                                                    <StackPanel Orientation="Vertical" Width="120" Margin="5,0,0,0">
-                                                        <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
+                                                    </Grid>
+                                                    <Grid VerticalAlignment="Center">
+                                                        <StackPanel Orientation="Vertical" Width="120" Margin="5,0,0,0">
+                                                            <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
                                                                HorizontalAlignment="Center" Height="20"
                                                                LineStackingStrategy="BlockLineHeight" />
-                                                        <TextBlock TextTrimming="CharacterEllipsis"
+                                                            <TextBlock TextTrimming="CharacterEllipsis"
                                                                HorizontalAlignment="Center" Height="20"
                                                                LineStackingStrategy="BlockLineHeight"
                                                                Text="{Binding CampAndRace}" />
-                                                        <TextBlock TextTrimming="CharacterEllipsis"
+                                                            <TextBlock TextTrimming="CharacterEllipsis"
                                                                HorizontalAlignment="Center" Height="20"
                                                                LineStackingStrategy="BlockLineHeight"
                                                                Text="{Binding PowerAndCost}" />
-                                                    </StackPanel>
-                                                </Grid>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </materialDesign:Card>
-                    </Grid>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <materialDesign:Card Grid.Row="0" Width="Auto" Margin="0 8 0 8">
-                            <Grid Name="CardQueryView" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 4">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120" />
-                                    <ColumnDefinition Width="180" />
-                                    <ColumnDefinition Width="120" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="0" Grid.Row="0" Text="{Binding CardQueryModel.Type}" 
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </materialDesign:Card>
+                        </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <materialDesign:Card Grid.Row="0" Width="Auto" Margin="0 8 0 8">
+                                <Grid Name="CardQueryView" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox Grid.Column="0" Grid.Row="0" Text="{Binding CardQueryModel.Type}" 
                                       IsEditable="False" SelectedIndex="0" materialDesign:HintAssist.Hint="种类">
-                                    <ComboBoxItem>(N/A)</ComboBoxItem>
-                                    <ComboBoxItem>Z/X</ComboBoxItem>
-                                    <ComboBoxItem>事件</ComboBoxItem>
-                                    <ComboBoxItem>玩家</ComboBoxItem>
-                                    <ComboBoxItem>Z/X EX</ComboBoxItem>
-                                </ComboBox>
-                                <ComboBox Grid.Column="0" Grid.Row="1"
+                                        <ComboBoxItem>(N/A)</ComboBoxItem>
+                                        <ComboBoxItem>Z/X</ComboBoxItem>
+                                        <ComboBoxItem>事件</ComboBoxItem>
+                                        <ComboBoxItem>玩家</ComboBoxItem>
+                                        <ComboBoxItem>Z/X EX</ComboBoxItem>
+                                    </ComboBox>
+                                    <ComboBox Grid.Column="0" Grid.Row="1"
                                       DropDownClosed="Camp_DropDownClosed" Text="{Binding CardQueryModel.Camp}"
                                       IsEditable="False" SelectedIndex="0" materialDesign:HintAssist.Hint="阵营">
-                                    <ComboBoxItem>(N/A)</ComboBoxItem>
-                                    <ComboBoxItem>红</ComboBoxItem>
-                                    <ComboBoxItem>蓝</ComboBoxItem>
-                                    <ComboBoxItem>白</ComboBoxItem>
-                                    <ComboBoxItem>黑</ComboBoxItem>
-                                    <ComboBoxItem>绿</ComboBoxItem>
-                                    <ComboBoxItem>无</ComboBoxItem>
-                                </ComboBox>
-                                <ComboBox Grid.Column="0" Grid.Row="2" ItemsSource="{Binding RaceList}"
+                                        <ComboBoxItem>(N/A)</ComboBoxItem>
+                                        <ComboBoxItem>红</ComboBoxItem>
+                                        <ComboBoxItem>蓝</ComboBoxItem>
+                                        <ComboBoxItem>白</ComboBoxItem>
+                                        <ComboBoxItem>黑</ComboBoxItem>
+                                        <ComboBoxItem>绿</ComboBoxItem>
+                                        <ComboBoxItem>无</ComboBoxItem>
+                                    </ComboBox>
+                                    <ComboBox Grid.Column="0" Grid.Row="2" ItemsSource="{Binding RaceList}"
                                       Text="{Binding CardQueryModel.Race}"
                                       IsEditable="False"
                                       SelectedIndex="0" materialDesign:HintAssist.Hint="种族"/>
-                                <ComboBox Grid.Column="0" Grid.Row="3" Text="{Binding CardQueryModel.Sign}"
+                                    <ComboBox Grid.Column="0" Grid.Row="3" Text="{Binding CardQueryModel.Sign}"
                                       IsEditable="False" SelectedIndex="0" materialDesign:HintAssist.Hint="标记">
-                                    <ComboBoxItem>(N/A)</ComboBoxItem>
-                                    <ComboBoxItem>-</ComboBoxItem>
-                                    <ComboBoxItem>点燃</ComboBoxItem>
-                                    <ComboBoxItem>觉醒之种</ComboBoxItem>
-                                </ComboBox>
-                                <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Rare}"
+                                        <ComboBoxItem>(N/A)</ComboBoxItem>
+                                        <ComboBoxItem>-</ComboBoxItem>
+                                        <ComboBoxItem>点燃</ComboBoxItem>
+                                        <ComboBoxItem>觉醒之种</ComboBoxItem>
+                                    </ComboBox>
+                                    <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Rare}"
                                       IsEditable="False" materialDesign:HintAssist.Hint="罕贵">
-                                    <ComboBoxItem>(N/A)</ComboBoxItem>
-                                    <ComboBoxItem>CVR</ComboBoxItem>
-                                    <ComboBoxItem>IGR</ComboBoxItem>
-                                    <ComboBoxItem>ZX/R</ComboBoxItem>
-                                    <ComboBoxItem>HR</ComboBoxItem>
-                                    <ComboBoxItem>DR</ComboBoxItem>
-                                    <ComboBoxItem>UR</ComboBoxItem>
-                                    <ComboBoxItem>SR</ComboBoxItem>
-                                    <ComboBoxItem>R</ComboBoxItem>
-                                    <ComboBoxItem>N</ComboBoxItem>
-                                    <ComboBoxItem>PR</ComboBoxItem>
-                                    <ComboBoxItem>UC</ComboBoxItem>
-                                    <ComboBoxItem>C</ComboBoxItem>
-                                    <ComboBoxItem>日本一R</ComboBoxItem>
-                                </ComboBox>
-                                <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0"
+                                        <ComboBoxItem>(N/A)</ComboBoxItem>
+                                        <ComboBoxItem>CVR</ComboBoxItem>
+                                        <ComboBoxItem>IGR</ComboBoxItem>
+                                        <ComboBoxItem>ZX/R</ComboBoxItem>
+                                        <ComboBoxItem>HR</ComboBoxItem>
+                                        <ComboBoxItem>DR</ComboBoxItem>
+                                        <ComboBoxItem>UR</ComboBoxItem>
+                                        <ComboBoxItem>SR</ComboBoxItem>
+                                        <ComboBoxItem>R</ComboBoxItem>
+                                        <ComboBoxItem>N</ComboBoxItem>
+                                        <ComboBoxItem>PR</ComboBoxItem>
+                                        <ComboBoxItem>UC</ComboBoxItem>
+                                        <ComboBoxItem>C</ComboBoxItem>
+                                        <ComboBoxItem>日本一R</ComboBoxItem>
+                                    </ComboBox>
+                                    <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0"
                                      ToolTip="字段以空格分开（A B C）" Text="{Binding CardQueryModel.Key}" materialDesign:HintAssist.Hint="字段"/>
-                                <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding IllustList}"
+                                    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding IllustList}"
                                       Text="{Binding CardQueryModel.Illust}" IsEditable="False" SelectedIndex="0" materialDesign:HintAssist.Hint="画师"/>
-                                <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding PackList}"
+                                    <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding PackList}"
                                       Text="{Binding CardQueryModel.Pack}" IsEditable="False" SelectedIndex="0" materialDesign:HintAssist.Hint="卡包"/>
-                                <TextBox Grid.Column="2" Grid.Row="1" ToolTip="区间以连接号分开（A-B）"
+                                    <TextBox Grid.Column="2" Grid.Row="1" ToolTip="区间以连接号分开（A-B）"
                                      Text="{Binding CardQueryModel.CostValue}" materialDesign:HintAssist.Hint="费用"/>
-                                <TextBox Grid.Column="2" Grid.Row="2" ToolTip="区间以连接号分开（A-B）"
+                                    <TextBox Grid.Column="2" Grid.Row="2" ToolTip="区间以连接号分开（A-B）"
                                      Text="{Binding CardQueryModel.PowerValue}" materialDesign:HintAssist.Hint="力量"/>
-                                <Button Grid.Column="3" Grid.Row="3" Content="能力分类" Command="{Binding CmdAlilityDetail}"/>
-                                <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Height="60"
+                                    <Button Grid.Column="3" Grid.Row="3" Content="能力分类" Command="{Binding CmdAlilityDetail}"/>
+                                    <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Height="60"
                                     Command="{Binding CmdQuery}" Content="检索" IsDefault="True"/>
-                                <Button Grid.Column="3" Grid.Row="2" Command="{Binding CmdReset}" Content="重置"/>
-                                <ListBox SelectionMode="Multiple" Width="180" Grid.Row="0" Grid.RowSpan="4" Grid.Column="4" Margin="4"
+                                    <Button Grid.Column="3" Grid.Row="2" Command="{Binding CmdReset}" Content="重置"/>
+                                    <ListBox SelectionMode="Multiple" Width="180" Grid.Row="0" Grid.RowSpan="4" Grid.Column="4" Margin="4"
                                          ItemsSource="{Binding CardQueryModel.AbilityTypeModels}"
                                          Style="{DynamicResource ControlTransparent}"
                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <UniformGrid Columns="2" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}" />
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </Grid>
-                        </materialDesign:Card>
-                        <DockPanel Grid.Row="1">
-                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Name="DeckView">
-                                <materialDesign:Card Height="120" Width="600" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                    <ListView ItemsSource="{Binding IgExModels}"
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="2" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </materialDesign:Card>
+                            <DockPanel Grid.Row="1">
+                                <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Name="DeckView">
+                                    <materialDesign:Card Height="120" Width="600" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                        <ListView ItemsSource="{Binding IgExModels}"
                                       ScrollViewer.CanContentScroll="False"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                       Style="{DynamicResource ControlTransparent}"
                                       ItemsPanel="{DynamicResource ListViewItemPanel}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Width="50" Height="70"
-                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
-                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
-                                                    <Image Source="{Binding DeckModel.RestrictPath}" 
-                                                           Height="24" Width="24"
-                                                           VerticalAlignment="Top"
-                                                           HorizontalAlignment="Left" />
-                                                    <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
-                                                    <Label  Content="{Binding Count}"                                                                  
-                                                            VerticalAlignment="Top"
-                                                            HorizontalAlignment="Right" 
-                                                            Foreground="White"
-                                                            Background="#B0000000"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </materialDesign:Card>
-                                <materialDesign:Card Height="120" Width="600" Margin="0 8 0 0" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                    <ListView ItemsSource="{Binding UgExModels}"
-                                      ScrollViewer.CanContentScroll="False"
-                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                      Style="{DynamicResource ControlTransparent}"
-                                      ItemsPanel="{DynamicResource ListViewItemPanel}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Width="50" Height="70"
-                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
-                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
-                                                    <Image Source="{Binding DeckModel.RestrictPath}" 
-                                                           Height="24" Width="24"
-                                                           VerticalAlignment="Top"
-                                                           HorizontalAlignment="Left" />
-                                                    <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
-                                                    <Label  Content="{Binding Count}"                                                                  
-                                                            VerticalAlignment="Top"
-                                                            HorizontalAlignment="Right" 
-                                                            Foreground="White"
-                                                            Background="#B0000000"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </materialDesign:Card>
-                                <materialDesign:Card Height="120" Width="600"  Margin="0 8 0 0" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                    <ListView ItemsSource="{Binding ExExModels}"
-                                      ScrollViewer.CanContentScroll="False"
-                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                      Style="{DynamicResource ControlTransparent}"
-                                      ItemsPanel="{DynamicResource ListViewItemPanel}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Width="50" Height="70"
-                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
-                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
-                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
-                                                    <Image Source="{Binding DeckModel.RestrictPath}" 
-                                                           Height="24" Width="24"
-                                                           VerticalAlignment="Top"
-                                                           HorizontalAlignment="Left" />
-                                                    <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
-                                                    <Label  Content="{Binding Count}"                                                                  
-                                                            VerticalAlignment="Top"
-                                                            HorizontalAlignment="Right" 
-                                                            Foreground="White"
-                                                            Background="#B0000000"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </materialDesign:Card>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="0 0 16 0">
-                                <materialDesign:Card Margin="0 0 0 0" Height="120">
-                                    <Grid Name="PlayerView" Margin="16 16 16 16">
-                                        <ListView Name="LvPlayer" Style="{DynamicResource ControlTransparent}" Width="66" Height="86"
-                                          ItemsSource="{Binding PlayerModels}"
-                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid MouseRightButtonDown="DeckItem_MouseRightButtonDown"
-                                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown" 
-                                                              ToolTip="右键删除" Tag="{Binding NumberEx}">
-                                                        <Image Source="{Binding ImagePath}" Width="50" Height="70" />
+                                                    <Grid Width="50" Height="70"
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
+                                                        <Image Source="{Binding DeckModel.RestrictPath}" 
+                                                           Height="24" Width="24"
+                                                           VerticalAlignment="Top"
+                                                           HorizontalAlignment="Left" />
+                                                        <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
+                                                        <Label  Content="{Binding Count}"                                                                  
+                                                            VerticalAlignment="Top"
+                                                            HorizontalAlignment="Right" 
+                                                            Foreground="White"
+                                                            Background="#B0000000"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
                                         </ListView>
-                                    </Grid>
-                                </materialDesign:Card>
-                                <materialDesign:Card Margin="0 8 0 0">
-                                    <StackPanel Orientation="Vertical"  Name="DeckStatsView" Margin="0 0 0 0">
-                                        <materialDesign:Chip Icon="IG"  Margin="4" MinWidth="92"
+                                    </materialDesign:Card>
+                                    <materialDesign:Card Height="120" Width="600" Margin="0 8 0 0" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                        <ListView ItemsSource="{Binding UgExModels}"
+                                      ScrollViewer.CanContentScroll="False"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      Style="{DynamicResource ControlTransparent}"
+                                      ItemsPanel="{DynamicResource ListViewItemPanel}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="50" Height="70"
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
+                                                        <Image Source="{Binding DeckModel.RestrictPath}" 
+                                                           Height="24" Width="24"
+                                                           VerticalAlignment="Top"
+                                                           HorizontalAlignment="Left" />
+                                                        <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
+                                                        <Label  Content="{Binding Count}"                                                                  
+                                                            VerticalAlignment="Top"
+                                                            HorizontalAlignment="Right" 
+                                                            Foreground="White"
+                                                            Background="#B0000000"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </materialDesign:Card>
+                                    <materialDesign:Card Height="120" Width="600"  Margin="0 8 0 0" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                        <ListView ItemsSource="{Binding ExExModels}"
+                                      ScrollViewer.CanContentScroll="False"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      Style="{DynamicResource ControlTransparent}"
+                                      ItemsPanel="{DynamicResource ListViewItemPanel}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="50" Height="70"
+                                              MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown"
+                                              ToolTip="双击添加&#x0a;右键删除" Tag="{Binding DeckModel.NumberEx}">
+                                                        <Image Source="{Binding DeckModel.RestrictPath}" 
+                                                           Height="24" Width="24"
+                                                           VerticalAlignment="Top"
+                                                           HorizontalAlignment="Left" />
+                                                        <Image Source="{Binding DeckModel.ImagePath}" Width="50" Height="70" />
+                                                        <Label  Content="{Binding Count}"                                                                  
+                                                            VerticalAlignment="Top"
+                                                            HorizontalAlignment="Right" 
+                                                            Foreground="White"
+                                                            Background="#B0000000"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </materialDesign:Card>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Margin="0 0 16 0">
+                                    <materialDesign:Card Margin="0 0 0 0" Height="120">
+                                        <Grid Name="PlayerView" Margin="16 16 16 16">
+                                            <ListView Name="LvPlayer" Style="{DynamicResource ControlTransparent}" Width="66" Height="86"
+                                          ItemsSource="{Binding PlayerModels}"
+                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid MouseRightButtonDown="DeckItem_MouseRightButtonDown"
+                                                              MouseLeftButtonDown="DeckItem_MouseLeftButtonDown" 
+                                                              ToolTip="右键删除" Tag="{Binding NumberEx}">
+                                                            <Image Source="{Binding ImagePath}" Width="50" Height="70" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </Grid>
+                                    </materialDesign:Card>
+                                    <materialDesign:Card Margin="0 8 0 0">
+                                        <StackPanel Orientation="Vertical"  Name="DeckStatsView" Margin="0 0 0 0">
+                                            <materialDesign:Chip Icon="IG"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.IgCountValue,Mode=TwoWay}" />
-                                        <materialDesign:Chip Icon="UG"  Margin="4" MinWidth="92"
+                                            <materialDesign:Chip Icon="UG"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.UgCountValue,Mode=TwoWay}" />
-                                        <materialDesign:Chip Icon="EX"  Margin="4" MinWidth="92"
+                                            <materialDesign:Chip Icon="EX"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.ExCountValue,Mode=TwoWay}" />
-                                        <materialDesign:Chip Icon="起"  Margin="4" MinWidth="92"
+                                            <materialDesign:Chip Icon="起"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.StartCountValue,Mode=TwoWay}" 
                                                Foreground="{Binding DeckStatsModel.StartForeground,Mode=TwoWay}"/>
-                                        <materialDesign:Chip Icon="生"  Margin="4" MinWidth="92"
+                                            <materialDesign:Chip Icon="生"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.LifeCountValue,Mode=TwoWay}" 
                                                Foreground="{Binding DeckStatsModel.LifeForeground,Mode=TwoWay}"/>
-                                        <materialDesign:Chip Icon="虚"  Margin="4" MinWidth="92"
+                                            <materialDesign:Chip Icon="虚"  Margin="4" MinWidth="92"
                                                Content="{Binding DeckStatsModel.VoidCountValue,Mode=TwoWay}" 
                                                Foreground="{Binding DeckStatsModel.VoidForeground,Mode=TwoWay}"/>
-                                    </StackPanel>
-                                </materialDesign:Card>
-                            </StackPanel>
-                        </DockPanel>
-                    </Grid>
-                </DockPanel>
+                                        </StackPanel>
+                                    </materialDesign:Card>
+                                </StackPanel>
+                            </DockPanel>
+                        </Grid>
+                    </DockPanel>
+                </Grid>
+                <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null">
+<!--                    <ContentControl Content="{Binding ActualViewModel}"/>-->
+                </materialDesign:DialogHost>
             </Grid>
+
         </Border>
     </UserControl>
 </Window>
+
+
 

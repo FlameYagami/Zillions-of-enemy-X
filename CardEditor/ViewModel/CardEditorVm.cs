@@ -62,7 +62,7 @@ namespace CardEditor.ViewModel
             var pack = CardEditorModel.Pack;
             if (pack.Equals(StringConst.NotApplicable) || pack.Contains(StringConst.Series))
             {
-                BaseDialogUtils.ShowDlgOk(StringConst.PackChoiceNone);
+                BaseDialogUtils.ShowDialogOk(StringConst.PackChoiceNone);
                 return;
             }
             var exportPath = DialogUtils.ShowExport(pack);
@@ -73,7 +73,7 @@ namespace CardEditor.ViewModel
             if (!SqliteUtils.FillDataToDataSet(sql, dataSet)) return;
 
             var isExport = ExcelHelper.ExportPackToExcel(exportPath, dataSet);
-            BaseDialogUtils.ShowDlg(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
+            BaseDialogUtils.ShowDialogAuto(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
         /// <summary>
@@ -84,15 +84,15 @@ namespace CardEditor.ViewModel
             // 卡编是否重复判断
             if (CardUtils.IsNumberExist(CardEditorModel.Number))
             {
-                BaseDialogUtils.ShowDlg(StringConst.CardIsExitst);
+                BaseDialogUtils.ShowDialogAuto(StringConst.CardIsExitst);
                 return;
             }
             // 添加确认
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.AddConfirm)) return;
+            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.AddConfirm)) return;
             // 数据库添加
             var addSql = GetAddSql(CardEditorModel);
             var isAdd = SqliteUtils.Execute(addSql);
-            BaseDialogUtils.ShowDlg(isAdd ? StringConst.AddSucceed : StringConst.AddFailed);
+            BaseDialogUtils.ShowDialogAuto(isAdd ? StringConst.AddSucceed : StringConst.AddFailed);
             // 数据库更新
             if (!isAdd) return;
             DataCache.DsAllCache.Clear();
@@ -109,15 +109,15 @@ namespace CardEditor.ViewModel
             var selectedItem = _cardPreviewVm.SelectedItem;
             if (null == selectedItem)
             {
-                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
+                BaseDialogUtils.ShowDialogAuto(StringConst.CardChioceNone);
                 return;
             }
             // 删除确认
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteConfirm)) return;
+            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteConfirm)) return;
             // 数据库删除
             var deleteSql = GetDeleteSql(selectedItem.Number);
             var isDelete = SqliteUtils.Execute(deleteSql);
-            BaseDialogUtils.ShowDlg(isDelete ? StringConst.DeleteSucceed : StringConst.DeleteFailed);
+            BaseDialogUtils.ShowDialogAuto(isDelete ? StringConst.DeleteSucceed : StringConst.DeleteFailed);
             // 数据库更新
             if (!isDelete) return;
             DataCache.DsAllCache.Clear();
@@ -135,15 +135,15 @@ namespace CardEditor.ViewModel
             var selectedItem = _cardPreviewVm.SelectedItem;
             if (null == selectedItem)
             {
-                BaseDialogUtils.ShowDlg(StringConst.CardChioceNone);
+                BaseDialogUtils.ShowDialogAuto(StringConst.CardChioceNone);
                 return;
             }
             // 修改确认
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.UpdateConfirm)) return;
+            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.UpdateConfirm)) return;
             // 数据库修改
             var updateSql = GetUpdateSql(CardEditorModel, selectedItem.Number);
             var isUpdate = SqliteUtils.Execute(updateSql);
-            BaseDialogUtils.ShowDlg(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+            BaseDialogUtils.ShowDialogAuto(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
             // 数据库更新
             if (!isUpdate) return;
             DataCache.DsAllCache.Clear();

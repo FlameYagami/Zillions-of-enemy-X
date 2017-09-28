@@ -32,6 +32,7 @@ namespace DeckEditor.ViewModel
             _deckExVm = deckExVm;
             _deckStatsVm = deckStatsVm;
 
+            DeckName = string.Empty;
             DeckNameList = new ObservableCollection<string>();
 
             CmdSave = new DelegateCommand {ExecuteCommand = Save_Click};
@@ -61,16 +62,16 @@ namespace DeckEditor.ViewModel
         /// <summary>
         ///     卡组删除事件
         /// </summary>
-        public void Delete_Click(object obj)
+        public async void Delete_Click(object obj)
         {
             if (DeckName.Equals(string.Empty)) return;
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteHint)) return;
+            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteHint)) return;
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) return;
             File.Delete(deckPath);
             ClearDeck();
             DeckName = string.Empty;
-            BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
+            BaseDialogUtils.ShowDialogAuto(StringConst.DeleteSucceed);
         }
 
         /// <summary>
@@ -88,7 +89,7 @@ namespace DeckEditor.ViewModel
         {
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) Save();
-            BaseDialogUtils.ShowDlg(StringConst.DeckNameExist);
+            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace DeckEditor.ViewModel
             }
             catch (Exception exception)
             {
-                BaseDialogUtils.ShowDlg(exception.Message);
+                BaseDialogUtils.ShowDialogAuto(exception.Message);
             }
         }
 
@@ -163,7 +164,7 @@ namespace DeckEditor.ViewModel
         {
             if (DeckName.Equals(string.Empty))
             {
-                BaseDialogUtils.ShowDlg(StringConst.DeckNameNone);
+                BaseDialogUtils.ShowDialogOk(StringConst.DeckNameNone);
                 return;
             }
             var deckPath = CardUtils.GetDeckPath(DeckName);
@@ -175,8 +176,22 @@ namespace DeckEditor.ViewModel
             deckNumberList.AddRange(_deckVm.ExModels.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.Serializer(deckNumberList));
             var isSave = FileUtils.SaveFile(deckPath, deckBuilder.ToString());
-            BaseDialogUtils.ShowDlg(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
+            BaseDialogUtils.ShowDialogAuto(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
         }
+
+
+
+        private void DialogAutoOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        {
+            //            Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith((t, _) => eventargs.Session.Close(false), null,
+            //                TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void DialogAutoClosingEventHandler(object sender, DialogClosingEventArgs eventargs)
+        {
+
+        }
+
 
         /// <summary>
         ///     获取卡组中生命恢复和虚空使者总数的集合

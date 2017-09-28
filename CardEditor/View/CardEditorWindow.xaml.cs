@@ -34,7 +34,7 @@ namespace CardEditor.View
             DbOperationView.DataContext = _dbOperationVm;
             if (!_dbOperationVm.UpdateDataset())
             {
-                BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
+                BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
                 return;
             }
             InitView();

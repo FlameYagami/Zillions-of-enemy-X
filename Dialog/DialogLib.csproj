@@ -41,6 +41,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.1.953, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.3.1.953\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -61,30 +69,33 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dlg.xaml">
+    <Page Include="DialogAuto.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DlgOk.xaml">
+    <Page Include="DialogOk.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DlgOkCancel.xaml">
+    <Page Include="DialogConfirm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Dlg.xaml.cs">
-      <DependentUpon>Dlg.xaml</DependentUpon>
+    <Compile Include="DialogAuto.xaml.cs">
+      <DependentUpon>DialogAuto.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DlgOk.xaml.cs">
-      <DependentUpon>DlgOk.xaml</DependentUpon>
+    <Compile Include="DialogConfirmVm.cs" />
+    <Compile Include="DialogAutoVm.cs" />
+    <Compile Include="DialogOk.xaml.cs">
+      <DependentUpon>DialogOk.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DlgOkCancel.xaml.cs">
-      <DependentUpon>DlgOkCancel.xaml</DependentUpon>
+    <Compile Include="DialogConfirm.xaml.cs">
+      <DependentUpon>DialogConfirm.xaml</DependentUpon>
     </Compile>
     <Compile Include="BaseDialogUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DialogOkVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -102,6 +113,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

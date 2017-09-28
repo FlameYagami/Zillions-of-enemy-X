@@ -55,10 +55,10 @@ namespace CardEditor.ViewModel
 
         public void Md5Cover_Click(object obj)
         {
-            if (!BaseDialogUtils.ShowDlgOkCancel("确认覆写?")) return;
+            if (!BaseDialogUtils.ShowDialogConfirm("确认覆写?")) return;
             var sqlList = SqlUtils.GetMd5SqlList();
             var succeed = SqliteUtils.Execute(sqlList);
-            BaseDialogUtils.ShowDlg(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+            BaseDialogUtils.ShowDialogAuto(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
 
         public void UpdateRestrictValue(int restrict)
