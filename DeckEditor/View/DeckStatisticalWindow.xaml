@@ -4,23 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:chart="clr-namespace:Visifire.Charts;assembly=WPFVisifire.Charts"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="卡组统计" Height="350" Width="650" WindowStartupLocation="CenterOwner" Style="{DynamicResource ChildWindow}">
-    <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Border Style="{DynamicResource BorderTitle}" ToolTip="右键退出"
-                    MouseRightButtonDown="Exit_MouseRightButtonDown">
-                <Label Content="卡组统计" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
-            </Border>
-            <Border Grid.Row="1" Style="{DynamicResource ControlBorder}" Margin="10" ToolTip="右键退出"
-                    MouseRightButtonDown="Exit_MouseRightButtonDown">
-                <chart:Chart Name="ChartDeck" Style="{DynamicResource ControlTransparent}" ScrollingEnabled="False"
-                             View3D="True" />
-            </Border>
-        </Grid>
-    </Border>
+        Style="{DynamicResource BaseWindow}"
+        Title="卡组统计" Height="320" Width="640" WindowStartupLocation="CenterOwner">
+    <UserControl mc:Ignorable="d" d:DesignHeight="320" d:DesignWidth="640" ToolTip="右键退出" MouseRightButtonDown="Exit_MouseRightButtonDown">
+        <Border Name="BorderView" Background="Wheat">
+            <DockPanel>
+                <materialDesign:ColorZone DockPanel.Dock="Top" Padding="12" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent" >
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" >卡组统计</TextBlock>
+                </materialDesign:ColorZone>
+                <materialDesign:Card Height="260" Margin="8" MouseRightButtonDown="Exit_MouseRightButtonDown">
+                    <chart:Chart Name="ChartDeck" Style="{DynamicResource ControlTransparent}" ScrollingEnabled="False" View3D="True" />
+                </materialDesign:Card>
+            </DockPanel>
+        </Border>
+    </UserControl>
+
 </Window>

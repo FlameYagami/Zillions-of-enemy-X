@@ -173,13 +173,8 @@
                                 </ListView>
                             </materialDesign:Card>
                         </Grid>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <materialDesign:Card Grid.Row="0" Width="Auto" Margin="0 8 0 8">
+                        <DockPanel>
+                            <materialDesign:Card DockPanel.Dock="Top" Width="Auto" Margin="0 8 0 8">
                                 <Grid Name="CardQueryView" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 4">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -273,7 +268,7 @@
                                     </ListBox>
                                 </Grid>
                             </materialDesign:Card>
-                            <DockPanel Grid.Row="1">
+                            <DockPanel DockPanel.Dock="Bottom" >
                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Name="DeckView">
                                     <materialDesign:Card Height="120" Width="600" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                                         <ListView ItemsSource="{Binding IgExModels}"
@@ -400,14 +395,11 @@
                                     </materialDesign:Card>
                                 </StackPanel>
                             </DockPanel>
-                        </Grid>
+                        </DockPanel>
                     </DockPanel>
                 </Grid>
-                <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null">
-<!--                    <ContentControl Content="{Binding ActualViewModel}"/>-->
-                </materialDesign:DialogHost>
+                <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null"/>
             </Grid>
-
         </Border>
     </UserControl>
 </Window>
