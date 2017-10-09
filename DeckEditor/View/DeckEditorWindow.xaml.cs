@@ -30,7 +30,7 @@ namespace DeckEditor.View
         public MainWindow()
         {
             InitializeComponent();
-
+            LogUtils.Show();
             if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
             {
                 if (!Directory.Exists(PathManager.DeckFolderPath))

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using CardEditor.View;
 using Dialog;
 
 namespace CardEditor.Utils
@@ -20,8 +19,8 @@ namespace CardEditor.Utils
 
         public static void ShowPackCover()
         {
-            var dialog = new PackCoverWindow {Owner = GetTopWindow()};
-            dialog.Show();
+//            var dialog = new PackCoverWindow {Owner = GetTopWindow()};
+//            dialog.Show();
         }
     }
 }

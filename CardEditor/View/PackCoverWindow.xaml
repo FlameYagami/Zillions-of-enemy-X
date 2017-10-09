@@ -6,15 +6,15 @@
         xmlns:local="clr-namespace:CardEditor.View"
         mc:Ignorable="d"
         Title="卡包覆写" Height="200" Width="300" WindowStartupLocation="CenterOwner"
-        Style="{DynamicResource ChildWindow}">
-    <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
+        >
+    <Border  Name="BorderView" Background="#1A1A1A">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="5*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Border Style="{DynamicResource BorderTitle}" Loaded="Border_Loaded">
+            <Border  Loaded="Border_Loaded">
                 <Grid Name="GridTitle" Height="30">
                     <Label Content="卡包覆写" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
                 </Grid>
@@ -31,7 +31,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button Name="BtnFileOpen" Click="FileOpen_Click" Content="文件选择" />
-                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
+                    <Border Grid.Column="1" Margin="5,2.5,5,2.5"
                             Background="White">
                         <TextBox Name="TxtFilePath" Grid.Column="1" Style="{DynamicResource ControlTransparent}"
                                  VerticalContentAlignment="Center" />
@@ -44,7 +44,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="卡包名称:" Foreground="White" Margin="5,2.5,5,2.5"
                            HorizontalContentAlignment="Center" />
-                    <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
+                    <Border  Grid.Column="1" Margin="5,2.5,5,2.5"
                             Background="White">
                         <TextBox Grid.Column="1" Name="TxtPackName" Style="{DynamicResource ControlTransparent}"
                                  VerticalContentAlignment="Center" />
@@ -56,7 +56,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Content="字段:" Foreground="White" Margin="5,2.5,5,2.5" HorizontalContentAlignment="Center" />
-                    <Border Grid.Column="1" Grid.RowSpan="2" Style="{DynamicResource ControlBorder}"
+                    <Border Grid.Column="1" Grid.RowSpan="2" 
                             Margin="5,2.5,5,2.5">
                         <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstColumn"
                                  SelectionMode="Multiple"

@@ -4,8 +4,14 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Markup;
+using System.Windows.Threading;
 using DeckEditor.Utils;
 using Dialog;
 using MaterialDesignThemes.Wpf;
@@ -39,7 +45,7 @@ namespace DeckEditor.ViewModel
             CmdResave = new DelegateCommand {ExecuteCommand = Resave_Click};
             CmdClear = new DelegateCommand {ExecuteCommand = Clear_Click};
             CmdDelete = new DelegateCommand {ExecuteCommand = Delete_Click};
-            CmdDeckStats = new DelegateCommand { ExecuteCommand = DeckStats_Click };
+            CmdDeckStats = new DelegateCommand {ExecuteCommand = DeckStats_Click};
         }
 
         public string DeckName
@@ -85,11 +91,19 @@ namespace DeckEditor.ViewModel
         /// <summary>
         ///     卡组另存事件
         /// </summary>
-        public void Resave_Click(object obj)
+        public async void Resave_Click(object obj)
         {
-            var deckPath = CardUtils.GetDeckPath(DeckName);
-            if (!File.Exists(deckPath)) Save();
-            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
+            await DialogHost.Show(new DialogEditor(DeckName),
+                (sender, eventArgs) =>
+                {
+
+                }, (sender, eventArgs) =>
+                {
+
+                });
+//            var deckPath = CardUtils.GetDeckPath(DeckName);
+//            if (!File.Exists(deckPath)) Save();
+//            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
         }
 
         /// <summary>
@@ -121,17 +135,10 @@ namespace DeckEditor.ViewModel
             ClearDeck();
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) return;
-            try
-            {
-                var numberListString = FileUtils.GetFileContent(deckPath);
-                var numberExList = JsonUtils.Deserialize<List<string>>(numberListString);
-                foreach (var numberEx in numberExList)
-                    AddCard(numberEx);
-            }
-            catch (Exception exception)
-            {
-                BaseDialogUtils.ShowDialogAuto(exception.Message);
-            }
+            var numberListString = FileUtils.GetFileContent(deckPath);
+            var numberExList = JsonUtils.Deserialize<List<string>>(numberListString);
+            foreach (var numberEx in numberExList)
+                AddCard(numberEx);
         }
 
         public void DeckStats_Click(object obj)
@@ -178,20 +185,6 @@ namespace DeckEditor.ViewModel
             var isSave = FileUtils.SaveFile(deckPath, deckBuilder.ToString());
             BaseDialogUtils.ShowDialogAuto(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
         }
-
-
-
-        private void DialogAutoOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
-        {
-            //            Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith((t, _) => eventargs.Session.Close(false), null,
-            //                TaskScheduler.FromCurrentSynchronizationContext());
-        }
-
-        private void DialogAutoClosingEventHandler(object sender, DialogClosingEventArgs eventargs)
-        {
-
-        }
-
 
         /// <summary>
         ///     获取卡组中生命恢复和虚空使者总数的集合

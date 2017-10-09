@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CardEditor.Utils;
 using CardEditor.ViewModel;
 using Dialog;
 using Wrapper.Constant;
@@ -11,11 +12,10 @@ using Wrapper.Utils;
 namespace CardEditor.View
 {
     /// <summary>
-    ///     MainWindow.xaml 的交互逻辑
+    /// MainWindow.xaml 的交互逻辑
     /// </summary>
     public partial class MainWindow
     {
-        private AbilityTypeVm _abilityTypeVm;
         private CardEditorVm _cardEditorVm;
         private CardPictureVm _cardPictureVm;
         private CardPreviewVm _cardPreviewVm;
@@ -44,11 +44,9 @@ namespace CardEditor.View
         {
             _cardPreviewVm = new CardPreviewVm();
             _cardPictureVm = new CardPictureVm();
-            _abilityTypeVm = new AbilityTypeVm();
             _externQueryVm = new ExternQueryVm();
-            _cardEditorVm = new CardEditorVm(_abilityTypeVm, _externQueryVm, _cardPreviewVm, _cardPictureVm);
+            _cardEditorVm = new CardEditorVm(_externQueryVm, _cardPreviewVm, _cardPictureVm);
 
-            AbilityTypeView.DataContext = _abilityTypeVm;
             ExternQueryView.DataContext = _externQueryVm;
             CardPreviewView.DataContext = _cardPreviewVm;
             CardPictureView.DataContext = _cardPictureVm;
@@ -115,6 +113,19 @@ namespace CardEditor.View
         private void CmdMode_OnDropDownClosed(object sender, EventArgs e)
         {
             _cardEditorVm.Query_Click(null);
+        }
+
+        private void PackCover_OnClick(object sender, RoutedEventArgs e)
+        {
+            DialogUtils.ShowPackCover();
+        }
+
+        private async void Md5Cover_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!await BaseDialogUtils.ShowDialogConfirm("确认覆写?")) return;
+            var sqlList = SqlUtils.GetMd5SqlList();
+            var succeed = SqliteUtils.Execute(sqlList);
+            BaseDialogUtils.ShowDialogAuto(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
     }
 }

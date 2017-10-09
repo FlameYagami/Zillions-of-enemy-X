@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardEditor", "CardEditor\CardEditor.csproj", "{E01E4954-0711-48D4-B445-0C69B2E92C29}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckEditor", "DeckEditor\DeckEditor.csproj", "{1D8369EE-B78D-4105-8360-807D7FF2421F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogLib", "Dialog\DialogLib.csproj", "{81892697-EAEA-4A66-9C5B-D81D8CC3F9F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper", "Wrapper\Wrapper.csproj", "{96748966-BE90-425F-A8C8-E8708E45B77E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardEditor", "CardEditor\CardEditor.csproj", "{C9445833-2411-4F1B-A611-2B4EE2005E56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E01E4954-0711-48D4-B445-0C69B2E92C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E01E4954-0711-48D4-B445-0C69B2E92C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E01E4954-0711-48D4-B445-0C69B2E92C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E01E4954-0711-48D4-B445-0C69B2E92C29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D8369EE-B78D-4105-8360-807D7FF2421F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D8369EE-B78D-4105-8360-807D7FF2421F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D8369EE-B78D-4105-8360-807D7FF2421F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{96748966-BE90-425F-A8C8-E8708E45B77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96748966-BE90-425F-A8C8-E8708E45B77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96748966-BE90-425F-A8C8-E8708E45B77E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9445833-2411-4F1B-A611-2B4EE2005E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9445833-2411-4F1B-A611-2B4EE2005E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9445833-2411-4F1B-A611-2B4EE2005E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9445833-2411-4F1B-A611-2B4EE2005E56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

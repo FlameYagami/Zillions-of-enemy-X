@@ -398,7 +398,7 @@
                         </DockPanel>
                     </DockPanel>
                 </Grid>
-                <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null"/>
+<!--                <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null"/>-->
             </Grid>
         </Border>
     </UserControl>

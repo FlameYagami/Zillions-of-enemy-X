@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,37 +66,52 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\DialogEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\DialogProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DialogAuto.xaml">
+    <Page Include="View\DialogAuto.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DialogOk.xaml">
+    <Page Include="View\DialogOk.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DialogConfirm.xaml">
+    <Page Include="View\DialogConfirm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="DialogAuto.xaml.cs">
+    <Compile Include="ViewModel\DialogEditorVm.cs" />
+    <Compile Include="View\DialogAuto.xaml.cs">
       <DependentUpon>DialogAuto.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DialogConfirmVm.cs" />
-    <Compile Include="DialogAutoVm.cs" />
-    <Compile Include="DialogOk.xaml.cs">
+    <Compile Include="ViewModel\DialogConfirmVm.cs" />
+    <Compile Include="ViewModel\DialogAutoVm.cs" />
+    <Compile Include="View\DialogEditor.xaml.cs">
+      <DependentUpon>DialogEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogOk.xaml.cs">
       <DependentUpon>DialogOk.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DialogConfirm.xaml.cs">
+    <Compile Include="View\DialogConfirm.xaml.cs">
       <DependentUpon>DialogConfirm.xaml</DependentUpon>
     </Compile>
     <Compile Include="BaseDialogUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DialogOkVm.cs" />
+    <Compile Include="ViewModel\DialogOkVm.cs" />
+    <Compile Include="View\DialogProgress.xaml.cs">
+      <DependentUpon>DialogProgress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +129,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -120,6 +137,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

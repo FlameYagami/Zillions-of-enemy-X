@@ -19,14 +19,10 @@ namespace CardEditor.ViewModel
         {
             ModeList = Dic.ModeDic.Values.ToList();
             RestrctList = CardUtils.GetRestrictList();
-            CmdMd5Cover = new DelegateCommand {ExecuteCommand = Md5Cover_Click};
-            CmdPackCover = new DelegateCommand {ExecuteCommand = PackCover_Click};
         }
 
         public List<string> RestrctList { get; set; }
         public List<string> ModeList { get; set; }
-        public DelegateCommand CmdMd5Cover { get; set; }
-        public DelegateCommand CmdPackCover { get; set; }
 
         public string ModeValue
         {
@@ -46,19 +42,6 @@ namespace CardEditor.ViewModel
                 _restrictValue = value;
                 OnPropertyChanged(nameof(RestrictValue));
             }
-        }
-
-        public void PackCover_Click(object obj)
-        {
-            DialogUtils.ShowPackCover();
-        }
-
-        public void Md5Cover_Click(object obj)
-        {
-            if (!BaseDialogUtils.ShowDialogConfirm("确认覆写?")) return;
-            var sqlList = SqlUtils.GetMd5SqlList();
-            var succeed = SqliteUtils.Execute(sqlList);
-            BaseDialogUtils.ShowDialogAuto(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
 
         public void UpdateRestrictValue(int restrict)

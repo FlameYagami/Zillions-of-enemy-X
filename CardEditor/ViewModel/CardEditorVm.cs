@@ -16,15 +16,13 @@ namespace CardEditor.ViewModel
 {
     public class CardEditorVm : BaseModel
     {
-        private readonly AbilityTypeVm _abilityTypeVm;
         private readonly CardPictureVm _cardPictureVm;
         private readonly CardPreviewVm _cardPreviewVm;
         private readonly ExternQueryVm _externOpertaionVm;
 
-        public CardEditorVm(AbilityTypeVm abilityTypeVm, ExternQueryVm externOpertaionVm, CardPreviewVm cardPreviewVm,
+        public CardEditorVm(ExternQueryVm externOpertaionVm, CardPreviewVm cardPreviewVm,
             CardPictureVm cardPictureVm)
         {
-            _abilityTypeVm = abilityTypeVm;
             _externOpertaionVm = externOpertaionVm;
             _cardPreviewVm = cardPreviewVm;
             _cardPictureVm = cardPictureVm;
@@ -38,11 +36,12 @@ namespace CardEditor.ViewModel
 
             RaceList = new ObservableCollection<string>();
             PackList = new ObservableCollection<string>();
+            AbilityTypeModels = new ObservableCollection<AbilityModel>();
             CardUtils.GetPackList().ForEach(PackList.Add);
             CardUtils.GetPartRace(StringConst.NotApplicable).ForEach(RaceList.Add);
 
             CardEditorModel = new CardEditorModel();
-            _abilityTypeVm.UpdateAbilityType(CardEditorModel.AbilityTypeModels);
+            UpdateAbilityType(CardEditorModel.AbilityTypeModels);
         }
 
         public DelegateCommand CmdQuery { get; set; }
@@ -55,7 +54,7 @@ namespace CardEditor.ViewModel
         public CardEditorModel CardEditorModel { get; set; }
         public ObservableCollection<string> PackList { get; set; }
         public ObservableCollection<string> RaceList { get; set; }
-
+        public ObservableCollection<AbilityModel> AbilityTypeModels { get; set; }
 
         public void Export_Click(object obj)
         {
@@ -79,7 +78,7 @@ namespace CardEditor.ViewModel
         /// <summary>
         ///     卡牌添加事件
         /// </summary>
-        public void Add_Click(object obj)
+        public async void Add_Click(object obj)
         {
             // 卡编是否重复判断
             if (CardUtils.IsNumberExist(CardEditorModel.Number))
@@ -88,7 +87,7 @@ namespace CardEditor.ViewModel
                 return;
             }
             // 添加确认
-            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.AddConfirm)) return;
+            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.AddConfirm)) return;
             // 数据库添加
             var addSql = GetAddSql(CardEditorModel);
             var isAdd = SqliteUtils.Execute(addSql);
@@ -103,7 +102,7 @@ namespace CardEditor.ViewModel
         /// <summary>
         ///     卡牌删除事件
         /// </summary>
-        public void Delete_Click(object obj)
+        public async void Delete_Click(object obj)
         {
             // 选择判空
             var selectedItem = _cardPreviewVm.SelectedItem;
@@ -113,7 +112,7 @@ namespace CardEditor.ViewModel
                 return;
             }
             // 删除确认
-            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteConfirm)) return;
+            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteConfirm)) return;
             // 数据库删除
             var deleteSql = GetDeleteSql(selectedItem.Number);
             var isDelete = SqliteUtils.Execute(deleteSql);
@@ -126,10 +125,16 @@ namespace CardEditor.ViewModel
             _cardPreviewVm.MemoryQueryModel = null;
         }
 
+        public void UpdateAbilityType(ObservableCollection<AbilityModel> abilityTypeModels)
+        {
+            AbilityTypeModels = abilityTypeModels;
+            OnPropertyChanged(nameof(AbilityTypeModels));
+        }
+
         /// <summary>
         ///     卡牌更新事件
         /// </summary>
-        public void Update_Click(object obj)
+        public async void Update_Click(object obj)
         {
             // 选择判空
             var selectedItem = _cardPreviewVm.SelectedItem;
@@ -139,7 +144,7 @@ namespace CardEditor.ViewModel
                 return;
             }
             // 修改确认
-            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.UpdateConfirm)) return;
+            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.UpdateConfirm)) return;
             // 数据库修改
             var updateSql = GetUpdateSql(CardEditorModel, selectedItem.Number);
             var isUpdate = SqliteUtils.Execute(updateSql);
@@ -164,7 +169,7 @@ namespace CardEditor.ViewModel
                 CardEditorModel.Pack = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Pack;
                 CardEditorModel.Number = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Number;
             }
-            _abilityTypeVm.UpdateAbilityType(CardEditorModel.AbilityTypeModels);
+            UpdateAbilityType(CardEditorModel.AbilityTypeModels);
         }
 
         /// <summary>

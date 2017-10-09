@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Dialog.ViewModel;
 
-namespace Dialog
+namespace Dialog.View
 {
     /// <summary>
     ///     DialogConfirm.xaml 的交互逻辑
