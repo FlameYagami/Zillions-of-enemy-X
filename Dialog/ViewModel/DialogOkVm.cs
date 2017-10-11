@@ -2,11 +2,11 @@
 {
     public class DialogOkVm
     {
-        public string Content { get; set; }
-
         public DialogOkVm(string content)
         {
             Content = content;
         }
+
+        public string Content { get; set; }
     }
 }

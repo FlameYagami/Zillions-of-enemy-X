@@ -8,6 +8,10 @@ namespace CardEditor.Model
     public class CardEditorModel : BaseModel
     {
         private string _ability;
+
+        private ObservableCollection<AbilityModel> _abilityDetailModels;
+
+        private ObservableCollection<AbilityModel> _abilityTypeModels;
         private string _camp;
         private string _cname;
         private bool _costEnabled;
@@ -242,8 +246,25 @@ namespace CardEditor.Model
             }
         }
 
-        public ObservableCollection<AbilityModel> AbilityTypeModels { get; set; }
-        public ObservableCollection<AbilityModel> AbilityDetailModels { get; set; }
+        public ObservableCollection<AbilityModel> AbilityTypeModels
+        {
+            get { return _abilityTypeModels; }
+            set
+            {
+                _abilityTypeModels = value;
+                OnPropertyChanged(nameof(AbilityTypeModels));
+            }
+        }
+
+        public ObservableCollection<AbilityModel> AbilityDetailModels
+        {
+            get { return _abilityDetailModels; }
+            set
+            {
+                _abilityDetailModels = value;
+                OnPropertyChanged(nameof(AbilityDetailModels));
+            }
+        }
 
         private void InitAbilityTypeModels()
         {

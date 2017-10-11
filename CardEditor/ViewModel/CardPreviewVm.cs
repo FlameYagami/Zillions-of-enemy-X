@@ -66,22 +66,19 @@ namespace CardEditor.ViewModel
                 }).ToList();
             tempModels.AddRange(tempPreviewModleList);
             CardPreviewModels.Clear();
-            RestrictUtils.GetRestrictCardList(tempModels, cardQueryMdoel.Restrict).ForEach(CardPreviewModels.Add);
+            RestrictUtils.GetRestrictCardList(tempModels, cardQueryMdoel?.Restrict ?? -1).ForEach(CardPreviewModels.Add);
             // 更新统计
-            CardPreviewCountValue = StringConst.QueryResult + CardPreviewModels.Count;
+            CardPreviewCountValue = CardPreviewModels.Count.ToString();
             OnPropertyChanged(nameof(CardPreviewCountValue));
-//            // 跟踪历史
-//            if (MemoryQueryModel.Number.Equals(string.Empty)) return;
-//            var firstOrDefault = CardPreviewModels
-//                .Select((previewModel, index) => new {previewModel.Number, Index = index})
-//                .FirstOrDefault(i => i.Number.Equals(MemoryQueryModel.Number));
-//            if (null == firstOrDefault) return;
-//            var position = firstOrDefault.Index;
-//            if (position == -1) return;
-//            LvCardPreview.SelectedIndex = position;
-//            LvCardPreview.ScrollIntoView(LvCardPreview.SelectedItem);
-//            var item = LvCardPreview.ItemContainerGenerator.ContainerFromIndex(position) as ListViewItem;
-//            item?.Focus();
+            // 跟踪历史
+            if (MemoryQueryModel.CardEditorModel.Number.Equals(string.Empty)) return;
+            var firstOrDefault = CardPreviewModels
+                .Select((previewModel, index) => new {previewModel.Number, Index = index})
+                .FirstOrDefault(i => i.Number.Equals(MemoryQueryModel.CardEditorModel.Number));
+            if (null == firstOrDefault) return;
+            var position = firstOrDefault.Index;
+            if (position == -1) return;
+            _selectedItem = CardPreviewModels[position];
         }
 
         /// <summary>
@@ -134,16 +131,19 @@ namespace CardEditor.ViewModel
             builder.Append(SqlUtils.GetAccurateSql(card.Race, SqliteConst.ColumnRace)); // 种族
             builder.Append(SqlUtils.GetAccurateSql(card.Sign, SqliteConst.ColumnSign)); // 标记
             builder.Append(SqlUtils.GetAccurateSql(card.Rare, SqliteConst.ColumnRare)); // 罕贵
+
             builder.Append(SqlUtils.GetSimilarSql(card.CName, SqliteConst.ColumnCName)); // 卡名
             builder.Append(SqlUtils.GetSimilarSql(card.JName, SqliteConst.ColumnJName)); // 日名
             builder.Append(SqlUtils.GetSimilarSql(card.Illust, SqliteConst.ColumnIllust)); // 画师
-            builder.Append(SqlUtils.GetPackSql(card.Pack, SqliteConst.ColumnPack)); // 卡包
             builder.Append(SqlUtils.GetSimilarSql(card.Number, SqliteConst.ColumnNumber)); // 卡编
+            builder.Append(SqlUtils.GetSimilarSql(card.Ability, SqliteConst.ColumnAbility)); // 能力
+
             builder.Append(SqlUtils.GetIntervalSql(card.CostValue, SqliteConst.ColumnCost)); // 费用
             builder.Append(SqlUtils.GetIntervalSql(card.PowerValue, SqliteConst.ColumnPower)); // 力量
+
+            builder.Append(SqlUtils.GetPackSql(card.Pack, SqliteConst.ColumnPack)); // 卡包
             builder.Append(SqlUtils.GetAbilityTypeSql(card.AbilityTypeModels.ToList())); //  能力类型
             builder.Append(SqlUtils.GetAbilityDetailSql(card.AbilityDetailModels.ToList())); // 详细能力
-            builder.Append(SqlUtils.GetSimilarSql(card.Ability, SqliteConst.ColumnAbility)); // 详细能力
             builder.Append(SqlUtils.GetFooterSql(preOrderType)); // 完整的查询语句
             return builder.ToString();
         }

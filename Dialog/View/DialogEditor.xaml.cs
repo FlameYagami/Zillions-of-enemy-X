@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Dialog.ViewModel;
+﻿using Dialog.ViewModel;
 
 namespace Dialog
 {

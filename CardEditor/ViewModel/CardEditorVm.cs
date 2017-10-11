@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -34,14 +33,8 @@ namespace CardEditor.ViewModel
             CmdDelete = new DelegateCommand {ExecuteCommand = Delete_Click};
             CmdExport = new DelegateCommand {ExecuteCommand = Export_Click};
 
-            RaceList = new ObservableCollection<string>();
-            PackList = new ObservableCollection<string>();
-            AbilityTypeModels = new ObservableCollection<AbilityModel>();
-            CardUtils.GetPackList().ForEach(PackList.Add);
-            CardUtils.GetPartRace(StringConst.NotApplicable).ForEach(RaceList.Add);
-
             CardEditorModel = new CardEditorModel();
-            UpdateAbilityType(CardEditorModel.AbilityTypeModels);
+            ItemsSourceModel = new ItemsSourceModel();
         }
 
         public DelegateCommand CmdQuery { get; set; }
@@ -52,9 +45,7 @@ namespace CardEditor.ViewModel
         public DelegateCommand CmdExport { get; set; }
 
         public CardEditorModel CardEditorModel { get; set; }
-        public ObservableCollection<string> PackList { get; set; }
-        public ObservableCollection<string> RaceList { get; set; }
-        public ObservableCollection<AbilityModel> AbilityTypeModels { get; set; }
+        public ItemsSourceModel ItemsSourceModel { get; set; }
 
         public void Export_Click(object obj)
         {
@@ -125,12 +116,6 @@ namespace CardEditor.ViewModel
             _cardPreviewVm.MemoryQueryModel = null;
         }
 
-        public void UpdateAbilityType(ObservableCollection<AbilityModel> abilityTypeModels)
-        {
-            AbilityTypeModels = abilityTypeModels;
-            OnPropertyChanged(nameof(AbilityTypeModels));
-        }
-
         /// <summary>
         ///     卡牌更新事件
         /// </summary>
@@ -164,12 +149,9 @@ namespace CardEditor.ViewModel
             CardEditorModel = new CardEditorModel();
             OnPropertyChanged(nameof(CardEditorModel));
             var mode = _externOpertaionVm.ModeValue;
-            if (CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor))
-            {
-                CardEditorModel.Pack = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Pack;
-                CardEditorModel.Number = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Number;
-            }
-            UpdateAbilityType(CardEditorModel.AbilityTypeModels);
+            if (!CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor)) return;
+            CardEditorModel.Pack = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Pack;
+            CardEditorModel.Number = _cardPreviewVm.MemoryQueryModel.CardEditorModel.Number;
         }
 
         /// <summary>
@@ -201,9 +183,7 @@ namespace CardEditor.ViewModel
             // 类型判断,玩家、事件不改变种族默认值（此时种族处于不可编辑状态）
             if (CardEditorModel.Type.Equals(StringConst.TypePlayer) ||
                 CardEditorModel.Type.Equals(StringConst.TypeEvent)) return;
-            RaceList.Clear();
-            CardUtils.GetPartRace(CardEditorModel.Camp).ForEach(RaceList.Add);
-            OnPropertyChanged(nameof(RaceList));
+            ItemsSourceModel.UpdateRaceList(CardEditorModel.Camp);
             CardEditorModel.Race = StringConst.NotApplicable;
             OnPropertyChanged(nameof(CardEditorModel));
         }
@@ -213,6 +193,7 @@ namespace CardEditor.ViewModel
         /// </summary>
         public void UpdateTypeLinkage()
         {
+            if (_cardPreviewVm.IsPreviewChanged) return;
             switch (CardEditorModel.Type)
             {
                 case StringConst.NotApplicable:

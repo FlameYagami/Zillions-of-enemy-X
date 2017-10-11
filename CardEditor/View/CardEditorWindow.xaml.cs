@@ -12,7 +12,7 @@ using Wrapper.Utils;
 namespace CardEditor.View
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    ///     MainWindow.xaml 的交互逻辑
     /// </summary>
     public partial class MainWindow
     {

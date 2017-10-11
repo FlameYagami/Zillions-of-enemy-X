@@ -83,6 +83,7 @@
     <Compile Include="Model\CardPreviewModel.cs" />
     <Compile Include="Model\DeckExModel.cs" />
     <Compile Include="Model\DeckModel.cs" />
+    <Compile Include="Model\ItemsSourceModel.cs" />
     <Compile Include="Model\RestricModel.cs" />
     <Compile Include="PathManager.cs" />
     <Compile Include="Properties\Annotations.cs" />

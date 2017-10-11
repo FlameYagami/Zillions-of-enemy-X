@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DeckEditor.Model;
+﻿using DeckEditor.Model;
 using DeckEditor.Utils;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
-using Wrapper.Utils;
 
 namespace DeckEditor.ViewModel
 {
@@ -21,21 +18,16 @@ namespace DeckEditor.ViewModel
             CmdReset = new DelegateCommand {ExecuteCommand = Reset_Click};
             CmdAlilityDetail = new DelegateCommand {ExecuteCommand = AlilityDetail_Click};
 
-            PackList = CardUtils.GetPackList();
-            IllustList = CardUtils.GetIllustList();
-            RaceList = new ObservableCollection<string>();
-            CardUtils.GetPartRace(StringConst.NotApplicable).ForEach(RaceList.Add);
-
             CardQueryModel = new CardQueryModel();
+            ItemsSourceModel = new ItemsSourceModel();
         }
 
         public CardQueryModel CardQueryModel { get; set; }
+        public ItemsSourceModel ItemsSourceModel { get; set; }
+
         public DelegateCommand CmdQuery { get; set; }
         public DelegateCommand CmdReset { get; set; }
         public DelegateCommand CmdAlilityDetail { get; set; }
-        public List<string> PackList { get; set; }
-        public List<string> IllustList { get; set; }
-        public ObservableCollection<string> RaceList { get; set; }
 
         /// <summary>
         ///     详细能力查询事件
@@ -69,9 +61,7 @@ namespace DeckEditor.ViewModel
         public void UpdateRaceList()
         {
             OnPropertyChanged(nameof(CardQueryModel));
-            RaceList.Clear();
-            CardUtils.GetPartRace(CardQueryModel.Camp).ForEach(RaceList.Add);
-            OnPropertyChanged(nameof(RaceList));
+            ItemsSourceModel.UpdateRaceList(CardQueryModel.Camp);
             CardQueryModel.Race = StringConst.NotApplicable;
             OnPropertyChanged(nameof(CardQueryModel));
         }

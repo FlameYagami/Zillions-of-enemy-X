@@ -24,10 +24,6 @@ namespace CardEditor.View
             InitializeComponent();
         }
 
-        private void Border_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();

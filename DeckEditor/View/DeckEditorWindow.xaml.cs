@@ -3,12 +3,8 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using DeckEditor.ViewModel;
 using Dialog;
-using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -22,9 +18,9 @@ namespace DeckEditor.View
         private CardPictureVm _cardPictureVm;
         private CardPreviewVm _cardPreviewVm;
         private CardQueryVm _cardQueryVm;
+        private DeckExVm _deckExVm;
         private DeckOperationVm _deckOperationVm;
         private DeckStatsVm _deckStatsVm;
-        private DeckExVm _deckExVm;
         private PlayerVm _playerVm;
 
         public MainWindow()

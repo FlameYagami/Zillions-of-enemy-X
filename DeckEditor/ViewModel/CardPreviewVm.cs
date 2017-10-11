@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using DeckEditor.Model;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -84,7 +83,7 @@ namespace DeckEditor.ViewModel
             }
             CardPreviewModels.Clear();
             tempList.ForEach(CardPreviewModels.Add);
-            CardPreviewCountValue = StringConst.QueryResult + CardPreviewModels.Count;
+            CardPreviewCountValue = CardPreviewModels.Count.ToString();
         }
 
         /// <summary>

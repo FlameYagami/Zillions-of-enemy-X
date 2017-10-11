@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
 using DeckEditor.ViewModel;
 using Wrapper.Model;
 

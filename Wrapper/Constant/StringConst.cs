@@ -14,7 +14,6 @@
         public const string NotApplicable = "(N/A)";
         public const string Hyphen = "-";
         public const string Series = "系列";
-        public const string QueryResult = "检索结果: ";
         public const string DeckExtension = ".zx";
         public const string ImageExtension = ".jpg";
         public const string FileNotExits = "文件->不存在";
@@ -77,6 +76,5 @@
         public const string DeckNameNone = "卡组名称->未输入";
         public const string DeckNameExist = "卡组名称->已存在";
         public const string ResaveSucceed = "另存->成功";
-        public const string ImgAreaThumbnail = "ImgAreaThumbnail";
     }
 }

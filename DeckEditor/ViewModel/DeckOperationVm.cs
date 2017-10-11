@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Markup;
-using System.Windows.Threading;
 using DeckEditor.Utils;
 using Dialog;
-using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -24,9 +15,9 @@ namespace DeckEditor.ViewModel
 {
     public class DeckOperationVm : BaseModel
     {
+        private readonly DeckExVm _deckExVm;
         private readonly DeckStatsVm _deckStatsVm;
         private readonly DeckVm _deckVm;
-        private readonly DeckExVm _deckExVm;
         private readonly PlayerVm _playerVm;
 
         private string _deckName;
@@ -91,19 +82,11 @@ namespace DeckEditor.ViewModel
         /// <summary>
         ///     卡组另存事件
         /// </summary>
-        public async void Resave_Click(object obj)
+        public void Resave_Click(object obj)
         {
-            await DialogHost.Show(new DialogEditor(DeckName),
-                (sender, eventArgs) =>
-                {
-
-                }, (sender, eventArgs) =>
-                {
-
-                });
-//            var deckPath = CardUtils.GetDeckPath(DeckName);
-//            if (!File.Exists(deckPath)) Save();
-//            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
+            var deckPath = CardUtils.GetDeckPath(DeckName);
+            if (!File.Exists(deckPath)) Save();
+            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
         }
 
         /// <summary>
@@ -195,7 +178,8 @@ namespace DeckEditor.ViewModel
             var startCount = _deckVm.UgModels.AsParallel().Count(deckEntity => CardUtils.IsStart(deckEntity.NumberEx));
             var lifeCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx));
             var voidCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx));
-            _deckStatsVm.UpdateView(_deckVm.IgModels.Count, _deckVm.UgModels.Count, _deckVm.ExModels.Count, startCount, lifeCount, voidCount);
+            _deckStatsVm.UpdateView(_deckVm.IgModels.Count, _deckVm.UgModels.Count, _deckVm.ExModels.Count, startCount,
+                lifeCount, voidCount);
         }
 
         /// <summary>
@@ -252,7 +236,9 @@ namespace DeckEditor.ViewModel
         private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)
         {
             var thumbnailPath = CardUtils.GetThumbnailPath(numberEx);
-            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsEnumerable().AsParallel()
+            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>()
+                .AsEnumerable()
+                .AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[SqliteConst.ColumnNumber].ToString()));
             var md5 = row[SqliteConst.ColumnMd5].ToString();
             var name = row[SqliteConst.ColumnCName].ToString();

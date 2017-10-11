@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
 using DeckEditor.View;
 using Wrapper;
 using Wrapper.Model;
@@ -9,16 +8,18 @@ namespace DeckEditor.ViewModel
     public class AbilityDetailVm : BaseModel
     {
         private readonly AbilityDetailWindow _abilityDetailWindow;
-        public DelegateCommand CmdOk { get; set; }
-        public DelegateCommand CmdCancel { get; set; }
 
-        public AbilityDetailVm(AbilityDetailWindow abilityDetailWindow,ObservableCollection<AbilityModel> abilityDetailModels)
+        public AbilityDetailVm(AbilityDetailWindow abilityDetailWindow,
+            ObservableCollection<AbilityModel> abilityDetailModels)
         {
             _abilityDetailWindow = abilityDetailWindow;
             AbilityDetailModels = abilityDetailModels;
-            CmdOk = new DelegateCommand {ExecuteCommand = BtnOK_Click };
-            CmdCancel = new DelegateCommand { ExecuteCommand = BtnCancel_Click };
+            CmdOk = new DelegateCommand {ExecuteCommand = BtnOK_Click};
+            CmdCancel = new DelegateCommand {ExecuteCommand = BtnCancel_Click};
         }
+
+        public DelegateCommand CmdOk { get; set; }
+        public DelegateCommand CmdCancel { get; set; }
 
         public ObservableCollection<AbilityModel> AbilityDetailModels { get; set; }
 

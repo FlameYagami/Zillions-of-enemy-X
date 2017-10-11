@@ -5,38 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource BaseWindow}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
         mc:Ignorable="d"
-        Title="能力分类" Height="268" Width="560" WindowStartupLocation="CenterOwner">
-    <UserControl mc:Ignorable="d" d:DesignHeight="560" d:DesignWidth="268">
-        <Border Background="Wheat">
-            <StackPanel Orientation="Vertical">
-                <materialDesign:ColorZone Padding="12" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent" >
-                    <DockPanel>
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16" >能力分类</TextBlock>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-                <materialDesign:Card Margin="8" Height="160">
-                    <ListBox Style="{DynamicResource ControlTransparent}"
+        Title="能力分类" Height="280" Width="560" WindowStartupLocation="CenterOwner">
+    <UserControl mc:Ignorable="d" d:DesignHeight="560" d:DesignWidth="280">
+        <DockPanel>
+            <materialDesign:ColorZone DockPanel.Dock="Top" Padding="12"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent">
+                <TextBlock Foreground="White" FontSize="16">能力分类</TextBlock>
+            </materialDesign:ColorZone>
+            <Grid DockPanel.Dock="Bottom" Margin="16">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="取消" Command="{Binding CmdCancel}" Margin="0 0 8 0" />
+                    <Button Content="确定" Command="{Binding CmdOk}" Margin="8 0 0 0" IsDefault="True" />
+                </StackPanel>
+            </Grid>
+            <materialDesign:Card Margin="8" Height="160">
+                <ListBox Style="{DynamicResource ControlTransparent}"
                          SelectionMode="Multiple" ItemsSource="{Binding AbilityDetailModels}"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="6" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <CheckBox Content="{Binding Name}" Foreground="Black" IsChecked="{Binding Checked}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </materialDesign:Card>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="16 0 16 16">
-                    <Button Content="取消" Margin="64 0" Command="{Binding CmdCancel}" Width="128"/>
-                    <Button Content="确定" Margin="64 0" Command="{Binding CmdOk}" Width="128"/>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="6" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" Foreground="Black" IsChecked="{Binding Checked}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </materialDesign:Card>
+        </DockPanel>
     </UserControl>
 </Window>

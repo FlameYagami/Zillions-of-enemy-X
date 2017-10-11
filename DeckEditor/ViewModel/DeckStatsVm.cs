@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using DeckEditor.Model;
-using DeckEditor.Utils;
-using Wrapper;
 using Wrapper.Model;
 
 namespace DeckEditor.ViewModel

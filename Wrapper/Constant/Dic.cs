@@ -116,5 +116,52 @@ namespace Wrapper.Constant
             {Enums.ModeType.Editor, StringConst.ModeEditor},
             {Enums.ModeType.Develop, StringConst.ModeDevelop}
         };
+
+        public static Dictionary<string, int> TypeDic = new Dictionary<string, int>
+        {
+            {StringConst.NotApplicable, -1},
+            {"Z/X", 0},
+            {"事件", 1},
+            {"玩家", 2},
+            {"Z/X EX", 3}
+        };
+
+        public static Dictionary<string, int> CampDic = new Dictionary<string, int>
+        {
+            {StringConst.NotApplicable, -1},
+            {"红", 0},
+            {"蓝", 1},
+            {"白", 2},
+            {"黑", 3},
+            {"绿", 4},
+            {"无", 4}
+        };
+
+        public static Dictionary<string, int> SignDic = new Dictionary<string, int>
+        {
+            {StringConst.NotApplicable, -1},
+            {"-", 0},
+            {"点燃", 1},
+            {"觉醒之种", 2}
+        };
+
+        public static Dictionary<string, int> RareDic = new Dictionary<string, int>
+        {
+            {StringConst.NotApplicable, -1},
+            {"CVR", 0},
+            {"IGR", 1},
+            {"ZX/R", 2},
+            {"HR", 3},
+            {"DR", 4},
+            {"UR", 5},
+            {"SR", 6},
+            {"R", 7},
+            {"N", 8},
+            {"PR", 9},
+            {"CR", 10},
+            {"UC", 11},
+            {"C", 12},
+            {"日本一R", 13}
+        };
     }
 }

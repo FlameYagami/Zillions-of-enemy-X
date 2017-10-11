@@ -10,7 +10,7 @@ namespace CardEditor.ViewModel
 {
     public class DbOperationVm : BaseModel
     {
-        private readonly CardEditor.View.MainWindow _cardEditor;
+        private readonly MainWindow _cardEditor;
         private Visibility _decryptVisibility;
 
         private Visibility _encryptVisibility;

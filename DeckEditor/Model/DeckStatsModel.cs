@@ -5,16 +5,16 @@ namespace DeckEditor.Model
 {
     public class DeckStatsModel : BaseModel
     {
-        private SolidColorBrush _lifeForeground;
-        private SolidColorBrush _startForeground;
-        private SolidColorBrush _voidForeground;
+        private string _exCountValue;
+        private string _igCountValue;
 
         private string _lifeCountValue;
+        private SolidColorBrush _lifeForeground;
         private string _startCountValue;
-        private string _voidCountValue;
-        private string _igCountValue;
+        private SolidColorBrush _startForeground;
         private string _ugCountValue;
-        private string _exCountValue;
+        private string _voidCountValue;
+        private SolidColorBrush _voidForeground;
 
         public string StartCountValue
         {

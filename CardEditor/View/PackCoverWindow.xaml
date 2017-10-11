@@ -3,87 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CardEditor.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="卡包覆写" Height="200" Width="300" WindowStartupLocation="CenterOwner"
-        >
-    <Border  Name="BorderView" Background="#1A1A1A">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="5*" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Border  Loaded="Border_Loaded">
-                <Grid Name="GridTitle" Height="30">
-                    <Label Content="卡包覆写" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
-                </Grid>
-            </Border>
-            <Grid Grid.Row="1" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition Height="2*" />
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button Name="BtnFileOpen" Click="FileOpen_Click" Content="文件选择" />
-                    <Border Grid.Column="1" Margin="5,2.5,5,2.5"
-                            Background="White">
-                        <TextBox Name="TxtFilePath" Grid.Column="1" Style="{DynamicResource ControlTransparent}"
-                                 VerticalContentAlignment="Center" />
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Content="卡包名称:" Foreground="White" Margin="5,2.5,5,2.5"
-                           HorizontalContentAlignment="Center" />
-                    <Border  Grid.Column="1" Margin="5,2.5,5,2.5"
-                            Background="White">
-                        <TextBox Grid.Column="1" Name="TxtPackName" Style="{DynamicResource ControlTransparent}"
-                                 VerticalContentAlignment="Center" />
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label Content="字段:" Foreground="White" Margin="5,2.5,5,2.5" HorizontalContentAlignment="Center" />
-                    <Border Grid.Column="1" Grid.RowSpan="2" 
-                            Margin="5,2.5,5,2.5">
-                        <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstColumn"
-                                 SelectionMode="Multiple"
-                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="3" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <CheckBox x:Name="ChkColumn0" Content="种类" Tag="种类" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn1" Content="阵营" Tag="色" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn2" Content="种族" Tag="种族" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn3" Content="标记" Tag="标记" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn4" Content="罕贵" Tag="罕贵度" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn5" Content="卡名" Tag="卡片名_中" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn6" Content="费用" Tag="COST" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn7" Content="力量" Tag="力量" IsChecked="True" />
-                            <CheckBox x:Name="ChkColumn8" Content="能力" Tag="能力_中" IsChecked="True" />
-                        </ListBox>
-                    </Border>
+        Style="{DynamicResource BaseWindow}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        Height="300" Width="400" WindowStartupLocation="CenterOwner">
+    <UserControl mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" Background="Wheat">
+        <DockPanel>
+            <materialDesign:ColorZone DockPanel.Dock="Top" Padding="12"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent">
+                <TextBlock Text="卡包覆写" FontSize="16" Foreground="White" />
+            </materialDesign:ColorZone>
+            <Grid DockPanel.Dock="Bottom" Margin="16">
+                <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="取消" Click="BtnCancel_Click" Margin="0 0 8 0" />
+                        <Button Content="覆写" Click="BtnCover_Click" Margin="8 0 0 0" IsDefault="True" />
+                    </StackPanel>
                 </Grid>
             </Grid>
-            <Button x:Name="BtnCancel" Content="取消" Margin="25,0,0,5" Grid.Row="2"
-                    HorizontalAlignment="Left" Width="100" Click="BtnCancel_Click" />
-            <Button x:Name="BtnCover" Content="覆写" Margin="0,0,25,5" Grid.Row="2"
-                    HorizontalAlignment="Right" Width="100" Click="BtnCover_Click" />
-        </Grid>
-    </Border>
+            <StackPanel Orientation="Vertical">
+                <DockPanel Margin="16">
+                    <Button Click="FileOpen_Click" Content="文件选择" Margin="0" />
+                    <TextBox Name="TxtFilePath" Margin="16 0 0 0" />
+                </DockPanel>
+                <TextBox Name="TxtPackName" DockPanel.Dock="Right" Margin="16 0 16 16"
+                         materialDesign:HintAssist.Hint="Sheet名称" />
+                <materialDesign:Card Margin="8 0 8 0">
+                    <ListBox Style="{DynamicResource ControlTransparent}" x:Name="LstColumn"
+                             SelectionMode="Multiple"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="5" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <CheckBox Content="种类" Tag="种类" IsChecked="True" />
+                        <CheckBox Content="阵营" Tag="色" IsChecked="True" />
+                        <CheckBox Content="种族" Tag="种族" IsChecked="True" />
+                        <CheckBox Content="标记" Tag="标记" IsChecked="True" />
+                        <CheckBox Content="罕贵" Tag="罕贵度" IsChecked="True" />
+                        <CheckBox Content="卡名" Tag="卡片名_中" IsChecked="True" />
+                        <CheckBox Content="费用" Tag="COST" IsChecked="True" />
+                        <CheckBox Content="力量" Tag="力量" IsChecked="True" />
+                        <CheckBox Content="能力" Tag="能力_中" IsChecked="True" />
+                    </ListBox>
+                </materialDesign:Card>
+            </StackPanel>
+        </DockPanel>
+    </UserControl>
 </Window>

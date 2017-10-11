@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using CardEditor.View;
 using Dialog;
 
 namespace CardEditor.Utils
@@ -19,8 +23,25 @@ namespace CardEditor.Utils
 
         public static void ShowPackCover()
         {
-//            var dialog = new PackCoverWindow {Owner = GetTopWindow()};
-//            dialog.Show();
+            var dialog = new PackCoverWindow {Owner = GetTopWindow()};
+            dialog.Show();
+        }
+
+        //从Handle中获取Window对象
+        protected static Window GetWindowFromHwnd(IntPtr hwnd)
+        {
+            return (Window)HwndSource.FromHwnd(hwnd).RootVisual;
+        }
+
+        //GetForegroundWindow API
+        [DllImport("user32.dll")]
+        protected static extern IntPtr GetForegroundWindow();
+
+        //调用GetForegroundWindow然后调用GetWindowFromHwnd
+        protected static Window GetTopWindow()
+        {
+            var hwnd = GetForegroundWindow();
+            return GetWindowFromHwnd(hwnd);
         }
     }
 }
