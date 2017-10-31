@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="300" MaxWidth="400">
-    <Label Margin="16" FontSize="14" Content="{Binding Content}" VerticalContentAlignment="Center"
+             mc:Ignorable="d" d:DesignHeight="180" d:DesignWidth="320" MaxHeight="225" MaxWidth="400">
+    <Label Margin="16" FontSize="14" Content="{Binding Message}" VerticalContentAlignment="Center"
            HorizontalContentAlignment="Center" />
 </UserControl>

@@ -2,12 +2,13 @@
 {
     public class DialogEditorVm
     {
-        public DialogEditorVm(string content)
+        public DialogEditorVm(string message, string hint)
         {
-            Content = content;
+            Message = message;
+            Hint = hint;
         }
 
-        public string Content { get; set; }
+        public string Message { get; set; }
         public string Hint { get; set; }
     }
 }

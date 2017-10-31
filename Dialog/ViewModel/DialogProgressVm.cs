@@ -1,8 +1,8 @@
 ﻿namespace Dialog.ViewModel
 {
-    public class DialogAutoVm
+    public class DialogProgressVm
     {
-        public DialogAutoVm(string message)
+        public DialogProgressVm(string message)
         {
             Message = message;
         }

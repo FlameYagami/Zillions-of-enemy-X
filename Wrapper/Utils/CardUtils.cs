@@ -271,7 +271,7 @@ namespace Wrapper.Utils
             if (StringConst.TypeZxEx.Equals(row[ColumnType].ToString()))
                 return Enums.AreaType.Ex;
             if (StringConst.TypePlayer.Equals(row[ColumnType].ToString()))
-                return Enums.AreaType.Pl;
+                return Enums.AreaType.Player;
             return Enums.AreaType.Ug;
         }
 
@@ -338,6 +338,27 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
+        ///     获取卡片在非点燃区的枚举类型
+        /// </summary>
+        /// <param name="numberEx">卡编</param>
+        /// <returns>Start|Normal</returns>
+        public static Enums.UgType GetUgType(string numberEx)
+        {
+            return GetUgType(GetCardModel(numberEx));
+        }
+
+        /// <summary>
+        ///     获取卡片在非点燃区的枚举类型
+        /// </summary>
+        /// <param name="cardModel">卡牌数据模型</param>
+        /// <returns>Start|Normal</returns>
+        public static Enums.UgType GetUgType(CardModel cardModel)
+        {
+            var ability = cardModel.Ability;
+            return ability.StartsWith(StringConst.AbilityStart) ? Enums.UgType.Start : Enums.UgType.Normal;
+        }
+
+        /// <summary>
         ///     获取卡组路径
         /// </summary>
         /// <param name="deckName">卡组名称</param>
@@ -354,7 +375,17 @@ namespace Wrapper.Utils
         /// <returns>缩略图路径</returns>
         public static string GetThumbnailPath(string numberEx)
         {
-            return $"{PathManager.ThumbnailPath}/{numberEx}{StringConst.ImageExtension}";
+            return $"{PathManager.ThumbnailPath}{numberEx}{StringConst.ImageExtension}";
+        }
+
+        /// <summary>
+        ///     获取大图路径
+        /// </summary>
+        /// <param name="numberEx">卡编</param>
+        /// <returns>缩略图路径</returns>
+        public static string GetPicturePath(string numberEx)
+        {
+            return $"{PathManager.PicturePath}{numberEx}{StringConst.ImageExtension}";
         }
 
         /// <summary>
@@ -367,6 +398,75 @@ namespace Wrapper.Utils
             var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnCName].ToString();
+        }
+
+        /// <summary>
+        ///     获取卡密
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns>卡名</returns>
+        public static string GetMd5(string number)
+        {
+            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+                .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
+            return row[ColumnMd5].ToString();
+        }
+
+        /// <summary>
+        ///     获取主卡组的数量
+        /// </summary>
+        /// <param name="cardModels">卡牌信息集合</param>
+        /// <returns>数量</returns>
+        public static int GetMainCount(IEnumerable<CardModel> cardModels)
+        {
+            return
+                cardModels.Count(
+                    card =>
+                        GetAreaType(card.Number).Equals(Enums.AreaType.Ig) ||
+                        GetAreaType(card.Number).Equals(Enums.AreaType.Ug));
+        }
+
+        /// <summary>
+        ///     获取额外卡组的数量
+        /// </summary>
+        /// <param name="cardModels">卡牌信息集合</param>
+        /// <returns>数量</returns>
+        public static int GetExtraCount(IEnumerable<CardModel> cardModels)
+        {
+            if (cardModels == null) throw new ArgumentNullException(nameof(cardModels));
+            return cardModels.Count(card => GetAreaType(card.Number).Equals(Enums.AreaType.Ex));
+        }
+
+        /// <summary>
+        ///     获取卡牌信息集合
+        /// </summary>
+        /// <param name="numberList">卡编集合</param>
+        /// <returns>卡牌信息集合</returns>
+        public static List<CardModel> GetCardModels(List<string> numberList)
+        {
+            return numberList.Select(GetCardModel).ToList();
+        }
+
+        /// <summary>
+        ///     获取玩家卡牌路径
+        /// </summary>
+        /// <param name="cardModel">卡牌信息集合</param>
+        /// <returns>玩家卡牌路径</returns>
+        public static string GetPlayerPath(List<CardModel> cardModel)
+        {
+            var tempModel = cardModel.FirstOrDefault(model => GetAreaType(model.Number).Equals(Enums.AreaType.Player));
+            return null == tempModel ? PathManager.PictureUnknownPath : GetPicturePath(tempModel.Number);
+        }
+
+        /// <summary>
+        ///     获取玩家卡牌路径
+        /// </summary>
+        /// <param name="cardModel">卡牌信息集合</param>
+        /// <returns>玩家卡牌路径</returns>
+        public static string GetStartPath(List<CardModel> cardModel)
+        {
+            var tempModel = cardModel.FirstOrDefault(model => IsStart(model.Number));
+            return null == tempModel ? PathManager.PictureUnknownPath : GetPicturePath(tempModel.Number);
         }
     }
 }

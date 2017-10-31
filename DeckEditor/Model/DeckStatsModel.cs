@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Wrapper.Model;
+﻿using Wrapper.Model;
 
 namespace DeckEditor.Model
 {
@@ -7,14 +6,24 @@ namespace DeckEditor.Model
     {
         private string _exCountValue;
         private string _igCountValue;
-
         private string _lifeCountValue;
-        private SolidColorBrush _lifeForeground;
         private string _startCountValue;
-        private SolidColorBrush _startForeground;
         private string _ugCountValue;
         private string _voidCountValue;
-        private SolidColorBrush _voidForeground;
+
+//        private SolidColorBrush _lifeForeground;
+//        private SolidColorBrush _startForeground;
+//        private SolidColorBrush _voidForeground;
+
+        public DeckStatsModel()
+        {
+            StartCountValue = "0";
+            LifeCountValue = "0";
+            VoidCountValue = "0";
+            IgCountValue = "0";
+            UgCountValue = "0";
+            ExCountValue = "0";
+        }
 
         public string StartCountValue
         {
@@ -62,7 +71,7 @@ namespace DeckEditor.Model
             set
             {
                 _ugCountValue = value;
-                OnPropertyChanged(nameof(IgCountValue));
+                OnPropertyChanged(nameof(UgCountValue));
             }
         }
 
@@ -72,38 +81,39 @@ namespace DeckEditor.Model
             set
             {
                 _exCountValue = value;
-                OnPropertyChanged(nameof(IgCountValue));
+                OnPropertyChanged(nameof(ExCountValue));
             }
         }
 
-        public SolidColorBrush StartForeground
-        {
-            get { return _startForeground; }
-            set
-            {
-                _startForeground = value;
-                OnPropertyChanged(nameof(StartForeground));
-            }
-        }
+//            get { return _lifeForeground; }
+//        {
+//        public SolidColorBrush LifeForeground
+//
+//        }
+//            }
+//                OnPropertyChanged(nameof(StartForeground));
+//                _startForeground = value;
+//            {
+//            set
+//            get { return _startForeground; }
+//        {
 
-        public SolidColorBrush LifeForeground
-        {
-            get { return _lifeForeground; }
-            set
-            {
-                _lifeForeground = value;
-                OnPropertyChanged(nameof(LifeForeground));
-            }
-        }
-
-        public SolidColorBrush VoidForeground
-        {
-            get { return _voidForeground; }
-            set
-            {
-                _voidForeground = value;
-                OnPropertyChanged(nameof(VoidForeground));
-            }
-        }
+//        public SolidColorBrush StartForeground
+//            set
+//            {
+//                _lifeForeground = value;
+//                OnPropertyChanged(nameof(LifeForeground));
+//            }
+//        }
+//
+//        public SolidColorBrush VoidForeground
+//        {
+//            get { return _voidForeground; }
+//            set
+//            {
+//                _voidForeground = value;
+//                OnPropertyChanged(nameof(VoidForeground));
+//            }
+//        }
     }
 }

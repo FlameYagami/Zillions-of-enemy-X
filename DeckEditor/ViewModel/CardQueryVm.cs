@@ -1,5 +1,6 @@
 ﻿using DeckEditor.Model;
-using DeckEditor.Utils;
+using DeckEditor.View;
+using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -32,9 +33,10 @@ namespace DeckEditor.ViewModel
         /// <summary>
         ///     详细能力查询事件
         /// </summary>
-        public void AlilityDetail_Click(object obj)
+        public async void AlilityDetail_Click(object obj)
         {
-            DialogUtils.ShowAbilityDetail(CardQueryModel.AbilityDetailModels);
+            await DialogHost.Show(new AbilityDetailDialog(CardQueryModel.AbilityDetailModels),
+                (sender, eventArgs) => { }, (sender, eventArgs) => { });
         }
 
         /// <summary>

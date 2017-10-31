@@ -2,11 +2,11 @@
 {
     public class DialogConfirmVm
     {
-        public DialogConfirmVm(string content)
+        public DialogConfirmVm(string message)
         {
-            Content = content;
+            Message = message;
         }
 
-        public string Content { get; set; }
+        public string Message { get; set; }
     }
 }

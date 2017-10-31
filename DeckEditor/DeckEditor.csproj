@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>D:\ZxPro\DeckEditor\</OutputPath>
+    <OutputPath>D:\ZxPro\DeckEditorMd\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -95,8 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DeckManager.cs" />
     <Compile Include="Model\CardDetailModel.cs" />
     <Compile Include="Model\CardPictureModel.cs" />
+    <Compile Include="Model\DeckPreviewModel.cs" />
     <Compile Include="Model\DeckStatsModel.cs" />
     <Compile Include="Model\CardQueryModel.cs" />
     <Compile Include="ViewModel\AbilityDetailVm.cs" />
@@ -104,19 +106,33 @@
     <Compile Include="ViewModel\CardPictureVm.cs" />
     <Compile Include="ViewModel\CardPreviewVm.cs" />
     <Compile Include="ViewModel\DeckOperationVm.cs" />
+    <Compile Include="ViewModel\DeckPreviewVm.cs" />
     <Compile Include="ViewModel\DeckStatsVm.cs" />
     <Compile Include="ViewModel\DeckExVm.cs" />
     <Compile Include="ViewModel\DeckVm.cs" />
     <Compile Include="ViewModel\PlayerVm.cs" />
     <Compile Include="ViewModel\CardQueryVm.cs" />
-    <Compile Include="View\AbilityDetailWindow.xaml.cs">
-      <DependentUpon>AbilityDetailWindow.xaml</DependentUpon>
+    <Compile Include="View\AbilityDetailDialog.xaml.cs">
+      <DependentUpon>AbilityDetailDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\DialogUtils.cs" />
-    <Compile Include="View\DeckStatisticalWindow.xaml.cs">
-      <DependentUpon>DeckStatisticalWindow.xaml</DependentUpon>
+    <Compile Include="View\DeckInformationDialog.xaml.cs">
+      <DependentUpon>DeckInformationDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\DeckStatisticalWindow.xaml">
+    <Compile Include="View\DeckPreviewDialog.xaml.cs">
+      <DependentUpon>DeckPreviewDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DeckStatisticalDialog.xaml.cs">
+      <DependentUpon>DeckStatisticalDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\DeckInformationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DeckPreviewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DeckStatisticalDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,7 +148,7 @@
       <DependentUpon>DeckEditorWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\AbilityDetailWindow.xaml">
+    <Page Include="View\AbilityDetailDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,14 +188,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dialog\DialogLib.csproj">
+    <ProjectReference Include="..\Dialog\DialogMd.csproj">
       <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
-      <Name>DialogLib</Name>
+      <Name>DialogMd</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wrapper\Wrapper.csproj">
       <Project>{96748966-be90-425f-a8c8-e8708e45b77e}</Project>
       <Name>Wrapper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

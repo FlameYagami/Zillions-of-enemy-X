@@ -88,7 +88,6 @@ namespace DeckEditor.View
             if (null == grid) return;
             var numberEx = CardUtils.GetNumberExList(grid.Tag.ToString())[CardPictureView.SelectedIndex];
             _deckOperationVm.AddCard(numberEx);
-            _deckOperationVm.UpdateDeckStatsView();
         }
 
         /// <summary>组卡区域左键事件</summary>
@@ -97,10 +96,7 @@ namespace DeckEditor.View
             var grid = sender as Grid;
             if (null == grid) return;
             if (e.ClickCount == 2)
-            {
                 _deckOperationVm.AddCard(grid.Tag.ToString());
-                _deckOperationVm.UpdateDeckStatsView();
-            }
             else
                 _cardDetailVm.UpdateCardModel(grid.Tag.ToString());
         }
@@ -111,22 +107,6 @@ namespace DeckEditor.View
             var grid = sender as Grid;
             if (null == grid) return;
             _deckOperationVm.DeleteCard(grid.Tag.ToString());
-            _deckOperationVm.UpdateDeckStatsView();
-        }
-
-        /************************************************** 卡组操作 **************************************************/
-
-        /// <summary>卡组加载事件</summary>
-        private void CmbDeck_DropDownClosed(object sender, EventArgs e)
-        {
-            _deckOperationVm.LoadDeck();
-            _deckOperationVm.UpdateDeckStatsView();
-        }
-
-        /// <summary>卡组浏览事件</summary>
-        private void CmbDeck_DropDownOpened(object sender, EventArgs e)
-        {
-            _deckOperationVm.UpdateDeckNameList();
         }
 
         /************************************************** 其他操作 **************************************************/

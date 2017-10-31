@@ -16,23 +16,17 @@
         public enum AreaType
         {
             None = -1,
-            Pl = 0,
+            Player = 0,
             Ig = 1,
             Ug = 2,
             Ex = 3
         }
 
-        public enum DeckOrderType
-        {
-            Value = 0,
-            Random = 1
-        }
-
         public enum IgType
         {
-            Life = 0,
-            Void = 1,
-            Normal = 2
+            Normal = 0,
+            Life = 1,
+            Void = 2
         }
 
         public enum ModeType
@@ -47,6 +41,12 @@
         {
             Number = 0,
             Value = 1
+        }
+
+        public enum UgType
+        {
+            Normal = 0,
+            Start = 4
         }
     }
 }

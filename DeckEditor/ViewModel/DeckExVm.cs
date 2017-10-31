@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using Wrapper.Constant;
 using Wrapper.Model;
 
@@ -8,11 +6,8 @@ namespace DeckEditor.ViewModel
 {
     public class DeckExVm
     {
-        private readonly DeckVm _deckView;
-
         public DeckExVm()
         {
-            _deckView = new DeckVm();
             IgExModels = new ObservableCollection<DeckExModel>();
             UgExModels = new ObservableCollection<DeckExModel>();
             ExExModels = new ObservableCollection<DeckExModel>();
@@ -27,46 +22,31 @@ namespace DeckEditor.ViewModel
         /// <summary>额外数据缓存</summary>
         public ObservableCollection<DeckExModel> ExExModels { get; set; }
 
-        public DeckVm GetDeckVm()
-        {
-            return _deckView;
-        }
-
-        public void UpdateDeckExModels(Enums.AreaType areaType)
+        public void UpdateDeckExModels(DeckManager deckManager, Enums.AreaType areaType)
         {
             switch (areaType)
             {
                 case Enums.AreaType.Ig:
-                    UpdateDeckExModels(_deckView.IgModels, IgExModels);
+                    IgExModels.Clear();
+                    deckManager.IgExModels.ForEach(IgExModels.Add);
                     break;
                 case Enums.AreaType.Ug:
-                    UpdateDeckExModels(_deckView.UgModels, UgExModels);
+                    UgExModels.Clear();
+                    deckManager.UgExModels.ForEach(UgExModels.Add);
                     break;
                 case Enums.AreaType.Ex:
-                    UpdateDeckExModels(_deckView.ExModels, ExExModels);
+                    ExExModels.Clear();
+                    deckManager.ExExModels.ForEach(ExExModels.Add);
                     break;
             }
         }
 
-        protected virtual void UpdateDeckExModels(ObservableCollection<DeckModel> deckList,
-            ObservableCollection<DeckExModel> deckExList)
+        public void UpdateAllDeckExModels(DeckManager deckManager)
         {
-            // 对象去重
-            var numberExList = deckList.Select(deck => deck.NumberEx).Distinct().ToList();
-            var tempDeckList = new List<DeckModel>();
-            tempDeckList.AddRange(
-                numberExList.Select(numberEx => deckList.First(deck => deck.NumberEx.Equals(numberEx))).ToList());
-            // 重新生成对象
-            var tempdDeckExList = new List<DeckExModel>();
-            tempdDeckExList.AddRange(tempDeckList
-                .Select(deck => new DeckExModel
-                {
-                    DeckModel = deck,
-                    Count = deckList.Count(temp => temp.NumberEx.Equals(deck.NumberEx))
-                })
-                .ToList());
-            deckExList.Clear();
-            tempdDeckExList.ForEach(deckExList.Add);
+            Clear();
+            deckManager.IgExModels.ForEach(IgExModels.Add);
+            deckManager.UgExModels.ForEach(UgExModels.Add);
+            deckManager.ExExModels.ForEach(ExExModels.Add);
         }
 
         public void Clear()

@@ -8,6 +8,7 @@ namespace CardEditor.ViewModel
 {
     public class ExternQueryVm : BaseModel
     {
+        private string _md5Value;
         private string _modeValue;
 
         private string _restrictValue;
@@ -38,6 +39,16 @@ namespace CardEditor.ViewModel
             {
                 _restrictValue = value;
                 OnPropertyChanged(nameof(RestrictValue));
+            }
+        }
+
+        public string Md5Value
+        {
+            get { return _md5Value; }
+            set
+            {
+                _md5Value = value;
+                OnPropertyChanged(nameof(Md5Value));
             }
         }
 

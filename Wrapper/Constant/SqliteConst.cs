@@ -4,7 +4,7 @@
     {
         // Common
         public const string TableName = "TableCard";
-        public const string ColumnMd5 = "md5";
+        public const string ColumnMd5 = "Md5";
         public const string ColumnType = "Type";
         public const string ColumnCamp = "Camp";
         public const string ColumnRace = "Race";

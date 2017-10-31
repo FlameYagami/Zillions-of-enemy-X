@@ -7,12 +7,12 @@ namespace DeckEditor.View
     /// <summary>
     ///     ColumnAbilityDetail.xaml 的交互逻辑
     /// </summary>
-    public partial class AbilityDetailWindow
+    public partial class AbilityDetailDialog
     {
-        public AbilityDetailWindow(ObservableCollection<AbilityModel> abilityDetailModels)
+        public AbilityDetailDialog(ObservableCollection<AbilityModel> abilityDetailModels)
         {
             InitializeComponent();
-            var abilityDetailVm = new AbilityDetailVm(this, abilityDetailModels);
+            var abilityDetailVm = new AbilityDetailVm(abilityDetailModels);
             DataContext = abilityDetailVm;
         }
     }

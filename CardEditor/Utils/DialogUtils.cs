@@ -30,7 +30,7 @@ namespace CardEditor.Utils
         //从Handle中获取Window对象
         protected static Window GetWindowFromHwnd(IntPtr hwnd)
         {
-            return (Window)HwndSource.FromHwnd(hwnd).RootVisual;
+            return (Window) HwndSource.FromHwnd(hwnd).RootVisual;
         }
 
         //GetForegroundWindow API

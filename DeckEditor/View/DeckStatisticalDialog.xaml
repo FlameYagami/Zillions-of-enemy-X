@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DeckEditor.View.DeckStatisticalDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:chart="clr-namespace:Visifire.Charts;assembly=WPFVisifire.Charts"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" d:DesignHeight="320" d:DesignWidth="640">
+    <DockPanel Height="320" Width="640">
+        <DockPanel DockPanel.Dock="Top">
+            <Button Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    Style="{StaticResource MaterialDesignToolButton}" DockPanel.Dock="Right" Margin="16 0">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+            <Label DockPanel.Dock="Top" Height="48" Padding="16 0 16 0" Content="卡组统计" FontSize="16"
+                   FontStretch="Medium"
+                   VerticalContentAlignment="Center" />
+        </DockPanel>
+        <materialDesign:Card Height="260" Margin="8">
+            <chart:Chart Name="ChartDeck" ScrollingEnabled="False" View3D="True" />
+        </materialDesign:Card>
+    </DockPanel>
+</UserControl>

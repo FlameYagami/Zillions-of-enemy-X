@@ -10,16 +10,16 @@
         Background="{DynamicResource MaterialDesignPaper}"
         Loaded="Window_Loaded" Icon="../icon.ico"
         Title="Z/X CardEditor" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
-    <UserControl mc:Ignorable="d" d:DesignHeight="720" d:DesignWidth="1280">
-        <Grid>
+    <materialDesign:DialogHost>
+        <UserControl mc:Ignorable="d" d:DesignHeight="720" d:DesignWidth="1280" Background="Wheat">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <materialDesign:ColorZone Padding="16" ToolTip="右键最小化"
-                                      MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent">
+                                          MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent">
                     <DockPanel>
                         <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignCentres">
                             <StackPanel>
@@ -32,7 +32,7 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1">
-                    <Grid DockPanel.Dock="Right" Name="CardPreviewView" Width="240">
+                    <Grid DockPanel.Dock="Right" Name="CardPreviewView" Width="280">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -40,29 +40,29 @@
                         <materialDesign:Card VerticalAlignment="Center" Margin="8">
                             <DockPanel Margin="4" Height="Auto">
                                 <ComboBox x:Name="CmbOrder" DockPanel.Dock="Right" Width="80" Height="Auto"
-                                      SelectedIndex="0"
-                                      Text="{Binding CardPreviewOrder}" IsEditable="False"
-                                      ItemsSource="{Binding PreviewOrderValues}"
-                                      DropDownClosed="CmbOrder_DropDownClosed" materialDesign:HintAssist.Hint="排序" />
+                                          SelectedIndex="1"
+                                          Text="{Binding CardPreviewOrder}" IsEditable="False"
+                                          ItemsSource="{Binding PreviewOrderValues}"
+                                          DropDownClosed="CmbOrder_DropDownClosed" materialDesign:HintAssist.Hint="排序" />
                                 <TextBox materialDesign:HintAssist.Hint="检索结果" IsEnabled="False"
-                                     Text="{Binding CardPreviewCountValue}" />
+                                         Text="{Binding CardPreviewCountValue}" />
                             </DockPanel>
                         </materialDesign:Card>
                         <materialDesign:Card Grid.Row="1" Margin="8 0 8 8" VerticalAlignment="Stretch">
                             <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvCardPreview"
-                                  SelectedItem="{Binding SelectedItem}"
-                                  ItemsSource="{Binding CardPreviewModels}"
-                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  SelectionChanged="LvCardPreview_SelectionChanged">
+                                      SelectedItem="{Binding SelectedItem}"
+                                      ItemsSource="{Binding CardPreviewModels}"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      SelectionChanged="LvCardPreview_SelectionChanged">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Margin="-8">
                                             <Label Content="{Binding CName}" Width="155" />
-                                            <Label Content="{Binding PowerValue}" Width="40"
-                                               HorizontalContentAlignment="Center" />
-                                            <Label Content="{Binding CostValue}" Width="20"
-                                               HorizontalContentAlignment="Center" />
+                                            <Label Content="{Binding PowerValue}" Width="48"
+                                                   HorizontalContentAlignment="Center" />
+                                            <Label Content="{Binding CostValue}" Width="16"
+                                                   HorizontalContentAlignment="Center" />
                                             <Label Content="{Binding Number}" Width="0" />
                                             <Label Content="{Binding ImageJson}" Width="0" />
                                         </StackPanel>
@@ -71,9 +71,9 @@
                             </ListView>
                         </materialDesign:Card>
                     </Grid>
-                    <DockPanel Dock="Left">
+                    <DockPanel Dock="Left" Width="300">
                         <TabControl DockPanel.Dock="Bottom" Width="256" x:Name="CardPictureView" Margin="16"
-                                SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
+                                    SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
                             <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
                                 <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[0]}" />
                             </TabItem>
@@ -89,31 +89,32 @@
                         </TabControl>
                         <StackPanel Orientation="Vertical">
                             <materialDesign:Card Margin="8">
-                                <Grid Name="DbOperationView" Margin="4">
+                                <Grid Name="DbOperationView" Margin="8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" materialDesign:HintAssist.Hint="输入密码"
-                                         Text="{Binding Password}" />
+                                             Text="{Binding Password}" />
                                     <Button Grid.Column="1" Visibility="{Binding DecryptVisibility}"
-                                        Command="{Binding CmdDecrypt}"
-                                        Content="解密" />
+                                            Command="{Binding CmdDecrypt}"
+                                            Content="解密" />
                                     <Button Grid.Column="1" Visibility="{Binding EncryptVisibility}"
-                                        Command="{Binding CmdEncrypt}"
-                                        Content="加密" />
+                                            Command="{Binding CmdEncrypt}"
+                                            Content="加密" />
                                 </Grid>
                             </materialDesign:Card>
                             <materialDesign:Card Name="ExternQueryView" Margin="8 0 8 0">
-                                <StackPanel Orientation="Vertical">
-                                    <ComboBox Text="{Binding ModeValue}"
-                                          materialDesign:HintAssist.Hint="模式选择" SelectedIndex="0"
-                                          IsEditable="False"
-                                          DropDownClosed="CmdMode_OnDropDownClosed"
-                                          ItemsSource="{Binding ModeList}" />
-                                    <ComboBox Text="{Binding RestrictValue}"
-                                          materialDesign:HintAssist.Hint="禁限规制"
-                                          ItemsSource="{Binding RestrctList}" SelectedIndex="0" IsEditable="False" />
+                                <StackPanel Orientation="Vertical" Margin="8">
+                                    <ComboBox Text="{Binding ModeValue}" SelectedIndex="0"
+                                              materialDesign:HintAssist.Hint="模式选择"
+                                              DropDownClosed="CmdMode_OnDropDownClosed"
+                                              ItemsSource="{Binding ModeList}" />
+                                    <ComboBox Text="{Binding RestrictValue}" SelectedIndex="0"
+                                              materialDesign:HintAssist.Hint="禁限规制"
+                                              ItemsSource="{Binding RestrctList}" />
+                                    <TextBox Text="{Binding Md5Value}" materialDesign:HintAssist.Hint="Md5"
+                                             IsEnabled="False" />
                                 </StackPanel>
                             </materialDesign:Card>
                         </StackPanel>
@@ -125,14 +126,15 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <DockPanel>
-                                <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Margin="0 16 16 0" Width="96">
-                                    <Button Content="添加" Command="{Binding CmdAdd}" Margin="0 4 0 16" />
-                                    <Button Content="修改" Command="{Binding CmdUpdate}" Margin="0 0 0 16" />
-                                    <Button Content="删除" Command="{Binding CmdDelete}" Margin="0 0 0 16" />
-                                    <Button Content="导出" Command="{Binding CmdExport}" Margin="0 0 0 16" />
+                                <StackPanel Orientation="Vertical" DockPanel.Dock="Right" Margin="0 16 0 0" Width="96"
+                                            VerticalAlignment="Center">
+                                    <Button Content="添加" Command="{Binding CmdAdd}" Margin="0 0 0 8" />
+                                    <Button Content="修改" Command="{Binding CmdUpdate}" Margin="0 8 0 8" />
+                                    <Button Content="删除" Command="{Binding CmdDelete}" Margin="0 8 0 8" />
+                                    <Button Content="导出" Command="{Binding CmdExport}" Margin="0 8 0 0" />
                                 </StackPanel>
-                                <materialDesign:Card Margin="8 8 8 0">
-                                    <Grid>
+                                <materialDesign:Card Margin="0 8 8 0">
+                                    <Grid Margin="8">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -143,64 +145,64 @@
                                             <ColumnDefinition Width="100" />
                                             <ColumnDefinition Width="180" />
                                             <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" Grid.Row="0"
-                                              ItemsSource="{Binding ItemsSourceModel.TypeList}"
-                                              Text="{Binding CardEditorModel.Type}"
-                                              materialDesign:HintAssist.Hint="种类" IsEditable="True"
-                                              TextBoxBase.TextChanged="CmbType_TextChanged" />
+                                                  ItemsSource="{Binding ItemsSourceModel.TypeList}"
+                                                  Text="{Binding CardEditorModel.Type}"
+                                                  materialDesign:HintAssist.Hint="种类" IsEditable="True"
+                                                  TextBoxBase.TextChanged="CmbType_TextChanged" />
                                         <ComboBox Grid.Column="0" Grid.Row="1"
-                                              ItemsSource="{Binding ItemsSourceModel.CampList}"
-                                              Text="{Binding CardEditorModel.Camp}"
-                                              materialDesign:HintAssist.Hint="阵营" IsEditable="True"
-                                              TextBoxBase.TextChanged="CmbCamp_TextChanged" />
+                                                  ItemsSource="{Binding ItemsSourceModel.CampList}"
+                                                  Text="{Binding CardEditorModel.Camp}"
+                                                  materialDesign:HintAssist.Hint="阵营" IsEditable="True"
+                                                  TextBoxBase.TextChanged="CmbCamp_TextChanged" />
                                         <ComboBox Grid.Column="0" Grid.Row="2"
-                                              ItemsSource="{Binding ItemsSourceModel.RaceList}"
-                                              Text="{Binding CardEditorModel.Race}"
-                                              IsEnabled="{Binding CardEditorModel.RaceEnabled}"
-                                              materialDesign:HintAssist.Hint="种族" IsEditable="True" />
+                                                  ItemsSource="{Binding ItemsSourceModel.RaceList}"
+                                                  Text="{Binding CardEditorModel.Race}"
+                                                  IsEnabled="{Binding CardEditorModel.RaceEnabled}"
+                                                  materialDesign:HintAssist.Hint="种族" IsEditable="True" />
                                         <ComboBox Grid.Column="0" Grid.Row="3"
-                                              ItemsSource="{Binding ItemsSourceModel.SignList}"
-                                              Text="{Binding CardEditorModel.Sign}"
-                                              materialDesign:HintAssist.Hint="标记" IsEditable="True"
-                                              IsEnabled="{Binding CardEditorModel.SignEnabled}" />
+                                                  ItemsSource="{Binding ItemsSourceModel.SignList}"
+                                                  Text="{Binding CardEditorModel.Sign}"
+                                                  materialDesign:HintAssist.Hint="标记" IsEditable="True"
+                                                  IsEnabled="{Binding CardEditorModel.SignEnabled}" />
                                         <ComboBox Grid.Column="2" Grid.Row="1"
-                                              ItemsSource="{Binding ItemsSourceModel.RareList}"
-                                              Text="{Binding CardEditorModel.Rare}"
-                                              materialDesign:HintAssist.Hint="罕贵" IsEditable="True" />
+                                                  ItemsSource="{Binding ItemsSourceModel.RareList}"
+                                                  Text="{Binding CardEditorModel.Rare}"
+                                                  materialDesign:HintAssist.Hint="罕贵" IsEditable="True" />
                                         <ComboBox Grid.Column="1" Grid.Row="0"
-                                              ItemsSource="{Binding ItemsSourceModel.PackList}"
-                                              Text="{Binding CardEditorModel.Pack}"
-                                              materialDesign:HintAssist.Hint="卡包" IsEditable="True"
-                                              TextBoxBase.TextChanged="CmbPack_TextChanged" />
+                                                  ItemsSource="{Binding ItemsSourceModel.PackList}"
+                                                  Text="{Binding CardEditorModel.Pack}"
+                                                  materialDesign:HintAssist.Hint="卡包" IsEditable="True"
+                                                  TextBoxBase.TextChanged="CmbPack_TextChanged" />
                                         <TextBox Grid.Column="1" Grid.Row="1" materialDesign:HintAssist.Hint="卡名"
-                                             Text="{Binding CardEditorModel.CName}" />
+                                                 Text="{Binding CardEditorModel.CName}" />
                                         <TextBox Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="日名"
-                                             Text="{Binding CardEditorModel.JName}" />
+                                                 Text="{Binding CardEditorModel.JName}" />
                                         <TextBox Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="画师"
-                                             Text="{Binding CardEditorModel.Illust}" />
+                                                 Text="{Binding CardEditorModel.Illust}" />
                                         <TextBox Grid.Column="2" Grid.Row="0"
-                                             Text="{Binding CardEditorModel.Number}"
-                                             materialDesign:HintAssist.Hint="卡编" />
+                                                 Text="{Binding CardEditorModel.Number}"
+                                                 materialDesign:HintAssist.Hint="卡编" />
                                         <TextBox Grid.Column="2" Grid.Row="2"
-                                             Text="{Binding CardEditorModel.CostValue}"
-                                             materialDesign:HintAssist.Hint="费用"
-                                             IsEnabled="{Binding CardEditorModel.CostEnabled}" />
+                                                 Text="{Binding CardEditorModel.CostValue}"
+                                                 materialDesign:HintAssist.Hint="费用"
+                                                 IsEnabled="{Binding CardEditorModel.CostEnabled}" />
                                         <TextBox Grid.Column="2" Grid.Row="3"
-                                             Text="{Binding CardEditorModel.PowerValue}"
-                                             materialDesign:HintAssist.Hint="力量"
-                                             IsEnabled="{Binding CardEditorModel.PowerEnabled}" />
+                                                 Text="{Binding CardEditorModel.PowerValue}"
+                                                 materialDesign:HintAssist.Hint="力量"
+                                                 IsEnabled="{Binding CardEditorModel.PowerEnabled}" />
                                         <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Content="检索" Height="64"
-                                            Command="{Binding CmdQuery}" />
+                                                Command="{Binding CmdQuery}" />
                                         <Button Grid.Column="3" Grid.Row="2" Content="重置"
-                                            Command="{Binding CmdReset}" />
-                                        <ListBox SelectionMode="Multiple" Width="108" Height="160" Grid.Row="0"
-                                             Grid.RowSpan="4" Grid.Column="4" Margin="4"
-                                             ItemsSource="{Binding CardEditorModel.AbilityTypeModels}"
-                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                Command="{Binding CmdReset}" />
+                                        <ListBox SelectionMode="Multiple" Width="100" Height="160" Grid.Row="0"
+                                                 Grid.RowSpan="4" Grid.Column="4" Margin="4"
+                                                 ItemsSource="{Binding CardEditorModel.AbilityTypeModels}"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <UniformGrid Columns="1" />
@@ -208,56 +210,52 @@
                                             </ListBox.ItemsPanel>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}" />
+                                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}"
+                                                              Margin="-4" />
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                     </Grid>
                                 </materialDesign:Card>
                             </DockPanel>
-                            <Grid Grid.Row="1">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="2*" />
-                                        <RowDefinition Height="1.5*" />
-                                    </Grid.RowDefinitions>
-                                    <materialDesign:Card Margin="8" Height="120">
-                                        <ListBox ItemsSource="{Binding CardEditorModel.AbilityDetailModels}"
+                            <StackPanel Grid.Row="1">
+                                <materialDesign:Card Margin="0 8 0 4" Height="120">
+                                    <ListBox ItemsSource="{Binding CardEditorModel.AbilityDetailModels}"
                                              SelectionMode="Multiple"
                                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                            <ListBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="8" />
-                                                </ItemsPanelTemplate>
-                                            </ListBox.ItemsPanel>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox Content="{Binding Name}" Foreground="Black"
-                                                          IsChecked="{Binding Checked}" />
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </materialDesign:Card>
-                                    <TextBox Grid.Row="1" Margin="16 0 16 16" TextWrapping="Wrap"
-                                         Style="{StaticResource MaterialDesignTextAreaTextBox}"
-                                         AcceptsReturn="True" materialDesign:HintAssist.Hint="能力"
-                                         VerticalContentAlignment="Top"
-                                         Text="{Binding CardEditorModel.Ability}"
-                                         TextChanged="TxtAbility_TextChanged" />
-                                    <TextBox Grid.Row="2" Margin="16 0 16 16" TextWrapping="Wrap"
-                                         Style="{StaticResource MaterialDesignTextAreaTextBox}"
-                                         AcceptsReturn="True" materialDesign:HintAssist.Hint="台词"
-                                         Text="{Binding CardEditorModel.Lines}"
-                                         VerticalContentAlignment="Top" />
-                                </Grid>
-                            </Grid>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="8" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </materialDesign:Card>
+                                <materialDesign:Card Margin="0 4 0 4" Height="168">
+                                    <TextBox TextWrapping="Wrap" Margin="2"
+                                             Style="{StaticResource MaterialDesignTextAreaTextBox}"
+                                             AcceptsReturn="True" materialDesign:HintAssist.Hint="能力"
+                                             VerticalContentAlignment="Top"
+                                             Text="{Binding CardEditorModel.Ability}"
+                                             TextChanged="TxtAbility_TextChanged" />
+                                </materialDesign:Card>
+                                <materialDesign:Card Margin="0 4 0 8" Height="124">
+                                    <TextBox TextWrapping="Wrap" Margin="2"
+                                             Style="{StaticResource MaterialDesignTextAreaTextBox}"
+                                             AcceptsReturn="True" materialDesign:HintAssist.Hint="台词"
+                                             Text="{Binding CardEditorModel.Lines}"
+                                             VerticalContentAlignment="Top" />
+                                </materialDesign:Card>
+                            </StackPanel>
                         </Grid>
                     </Grid>
                 </DockPanel>
             </Grid>
-<!--            <materialDesign:DialogHost IsOpen="{Binding IsOpen}" Identifier="null"/>-->
-        </Grid>
-    </UserControl>
+        </UserControl>
+    </materialDesign:DialogHost>
 </Window>

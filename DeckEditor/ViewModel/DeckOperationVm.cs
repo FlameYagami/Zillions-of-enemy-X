@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Text;
-using DeckEditor.Utils;
+using System.Threading.Tasks;
+using DeckEditor.Model;
+using DeckEditor.View;
 using Dialog;
+using Dialog.View;
+using MaterialDesignThemes.Wpf;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -17,26 +22,26 @@ namespace DeckEditor.ViewModel
     {
         private readonly DeckExVm _deckExVm;
         private readonly DeckStatsVm _deckStatsVm;
-        private readonly DeckVm _deckVm;
         private readonly PlayerVm _playerVm;
 
+        private DeckManager _deckManager;
         private string _deckName;
 
         public DeckOperationVm(DeckExVm deckExVm, PlayerVm playerVm, DeckStatsVm deckStatsVm)
         {
-            _deckVm = deckExVm.GetDeckVm();
             _playerVm = playerVm;
             _deckExVm = deckExVm;
             _deckStatsVm = deckStatsVm;
+            _deckManager = new DeckManager();
+            DeckName = _deckManager.DeckName;
 
-            DeckName = string.Empty;
-            DeckNameList = new ObservableCollection<string>();
-
+            CmdRename = new DelegateCommand {ExecuteCommand = Rename_Click};
             CmdSave = new DelegateCommand {ExecuteCommand = Save_Click};
             CmdResave = new DelegateCommand {ExecuteCommand = Resave_Click};
             CmdClear = new DelegateCommand {ExecuteCommand = Clear_Click};
             CmdDelete = new DelegateCommand {ExecuteCommand = Delete_Click};
             CmdDeckStats = new DelegateCommand {ExecuteCommand = DeckStats_Click};
+            CmdDeckPreview = new DelegateCommand {ExecuteCommand = DeckPreview_Click};
         }
 
         public string DeckName
@@ -49,12 +54,33 @@ namespace DeckEditor.ViewModel
             }
         }
 
+        public DelegateCommand CmdRename { get; set; }
         public DelegateCommand CmdSave { get; set; }
         public DelegateCommand CmdResave { get; set; }
         public DelegateCommand CmdClear { get; set; }
         public DelegateCommand CmdDelete { get; set; }
         public DelegateCommand CmdDeckStats { get; set; }
-        public ObservableCollection<string> DeckNameList { get; set; }
+        public DelegateCommand CmdDeckPreview { get; set; }
+
+        /// <summary>
+        ///     卡组更名事件
+        /// </summary>
+        /// <param name="obj"></param>
+        public async void Rename_Click(object obj)
+        {
+            var newDeckName = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
+            var newDeckPath = CardUtils.GetDeckPath(newDeckName);
+            var canRename = DeckName.Equals(newDeckName) || !File.Exists(newDeckName);
+            if (!canRename)
+            {
+                BaseDialogUtils.ShowDialogOk(StringConst.DeckNameExist);
+                return;
+            }
+
+            var fileInfo = new FileInfo(CardUtils.GetDeckPath(DeckName));
+            fileInfo.MoveTo(newDeckPath);
+            DeckName = newDeckName;
+        }
 
         /// <summary>
         ///     卡组删除事件
@@ -62,7 +88,7 @@ namespace DeckEditor.ViewModel
         public async void Delete_Click(object obj)
         {
             if (DeckName.Equals(string.Empty)) return;
-            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteHint)) return;
+            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteHint + "\n" + DeckName)) return;
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) return;
             File.Delete(deckPath);
@@ -82,18 +108,30 @@ namespace DeckEditor.ViewModel
         /// <summary>
         ///     卡组另存事件
         /// </summary>
-        public void Resave_Click(object obj)
+        public async void Resave_Click(object obj)
         {
-            var deckPath = CardUtils.GetDeckPath(DeckName);
-            if (!File.Exists(deckPath)) Save();
-            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
+            var result = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
+            var deckPath = CardUtils.GetDeckPath(result);
+            var canResave = DeckName.Equals(result) || !File.Exists(deckPath);
+            if (canResave) Save();
+            BaseDialogUtils.ShowDialogOk(StringConst.DeckNameExist);
         }
 
         /// <summary>
         ///     卡组存储事件
         /// </summary>
-        public void Save_Click(object obj)
+        public async void Save_Click(object obj)
         {
+            if (!DeckName.Equals(string.Empty))
+            {
+                Save();
+                return;
+            }
+
+            var result = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
+            if (result.Equals(string.Empty)) return;
+
+            DeckName = result;
             Save();
         }
 
@@ -102,52 +140,90 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void ClearDeck()
         {
-            _playerVm.PlayerModels.Clear();
-            _deckVm.IgModels.Clear();
-            _deckVm.UgModels.Clear();
-            _deckVm.ExModels.Clear();
-            _deckExVm.Clear();
-            UpdateDeckStatsView();
+            _deckManager = new DeckManager();
+            DeckName = _deckManager.DeckName;
+            _playerVm.UpdatePlayerModels(_deckManager.PlayerModels);
+            _deckExVm.UpdateAllDeckExModels(_deckManager);
+            _deckStatsVm.UpdateDeckStatsModel(_deckManager.DeckStatsModel);
         }
 
         /// <summary>
-        ///     卡组载入
+        ///     卡组预览事件
         /// </summary>
-        public void LoadDeck()
+        public async void DeckPreview_Click(object obj)
         {
-            ClearDeck();
-            var deckPath = CardUtils.GetDeckPath(DeckName);
-            if (!File.Exists(deckPath)) return;
-            var numberListString = FileUtils.GetFileContent(deckPath);
-            var numberExList = JsonUtils.Deserialize<List<string>>(numberListString);
-            foreach (var numberEx in numberExList)
-                AddCard(numberEx);
+            var model =
+                await
+                    DialogHost.Show(new DialogProgress(),
+                        (sender, eventArgs) =>
+                        {
+                            Task.Run(() => GetDeckPreviewModels())
+                                .ToObservable()
+                                .ObserveOnDispatcher()
+                                .Subscribe(result => { eventArgs.Session.UpdateContent(new DeckPreviewDialog(result)); });
+                        }, (sender, eventArgs) =>{});
+            if (model.ToString().Equals(string.Empty)) return;
+
+            // 卡组载入
+            await DialogHost.Show(new DialogProgress("载入中..."), (sender, eventArgs) =>
+                {
+                    Task.Run(() =>
+                    {
+                        var deckPreviewModel = (DeckPreviewModel) model;
+                        _deckManager.Load(deckPreviewModel.DeckName, deckPreviewModel.NumberExList);
+                    }).ToObservable().ObserveOnDispatcher().Subscribe(result =>
+                    {
+                        DeckName = _deckManager.DeckName;
+                        _playerVm.UpdatePlayerModels(_deckManager.PlayerModels);
+                        _deckExVm.UpdateAllDeckExModels(_deckManager);
+                        _deckStatsVm.UpdateDeckStatsModel(_deckManager.DeckStatsModel);
+                        eventArgs.Session.Close();
+                    });
+                },
+                (sender, eventArgs) => { });
         }
 
-        public void DeckStats_Click(object obj)
+        /// <summary>
+        ///     获取卡组预览集合
+        /// </summary>
+        /// <returns>卡组预览集合</returns>
+        public static List<DeckPreviewModel> GetDeckPreviewModels()
+        {
+            var deckPathList = new List<string>();
+            deckPathList.AddRange(Directory.GetFiles(PathManager.DeckFolderPath, $"*{StringConst.DeckExtension}"));
+            return (from deckPath in deckPathList
+                let deckName = Path.GetFileNameWithoutExtension(deckPath)
+                let numberListJson = FileUtils.GetFileContent(deckPath)
+                let numberExList = JsonUtils.Deserialize<List<string>>(numberListJson)
+                let models = CardUtils.GetCardModels(numberExList)
+                let playerPath = 0 == models.Count? PathManager.PictureUnknownPath: CardUtils.GetPlayerPath(models)
+                let startPath = CardUtils.GetStartPath(models)
+                let statusMain = CardUtils.GetMainCount(models) == 50 ? "1" : "-1"
+                let statusExtra = CardUtils.GetExtraCount(models) == 10 ? "1" : "-1"
+                select new DeckPreviewModel
+                {
+                    DeckName = deckName,
+                    StatusMain = statusMain,
+                    StatusExtra = statusExtra,
+                    PlayerPath = playerPath,
+                    StartPath = startPath,
+                    NumberExList = numberExList
+                }).ToList();
+        }
+
+        public async void DeckStats_Click(object obj)
         {
             var dekcStatisticalDic = new Dictionary<int, int>();
-            var costIgList = _deckVm.IgModels.Select(deckEntity => deckEntity.Cost);
-            var costUgList = _deckVm.UgModels.Select(deckEntity => deckEntity.Cost);
+            var costIgList = _deckManager.IgModels.Select(deckModel => deckModel.Cost);
+            var costUgList = _deckManager.UgModels.Select(deckModel => deckModel.Cost);
             var costDeckList = new List<int>();
             costDeckList.AddRange(costIgList);
             costDeckList.AddRange(costUgList);
+            if (0 == costDeckList.Count) return;
             var costMax = costDeckList.Max();
             for (var i = 0; i != costMax + 1; i++)
                 dekcStatisticalDic.Add(i + 1, costDeckList.Count(cost => cost.Equals(i + 1)));
-            DialogUtils.ShowDekcStatistical(dekcStatisticalDic);
-        }
-
-        public void UpdateDeckNameList()
-        {
-            DeckNameList.Clear();
-            var deckFolder = new DirectoryInfo(PathManager.DeckFolderPath);
-            var deckFiles = deckFolder.GetFiles(); //遍历文件
-            deckFiles
-                .Where(deckFile => StringConst.DeckExtension.Equals(deckFile.Extension))
-                .Select(deckName => Path.GetFileNameWithoutExtension(deckName.FullName))
-                .ToList()
-                .ForEach(DeckNameList.Add);
+            await DialogHost.Show(new DeckStatisticalDialog(dekcStatisticalDic));
         }
 
         private void Save()
@@ -160,26 +236,13 @@ namespace DeckEditor.ViewModel
             var deckPath = CardUtils.GetDeckPath(DeckName);
             var deckBuilder = new StringBuilder();
             var deckNumberList = new List<string>();
-            deckNumberList.AddRange(_playerVm.PlayerModels.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(_deckVm.IgModels.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(_deckVm.UgModels.Select(deckEntity => deckEntity.NumberEx).ToList());
-            deckNumberList.AddRange(_deckVm.ExModels.Select(deckEntity => deckEntity.NumberEx).ToList());
+            deckNumberList.AddRange(_playerVm.PlayerModels.Select(deckModel => deckModel.NumberEx).ToList());
+            deckNumberList.AddRange(_deckManager.IgModels.Select(deckModel => deckModel.NumberEx).ToList());
+            deckNumberList.AddRange(_deckManager.UgModels.Select(deckModel => deckModel.NumberEx).ToList());
+            deckNumberList.AddRange(_deckManager.ExModels.Select(deckModel => deckModel.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.Serializer(deckNumberList));
             var isSave = FileUtils.SaveFile(deckPath, deckBuilder.ToString());
             BaseDialogUtils.ShowDialogAuto(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
-        }
-
-        /// <summary>
-        ///     获取卡组中生命恢复和虚空使者总数的集合
-        /// </summary>
-        /// <returns></returns>
-        public void UpdateDeckStatsView()
-        {
-            var startCount = _deckVm.UgModels.AsParallel().Count(deckEntity => CardUtils.IsStart(deckEntity.NumberEx));
-            var lifeCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx));
-            var voidCount = _deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx));
-            _deckStatsVm.UpdateView(_deckVm.IgModels.Count, _deckVm.UgModels.Count, _deckVm.ExModels.Count, startCount,
-                lifeCount, voidCount);
         }
 
         /// <summary>
@@ -188,35 +251,8 @@ namespace DeckEditor.ViewModel
         /// <param name="numberEx">卡编</param>
         public void AddCard(string numberEx)
         {
-            var areaType = CardUtils.GetAreaType(numberEx);
-            switch (areaType)
-            {
-                case Enums.AreaType.Pl:
-                    _playerVm.PlayerModels.Clear();
-                    AddDeckModel(numberEx, _playerVm.PlayerModels);
-                    break;
-                case Enums.AreaType.Ig:
-                    if (CheckAreaIg(numberEx))
-                    {
-                        AddDeckModel(numberEx, _deckVm.IgModels);
-                        _deckExVm.UpdateDeckExModels(areaType);
-                    }
-                    break;
-                case Enums.AreaType.Ug:
-                    if (CheckAreaUg(numberEx))
-                    {
-                        AddDeckModel(numberEx, _deckVm.UgModels);
-                        _deckExVm.UpdateDeckExModels(areaType);
-                    }
-                    break;
-                case Enums.AreaType.Ex:
-                    if (CheckAreaEx(numberEx))
-                    {
-                        AddDeckModel(numberEx, _deckVm.ExModels);
-                        _deckExVm.UpdateDeckExModels(areaType);
-                    }
-                    break;
-            }
+            var returnAreaType = _deckManager.AddCard(numberEx);
+            UpdateSingleDeckArea(returnAreaType);
         }
 
         /// <summary>
@@ -225,109 +261,25 @@ namespace DeckEditor.ViewModel
         /// <param name="numberEx"></param>
         public void DeleteCard(string numberEx)
         {
-            var areaType = CardUtils.GetAreaType(numberEx);
-            var deckModelList = GetDeckModelList(areaType);
-            var deckModel = deckModelList.AsParallel()
-                .First(model => model.NumberEx.Equals(numberEx));
-            deckModelList.Remove(deckModel);
-            _deckExVm.UpdateDeckExModels(areaType);
+            var returnAreaType = _deckManager.DeleteCard(numberEx);
+            UpdateSingleDeckArea(returnAreaType);
         }
 
-        private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)
+        private void UpdateSingleDeckArea(Enums.AreaType areaType)
         {
-            var thumbnailPath = CardUtils.GetThumbnailPath(numberEx);
-            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>()
-                .AsEnumerable()
-                .AsParallel()
-                .First(tempRow => numberEx.Contains(tempRow[SqliteConst.ColumnNumber].ToString()));
-            var md5 = row[SqliteConst.ColumnMd5].ToString();
-            var name = row[SqliteConst.ColumnCName].ToString();
-            var camp = row[SqliteConst.ColumnCamp].ToString();
-            var cost = row[SqliteConst.ColumnCost].ToString();
-            var power = row[SqliteConst.ColumnPower].ToString();
-            var restrictPath = RestrictUtils.GetRestrictPath(md5);
-            var deckModel = new DeckModel
+            if (Enums.AreaType.None.Equals(areaType))
+                return;
+            // 添加成功则更新该区域
+            if (areaType.Equals(Enums.AreaType.Player))
             {
-                NumberEx = numberEx,
-                Camp = camp,
-                CName = name,
-                Cost = cost.Equals(string.Empty) || cost.Equals("0") ? 0 : int.Parse(cost),
-                Power = power.Equals(string.Empty) || power.Equals("0") ? 0 : int.Parse(power),
-                ImagePath = thumbnailPath,
-                RestrictPath = restrictPath
-            };
-            deckModelList.Add(deckModel);
-        }
-
-        private ObservableCollection<DeckModel> GetDeckModelList(Enums.AreaType areaType)
-        {
-            switch (areaType)
-            {
-                case Enums.AreaType.Pl:
-                    return _playerVm.PlayerModels;
-                case Enums.AreaType.Ig:
-                    return _deckVm.IgModels;
-                case Enums.AreaType.Ug:
-                    return _deckVm.UgModels;
-                case Enums.AreaType.Ex:
-                    return _deckVm.ExModels;
+                _playerVm.UpdatePlayerModels(_deckManager.PlayerModels);
             }
-            return new ObservableCollection<DeckModel>();
-        }
-
-        /// <summary>
-        ///     返回卡编是否具有添加到额外区域的权限
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <returns>true|false</returns>
-        private bool CheckAreaEx(string number)
-        {
-            var name = CardUtils.GetName(number);
-            return (_deckVm.ExModels.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                    CardUtils.GetMaxCount(number)) && (_deckVm.ExModels.Count < 10);
-        }
-
-        /// <summary>
-        ///     返回卡编是否具有添加到非点燃区域的权限
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <returns>true|false</returns>
-        private bool CheckAreaUg(string number)
-        {
-            var name = CardUtils.GetName(number);
-            return (_deckVm.UgModels.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                    CardUtils.GetMaxCount(number)) && (_deckVm.UgModels.Count < 30);
-        }
-
-        /// <summary>
-        ///     返回卡编是否具有添加到点燃区域的权限
-        /// </summary>
-        /// <param name="number">卡编</param>
-        /// <returns>true|false</returns>
-        private bool CheckAreaIg(string number)
-        {
-            var name = CardUtils.GetName(number);
-            // 根据卡编获取卡片在点燃区的枚举类型
-            var igType = CardUtils.GetIgType(number);
-            // 判断卡片是否超出自身添加数量以及点燃区总数量
-            var canAdd = (_deckVm.IgModels.AsParallel().Count(deckEntity => name.Equals(deckEntity.CName)) <
-                          CardUtils.GetMaxCount(number)) && (_deckVm.IgModels.Count < 20);
-            switch (igType)
+            else if (areaType.Equals(Enums.AreaType.Ig) || areaType.Equals(Enums.AreaType.Ug) ||
+                     areaType.Equals(Enums.AreaType.Ex))
             {
-                case Enums.IgType.Life:
-                    canAdd = canAdd &&
-                             (_deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsLife(deckEntity.NumberEx)) <
-                              4);
-                    break;
-                case Enums.IgType.Void:
-                    canAdd = canAdd &&
-                             (_deckVm.IgModels.AsParallel().Count(deckEntity => CardUtils.IsVoid(deckEntity.NumberEx)) <
-                              4);
-                    break;
-                case Enums.IgType.Normal:
-                    break;
+                _deckExVm.UpdateDeckExModels(_deckManager, areaType);
+                _deckStatsVm.UpdateDeckStatsModel(_deckManager.DeckStatsModel);
             }
-            return canAdd;
         }
     }
 }

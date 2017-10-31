@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
 using Visifire.Charts;
 
 namespace DeckEditor.View
 {
     /// <summary>
-    ///     DekcStatistical.xaml 的交互逻辑
+    ///     DeckStatisticalDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class DekcStatistical
+    public partial class DeckStatisticalDialog
     {
-        public DekcStatistical(Dictionary<int, int> statisticsDic)
+        public DeckStatisticalDialog(Dictionary<int, int> statisticsDic)
         {
             InitializeComponent();
             CreateChartColumn(statisticsDic);
@@ -54,11 +53,6 @@ namespace DeckEditor.View
             }
             // 添加数据线到数据序列。                
             ChartDeck.Series.Add(dataSeries);
-        }
-
-        private void Exit_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Close();
         }
     }
 }

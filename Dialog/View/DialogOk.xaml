@@ -4,15 +4,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="300" MaxWidth="400">
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="180" MaxWidth="400">
     <DockPanel>
         <Label DockPanel.Dock="Top" Height="48" Padding="16 0 16 0" Content="提示" FontSize="16" FontStretch="Medium"
                VerticalContentAlignment="Center" />
         <Grid DockPanel.Dock="Bottom" Margin="16">
-            <Button HorizontalAlignment="Right" Content="确定"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" IsDefault="True" Margin="0" />
+            <Button Content="确定" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" IsDefault="True" />
         </Grid>
-        <Label Margin="16 16 16 0" FontSize="14" Content="{Binding Content}" VerticalContentAlignment="Center"
-               HorizontalContentAlignment="Center" />
+        <TextBlock Margin="16 16 16 0" FontSize="14" Text="{Binding Message}" TextWrapping="Wrap" />
     </DockPanel>
 </UserControl>

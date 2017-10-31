@@ -87,6 +87,8 @@ namespace CardEditor.ViewModel
             if (!isAdd) return;
             DataCache.DsAllCache.Clear();
             SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+            if (null == _cardPreviewVm.MemoryQueryModel)
+                _cardPreviewVm.MemoryQueryModel = GetCardQueryMdoel();
             _cardPreviewVm.UpdateCardPreviewList(_cardPreviewVm.MemoryQueryModel);
         }
 
@@ -112,8 +114,9 @@ namespace CardEditor.ViewModel
             if (!isDelete) return;
             DataCache.DsAllCache.Clear();
             SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
-            // 删除数据模型
-            _cardPreviewVm.MemoryQueryModel = null;
+            if (null == _cardPreviewVm.MemoryQueryModel)
+                _cardPreviewVm.MemoryQueryModel = GetCardQueryMdoel();
+            _cardPreviewVm.UpdateCardPreviewList(_cardPreviewVm.MemoryQueryModel);
         }
 
         /// <summary>
@@ -128,11 +131,23 @@ namespace CardEditor.ViewModel
                 BaseDialogUtils.ShowDialogAuto(StringConst.CardChioceNone);
                 return;
             }
+            // 卡编是否重复判断
+            var checkNumber = selectedItem.Number.Equals(CardEditorModel.Number) ||
+                              !CardUtils.IsNumberExist(CardEditorModel.Number);
+            if (!checkNumber)
+            {
+                BaseDialogUtils.ShowDialogAuto(StringConst.CardIsExitst);
+                return;
+            }
             // 修改确认
-            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.UpdateConfirm)) return;
+            if (
+                !await
+                    BaseDialogUtils.ShowDialogConfirm(StringConst.UpdateConfirm + "\n" +
+                                                      CardUtils.GetMd5(selectedItem.Number))) return;
             // 数据库修改
             var updateSql = GetUpdateSql(CardEditorModel, selectedItem.Number);
-            var isUpdate = SqliteUtils.Execute(updateSql);
+            var udpateSameSql = GetUpdateSql(CardEditorModel);
+            var isUpdate = SqliteUtils.Execute(new List<string> {updateSql, udpateSameSql});
             BaseDialogUtils.ShowDialogAuto(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
             // 数据库更新
             if (!isUpdate) return;
@@ -159,19 +174,23 @@ namespace CardEditor.ViewModel
         /// </summary>
         public void Query_Click(object obj)
         {
+            _cardPreviewVm.UpdateCardPreviewList(GetCardQueryMdoel());
+        }
+
+        private CardQueryMdoel GetCardQueryMdoel()
+        {
             // 深拷贝查询模型
             var cardEditorModel = JsonUtils.Deserialize<CardEditorModel>(JsonUtils.Serializer(CardEditorModel));
             var mode = _externOpertaionVm.ModeValue;
             var restrict = _externOpertaionVm.RestrictValue.Equals(StringConst.NotApplicable)
                 ? -1
                 : int.Parse(_externOpertaionVm.RestrictValue);
-            var cardQueryMdoel = new CardQueryMdoel
+            return new CardQueryMdoel
             {
                 CardEditorModel = cardEditorModel,
                 Restrict = restrict,
                 ModeValue = mode
             };
-            _cardPreviewVm.UpdateCardPreviewList(cardQueryMdoel);
         }
 
         /// <summary>
@@ -285,6 +304,7 @@ namespace CardEditor.ViewModel
                     break;
                 }
             OnPropertyChanged(nameof(CardEditorModel));
+            _externOpertaionVm.Md5Value = cardModel.Md5;
             _externOpertaionVm.UpdateRestrictValue(cardModel.Restrict);
             _cardPictureVm.UpdatePicture(cardModel);
 
@@ -358,7 +378,7 @@ namespace CardEditor.ViewModel
             builder.Append($"'{card.PowerValue}',");
             builder.Append($"'{card.Ability}',");
             builder.Append($"'{card.Lines}',");
-            builder.Append($"'{JsonUtils.Serializer(new List<string> {$"/{card.Number}.jpg"})}',");
+            builder.Append($"'{JsonUtils.Serializer(new List<string> {card.Number})}',");
             builder.Append($"'{GetAbilityDetailJson(card.AbilityDetailModels.ToList())}'");
             // 详细能力处理
             builder.Append(")");
@@ -391,11 +411,36 @@ namespace CardEditor.ViewModel
             builder.Append($"{SqliteConst.ColumnAbility}= '{card.Ability}',");
             builder.Append($"{SqliteConst.ColumnLines}= '{card.Lines}',");
             builder.Append(
-                $"{SqliteConst.ColumnImage}= '{JsonUtils.Serializer(new List<string> {$"/{card.Number}.jpg"})}',");
+                $"{SqliteConst.ColumnImage}= '{JsonUtils.Serializer(new List<string> {card.Number})}',");
             builder.Append(
                 $"{SqliteConst.ColumnAbilityDetail}= '{GetAbilityDetailJson(card.AbilityDetailModels.ToList())}'");
             // 详细能力处理
             builder.Append($" WHERE {SqliteConst.ColumnNumber}='{number}'");
+            return builder.ToString();
+        }
+
+        /// <summary>
+        ///     获取同卡密的修改语句
+        /// </summary>
+        public string GetUpdateSql(CardEditorModel card)
+        {
+            var md5 = Md5Utils.GetMd5(card.JName + card.CostValue + card.PowerValue);
+            var builder = new StringBuilder();
+            builder.Append($"UPDATE {SqliteConst.TableName} SET ");
+            builder.Append($"{SqliteConst.ColumnType}='{card.Type}',");
+            builder.Append($"{SqliteConst.ColumnCamp}= '{card.Camp}',");
+            builder.Append($"{SqliteConst.ColumnRace}= '{card.Race}',");
+            builder.Append($"{SqliteConst.ColumnSign}= '{card.Sign}',");
+            builder.Append($"{SqliteConst.ColumnRare}= '{card.Rare}',");
+            builder.Append($"{SqliteConst.ColumnCName}= '{card.CName}',");
+            builder.Append($"{SqliteConst.ColumnJName}= '{card.JName}',");
+            builder.Append($"{SqliteConst.ColumnCost}= '{card.CostValue}',");
+            builder.Append($"{SqliteConst.ColumnPower}= '{card.PowerValue}',");
+            builder.Append($"{SqliteConst.ColumnAbility}= '{card.Ability}',");
+            builder.Append(
+                $"{SqliteConst.ColumnAbilityDetail}= '{GetAbilityDetailJson(card.AbilityDetailModels.ToList())}'");
+            // 详细能力处理
+            builder.Append($" WHERE {SqliteConst.ColumnMd5}='{md5}'");
             return builder.ToString();
         }
 

@@ -90,7 +90,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="NotEmptyValidationRule.cs" />
     <Compile Include="ViewModel\DialogEditorVm.cs" />
+    <Compile Include="ViewModel\DialogProgressVm.cs" />
     <Compile Include="View\DialogAuto.xaml.cs">
       <DependentUpon>DialogAuto.xaml</DependentUpon>
     </Compile>

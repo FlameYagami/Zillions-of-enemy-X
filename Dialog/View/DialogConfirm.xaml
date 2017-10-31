@@ -5,20 +5,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d" d:DesignHeight="160" d:DesignWidth="320">
-    <DockPanel Width="320" Height="160">
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="180">
+    <DockPanel Width="320" Height="180">
         <Label DockPanel.Dock="Top" Height="48" Padding="16 0 16 0" Content="提示" FontSize="16" FontStretch="Medium"
                VerticalContentAlignment="Center" />
         <Grid DockPanel.Dock="Bottom" Margin="16">
             <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="取消" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    <Button Content="取消" Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                             Margin="0 0 8 0">
                         <Button.CommandParameter>
                             <system:Boolean>False</system:Boolean>
                         </Button.CommandParameter>
                     </Button>
-                    <Button Content="确定" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    <Button Content="确定" Style="{DynamicResource MaterialDesignFlatButton}"
+                            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                             Margin="8 0 0 0" IsDefault="True">
                         <Button.CommandParameter>
                             <system:Boolean>True</system:Boolean>
@@ -27,6 +29,6 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <TextBlock Margin="16 16 16 0" Text="{Binding Content}" TextWrapping="Wrap" FontSize="14" />
+        <TextBlock Margin="16 16 16 0" Text="{Binding Message}" TextWrapping="Wrap" FontSize="14" />
     </DockPanel>
 </UserControl>

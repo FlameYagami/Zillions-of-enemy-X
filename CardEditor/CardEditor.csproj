@@ -35,7 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>D:\ZxPro\CardEditor\</OutputPath>
+    <OutputPath>D:\ZxPro\CardEditorMd\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -164,9 +164,9 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dialog\DialogLib.csproj">
+    <ProjectReference Include="..\Dialog\DialogMd.csproj">
       <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
-      <Name>DialogLib</Name>
+      <Name>DialogMd</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wrapper\Wrapper.csproj">
       <Project>{96748966-be90-425f-a8c8-e8708e45b77e}</Project>
