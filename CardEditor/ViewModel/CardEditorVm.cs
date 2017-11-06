@@ -97,6 +97,8 @@ namespace CardEditor.ViewModel
             if (!isAdd) return;
             DataCache.DsAllCache.Clear();
             SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
+            if (null == _cardPreviewVm.MemoryQueryModel)
+                _cardPreviewVm.MemoryQueryModel = GetCardQueryMdoel();
             _cardPreviewVm.UpdateCardPreviewList(_cardPreviewVm.MemoryQueryModel);
         }
 
@@ -122,8 +124,9 @@ namespace CardEditor.ViewModel
             if (!isDelete) return;
             DataCache.DsAllCache.Clear();
             SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
-            // 删除数据模型
-            _cardPreviewVm.MemoryQueryModel = null;
+            if (null == _cardPreviewVm.MemoryQueryModel)
+                _cardPreviewVm.MemoryQueryModel = GetCardQueryMdoel();
+            _cardPreviewVm.UpdateCardPreviewList(_cardPreviewVm.MemoryQueryModel);
         }
 
         /// <summary>
@@ -149,6 +152,22 @@ namespace CardEditor.ViewModel
             DataCache.DsAllCache.Clear();
             SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache);
             _cardPreviewVm.UpdateCardPreviewList(_cardPreviewVm.MemoryQueryModel);
+        }
+
+        private CardQueryMdoel GetCardQueryMdoel()
+        {
+            // 深拷贝查询模型
+            var cardEditorModel = JsonUtils.Deserialize<CardEditorModel>(JsonUtils.Serializer(CardEditorModel));
+            var mode = _externOpertaionVm.ModeValue;
+            var restrict = _externOpertaionVm.RestrictValue.Equals(StringConst.NotApplicable)
+                ? -1
+                : int.Parse(_externOpertaionVm.RestrictValue);
+            return new CardQueryMdoel
+            {
+                CardEditorModel = cardEditorModel,
+                Restrict = restrict,
+                ModeValue = mode
+            };
         }
 
         /// <summary>
