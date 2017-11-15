@@ -12,7 +12,9 @@
     <materialDesign:DialogHost>
         <DockPanel Background="Wheat">
             <materialDesign:ColorZone DockPanel.Dock="Top" Padding="16"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent">
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="Accent"
+                                      MouseRightButtonDown="Title_MouseRightButtonDown"
+                                          MouseMove="Title_MouseMove">
                 <DockPanel>
                     <Button Style="{StaticResource MaterialDesignToolForegroundButton}" Command="{Binding CmdExit}" DockPanel.Dock="Right">
                         <materialDesign:PackIcon Kind="Close"/>
@@ -23,56 +25,45 @@
             <DockPanel>
                 <materialDesign:Card DockPanel.Dock="Top" Margin="8">
                     <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="数据覆写" Width="100" Command="{Binding CmdCover}" />
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" >
                             <Button Content="同步卡包" Command="{Binding CmdPackAsync}"/>
                             <ComboBox Width="200" SelectedIndex="0" Text="{Binding PackValue}" ItemsSource="{Binding PackList}" materialDesign:HintAssist.Hint="请选择卡包"/>
-                            <Button Content="解析" Width="100" Margin="5" Command="{Binding CmdAnalyze}" />
+                            <Button Content="解析" Width="100" Margin="4" Command="{Binding CmdAnalyze}" />
+                            <Label Width="200" Content="{Binding AnalyseHint}" VerticalContentAlignment="Center" Margin="16 0"/>
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:Card >
                 <Grid Background="White" Margin="16 0 16 16" >
-                    <ListView ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding CardModels}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn>
-                                    <GridViewColumn.Header>
-                                        <CheckBox Width="20" Command="{Binding CmdAllChecked}"
+                    <DataGrid ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding CheckModels}"
+                              GridLinesVisibility="None"  AutoGenerateColumns="False"  CanUserAddRows="False" CanUserResizeRows="False" Focusable="False"  CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header>
+                                    <CheckBox Width="20" Command="{Binding CmdAllChecked}"
                                                   IsChecked="{Binding AllChecked}" />
-                                    </GridViewColumn.Header>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Checked,Mode=TwoWay}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="编号" DisplayMemberBinding="{Binding Number}" Width="75" />
-                                <GridViewColumn Header="日名" DisplayMemberBinding="{Binding JName}" Width="150" />
-                                <GridViewColumn Header="费用" DisplayMemberBinding="{Binding Cost}" Width="75" />
-                                <GridViewColumn Header="力量" DisplayMemberBinding="{Binding Power}" Width="75" />
-                                <GridViewColumn Header="阵营" Width="75">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image Source="{Binding ImgCamp}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="罕贵" Width="75">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image Source="{Binding ImgRare}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="种类" DisplayMemberBinding="{Binding Type}" Width="75" />
-                                <GridViewColumn Header="种族" DisplayMemberBinding="{Binding Race}" Width="75" />
-                                <GridViewColumn Header="卡包" DisplayMemberBinding="{Binding Pack}" Width="75" />
-                                <GridViewColumn Header="画师" DisplayMemberBinding="{Binding Illust}" Width="75" />
-                                <GridViewColumn Header="能力" DisplayMemberBinding="{Binding Ability}" Width="75" />
-                                <GridViewColumn Header="台词" DisplayMemberBinding="{Binding Lines}" Width="75" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Checked,Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="编号" Binding="{Binding Model.Number}" Width="75"   />
+                            <DataGridTextColumn Header="日名" Binding="{Binding Model.JName}" Width="150" />
+                            <DataGridTextColumn Header="费用" Binding="{Binding Model.Cost}" Width="75" />
+                            <DataGridTextColumn Header="力量" Binding="{Binding Model.Power}" Width="75" />
+                            <DataGridTextColumn Header="阵营" Binding="{Binding Model.Camp}" Width="75"/>
+                            <DataGridTextColumn Header="罕贵" Binding="{Binding Model.Rare}" Width="75"/>
+                            <DataGridTextColumn Header="种类" Binding="{Binding Model.Type}" Width="75" />
+                            <DataGridTextColumn Header="种族" Binding="{Binding Model.Race}" Width="75" />
+                            <DataGridTextColumn Header="卡包" Binding="{Binding Model.Pack}" Width="75" />
+                            <DataGridTextColumn Header="画师" Binding="{Binding Model.Illust}" Width="75" />
+                            <DataGridTextColumn Header="能力" Binding="{Binding Model.Ability}" Width="75" />
+                            <DataGridTextColumn Header="台词" Binding="{Binding Model.Lines}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </DockPanel>
         </DockPanel>

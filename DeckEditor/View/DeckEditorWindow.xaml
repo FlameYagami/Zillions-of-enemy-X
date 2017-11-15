@@ -134,8 +134,10 @@
                                           ItemsSource="{Binding PreviewOrderValues}"
                                           DropDownClosed="CmbOrder_DropDownClosed"
                                           materialDesign:HintAssist.Hint="排序" />
-                                <TextBox materialDesign:HintAssist.Hint="检索结果" IsEnabled="False"
-                                         Text="{Binding CardPreviewCountValue}" />
+                                <StackPanel Orientation="Horizontal" Margin="8">
+                                    <TextBlock Text="检索结果：" VerticalAlignment="Bottom"/>
+                                    <TextBlock Text="{Binding CardPreviewCountValue}" VerticalAlignment="Bottom"/>
+                                </StackPanel>
                             </DockPanel>
                         </materialDesign:Card>
                         <materialDesign:Card Grid.Row="1" Margin="8 0 8 8" Height="570">

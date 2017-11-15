@@ -1,6 +1,11 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using Dialog;
 using WebCrawler.ViewModel;
+using Wrapper;
+using Wrapper.Constant;
+using Wrapper.Utils;
 
 namespace WebCrawler.View
 {
@@ -12,7 +17,10 @@ namespace WebCrawler.View
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainVm();
+            if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
+                DataContext = new MainVm();
+            else
+                BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
         }
 
         private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

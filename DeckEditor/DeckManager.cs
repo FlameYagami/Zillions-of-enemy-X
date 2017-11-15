@@ -87,10 +87,12 @@ namespace DeckEditor
         public Enums.AreaType AddCard(string numberEx)
         {
             var deckModel = GetDeckModel(numberEx);
-            var returnAreaType = AddCard(deckModel);
-            UpdateDeckExModels(returnAreaType);
+            var areaType = AddCard(deckModel);
+            if (areaType.Equals(Enums.AreaType.None)) return areaType;
+            SortDeckExModels(areaType);
+            UpdateDeckExModels(areaType);
             UpdateDeckStatsModel();
-            return returnAreaType;
+            return areaType;
         }
 
         /// <summary>
@@ -193,7 +195,7 @@ namespace DeckEditor
             };
         }
 
-        private static List<DeckExModel> GetDeckExModels(List<DeckModel> deckList)
+        private static List<DeckExModel> GetDeckExModels(IReadOnlyCollection<DeckModel> deckList)
         {
             // 对象去重
             var numberExList = deckList.Select(deck => deck.NumberEx).Distinct().ToList();
@@ -215,10 +217,29 @@ namespace DeckEditor
         private void LoadDeck()
         {
             NumberExList.Select(GetDeckModel).ToList().ForEach(deck => { AddCard(deck); });
+            SortDeckExModels(Enums.AreaType.Ig);
+            SortDeckExModels(Enums.AreaType.Ug);
+            SortDeckExModels(Enums.AreaType.Ex);
             UpdateDeckExModels(Enums.AreaType.Ig);
             UpdateDeckExModels(Enums.AreaType.Ug);
             UpdateDeckExModels(Enums.AreaType.Ex);
             UpdateDeckStatsModel();
+        }
+
+        private void SortDeckExModels(Enums.AreaType areaType)
+        {
+            switch (areaType)
+            {
+                case Enums.AreaType.Ig:
+                    IgModels = GetSortDeckModels(IgModels);
+                    break;
+                case Enums.AreaType.Ug:
+                    UgModels = GetSortDeckModels(UgModels);
+                    break;
+                case Enums.AreaType.Ex:
+                    ExModels = GetSortDeckModels(ExModels);
+                    break;
+            }
         }
 
         private void UpdateDeckExModels(Enums.AreaType areaType)
@@ -226,15 +247,12 @@ namespace DeckEditor
             switch (areaType)
             {
                 case Enums.AreaType.Ig:
-                    SortByValue(IgModels);
                     IgExModels = GetDeckExModels(IgModels);
                     break;
                 case Enums.AreaType.Ug:
-                    SortByValue(UgModels);
                     UgExModels = GetDeckExModels(UgModels);
                     break;
                 case Enums.AreaType.Ex:
-                    SortByValue(ExModels);
                     ExExModels = GetDeckExModels(ExModels);
                     break;
             }
@@ -266,17 +284,15 @@ namespace DeckEditor
             return deckModel;
         }
 
-        private void SortByValue(List<DeckModel> deckModelList)
+        private static List<DeckModel> GetSortDeckModels(ICollection<DeckModel> deckModelList)
         {
-            if (0 == deckModelList.Count) return;
-            var deckModels = deckModelList
+            if (0 == deckModelList.Count) return new List<DeckModel>();
+            return deckModelList
                 .OrderBy(tempDeckEntity => tempDeckEntity.Camp)
                 .ThenByDescending(tempDeckEntity => tempDeckEntity.Cost)
                 .ThenByDescending(tempDeckEntity => tempDeckEntity.Power)
                 .ThenBy(tempDeckEntity => tempDeckEntity.NumberEx)
                 .ToList();
-            deckModelList.Clear();
-            deckModels.AddRange(deckModels);
         }
 
         private bool CheckArea(Enums.AreaType areaType, DeckModel deckModel)

@@ -468,5 +468,16 @@ namespace Wrapper.Utils
             var tempModel = cardModel.FirstOrDefault(model => IsStart(model.Number));
             return null == tempModel ? PathManager.PictureUnknownPath : GetPicturePath(tempModel.Number);
         }
+
+        /// <summary>
+        ///     获取数据库中卡牌全部编号
+        /// </summary>
+        /// <returns>卡牌编号集合</returns>
+        public static List<string> GetAllNumberList()
+        {
+            return DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+                .Select(row => row[SqliteConst.ColumnNumber].ToString())
+                .ToList();
+        }
     }
 }

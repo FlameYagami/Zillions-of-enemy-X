@@ -108,6 +108,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AnalyseUtils.cs" />
     <Compile Include="Api\HttpFunc.cs" />
     <Compile Include="Api\HttpResult.cs" />
     <Compile Include="Api\RequestApi.cs" />

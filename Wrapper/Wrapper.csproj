@@ -81,6 +81,7 @@
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\CardModel.cs" />
     <Compile Include="Model\CardPreviewModel.cs" />
+    <Compile Include="Model\CheckModel.cs" />
     <Compile Include="Model\DeckExModel.cs" />
     <Compile Include="Model\DeckModel.cs" />
     <Compile Include="Model\ItemsSourceModel.cs" />

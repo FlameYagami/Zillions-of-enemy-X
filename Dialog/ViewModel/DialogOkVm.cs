@@ -4,9 +4,9 @@
     {
         public DialogOkVm(string message)
         {
-            Messsage = message;
+            Message = message;
         }
 
-        public string Messsage { get; set; }
+        public string Message { get; set; }
     }
 }

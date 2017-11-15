@@ -68,7 +68,11 @@ namespace DeckEditor.ViewModel
         /// <param name="obj"></param>
         public async void Rename_Click(object obj)
         {
+            if (DeckName.Equals(string.Empty)) return;
+
             var newDeckName = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
+            if (string.IsNullOrWhiteSpace(newDeckName)) return;
+
             var newDeckPath = CardUtils.GetDeckPath(newDeckName);
             var canRename = DeckName.Equals(newDeckName) || !File.Exists(newDeckName);
             if (!canRename)
@@ -106,18 +110,6 @@ namespace DeckEditor.ViewModel
         }
 
         /// <summary>
-        ///     卡组另存事件
-        /// </summary>
-        public async void Resave_Click(object obj)
-        {
-            var result = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
-            var deckPath = CardUtils.GetDeckPath(result);
-            var canResave = DeckName.Equals(result) || !File.Exists(deckPath);
-            if (canResave) Save();
-            BaseDialogUtils.ShowDialogOk(StringConst.DeckNameExist);
-        }
-
-        /// <summary>
         ///     卡组存储事件
         /// </summary>
         public async void Save_Click(object obj)
@@ -131,6 +123,25 @@ namespace DeckEditor.ViewModel
             var result = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
             if (result.Equals(string.Empty)) return;
 
+            DeckName = result;
+            Save();
+        }
+
+        /// <summary>
+        ///     卡组另存事件
+        /// </summary>
+        public async void Resave_Click(object obj)
+        {
+            var result = await BaseDialogUtils.ShowDialogEditor(DeckName, "请输入卡组名称");
+            if (result.Equals(string.Empty)) return;
+
+            var deckPath = CardUtils.GetDeckPath(result);
+            var canResave = DeckName.Equals(result) || !File.Exists(deckPath);
+            if (!canResave)
+            {
+                BaseDialogUtils.ShowDialogOk(StringConst.DeckNameExist);
+                return;
+            }
             DeckName = result;
             Save();
         }

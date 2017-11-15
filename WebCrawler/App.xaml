@@ -76,6 +76,7 @@
                 <Setter Property="Border.BorderBrush" Value="Transparent" />
                 <Setter Property="Border.Background" Value="Transparent" />
             </Style>
+           
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -7,6 +7,8 @@
         public const string DeleteHint = "删除->确认";
         public const string DeleteSucceed = "删除->成功";
         public const string CoverHint = "覆写->确认";
+        public const string CoverSucceed = "覆写->成功";
+        public const string CoverFailed = "覆写->失败";
         public const string SaveSucceed = "保存->成功";
         public const string SaveFailed = "保存->失败";
         public const string OrderNumber = "编号";
