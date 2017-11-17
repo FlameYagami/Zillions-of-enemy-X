@@ -53,34 +53,7 @@ namespace DeckEditor.ViewModel
             var dataSet = new DataSet();
             var sql = GetQuerySql(queryModel);
             SqliteUtils.FillDataToDataSet(sql, dataSet);
-
-            var tempList = new List<CardPreviewModel>();
-            foreach (var row in dataSet.Tables[SqliteConst.TableName].Rows.Cast<DataRow>())
-            {
-                var name = row[SqliteConst.ColumnCName].ToString();
-                var camp = row[SqliteConst.ColumnCamp].ToString();
-                var number = row[SqliteConst.ColumnNumber].ToString();
-                var imageJson = row[SqliteConst.ColumnImage].ToString();
-                var restrictPath = RestrictUtils.GetRestrictPath(row[SqliteConst.ColumnMd5].ToString());
-                var imagePath = CardUtils.GetThumbnailPathList(imageJson)[0];
-                var race = row[SqliteConst.ColumnRace].ToString();
-                race = race.Equals(string.Empty) ? StringConst.Hyphen : race;
-                var cost = row[SqliteConst.ColumnCost].ToString();
-                cost = cost.Equals("0") || cost.Equals(string.Empty) ? StringConst.Hyphen : cost;
-                var power = row[SqliteConst.ColumnPower].ToString();
-                power = power.Equals("0") || power.Equals(string.Empty) ? StringConst.Hyphen : power;
-
-                tempList.Add(new CardPreviewModel
-                {
-                    CName = name,
-                    CampAndRace = camp + " / " + race,
-                    PowerAndCost = power + " / " + cost,
-                    Number = number,
-                    ImagePath = imagePath,
-                    ImageJson = imageJson,
-                    RestrictPath = restrictPath
-                });
-            }
+            var tempList = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();
             tempList.ForEach(CardPreviewModels.Add);
             CardPreviewCountValue = StringConst.QueryResult + CardPreviewModels.Count;

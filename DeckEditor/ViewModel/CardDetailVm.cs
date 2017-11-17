@@ -25,8 +25,8 @@ namespace DeckEditor.ViewModel
             CardDetailModel.Number = cardModel.Number;
             CardDetailModel.Type = cardModel.Type;
             CardDetailModel.RarePath = Dic.ImgRarePathDic.FirstOrDefault(pair => pair.Key.Equals(cardModel.Rare)).Value;
-            CardDetailModel.PowerValue = cardModel.Power.Equals(0) ? StringConst.Hyphen : cardModel.Power.ToString();
-            CardDetailModel.CostValue = cardModel.Cost.Equals(0) ? StringConst.Hyphen : cardModel.Cost.ToString();
+            CardDetailModel.PowerValue = cardModel.Power.Equals(-1) ? StringConst.Hyphen : cardModel.Power.ToString();
+            CardDetailModel.CostValue = cardModel.Cost.Equals(-1) ? StringConst.Hyphen : cardModel.Cost.ToString();
             CardDetailModel.Race = cardModel.Race;
             CardDetailModel.Ability = cardModel.Ability;
             CardDetailModel.JName = cardModel.JName;

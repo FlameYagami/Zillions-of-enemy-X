@@ -255,8 +255,8 @@ namespace CardEditor.ViewModel
                     CardEditorModel.SignEnabled = false;
                     CardEditorModel.Race = StringConst.Hyphen;
                     CardEditorModel.Sign = StringConst.Hyphen;
-                    CardEditorModel.CostValue = string.Empty;
-                    CardEditorModel.PowerValue = string.Empty;
+                    CardEditorModel.CostValue = "-1";
+                    CardEditorModel.PowerValue = "-1";
                     break;
                 }
                 case StringConst.TypeEvent:
@@ -266,7 +266,7 @@ namespace CardEditor.ViewModel
                     CardEditorModel.RaceEnabled = false;
                     CardEditorModel.SignEnabled = true;
                     CardEditorModel.Race = StringConst.Hyphen;
-                    CardEditorModel.PowerValue = string.Empty;
+                    CardEditorModel.PowerValue = "-1";
                     break;
                 }
             }

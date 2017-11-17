@@ -90,6 +90,7 @@
     <Compile Include="Utils\ConfigUtils.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\JsonUtils.cs" />
+    <Compile Include="Utils\LogUtils.cs" />
     <Compile Include="Utils\Md5Utils.cs" />
     <Compile Include="Utils\RestrictUtils.cs" />
     <Compile Include="Utils\SqliteUtils.cs" />

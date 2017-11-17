@@ -433,31 +433,29 @@
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Height="63" MouseRightButtonDown="CardPreviewItem_MouseRightButtonDown"
+                                    <DockPanel Height="63" MouseRightButtonDown="CardPreviewItem_MouseRightButtonDown"
                                           ToolTip="右键添加" Tag="{Binding ImageJson}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Grid>
-                                                <Image Source="{Binding ImagePath}" Width="45" Height="63" />
-                                                <Image Source="{Binding RestrictPath}" Height="15" Width="15"
+                                        <Grid DockPanel.Dock="Left">
+                                            <Image Source="{Binding ImagePath}" Width="45" Height="63" />
+                                            <Image Source="{Binding RestrictPath}" Height="15" Width="15"
                                                        VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                            </Grid>
-                                            <Grid VerticalAlignment="Center">
-                                                <StackPanel Orientation="Vertical" Width="120" Margin="5,0,0,0">
-                                                    <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"
-                                                               HorizontalAlignment="Center" Height="20"
-                                                               LineStackingStrategy="BlockLineHeight" />
-                                                    <TextBlock TextTrimming="CharacterEllipsis"
-                                                               HorizontalAlignment="Center" Height="20"
-                                                               LineStackingStrategy="BlockLineHeight"
-                                                               Text="{Binding CampAndRace}" />
-                                                    <TextBlock TextTrimming="CharacterEllipsis"
-                                                               HorizontalAlignment="Center" Height="20"
-                                                               LineStackingStrategy="BlockLineHeight"
-                                                               Text="{Binding PowerAndCost}" />
+                                        </Grid>
+                                        <Grid VerticalAlignment="Center">
+                                            <StackPanel Orientation="Vertical" Width="120" Margin="4 0">
+                                                <TextBlock Text="{Binding CName}" TextTrimming="CharacterEllipsis"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Camp}"/>
+                                                    <Label Content=" "/>
+                                                    <TextBlock Text="{Binding Race}" TextTrimming="CharacterEllipsis"/>
+                                                </StackPanel >
+                                                <StackPanel Orientation="Horizontal" >
+                                                    <TextBlock Text="{Binding CostValue}"/>
+                                                    <Label Content=" "/>
+                                                    <TextBlock Text="{Binding PowerValue}" TextTrimming="CharacterEllipsis"/>
                                                 </StackPanel>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DockPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>

@@ -93,7 +93,7 @@ namespace DeckEditor.View
         /// <summary>列表区域右键事件</summary>
         private void CardPreviewItem_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var grid = sender as Grid;
+            var grid = sender as DockPanel;
             if (null == grid) return;
             var numberEx = CardUtils.GetNumberExList(grid.Tag.ToString())[CardPictureView.SelectedIndex];
             _deckOperationVm.AddCard(numberEx);

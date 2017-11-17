@@ -45,43 +45,21 @@ namespace CardEditor.ViewModel
             MemoryQueryModel = cardQueryMdoel;
             SqliteUtils.FillDataToDataSet(sql, dataSet);
 
-            var tempModels = new List<CardPreviewModel>();
-            var tempPreviewModleList =
-                dataSet.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().Select(row => new CardPreviewModel
-                {
-                    CName = row[SqliteConst.ColumnCName].ToString(),
-                    Number = row[SqliteConst.ColumnNumber].ToString(),
-                    ImageJson = row[SqliteConst.ColumnImage].ToString(),
-                    CostValue =
-                        row[SqliteConst.ColumnCost].ToString().Equals(string.Empty) ||
-                        row[SqliteConst.ColumnCost].ToString().Equals("0")
-                            ? StringConst.Hyphen
-                            : row[SqliteConst.ColumnCost].ToString(),
-                    PowerValue =
-                        row[SqliteConst.ColumnPower].ToString().Equals(string.Empty) ||
-                        row[SqliteConst.ColumnPower].ToString().Equals("0")
-                            ? StringConst.Hyphen
-                            : row[SqliteConst.ColumnPower].ToString(),
-                    Restrict = RestrictUtils.GetRestrict(row[SqliteConst.ColumnMd5].ToString())
-                }).ToList();
-            tempModels.AddRange(tempPreviewModleList);
+            var previewModels = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();
-            RestrictUtils.GetRestrictCardList(tempModels, cardQueryMdoel.Restrict).ForEach(CardPreviewModels.Add);
+            RestrictUtils.GetRestrictCardList(previewModels, cardQueryMdoel.Restrict).ForEach(CardPreviewModels.Add);
             // 更新统计
             CardPreviewCountValue = StringConst.QueryResult + CardPreviewModels.Count;
             OnPropertyChanged(nameof(CardPreviewCountValue));
-//            // 跟踪历史
-//            if (MemoryQueryModel.Number.Equals(string.Empty)) return;
-//            var firstOrDefault = CardPreviewModels
-//                .Select((previewModel, index) => new {previewModel.Number, Index = index})
-//                .FirstOrDefault(i => i.Number.Equals(MemoryQueryModel.Number));
-//            if (null == firstOrDefault) return;
-//            var position = firstOrDefault.Index;
-//            if (position == -1) return;
-//            LvCardPreview.SelectedIndex = position;
-//            LvCardPreview.ScrollIntoView(LvCardPreview.SelectedItem);
-//            var item = LvCardPreview.ItemContainerGenerator.ContainerFromIndex(position) as ListViewItem;
-//            item?.Focus();
+            // 跟踪历史
+            if (MemoryQueryModel.CardEditorModel.Number.Equals(string.Empty)) return;
+            var firstOrDefault = CardPreviewModels
+                .Select((previewModel, index) => new { previewModel.Number, Index = index })
+                .FirstOrDefault(i => i.Number.Equals(MemoryQueryModel.CardEditorModel.Number));
+            if (null == firstOrDefault) return;
+            var position = firstOrDefault.Index;
+            if (position == -1) return;
+            _selectedItem = CardPreviewModels[position];
         }
 
         /// <summary>

@@ -40,11 +40,11 @@ namespace Wrapper.Utils
                 .Cast<DataRow>()
                 .AsParallel()
                 .First(column => numberEx.Contains(column[ColumnNumber].ToString()));
-            var cost = row[ColumnCost].ToString().Equals(string.Empty) || row[ColumnCost].ToString().Equals("0")
-                ? 0
+            var cost = row[ColumnCost].ToString().Equals(StringConst.CostValueNotApplicable)
+                ? -1
                 : int.Parse(row[ColumnCost].ToString());
-            var power = row[ColumnPower].ToString().Equals(string.Empty) || row[ColumnPower].ToString().Equals("0")
-                ? 0
+            var power = row[ColumnPower].ToString().Equals(StringConst.PowerValueNotApplicable)
+                ? -1
                 : int.Parse(row[ColumnPower].ToString());
             var restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString());
             return new CardModel
@@ -68,6 +68,42 @@ namespace Wrapper.Utils
                 AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
                 Restrict = restrict
             };
+        }
+
+        public static List<CardPreviewModel> GetCardPreviewModels(DataSet dataSet)
+        {
+            return dataSet.Tables[TableName].Rows.Cast<DataRow>().Select(row =>
+            {
+                var md5 = row[ColumnMd5].ToString();
+                var name = row[ColumnCName].ToString();
+                var number = row[ColumnNumber].ToString();
+                var cost = row[ColumnCost].ToString();
+                var power = row[ColumnPower].ToString();
+                var race = row[ColumnRace].ToString();
+                var camp = row[ColumnCamp].ToString();
+                var imageJson = row[ColumnImage].ToString();
+                var imagePath = GetThumbnailPathList(imageJson)[0];
+                var restrict = RestrictUtils.GetRestrict(md5);
+                var restrictPath = RestrictUtils.GetRestrictPath(md5);
+
+                cost = cost.Equals(StringConst.CostValueNotApplicable) ? StringConst.Hyphen : cost;
+                power = power.Equals(StringConst.PowerValueNotApplicable) ? StringConst.Hyphen : power;
+                race = race.Equals(string.Empty) ? StringConst.Hyphen : race;
+
+                return new CardPreviewModel
+                {
+                    CName = name,
+                    Number = number,
+                    CostValue = cost,
+                    PowerValue = power,
+                    Camp = camp,
+                    Race = race,
+                    ImagePath = imagePath,
+                    ImageJson = imageJson,
+                    Restrict = restrict,
+                    RestrictPath = restrictPath
+                };
+            }).ToList();
         }
 
         /// <summary>
