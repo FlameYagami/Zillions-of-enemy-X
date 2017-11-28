@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Common;
 using Wrapper.Constant;
 using Wrapper.Model;
 
@@ -36,15 +37,15 @@ namespace Wrapper.Utils
 
         public static CardModel GetCardModel(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows
+            var row = DataManager.DsAllCache.Tables[TableName].Rows
                 .Cast<DataRow>()
                 .AsParallel()
                 .First(column => numberEx.Contains(column[ColumnNumber].ToString()));
-            var cost = row[ColumnCost].ToString().Equals(string.Empty) || row[ColumnCost].ToString().Equals("0")
-                ? 0
+            var cost = row[ColumnCost].ToString().Equals(StringConst.CostValueNotApplicable)
+                ? -1
                 : int.Parse(row[ColumnCost].ToString());
-            var power = row[ColumnPower].ToString().Equals(string.Empty) || row[ColumnPower].ToString().Equals("0")
-                ? 0
+            var power = row[ColumnPower].ToString().Equals(StringConst.PowerValueNotApplicable)
+                ? -1
                 : int.Parse(row[ColumnPower].ToString());
             var restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString());
             return new CardModel
@@ -70,6 +71,42 @@ namespace Wrapper.Utils
             };
         }
 
+        public static List<CardPreviewModel> GetCardPreviewModels(DataSet dataSet)
+        {
+            return dataSet.Tables[TableName].Rows.Cast<DataRow>().Select(row =>
+            {
+                var md5 = row[ColumnMd5].ToString();
+                var name = row[ColumnCName].ToString();
+                var number = row[ColumnNumber].ToString();
+                var cost = row[ColumnCost].ToString();
+                var power = row[ColumnPower].ToString();
+                var race = row[ColumnRace].ToString();
+                var camp = row[ColumnCamp].ToString();
+                var imageJson = row[ColumnImage].ToString();
+                var imagePath = GetThumbnailPathList(imageJson)[0];
+                var restrict = RestrictUtils.GetRestrict(md5);
+                var restrictPath = RestrictUtils.GetRestrictPath(md5);
+
+                cost = cost.Equals(StringConst.CostValueNotApplicable) ? StringConst.Hyphen : cost;
+                power = power.Equals(StringConst.PowerValueNotApplicable) ? StringConst.Hyphen : power;
+                race = race.Equals(string.Empty) ? StringConst.Hyphen : race;
+
+                return new CardPreviewModel
+                {
+                    CName = name,
+                    Number = number,
+                    CostValue = cost,
+                    PowerValue = power,
+                    Camp = camp,
+                    Race = race,
+                    ImagePath = imagePath,
+                    ImageJson = imageJson,
+                    Restrict = restrict,
+                    RestrictPath = restrictPath
+                };
+            }).ToList();
+        }
+
         /// <summary>
         ///     获取卡编相关的大图路径集合
         /// </summary>
@@ -91,7 +128,7 @@ namespace Wrapper.Utils
         public static bool IsNumberExist(string number)
         {
             return
-                DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+                DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                     .Any(row => row[ColumnNumber].ToString().Equals(number));
         }
 
@@ -125,7 +162,7 @@ namespace Wrapper.Utils
         private static IEnumerable<string> GetPartPack(string packType)
         {
             var list = new List<string> {packType + StringConst.Series};
-            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+            var tempList = DataManager.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => column[ColumnPack].ToString())
                 .Distinct()
                 .Where(
@@ -148,7 +185,7 @@ namespace Wrapper.Utils
             var list = new List<string> {StringConst.NotApplicable};
             if (camp.Equals(StringConst.NotApplicable))
                 return list;
-            var tempList = (from row in DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var tempList = (from row in DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                     where row[ColumnCamp].Equals(camp)
                     select row[ColumnRace].ToString())
                 .ToList()
@@ -209,7 +246,7 @@ namespace Wrapper.Utils
         public static List<string> GetIllustList()
         {
             var list = new List<string> {StringConst.NotApplicable};
-            var tempList = DataCache.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
+            var tempList = DataManager.DsAllCache.Tables[TableName].AsEnumerable().AsParallel()
                 .Select(column => column[ColumnIllust].ToString())
                 .Distinct()
                 .OrderBy(value => value.ToString().Length)
@@ -263,7 +300,7 @@ namespace Wrapper.Utils
         /// <returns></returns>
         public static Enums.AreaType GetAreaType(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .FirstOrDefault(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             if (null == row) return Enums.AreaType.None;
             if (StringConst.SignIg.Equals(row[ColumnSign].ToString()))
@@ -282,7 +319,7 @@ namespace Wrapper.Utils
         /// <returns></returns>
         public static int GetMaxCount(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             return RestrictUtils.GetRestrict(row[ColumnMd5].ToString());
         }
@@ -294,7 +331,7 @@ namespace Wrapper.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsStart(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityStart);
         }
@@ -306,7 +343,7 @@ namespace Wrapper.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsLife(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityLife);
         }
@@ -318,7 +355,7 @@ namespace Wrapper.Utils
         /// <returns>Ture|Flase</returns>
         public static bool IsVoid(string numberEx)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnAbility].ToString().Contains(StringConst.AbilityVoid);
         }
@@ -330,7 +367,7 @@ namespace Wrapper.Utils
         /// <returns>Life|Void|Normal</returns>
         public static Enums.IgType GetIgType(string numberEx)
         {
-            var ability = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var ability = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[ColumnNumber].ToString()))[ColumnAbility].ToString();
             if (ability.Contains(StringConst.AbilityLife)) return Enums.IgType.Life;
             if (ability.Contains(StringConst.AbilityVoid)) return Enums.IgType.Void;
@@ -395,7 +432,7 @@ namespace Wrapper.Utils
         /// <returns>卡名</returns>
         public static string GetName(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnCName].ToString();
         }
@@ -407,7 +444,7 @@ namespace Wrapper.Utils
         /// <returns>卡名</returns>
         public static string GetMd5(string number)
         {
-            var row = DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            var row = DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .First(tempRow => number.Contains(tempRow[ColumnNumber].ToString()));
             return row[ColumnMd5].ToString();
         }
@@ -475,7 +512,7 @@ namespace Wrapper.Utils
         /// <returns>卡牌编号集合</returns>
         public static List<string> GetAllNumberList()
         {
-            return DataCache.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
+            return DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .Select(row => row[SqliteConst.ColumnNumber].ToString())
                 .ToList();
         }

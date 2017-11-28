@@ -49,5 +49,23 @@ namespace Common
                 return decryptString;
             }
         }
+
+        /// <summary>
+        ///     判断输入参数是否为数字
+        /// </summary>
+        /// <param name="str">参数</param>
+        /// <returns></returns>
+        public static bool IsNumber(string str)
+        {
+            try
+            {
+                var number = Int32.Parse(str);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

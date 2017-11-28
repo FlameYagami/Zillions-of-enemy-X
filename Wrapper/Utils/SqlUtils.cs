@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Common;
 using Wrapper.Constant;
 using Wrapper.Model;
 
@@ -64,7 +65,6 @@ namespace Wrapper.Utils
         public static string GetAccurateValue(string value)
         {
             return StringConst.NotApplicable.Equals(value) ? string.Empty : value.Replace("'", "''");
-            // 处理字符串中对插入语句影响的'号
         }
 
         /// <summary>
@@ -137,23 +137,23 @@ namespace Wrapper.Utils
 
         public static List<string> GetPciturePathList()
         {
-            var numberList = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+            var numberList = DataManager.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(
                     column =>
-                            $"Update TableCard Set ImageJson = '{JsonUtils.Serializer(new List<string> {"/" + column[ColumnNumber].ToString() + ".jpg"})}' WHERE Number='{column[ColumnNumber].ToString()}'")
+                            $"Update {TableName} Set {ColumnImage} = '{JsonUtils.Serializer(new List<string> { column[ColumnNumber].ToString() })}' WHERE Number='{column[ColumnNumber].ToString()}'")
                 .ToList();
             return numberList;
         }
 
         public static List<string> GetMd5SqlList()
         {
-            var cardModels = DataCache.DsAllCache.Tables[TableName].AsEnumerable()
+            var cardModels = DataManager.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(column => new CardModel
                 {
                     JName = column[ColumnJName].ToString(),
                     Number = column[ColumnNumber].ToString(),
-                    Cost = column[ColumnCost].ToString().Equals("") ? 0 : int.Parse(column[ColumnCost].ToString()),
-                    Power = column[ColumnPower].ToString().Equals("") ? 0 : int.Parse(column[ColumnPower].ToString())
+                    Cost = int.Parse(column[ColumnCost].ToString()),
+                    Power = int.Parse(column[ColumnPower].ToString())
                 }).ToList();
             return (from entity in cardModels
                 let md5 = Md5Utils.GetMd5(entity.JName + entity.Cost + entity.Power).ToUpper()
@@ -210,6 +210,15 @@ namespace Wrapper.Utils
             foreach (var column in ColumKeyArray)
                 tempValue.Append($" OR {column} LIKE '%{value}%'");
             return tempValue.ToString();
+        }
+
+
+        protected static string GetAbilityDetailJson(IEnumerable<AbilityModel> abilityModels)
+        {
+            var abilityDetailList =
+                abilityModels.Select(abilityModel => new List<int> {abilityModel.Code, abilityModel.Checked ? 1 : 0})
+                    .ToList();
+            return JsonUtils.Serializer(abilityDetailList);
         }
     }
 }

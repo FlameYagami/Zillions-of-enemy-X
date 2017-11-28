@@ -1,4 +1,6 @@
-﻿namespace Wrapper.Model
+﻿using Common;
+
+namespace Wrapper.Model
 {
     public class AbilityModel : BaseModel
     {

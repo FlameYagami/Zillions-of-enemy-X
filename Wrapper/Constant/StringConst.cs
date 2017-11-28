@@ -19,6 +19,10 @@
         public const string DeckExtension = ".zx";
         public const string ImageExtension = ".jpg";
         public const string FileNotExits = "文件->不存在";
+        public const string CostValueNotApplicable = "-1";
+        public const string PowerValueNotApplicable = "-1";
+        // 次级DialogHost标识符
+        public const string SecondaryDialogHost = "SecondaryDialog";
 
         // Type
         public const string TypeZx = "Z/X";
