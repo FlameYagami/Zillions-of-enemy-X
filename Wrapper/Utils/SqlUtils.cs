@@ -140,7 +140,7 @@ namespace Wrapper.Utils
             var numberList = DataManager.DsAllCache.Tables[TableName].AsEnumerable()
                 .Select(
                     column =>
-                            $"Update {TableName} Set {ColumnImage} = '{JsonUtils.Serializer(new List<string> { column[ColumnNumber].ToString() })}' WHERE Number='{column[ColumnNumber].ToString()}'")
+                            $"Update {TableName} Set {ColumnImage} = '{JsonUtils.Serializer(new List<string> {column[ColumnNumber].ToString()})}' WHERE Number='{column[ColumnNumber].ToString()}'")
                 .ToList();
             return numberList;
         }

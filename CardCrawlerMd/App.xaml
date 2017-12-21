@@ -1,4 +1,4 @@
-﻿<Application x:Class="WebCrawler.App"
+﻿<Application x:Class="CardCrawler.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WebCrawler"
@@ -76,7 +76,7 @@
                 <Setter Property="Border.BorderBrush" Value="Transparent" />
                 <Setter Property="Border.Background" Value="Transparent" />
             </Style>
-           
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -59,7 +59,7 @@ namespace Common
         {
             try
             {
-                var number = Int32.Parse(str);
+                var number = int.Parse(str);
                 return true;
             }
             catch (Exception)

@@ -151,58 +151,59 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" Grid.Row="0"
-                                                  ItemsSource="{Binding SearchSourceModel.TypeList}"
-                                                  Text="{Binding SearchModel.Type}"
+                                                  ItemsSource="{Binding QuerySourceModel.TypeList}"
+                                                  Text="{Binding CardQueryModel.Type}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="种类" IsEditable="True"
-                                                  TextBoxBase.TextChanged="CmbType_TextChanged" />
+                                                  TextBoxBase.TextChanged="CmbType_TextChanged" Margin="8,0,8,4"
+                                                  VerticalAlignment="Bottom" />
                                         <ComboBox Grid.Column="0" Grid.Row="1"
-                                                  ItemsSource="{Binding SearchSourceModel.CampList}"
-                                                  Text="{Binding SearchModel.Camp}"
+                                                  ItemsSource="{Binding QuerySourceModel.CampList}"
+                                                  Text="{Binding CardQueryModel.Camp}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="阵营" IsEditable="True"
                                                   TextBoxBase.TextChanged="CmbCamp_TextChanged" />
                                         <ComboBox Grid.Column="0" Grid.Row="2"
-                                                  ItemsSource="{Binding SearchSourceModel.RaceList}"
-                                                  Text="{Binding SearchModel.Race}"
-                                                  IsEnabled="{Binding SearchModel.RaceEnabled}"
+                                                  ItemsSource="{Binding QuerySourceModel.RaceList}"
+                                                  Text="{Binding CardQueryModel.Race}"
+                                                  IsEnabled="{Binding CardQueryModel.RaceEnabled}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="种族" IsEditable="True" />
                                         <ComboBox Grid.Column="0" Grid.Row="3"
-                                                  ItemsSource="{Binding SearchSourceModel.SignList}"
-                                                  Text="{Binding SearchModel.Sign}"
+                                                  ItemsSource="{Binding QuerySourceModel.SignList}"
+                                                  Text="{Binding CardQueryModel.Sign}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="标记" IsEditable="True"
-                                                  IsEnabled="{Binding SearchModel.SignEnabled}" />
+                                                  IsEnabled="{Binding CardQueryModel.SignEnabled}" />
                                         <ComboBox Grid.Column="2" Grid.Row="1"
-                                                  ItemsSource="{Binding SearchSourceModel.RareList}"
-                                                  Text="{Binding SearchModel.Rare}"
+                                                  ItemsSource="{Binding QuerySourceModel.RareList}"
+                                                  Text="{Binding CardQueryModel.Rare}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="罕贵" IsEditable="True" />
                                         <ComboBox Grid.Column="1" Grid.Row="0"
-                                                  ItemsSource="{Binding SearchSourceModel.PackList}"
-                                                  Text="{Binding SearchModel.Pack}"
+                                                  ItemsSource="{Binding QuerySourceModel.PackList}"
+                                                  Text="{Binding CardQueryModel.Pack}" SelectedIndex="0"
                                                   materialDesign:HintAssist.Hint="卡包" IsEditable="True"
                                                   TextBoxBase.TextChanged="CmbPack_TextChanged" />
                                         <TextBox Grid.Column="1" Grid.Row="1" materialDesign:HintAssist.Hint="卡名"
-                                                 Text="{Binding SearchModel.CName}" />
+                                                 Text="{Binding CardQueryModel.CName}" />
                                         <TextBox Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="日名"
-                                                 Text="{Binding SearchModel.JName}" />
+                                                 Text="{Binding CardQueryModel.JName}" />
                                         <TextBox Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="画师"
-                                                 Text="{Binding SearchModel.Illust}" />
+                                                 Text="{Binding CardQueryModel.Illust}" />
                                         <TextBox Grid.Column="2" Grid.Row="0"
-                                                 Text="{Binding SearchModel.Number}"
+                                                 Text="{Binding CardQueryModel.Number}"
                                                  materialDesign:HintAssist.Hint="卡编" />
                                         <TextBox Grid.Column="2" Grid.Row="2"
-                                                 Text="{Binding SearchModel.CostValue}"
+                                                 Text="{Binding CardQueryModel.CostValue}"
                                                  materialDesign:HintAssist.Hint="费用"
-                                                 IsEnabled="{Binding SearchModel.CostEnabled}" />
+                                                 IsEnabled="{Binding CardQueryModel.CostEnabled}" />
                                         <TextBox Grid.Column="2" Grid.Row="3"
-                                                 Text="{Binding SearchModel.PowerValue}"
+                                                 Text="{Binding CardQueryModel.PowerValue}"
                                                  materialDesign:HintAssist.Hint="力量"
-                                                 IsEnabled="{Binding SearchModel.PowerEnabled}" />
+                                                 IsEnabled="{Binding CardQueryModel.PowerEnabled}" />
                                         <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Content="检索" Height="64"
                                                 Command="{Binding CmdQuery}" />
                                         <Button Grid.Column="3" Grid.Row="2" Content="重置"
                                                 Command="{Binding CmdReset}" />
                                         <ListBox SelectionMode="Multiple" Width="100" Height="160" Grid.Row="0"
                                                  Grid.RowSpan="4" Grid.Column="4" Margin="4"
-                                                 ItemsSource="{Binding SearchModel.AbilityTypeModels}"
+                                                 ItemsSource="{Binding CardQueryModel.AbilityTypeModels}"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                             <ListBox.ItemsPanel>
@@ -222,7 +223,7 @@
                             </DockPanel>
                             <StackPanel Grid.Row="1">
                                 <materialDesign:Card Margin="0 8 0 4" Height="120">
-                                    <ListBox ItemsSource="{Binding SearchModel.AbilityDetailModels}"
+                                    <ListBox ItemsSource="{Binding CardQueryModel.AbilityDetailModels}"
                                              SelectionMode="Multiple"
                                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -243,14 +244,14 @@
                                              Style="{StaticResource MaterialDesignTextAreaTextBox}"
                                              AcceptsReturn="True" materialDesign:HintAssist.Hint="能力"
                                              VerticalContentAlignment="Top"
-                                             Text="{Binding SearchModel.Ability}"
+                                             Text="{Binding CardQueryModel.Ability}"
                                              TextChanged="TxtAbility_TextChanged" />
                                 </materialDesign:Card>
                                 <materialDesign:Card Margin="0 4 0 8" Height="124">
                                     <TextBox TextWrapping="Wrap" Margin="2"
                                              Style="{StaticResource MaterialDesignTextAreaTextBox}"
                                              AcceptsReturn="True" materialDesign:HintAssist.Hint="台词"
-                                             Text="{Binding SearchModel.Lines}"
+                                             Text="{Binding CardQueryModel.Lines}"
                                              VerticalContentAlignment="Top" />
                                 </materialDesign:Card>
                             </StackPanel>

@@ -1,4 +1,4 @@
-﻿namespace WebCrawler.Model
+﻿namespace CardCrawler.Model
 {
     public class CardModel
     {

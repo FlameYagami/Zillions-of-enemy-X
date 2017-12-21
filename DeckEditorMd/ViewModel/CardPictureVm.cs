@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using Common;
-using DeckEditor.Model;
-using Wrapper;
 using Wrapper.Model;
 using Wrapper.Utils;
 

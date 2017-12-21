@@ -173,7 +173,7 @@ namespace DeckEditor.ViewModel
                                 .ToObservable()
                                 .ObserveOnDispatcher()
                                 .Subscribe(result => { eventArgs.Session.UpdateContent(new DeckPreviewDialog(result)); });
-                        }, (sender, eventArgs) =>{});
+                        }, (sender, eventArgs) => { });
             if (model.ToString().Equals(string.Empty)) return;
 
             // 卡组载入
@@ -208,7 +208,7 @@ namespace DeckEditor.ViewModel
                 let numberListJson = FileUtils.GetFileContent(deckPath)
                 let numberExList = JsonUtils.Deserialize<List<string>>(numberListJson)
                 let models = CardUtils.GetCardModels(numberExList)
-                let playerPath = 0 == models.Count? PathManager.PictureUnknownPath: CardUtils.GetPlayerPath(models)
+                let playerPath = 0 == models.Count ? PathManager.PictureUnknownPath : CardUtils.GetPlayerPath(models)
                 let startPath = CardUtils.GetStartPath(models)
                 let statusMain = CardUtils.GetMainCount(models) == 50 ? "1" : "-1"
                 let statusExtra = CardUtils.GetExtraCount(models) == 10 ? "1" : "-1"
@@ -224,7 +224,7 @@ namespace DeckEditor.ViewModel
         }
 
         /// <summary>
-        /// 卡组确认事件
+        ///     卡组确认事件
         /// </summary>
         public async void DeckDetail_Click(object obj)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Refit;
 
-namespace WebCrawler.Api
+namespace CardCrawler.Api
 {
     public interface IRequestService
     {

@@ -1,11 +1,9 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using CardCrawler.ViewModel;
 using Dialog;
-using WebCrawler.ViewModel;
 using Wrapper;
 using Wrapper.Constant;
-using Wrapper.Utils;
 
 namespace WebCrawler.View
 {
@@ -17,7 +15,7 @@ namespace WebCrawler.View
         public MainWindow()
         {
             InitializeComponent();
-            if (DataManager.FillDataToDataSet(DataManager.DsAllCache, SqlUtils.GetQueryAllSql()))
+            if (DataManager.FillDataToDataSet())
                 DataContext = new MainVm();
             else
                 BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);

@@ -17,58 +17,58 @@
                    VerticalContentAlignment="Center" />
         </DockPanel>
         <materialDesign:Card Margin="0 8 8 8" Width="300" DockPanel.Dock="Right" Height="474">
-            <chart:Chart Name="ChartDeck" ScrollingEnabled="False" View3D="True" Background="Transparent"/>
+            <chart:Chart Name="ChartDeck" ScrollingEnabled="False" View3D="True" Background="Transparent" />
         </materialDesign:Card>
         <StackPanel Orientation="Vertical">
             <materialDesign:Card Height="158" Width="600" Margin="8" DockPanel.Dock="Bottom"
-                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                 <ListView ItemsSource="{Binding IgModels}"
-                  ScrollViewer.CanContentScroll="False"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="-4">
                                 <Image Source="{Binding RestrictPath}" Height="24" Width="24"
                                        VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                <Image Source="{Binding ImagePath}" Width="45" Height="63"/>
+                                <Image Source="{Binding ImagePath}" Width="45" Height="63" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </materialDesign:Card>
             <materialDesign:Card Height="214" Width="600" Margin="8 0" DockPanel.Dock="Bottom"
-                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                 <ListView ItemsSource="{Binding UgModels}"
-                  ScrollViewer.CanContentScroll="False"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="-4">
                                 <Image Source="{Binding RestrictPath}" Height="24" Width="24"
                                        VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                <Image Source="{Binding ImagePath}" Width="45" Height="63"/>
+                                <Image Source="{Binding ImagePath}" Width="45" Height="63" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </materialDesign:Card>
             <materialDesign:Card Height="86" Width="600" Margin="8" DockPanel.Dock="Bottom"
-                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                 <ListView ItemsSource="{Binding ExModels}"
-                  ScrollViewer.CanContentScroll="False"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="-4">
                                 <Image Source="{Binding RestrictPath}" Height="24" Width="24"
                                        VerticalAlignment="Top" HorizontalAlignment="Left" />
-                                <Image Source="{Binding ImagePath}"  Width="45" Height="63"/>
+                                <Image Source="{Binding ImagePath}" Width="45" Height="63" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

@@ -6,7 +6,7 @@ namespace Wrapper.Utils
 {
     public class DeSqlUtils : SqlUtils
     {
-        public static string GetQuerySql(DeSearchModel card, string cardPreviewOrder)
+        public static string GetQuerySql(DeQueryModel card, string cardPreviewOrder)
         {
             var previewOrderType = CardUtils.GetPreOrderType(cardPreviewOrder);
             var builder = new StringBuilder();

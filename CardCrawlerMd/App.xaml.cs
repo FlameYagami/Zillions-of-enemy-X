@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WebCrawler
+namespace CardCrawler
 {
     /// <summary>
     ///     App.xaml 的交互逻辑

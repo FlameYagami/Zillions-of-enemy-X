@@ -70,5 +70,21 @@ namespace Common
             Console.SetOut(TextWriter.Null);
             Console.SetError(TextWriter.Null);
         }
+
+        public static void Write(string str)
+        {
+            var rootPath = $"{Environment.CurrentDirectory}/logs/";
+            if (!Directory.Exists(rootPath))
+                Directory.CreateDirectory(rootPath);
+            using (var log = new StreamWriter($"{rootPath}{DateTime.Now:yyyy_MM_dd}.txt", true))
+            {
+                log.WriteLine("*********************************");
+                log.WriteLine("Time" + DateTime.Now.ToLongTimeString());
+                log.WriteLine(str);
+                log.WriteLine("*********************************");
+                log.WriteLine();
+                log.Close();
+            }
+        }
     }
 }

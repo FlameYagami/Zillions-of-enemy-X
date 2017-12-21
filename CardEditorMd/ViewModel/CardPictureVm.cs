@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using CardEditor.Model;
-using Common;
 using Wrapper.Model;
 using Wrapper.Utils;
 

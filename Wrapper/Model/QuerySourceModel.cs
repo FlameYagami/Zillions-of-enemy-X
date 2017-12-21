@@ -7,19 +7,18 @@ using Wrapper.Utils;
 namespace Wrapper.Model
 {
     /// <summary>
-    /// 搜索界面控件资源模型
+    ///     搜索界面控件资源模型
     /// </summary>
-    public class SearchSourceModel
+    public class QuerySourceModel
     {
-        public SearchSourceModel()
+        public QuerySourceModel()
         {
             TypeList = Dic.TypeDic.Keys.ToList();
             CampList = Dic.CampDic.Keys.ToList();
             SignList = Dic.SignDic.Keys.ToList();
             RareList = Dic.RareDic.Keys.ToList();
             IllustList = CardUtils.GetIllustList();
-            PackList = new ObservableCollection<string>();
-            CardUtils.GetPackList().ForEach(PackList.Add);
+            PackList = CardUtils.GetPackList();
             RaceList = new ObservableCollection<string>();
             CardUtils.GetPartRace(StringConst.NotApplicable).ForEach(RaceList.Add);
         }
@@ -29,7 +28,7 @@ namespace Wrapper.Model
         public List<string> SignList { get; set; }
         public List<string> RareList { get; set; }
         public List<string> IllustList { get; set; }
-        public ObservableCollection<string> PackList { get; set; }
+        public List<string> PackList { get; set; }
         public ObservableCollection<string> RaceList { get; set; }
 
         public void UpdateRaceList(string camp)

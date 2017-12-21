@@ -41,13 +41,6 @@ namespace Wrapper.Utils
                 .Cast<DataRow>()
                 .AsParallel()
                 .First(column => numberEx.Contains(column[ColumnNumber].ToString()));
-            var cost = row[ColumnCost].ToString().Equals(StringConst.CostValueNotApplicable)
-                ? -1
-                : int.Parse(row[ColumnCost].ToString());
-            var power = row[ColumnPower].ToString().Equals(StringConst.PowerValueNotApplicable)
-                ? -1
-                : int.Parse(row[ColumnPower].ToString());
-            var restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString());
             return new CardModel
             {
                 Md5 = row[ColumnMd5].ToString(),
@@ -64,10 +57,10 @@ namespace Wrapper.Utils
                 Ability = row[ColumnAbility].ToString(),
                 Lines = row[ColumnLines].ToString(),
                 ImageJson = row[ColumnImage].ToString(),
-                Cost = cost,
-                Power = power,
+                Cost = int.Parse(row[ColumnCost].ToString()),
+                Power = int.Parse(row[ColumnPower].ToString()),
                 AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
-                Restrict = restrict
+                Restrict = RestrictUtils.GetRestrict(row[ColumnMd5].ToString())
             };
         }
 
@@ -513,7 +506,7 @@ namespace Wrapper.Utils
         public static List<string> GetAllNumberList()
         {
             return DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
-                .Select(row => row[SqliteConst.ColumnNumber].ToString())
+                .Select(row => row[ColumnNumber].ToString())
                 .ToList();
         }
     }

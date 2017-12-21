@@ -1,13 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Common;
 using Wrapper.Constant;
 
 namespace Wrapper.Model
 {
-    public class DeSearchModel : BaseModel
+    public class DeQueryModel : BaseModel
     {
-        public DeSearchModel()
+        public DeQueryModel()
         {
             Type = StringConst.NotApplicable;
             Camp = StringConst.NotApplicable;

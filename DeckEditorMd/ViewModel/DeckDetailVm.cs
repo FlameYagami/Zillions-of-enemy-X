@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DeckEditor.View;
 using Visifire.Charts;
 using Wrapper.Model;
@@ -12,13 +9,10 @@ namespace DeckEditor.ViewModel
 {
     public class DeckDetailVm
     {
-        private readonly DeckManager _deckManager;
         private readonly DeckDetailDialog _deckDetailDialog;
-        public ObservableCollection<DeckModel> IgModels { get; set; }
-        public ObservableCollection<DeckModel> UgModels { get; set; }
-        public ObservableCollection<DeckModel> ExModels { get; set; }
+        private readonly DeckManager _deckManager;
 
-        public DeckDetailVm(DeckDetailDialog deckDetailDialog,DeckManager deckManager)
+        public DeckDetailVm(DeckDetailDialog deckDetailDialog, DeckManager deckManager)
         {
             _deckDetailDialog = deckDetailDialog;
             _deckManager = deckManager;
@@ -31,7 +25,11 @@ namespace DeckEditor.ViewModel
             UpdateChart(GetDeckStatisDic());
         }
 
-        private Dictionary<int,int> GetDeckStatisDic()
+        public ObservableCollection<DeckModel> IgModels { get; set; }
+        public ObservableCollection<DeckModel> UgModels { get; set; }
+        public ObservableCollection<DeckModel> ExModels { get; set; }
+
+        private Dictionary<int, int> GetDeckStatisDic()
         {
             var dekcStatisticalDic = new Dictionary<int, int>();
             var costIgList = _deckManager.IgModels.Select(deckModel => deckModel.Cost);

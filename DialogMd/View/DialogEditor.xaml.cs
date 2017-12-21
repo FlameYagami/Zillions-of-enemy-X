@@ -12,7 +12,7 @@ namespace Dialog.View
         /// </summary>
         /// <param name="message">文本内容</param>
         /// <param name="hint">文本提示</param>
-        public DialogEditor(string message , string hint = null)
+        public DialogEditor(string message, string hint = null)
         {
             InitializeComponent();
             DataContext = new DialogEditorVm(message, hint);

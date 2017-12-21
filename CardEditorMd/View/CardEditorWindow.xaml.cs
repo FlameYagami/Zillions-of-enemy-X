@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CardEditor.ViewModel;
-using Common;
 using Dialog;
 using MaterialDesignThemes.Wpf;
 using Wrapper;
@@ -18,11 +17,11 @@ namespace CardEditor.View
     /// </summary>
     public partial class MainWindow
     {
-        private CardSearchVm _cardEditorVm;
+        private CardQueryVm _cardEditorVm;
         private CardPictureVm _cardPictureVm;
         private CardPreviewVm _cardPreviewVm;
         private DbOperationVm _dbOperationVm;
-        private CardSearchExVm _externQueryVm;
+        private CardQueryExVm _externQueryVm;
 
         public MainWindow()
         {
@@ -46,8 +45,8 @@ namespace CardEditor.View
         {
             _cardPreviewVm = new CardPreviewVm();
             _cardPictureVm = new CardPictureVm();
-            _externQueryVm = new CardSearchExVm();
-            _cardEditorVm = new CardSearchVm(_externQueryVm, _cardPreviewVm, _cardPictureVm);
+            _externQueryVm = new CardQueryExVm();
+            _cardEditorVm = new CardQueryVm(_externQueryVm, _cardPreviewVm, _cardPictureVm);
 
             ExternQueryView.DataContext = _externQueryVm;
             CardPreviewView.DataContext = _cardPreviewVm;

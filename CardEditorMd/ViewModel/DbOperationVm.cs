@@ -13,9 +13,7 @@ namespace CardEditor.ViewModel
     {
         private readonly MainWindow _cardEditor;
         private Visibility _decryptVisibility;
-
         private Visibility _encryptVisibility;
-
         private string _password;
 
         public DbOperationVm(MainWindow cardEditor)
@@ -60,7 +58,7 @@ namespace CardEditor.ViewModel
 
         public bool UpdateDataset()
         {
-            if (DataManager.FillDataToDataSet(DataManager.DsAllCache, SqlUtils.GetQueryAllSql()))
+            if (DataManager.FillDataToDataSet())
             {
                 UpdatePasswordVisibility(false, true);
                 return true;

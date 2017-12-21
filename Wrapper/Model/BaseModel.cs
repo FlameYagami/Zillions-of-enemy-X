@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Common.Annotations;
+using Wrapper.Annotations;
 
-namespace Common
+namespace Wrapper.Model
 {
     public class BaseModel : INotifyPropertyChanged
     {

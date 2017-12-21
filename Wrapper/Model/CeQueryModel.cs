@@ -1,11 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Common;
 using Wrapper.Constant;
+using Wrapper.Utils;
 
 namespace Wrapper.Model
 {
-    public class CeSearchModel : BaseModel
+    public class CeQueryModel : BaseModel
     {
         private string _ability;
 
@@ -32,7 +35,12 @@ namespace Wrapper.Model
         private bool _signEnabled;
         private string _type;
 
-        public CeSearchModel()
+        public CeQueryModel()
+        {
+            InitCeQueryModel();
+        }
+
+        public void InitCeQueryModel()
         {
             Type = StringConst.NotApplicable;
             Camp = StringConst.NotApplicable;
@@ -266,6 +274,58 @@ namespace Wrapper.Model
             }
         }
 
+        public void UpdateBaseProperty(CardModel cardModel)
+        {
+            Type = cardModel.Type;
+            Camp = cardModel.Camp;
+            Race = cardModel.Race;
+            Sign = cardModel.Sign;
+            Rare = cardModel.Rare;
+            Pack = cardModel.Pack;
+            CName = cardModel.CName;
+            JName = cardModel.JName;
+            Number = cardModel.Number;
+            Illust = cardModel.Illust;
+            CostValue = cardModel.Cost.ToString();
+            PowerValue = cardModel.Power.ToString();
+            Ability = cardModel.Ability;
+            Lines = cardModel.Lines;
+        }
+
+        public void UpdateAbilityTypeModels(CardModel cardModel)
+        {
+            for (var i = 0; i != AbilityTypeModels.Count; i++)
+            {
+                var model = AbilityTypeModels[i];
+                AbilityTypeModels[i] = new AbilityModel
+                {
+                    Checked = cardModel.Ability.Contains(model.Name),
+                    Name = model.Name
+                };
+            }
+        }
+
+        public void UpdateAbilityDetailModel(CardModel cardModel)
+        {
+            var abilityDetailModelList = string.IsNullOrWhiteSpace(cardModel.AbilityDetailJson)
+                ? new List<List<int>>()
+                : JsonUtils.Deserialize<List<List<int>>>(cardModel.AbilityDetailJson);
+
+            foreach (var pair in abilityDetailModelList)
+                for (var i = 0; i != AbilityDetailModels.Count; i++)
+                {
+                    var model = AbilityDetailModels[i];
+                    if (!model.Code.Equals(pair[0])) continue;
+                    AbilityDetailModels[i] = new AbilityModel
+                    {
+                        Checked = pair[1] == 1,
+                        Name = model.Name,
+                        Code = pair[0]
+                    };
+                    break;
+                }
+        }
+
         private void InitAbilityTypeModels()
         {
             AbilityTypeModels = new ObservableCollection<AbilityModel>();
@@ -285,6 +345,91 @@ namespace Wrapper.Model
                 Code = pair.Value,
                 Checked = false
             }));
+        }
+
+        public void UpdateTypeLinkage()
+        {
+            switch (Type)
+            {
+                case StringConst.NotApplicable:
+                case StringConst.TypeZx:
+                {
+                    CostEnabled = true;
+                    PowerEnabled = true;
+                    RaceEnabled = true;
+                    SignEnabled = true;
+                    break;
+                }
+                case StringConst.TypeZxEx:
+                {
+                    CostEnabled = true;
+                    PowerEnabled = true;
+                    RaceEnabled = true;
+                    SignEnabled = false;
+                    Sign = StringConst.Hyphen;
+                    break;
+                }
+                case StringConst.TypePlayer:
+                {
+                    CostEnabled = false;
+                    PowerEnabled = false;
+                    RaceEnabled = false;
+                    SignEnabled = false;
+                    Race = StringConst.Hyphen;
+                    Sign = StringConst.Hyphen;
+                    CostValue = "-1";
+                    PowerValue = "-1";
+                    break;
+                }
+                case StringConst.TypeEvent:
+                {
+                    CostEnabled = true;
+                    PowerEnabled = false;
+                    RaceEnabled = false;
+                    SignEnabled = true;
+                    Race = StringConst.Hyphen;
+                    PowerValue = "-1";
+                    break;
+                }
+            }
+        }
+
+        public void UpdateAbilityLinkage()
+        {
+            var ability = Ability;
+            if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
+            {
+                Type = StringConst.TypeZxEx;
+                Sign = StringConst.Hyphen;
+            }
+            if (ability.Contains("【★】"))
+            {
+                Type = StringConst.TypeEvent;
+                Race = StringConst.Hyphen;
+                PowerValue = string.Empty;
+            }
+            if (ability.Contains("【常】生命恢复") || ability.Contains("【常】虚空使者"))
+            {
+                Type = StringConst.TypeZx;
+                Sign = StringConst.SignIg;
+            }
+            if (ability.Contains("【常】起始卡"))
+            {
+                Type = StringConst.TypeZx;
+                Sign = StringConst.Hyphen;
+            }
+        }
+
+        public void UpdatePackLinkage()
+        {
+            var packNumber = CardUtils.GetPackNumber(Pack);
+            if (Number.Contains(StringConst.Hyphen))
+                packNumber +=
+                    Number.Substring(
+                        Number.IndexOf(StringConst.Hyphen, StringComparison.Ordinal) + 1);
+            Number = packNumber;
+            if (packNumber.IndexOf("P", StringComparison.Ordinal) == 0)
+                Rare = StringConst.RarePr;
         }
     }
 }

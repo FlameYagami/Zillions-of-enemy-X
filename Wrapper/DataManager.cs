@@ -2,18 +2,26 @@ using System.Collections.Generic;
 using System.Data;
 using Common;
 using Wrapper.Constant;
+using Wrapper.Utils;
 
 namespace Wrapper
 {
     public class DataManager
     {
-        /// <summary>总数据缓存</summary>
-        public static DataSet DsAllCache = new DataSet();
-
         public const string DbName = "Data.db";
         public const string DbCfgKey = "DatabasePassword";
 
+        /// <summary>总数据缓存</summary>
+        public static DataSet DsAllCache = new DataSet();
+
         public static string DatabasePath = PathManager.RootPath + DbName;
+
+        public static bool FillDataToDataSet()
+        {
+            DsAllCache.Clear();
+            return SqliteUtils.FillDataToDataSet(DsAllCache, SqliteConst.TableName, DatabasePath, DbCfgKey,
+                SqlUtils.GetQueryAllSql());
+        }
 
         public static bool FillDataToDataSet(DataSet dataSet, string sql, bool defTableName = true)
         {
@@ -49,7 +57,7 @@ namespace Wrapper
 
         public static bool Encrypt(DataSet dataSet, string sql, bool defTableName = true)
         {
-            return defTableName 
+            return defTableName
                 ? SqliteUtils.Encrypt(dataSet, SqliteConst.TableName, DatabasePath, DbCfgKey, sql)
                 : SqliteUtils.Encrypt(dataSet, null, DatabasePath, DbCfgKey, sql);
         }

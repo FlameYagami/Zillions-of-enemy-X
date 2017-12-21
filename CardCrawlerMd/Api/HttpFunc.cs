@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebCrawler.Api
+namespace CardCrawler.Api
 {
     public class HttpFunc<T>
     {

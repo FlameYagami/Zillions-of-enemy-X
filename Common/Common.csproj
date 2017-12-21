@@ -94,7 +94,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseModel.cs" />
     <Compile Include="ConfigUtils.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="ExcelHelper.cs" />

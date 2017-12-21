@@ -9,7 +9,7 @@ namespace Common
     public class SqliteUtils
     {
         /// <summary>
-        /// 数据填充至DataSet
+        ///     数据填充至DataSet
         /// </summary>
         /// <param name="dataSet">DataSet数据集</param>
         /// <param name="dbPath">数据库路径</param>
@@ -22,7 +22,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 数据填充至DataSet
+        ///     数据填充至DataSet
         /// </summary>
         /// <param name="dataSet">DataSet数据集</param>
         /// <param name="dtTableName">DataSet数据集表名称</param>
@@ -30,7 +30,8 @@ namespace Common
         /// <param name="dbCfgKey">数据库配置键名</param>
         /// <param name="sql">数据库语句</param>
         /// <returns>True:成功|Flase:失败</returns>
-        public static bool FillDataToDataSet(DataSet dataSet, string dtTableName, string dbPath, string dbCfgKey, string sql)
+        public static bool FillDataToDataSet(DataSet dataSet, string dtTableName, string dbPath, string dbCfgKey,
+            string sql)
         {
             var dataSource = GetDataSource(dbPath);
             var dataPassword = GetDataPassword(dbCfgKey);
@@ -58,7 +59,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 数据库执行Sql语句
+        ///     数据库执行Sql语句
         /// </summary>
         /// <param name="dbPath">数据库路径</param>
         /// <param name="dbCfgKey">数据库配置键名</param>
@@ -70,21 +71,25 @@ namespace Common
             var dataPassword = GetDataPassword(dbCfgKey);
             using (var con = new SQLiteConnection(dataSource))
             {
+                con.SetPassword(dataPassword);
+                con.Open();
                 using (var trans = con.BeginTransaction())
                 {
-                    try
+                    using (var cmd = new SQLiteCommand(con))
                     {
-                        con.SetPassword(dataPassword);
-                        con.Open();
-                        var cmd = new SQLiteCommand(sql, con);
-                        cmd.ExecuteNonQuery();
-                        trans.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        trans.Rollback();
-                        MessageBox.Show(ex.Message);
-                        return false;
+                        try
+                        {
+                            cmd.Transaction = trans;
+                            cmd.CommandText = sql;
+                            cmd.ExecuteNonQuery();
+                            trans.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            trans.Rollback();
+                            MessageBox.Show(ex.Message);
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -92,7 +97,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 数据库执行Sql语句集合
+        ///     数据库执行Sql语句集合
         /// </summary>
         /// <param name="dbPath">数据库路径</param>
         /// <param name="dbCfgKey">数据库配置键名</param>
@@ -133,7 +138,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 加密数据库
+        ///     加密数据库
         /// </summary>
         /// <param name="dbPath">数据库路径</param>
         /// <param name="dbCfgKey">数据库配置键名</param>
@@ -144,7 +149,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 加密数据库,并执行查询操作,填充DataSet数据集
+        ///     加密数据库,并执行查询操作,填充DataSet数据集
         /// </summary>
         /// <param name="dataSet">DataSet数据集</param>
         /// <param name="dtTableName">DataSet数据集表名称</param>
@@ -163,7 +168,7 @@ namespace Common
                     con.Open();
                     con.ChangePassword(dataPassword);
                 }
-                return null == sql || FillDataToDataSet(dataSet, dtTableName, dbPath, dbCfgKey, sql);
+                return (null == sql) || FillDataToDataSet(dataSet, dtTableName, dbPath, dbCfgKey, sql);
             }
             catch (Exception ex)
             {
@@ -173,7 +178,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 解密数据库
+        ///     解密数据库
         /// </summary>
         /// <param name="dbPath">数据库路径</param>
         /// <param name="dbCfgKey">数据库配置键名</param>

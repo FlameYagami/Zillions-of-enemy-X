@@ -18,7 +18,7 @@ namespace DeckEditor.View
         private CardDetailVm _cardDetailVm;
         private CardPictureVm _cardPictureVm;
         private CardPreviewVm _cardPreviewVm;
-        private CardSearchVm _cardQueryVm;
+        private CardQueryVm _cardQueryVm;
         private DeckExVm _deckExVm;
         private DeckOperationVm _deckOperationVm;
         private DeckStatsVm _deckStatsVm;
@@ -28,7 +28,7 @@ namespace DeckEditor.View
         {
             InitializeComponent();
             LogUtils.Show();
-            if (DataManager.FillDataToDataSet(DataManager.DsAllCache, SqlUtils.GetQueryAllSql()))
+            if (DataManager.FillDataToDataSet())
             {
                 if (!Directory.Exists(PathManager.DeckFolderPath))
                     Directory.CreateDirectory(PathManager.DeckFolderPath);
@@ -43,7 +43,7 @@ namespace DeckEditor.View
             _playerVm = new PlayerVm();
             _cardPreviewVm = new CardPreviewVm();
             _cardPictureVm = new CardPictureVm();
-            _cardQueryVm = new CardSearchVm(_cardPreviewVm);
+            _cardQueryVm = new CardQueryVm(_cardPreviewVm);
             _cardDetailVm = new CardDetailVm(_cardPictureVm);
             _deckStatsVm = new DeckStatsVm();
             _deckOperationVm = new DeckOperationVm(_deckExVm, _playerVm, _deckStatsVm);

@@ -97,7 +97,6 @@
     </ApplicationDefinition>
     <Compile Include="DeckManager.cs" />
     <Compile Include="Model\CardDetailModel.cs" />
-    <Compile Include="Model\CardPictureModel.cs" />
     <Compile Include="Model\DeckPreviewModel.cs" />
     <Compile Include="Model\DeckStatsModel.cs" />
     <Compile Include="ViewModel\AbilityDetailVm.cs" />
@@ -111,7 +110,7 @@
     <Compile Include="ViewModel\DeckExVm.cs" />
     <Compile Include="ViewModel\DeckVm.cs" />
     <Compile Include="ViewModel\PlayerVm.cs" />
-    <Compile Include="ViewModel\CardSearchVm.cs" />
+    <Compile Include="ViewModel\CardQueryVm.cs" />
     <Compile Include="View\AbilityDetailDialog.xaml.cs">
       <DependentUpon>AbilityDetailDialog.xaml</DependentUpon>
     </Compile>

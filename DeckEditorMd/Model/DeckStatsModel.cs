@@ -1,5 +1,4 @@
-﻿using Common;
-using Wrapper.Model;
+﻿using Wrapper.Model;
 
 namespace DeckEditor.Model
 {

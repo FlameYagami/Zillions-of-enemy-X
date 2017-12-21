@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DeckEditor.ViewModel;
-using Visifire.Charts;
-using Wrapper.Model;
+﻿using DeckEditor.ViewModel;
 
 namespace DeckEditor.View
 {
@@ -11,7 +7,6 @@ namespace DeckEditor.View
     /// </summary>
     public partial class DeckDetailDialog
     {
-
         public DeckDetailDialog(DeckManager deckManager)
         {
             InitializeComponent();

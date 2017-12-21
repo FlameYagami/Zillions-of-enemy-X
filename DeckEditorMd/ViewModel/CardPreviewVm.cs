@@ -2,9 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using Common;
-using DeckEditor.Model;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -47,14 +44,14 @@ namespace DeckEditor.ViewModel
             }
         }
 
-        private DeSearchModel MemorySearchModel { get; set; }
+        private DeQueryModel MemorySearchModel { get; set; }
 
-        public void UpdateCardPreviewModels(DeSearchModel searchModel)
+        public void UpdateCardPreviewModels(DeQueryModel searchModel)
         {
             MemorySearchModel = searchModel; // 保存查询的实例
             var dataSet = new DataSet();
             var sql = DeSqlUtils.GetQuerySql(searchModel, _cardPreviewOrder);
-            DataManager.FillDataToDataSet(dataSet,sql);
+            DataManager.FillDataToDataSet(dataSet, sql);
             var tempList = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();
             tempList.ForEach(CardPreviewModels.Add);

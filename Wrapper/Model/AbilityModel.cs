@@ -1,6 +1,4 @@
-﻿using Common;
-
-namespace Wrapper.Model
+﻿namespace Wrapper.Model
 {
     public class AbilityModel : BaseModel
     {

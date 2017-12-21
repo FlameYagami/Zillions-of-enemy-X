@@ -1,18 +1,16 @@
 ﻿using Common;
-using DeckEditor.Model;
 using DeckEditor.View;
 using MaterialDesignThemes.Wpf;
-using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 
 namespace DeckEditor.ViewModel
 {
-    public class CardSearchVm : BaseModel
+    public class CardQueryVm : BaseModel
     {
         private readonly CardPreviewVm _cardPreviewVm;
 
-        public CardSearchVm(CardPreviewVm cardPreviewVm)
+        public CardQueryVm(CardPreviewVm cardPreviewVm)
         {
             _cardPreviewVm = cardPreviewVm;
 
@@ -20,12 +18,12 @@ namespace DeckEditor.ViewModel
             CmdReset = new DelegateCommand {ExecuteCommand = Reset_Click};
             CmdAlilityDetail = new DelegateCommand {ExecuteCommand = AlilityDetail_Click};
 
-            SearchModel = new DeSearchModel();
-            SearchSourceModel = new SearchSourceModel();
+            CardQueryModel = new DeQueryModel();
+            SearchSourceModel = new QuerySourceModel();
         }
 
-        public DeSearchModel SearchModel { get; set; }
-        public SearchSourceModel SearchSourceModel { get; set; }
+        public DeQueryModel CardQueryModel { get; set; }
+        public QuerySourceModel SearchSourceModel { get; set; }
 
         public DelegateCommand CmdQuery { get; set; }
         public DelegateCommand CmdReset { get; set; }
@@ -36,7 +34,7 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public async void AlilityDetail_Click(object obj)
         {
-            await DialogHost.Show(new AbilityDetailDialog(SearchModel.AbilityDetailModels),
+            await DialogHost.Show(new AbilityDetailDialog(CardQueryModel.AbilityDetailModels),
                 (sender, eventArgs) => { }, (sender, eventArgs) => { });
         }
 
@@ -45,8 +43,8 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void Reset_Click(object obj)
         {
-            SearchModel = new DeSearchModel();
-            OnPropertyChanged(nameof(SearchModel));
+            CardQueryModel = new DeQueryModel();
+            OnPropertyChanged(nameof(CardQueryModel));
         }
 
         /// <summary>
@@ -54,8 +52,8 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void Query_Click(object obj)
         {
-            OnPropertyChanged(nameof(SearchModel));
-            _cardPreviewVm.UpdateCardPreviewModels(SearchModel);
+            OnPropertyChanged(nameof(CardQueryModel));
+            _cardPreviewVm.UpdateCardPreviewModels(CardQueryModel);
         }
 
         /// <summary>
@@ -63,10 +61,10 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void UpdateRaceList()
         {
-            OnPropertyChanged(nameof(SearchModel));
-            SearchSourceModel.UpdateRaceList(SearchModel.Camp);
-            SearchModel.Race = StringConst.NotApplicable;
-            OnPropertyChanged(nameof(SearchModel));
+            OnPropertyChanged(nameof(CardQueryModel));
+            SearchSourceModel.UpdateRaceList(CardQueryModel.Camp);
+            CardQueryModel.Race = StringConst.NotApplicable;
+            OnPropertyChanged(nameof(CardQueryModel));
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
-using CardEditor.Model;
 using Common;
 using Dialog;
 using Wrapper;
@@ -92,7 +91,8 @@ namespace CardEditor.View
                 .ToList();
             // 数据库覆写
             var isExecute = DataManager.Execute(updateSqlList);
-            BaseDialogUtils.ShowDialogAuto(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed, StringConst.SecondaryDialogHost);
+            BaseDialogUtils.ShowDialogAuto(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed,
+                StringConst.SecondaryDialogHost);
         }
 
         private string GetUpdateSql(CardModel card, string number)
@@ -127,7 +127,7 @@ namespace CardEditor.View
                 DefaultExt = ".xml",
                 Filter = @"xls文件(*.xls)|*.xls|xlsm文件(*.xlsm)|*.xlsm"
             };
-            TxtFilePath.Text = ofd.ShowDialog() != System.Windows.Forms.DialogResult.OK ? string.Empty : ofd.FileName;
+            TxtFilePath.Text = ofd.ShowDialog() != DialogResult.OK ? string.Empty : ofd.FileName;
         }
 
         private List<string> GetSelectColumnList()
@@ -142,9 +142,9 @@ namespace CardEditor.View
             return columnList;
         }
 
-        private static List<CeSearchModel> GetSourceCardModelList(DataSet dataSet)
+        private static List<CeQueryModel> GetSourceCardModelList(DataSet dataSet)
         {
-            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CeSearchModel
+            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CeQueryModel
             {
                 Type = row["种类"].ToString(),
                 Camp = row["色"].ToString(),

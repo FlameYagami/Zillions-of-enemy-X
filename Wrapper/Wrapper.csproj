@@ -33,12 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,15 +55,17 @@
     <Compile Include="Constant\Dic.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Model\AbilityModel.cs" />
-    <Compile Include="Model\CeSearchModel.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\CardPictureModel.cs" />
+    <Compile Include="Model\CeQueryModel.cs" />
     <Compile Include="Model\CardModel.cs" />
     <Compile Include="Model\CardPreviewModel.cs" />
-    <Compile Include="Model\CeSearchExModel.cs" />
-    <Compile Include="Model\DeSearchModel.cs" />
+    <Compile Include="Model\CeQueryExModel.cs" />
+    <Compile Include="Model\DeQueryModel.cs" />
     <Compile Include="Model\CheckModel.cs" />
     <Compile Include="Model\DeckExModel.cs" />
     <Compile Include="Model\DeckModel.cs" />
-    <Compile Include="Model\SearchSourceModel.cs" />
+    <Compile Include="Model\QuerySourceModel.cs" />
     <Compile Include="Model\RestricModel.cs" />
     <Compile Include="PathManager.cs" />
     <Compile Include="Properties\Annotations.cs" />

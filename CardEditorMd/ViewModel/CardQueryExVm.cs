@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
 
 namespace CardEditor.ViewModel
 {
-    public class CardSearchExVm : BaseModel
+    public class CardQueryExVm : BaseModel
     {
         private string _md5Value;
         private string _modeValue;
 
         private string _restrictValue;
 
-        public CardSearchExVm()
+        public CardQueryExVm()
         {
             ModeList = Dic.ModeDic.Values.ToList();
             RestrctList = CardUtils.GetRestrictList();

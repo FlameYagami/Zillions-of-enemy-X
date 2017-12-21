@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 
-namespace DeckEditor.Model
+namespace Wrapper.Model
 {
     public class CardPictureModel
     {

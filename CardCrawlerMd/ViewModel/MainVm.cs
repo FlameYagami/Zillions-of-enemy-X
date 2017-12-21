@@ -12,12 +12,13 @@ using Dialog;
 using Dialog.View;
 using HtmlAgilityPack;
 using MaterialDesignThemes.Wpf;
+using WebCrawler;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
 
-namespace WebCrawler.ViewModel
+namespace CardCrawler.ViewModel
 {
     public class MainVm : BaseModel
     {
@@ -111,8 +112,8 @@ namespace WebCrawler.ViewModel
 
         private static string GetAddSql(CardModel card)
         {
-            var cost = card.Cost.Equals(-1) ? string.Empty : card.Cost.ToString();
-            var power = card.Power.Equals(-1) ? string.Empty : card.Power.ToString();
+            var cost = card.Cost.ToString();
+            var power = card.Power.ToString();
 
             var builder = new StringBuilder();
             builder.Append("INSERT INTO " + SqliteConst.TableName);
@@ -150,8 +151,8 @@ namespace WebCrawler.ViewModel
 
         private static string GetUpdateSql(CardModel card)
         {
-            var cost = card.Cost.Equals(-1) ? string.Empty : card.Cost.ToString();
-            var power = card.Power.Equals(-1) ? string.Empty : card.Power.ToString();
+            var cost = card.Cost.ToString();
+            var power = card.Power.ToString();
 
             var builder = new StringBuilder();
             builder.Append($"UPDATE {SqliteConst.TableName} SET ");
@@ -249,7 +250,7 @@ namespace WebCrawler.ViewModel
                     var taskDic = new Dictionary<int, bool> {{1, true}};
                     CheckModels.Clear();
                     result.ForEach(cardModel => CheckModels.Add(new CheckModel<CardModel>(cardModel)));
-                    e.Session.Close(false);
+                    e.Session.Close();
                     BaseDialogUtils.ShowDialogAuto("第1页解析成功");
                     AnalyseHint = $"开始执行后续解析...";
                     // 异步解析后续编号
@@ -357,8 +358,8 @@ namespace WebCrawler.ViewModel
 
         private string GetUrl(int pageCount = 0)
         {
-            return 0 == pageCount 
-                ? $"https://www.zxtcg.com/card/?fwcn=1&fwil=1&fwct=1&fwft=1&pn={PackValue}" 
+            return 0 == pageCount
+                ? $"https://www.zxtcg.com/card/?fwcn=1&fwil=1&fwct=1&fwft=1&pn={PackValue}"
                 : $"https://www.zxtcg.com/card/?page={pageCount}&fwcn=1&fwil=1&fwct=1&fwft=1&pn={PackValue}";
         }
     }

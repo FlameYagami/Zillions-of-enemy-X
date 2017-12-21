@@ -1,4 +1,4 @@
-﻿namespace WebCrawler.Api
+﻿namespace CardCrawler.Api
 {
     public class HttpResult<T>
     {
