@@ -3,7 +3,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Text;
-using DeckEditor.Model;
+using Common;
+using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
@@ -45,18 +46,18 @@ namespace DeckEditor.ViewModel
             }
         }
 
-        private CardQueryModel MemoryQueryModel { get; set; }
+        private DeQueryModel MemoryQueryModel { get; set; }
 
-        public void UpdateCardPreviewList(CardQueryModel queryModel)
+        public void UpdateCardPreviewList(DeQueryModel queryModel)
         {
             MemoryQueryModel = queryModel; // 保存查询的实例
             var dataSet = new DataSet();
-            var sql = GetQuerySql(queryModel);
-            SqliteUtils.FillDataToDataSet(sql, dataSet);
+            var sql = DeSqlUtils.GetQuerySql(queryModel, CardPreviewOrder);
+            DataManager.FillDataToDataSet(dataSet, sql);
             var tempList = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();
             tempList.ForEach(CardPreviewModels.Add);
-            CardPreviewCountValue = StringConst.QueryResult + CardPreviewModels.Count;
+            CardPreviewCountValue = "查询结果:" + CardPreviewModels.Count;
         }
 
         /// <summary>
@@ -66,27 +67,6 @@ namespace DeckEditor.ViewModel
         {
             if (null == MemoryQueryModel) return;
             UpdateCardPreviewList(MemoryQueryModel);
-        }
-
-        public string GetQuerySql(CardQueryModel card)
-        {
-            var previewOrderType = CardUtils.GetPreOrderType(CardPreviewOrder);
-            var builder = new StringBuilder();
-            builder.Append(SqlUtils.GetHeaderSql()); // 基础查询语句
-            builder.Append(SqlUtils.GetAllKeySql(card.Key)); // 关键字
-            builder.Append(SqlUtils.GetAccurateSql(card.Type, SqliteConst.ColumnType)); // 种类
-            builder.Append(SqlUtils.GetAccurateSql(card.Camp, SqliteConst.ColumnCamp)); // 阵营
-            builder.Append(SqlUtils.GetAccurateSql(card.Race, SqliteConst.ColumnRace)); // 种族
-            builder.Append(SqlUtils.GetAccurateSql(card.Sign, SqliteConst.ColumnSign)); // 标记
-            builder.Append(SqlUtils.GetAccurateSql(card.Rare, SqliteConst.ColumnRare)); // 罕贵
-            builder.Append(SqlUtils.GetAccurateSql(card.Illust, SqliteConst.ColumnIllust)); // 画师
-            builder.Append(SqlUtils.GetPackSql(card.Pack, SqliteConst.ColumnPack)); // 卡包
-            builder.Append(SqlUtils.GetIntervalSql(card.CostValue, SqliteConst.ColumnCost)); // 费用
-            builder.Append(SqlUtils.GetIntervalSql(card.PowerValue, SqliteConst.ColumnPower)); // 力量
-            builder.Append(SqlUtils.GetAbilityTypeSql(card.AbilityTypeModels.ToList())); //  能力类型
-            builder.Append(SqlUtils.GetAbilityDetailSql(card.AbilityDetailModels.ToList())); // 详细能力
-            builder.Append(SqlUtils.GetFooterSql(previewOrderType)); // 排序
-            return builder.ToString(); // 完整的查询语句
         }
     }
 }

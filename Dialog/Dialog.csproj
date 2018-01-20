@@ -61,26 +61,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dlg.xaml">
+    <Page Include="DialogAuto.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DlgOk.xaml">
+    <Page Include="DialogOk.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DlgOkCancel.xaml">
+    <Page Include="DialogConfirm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Dlg.xaml.cs">
-      <DependentUpon>Dlg.xaml</DependentUpon>
+    <Compile Include="DialogAuto.xaml.cs">
+      <DependentUpon>DialogAuto.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DlgOk.xaml.cs">
-      <DependentUpon>DlgOk.xaml</DependentUpon>
+    <Compile Include="DialogOk.xaml.cs">
+      <DependentUpon>DialogOk.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DlgOkCancel.xaml.cs">
-      <DependentUpon>DlgOkCancel.xaml</DependentUpon>
+    <Compile Include="DialogConfirm.xaml.cs">
+      <DependentUpon>DialogConfirm.xaml</DependentUpon>
     </Compile>
     <Compile Include="BaseDialogUtils.cs" />
   </ItemGroup>

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using Common;
 using Wrapper.Model;
+using BaseModel = Wrapper.Model.BaseModel;
 
 namespace DeckEditor.ViewModel
 {

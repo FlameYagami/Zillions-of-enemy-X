@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using CardEditor.View;
+using Common;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
@@ -45,7 +46,7 @@ namespace CardEditor.ViewModel
                 _decryptVisibility = value;
                 OnPropertyChanged(nameof(DecryptVisibility));
             }
-        }
+        }                                                                                                                                  
 
         public string Password
         {
@@ -59,7 +60,7 @@ namespace CardEditor.ViewModel
 
         public bool UpdateDataset()
         {
-            if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
+            if (DataManager.FillDataToDataSet())
             {
                 UpdatePasswordVisibility(false, true);
                 return true;
@@ -72,33 +73,33 @@ namespace CardEditor.ViewModel
         {
             if (Password.Equals(string.Empty))
             {
-                BaseDialogUtils.ShowDlgOk(StringConst.PasswordNone);
+                BaseDialogUtils.ShowDialogOk(StringConst.PasswordNone);
                 return;
             }
-            if (SqliteUtils.Encrypt(DataCache.DsAllCache))
+            if (DataManager.Encrypt(DataManager.DsAllCache, SqlUtils.GetQueryAllSql()))
             {
                 UpdatePasswordVisibility(false, true);
-                BaseDialogUtils.ShowDlg(StringConst.EncryptSucced);
+                BaseDialogUtils.ShowDialogAuto(StringConst.EncryptSucced);
                 _cardEditor.InitView();
                 return;
             }
-            BaseDialogUtils.ShowDlgOk(StringConst.EncryptFailed);
+            BaseDialogUtils.ShowDialogOk(StringConst.EncryptFailed);
         }
 
         public void Decrypt_Click(object obj)
         {
             if (Password.Equals(string.Empty))
             {
-                BaseDialogUtils.ShowDlgOk(StringConst.PasswordNone);
+                BaseDialogUtils.ShowDialogOk(StringConst.PasswordNone);
                 return;
             }
-            if (SqliteUtils.Decrypt())
+            if (DataManager.Decrypt())
             {
                 UpdatePasswordVisibility(true, false);
-                BaseDialogUtils.ShowDlg(StringConst.DncryptSucced);
+                BaseDialogUtils.ShowDialogAuto(StringConst.DncryptSucced);
                 return;
             }
-            BaseDialogUtils.ShowDlgOk(StringConst.DncryptFailed);
+            BaseDialogUtils.ShowDialogOk(StringConst.DncryptFailed);
         }
 
         private void UpdatePasswordVisibility(bool isEncryptVisible, bool isDecryptVisible)

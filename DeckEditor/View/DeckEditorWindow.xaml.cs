@@ -30,16 +30,19 @@ namespace DeckEditor.View
         {
             InitializeComponent();
 
-            if (SqliteUtils.FillDataToDataSet(SqlUtils.GetQueryAllSql(), DataCache.DsAllCache))
+            if (File.Exists(PathManager.BackgroundPath))
             {
                 var uri = new Uri(PathManager.BackgroundPath, UriKind.Relative);
-                var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
+                var imageBrush = new ImageBrush { ImageSource = new BitmapImage(uri) };
                 BorderView.Background = imageBrush;
-                if (!Directory.Exists(PathManager.DeckFolderPath))
-                    Directory.CreateDirectory(PathManager.DeckFolderPath);
             }
-            else
-                BaseDialogUtils.ShowDlgOk(StringConst.DbOpenError);
+
+            if (!Directory.Exists(PathManager.DeckFolderPath))
+                Directory.CreateDirectory(PathManager.DeckFolderPath);
+
+            if (!DataManager.FillDataToDataSet())
+                BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

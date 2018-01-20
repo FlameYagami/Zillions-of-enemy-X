@@ -5,9 +5,9 @@ namespace Dialog
     /// <summary>
     ///     DlgOkCancel.xaml 的交互逻辑
     /// </summary>
-    public partial class DlgOkCancel
+    public partial class DialogConfirm
     {
-        public DlgOkCancel(string message)
+        public DialogConfirm(string message)
         {
             InitializeComponent();
             LblHint.Content = message;

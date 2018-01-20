@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using DeckEditor.Model;
+using Common;
 using DeckEditor.Utils;
-using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
@@ -26,10 +25,10 @@ namespace DeckEditor.ViewModel
             RaceList = new ObservableCollection<string>();
             CardUtils.GetPartRace(StringConst.NotApplicable).ForEach(RaceList.Add);
 
-            CardQueryModel = new CardQueryModel();
+            CardQueryModel = new DeQueryModel();
         }
 
-        public CardQueryModel CardQueryModel { get; set; }
+        public DeQueryModel CardQueryModel { get; set; }
         public DelegateCommand CmdQuery { get; set; }
         public DelegateCommand CmdReset { get; set; }
         public DelegateCommand CmdAlilityDetail { get; set; }
@@ -50,7 +49,7 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void Reset_Click(object obj)
         {
-            CardQueryModel = new CardQueryModel();
+            CardQueryModel = new DeQueryModel();
             OnPropertyChanged(nameof(CardQueryModel));
         }
 

@@ -1,0 +1,17 @@
+﻿<Window x:Class="Dialog.DialogOk"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"  Width="320" Height="180"
+        WindowStartupLocation="CenterOwner"
+        Style="{DynamicResource ChildWindow}">
+    <Border Style="{DynamicResource BorderWindow}" Name="BorderView" Background="#1A1A1A">
+        <DockPanel>
+            <Button x:Name="BtnConfirm" Content="确定" Click="BtnConfirm_Click" Margin="16 0 16 16"
+                    IsDefault="True" DockPanel.Dock="Bottom" Width="64"/>
+            <Label x:Name="LblHint" Margin="16" VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center" FontSize="14" Foreground="White" />
+        </DockPanel>
+    </Border>
+</Window>

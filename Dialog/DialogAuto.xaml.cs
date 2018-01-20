@@ -6,20 +6,20 @@ namespace Dialog
     /// <summary>
     ///     Dlg.xaml 的交互逻辑
     /// </summary>
-    public partial class Dlg
+    public partial class DialogAuto
     {
-        public Dlg(string value)
+        public DialogAuto(string value,int second)
         {
             InitializeComponent();
-            StartKiller();
+            StartKiller(second);
             LblHint.Content = value;
         }
 
-        public void StartKiller()
+        public void StartKiller(int second)
         {
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 1);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, second);
             dispatcherTimer.Start();
         }
 

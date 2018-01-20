@@ -89,9 +89,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\CardEditorModel.cs" />
-    <Compile Include="Model\CardPictureModel.cs" />
-    <Compile Include="Model\CardQueryMdoel.cs" />
     <Compile Include="Utils\DialogUtils.cs" />
     <Compile Include="Utils\ExcelHelper.cs" />
     <Page Include="View\PackCoverWindow.xaml">
@@ -107,11 +104,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\AbilityTypeVm.cs" />
-    <Compile Include="ViewModel\CardEditorVm.cs" />
+    <Compile Include="ViewModel\CardQueryVm.cs" />
     <Compile Include="ViewModel\CardPictureVm.cs" />
     <Compile Include="ViewModel\CardPreviewVm.cs" />
     <Compile Include="ViewModel\DbOperationVm.cs" />
-    <Compile Include="ViewModel\ExternQueryVm.cs" />
+    <Compile Include="ViewModel\CardQueryExVm.cs" />
     <Compile Include="View\PackCoverWindow.xaml.cs">
       <DependentUpon>PackCoverWindow.xaml</DependentUpon>
     </Compile>
@@ -152,14 +149,21 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dialog\DialogLib.csproj">
-      <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
-      <Name>DialogLib</Name>
+    <ProjectReference Include="..\..\ZxProMd\Common\Common.csproj">
+      <Project>{19f76f0e-577e-417a-a2f2-f27ca4728068}</Project>
+      <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wrapper\Wrapper.csproj">
+    <ProjectReference Include="..\..\ZxProMd\Wrapper\Wrapper.csproj">
       <Project>{96748966-be90-425f-a8c8-e8708e45b77e}</Project>
       <Name>Wrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dialog\Dialog.csproj">
+      <Project>{81892697-eaea-4a66-9c5b-d81d8cc3f9f4}</Project>
+      <Name>Dialog</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

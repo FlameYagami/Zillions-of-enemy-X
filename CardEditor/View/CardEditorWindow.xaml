@@ -17,49 +17,8 @@
                     MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove">
                 <Label Content="Z/X DeckEditor" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
             </Border>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="270" />
-                    <ColumnDefinition Width="270" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" Name="CardPreviewView">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Margin="5" Height="25">
-                        <Border Style="{DynamicResource ControlBorder}">
-                            <Label Width="165" Content="{Binding CardPreviewCountValue}" />
-                        </Border>
-                        <ComboBox Margin="10,0,0,0" Width="75"
-                                  DropDownClosed="CmbOrder_DropDownClosed" Text="{Binding CardPreviewOrder}"
-                                  ItemsSource="{Binding PreviewOrderValues}" SelectedIndex="1" />
-                    </StackPanel>
-                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
-                        <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvCardPreview" Grid.Row="1"
-                                  SelectedItem="{Binding SelectedItem}"
-                                  ItemsSource="{Binding CardPreviewModels}"
-                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Height="15">
-                                        <Label Content="{Binding CName}" Width="155" />
-                                        <Label Content="{Binding PowerValue}" Width="40"
-                                               HorizontalContentAlignment="Center" />
-                                        <Label Content="{Binding CostValue}" Width="20"
-                                               HorizontalContentAlignment="Center" />
-                                        <Label Content="{Binding Number}" Width="0" />
-                                        <Label Content="{Binding ImageJson}" Width="0" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Border>
-                </Grid>
-                <Grid Grid.Column="1">
+            <DockPanel Grid.Row="1">
+                <Grid DockPanel.Dock="Left" Width="270" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition />
@@ -74,33 +33,36 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="48" />
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="84" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding ModeValue}" SelectedIndex="0"
                                           IsEditable="False"
                                           DropDownClosed="CmdMode_OnDropDownClosed" ItemsSource="{Binding ModeList}" />
-                                <Label Grid.Column="0" Grid.Row="0" Content="模式选择"
+                                <Label Grid.Column="0" Grid.Row="0" Content="模式"
                                        Style="{DynamicResource LblCenter}" />
                                 <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding RestrictValue}"
                                           ItemsSource="{Binding RestrctList}" SelectedIndex="0" IsEditable="False" />
-                                <Label Grid.Column="0" Grid.Row="1" Content="禁限规制"
+                                <Label Grid.Column="0" Grid.Row="1" Content="规制"
                                        Style="{DynamicResource LblCenter}" />
                                 <Button Grid.Column="2" Grid.Row="0" Content="Md5覆写" Command="{Binding CmdMd5Cover}" />
                                 <Button Grid.Column="2" Grid.Row="1" Content="卡包覆写" Command="{Binding CmdPackCover}" />
+                                <Label Grid.Column="0" Grid.Row="2" Content="卡密" Style="{DynamicResource LblCenter}" />
+                                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Md5}" IsReadOnly="True"/>
                             </Grid>
                         </Border>
                         <Border Style="{DynamicResource ControlBorder}" Margin="5" Name="DbOperationView">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="48" />
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="84" />
                                 </Grid.ColumnDefinitions>
-                                <Label Name="LblPassword" Grid.Column="0" Content="输入密码"
+                                <Label Name="LblPassword" Grid.Column="0" Content="密码"
                                        Style="{DynamicResource LblCenter}" />
                                 <Border Style="{DynamicResource ControlBorder}" Grid.Column="1" Margin="5,2.5,5,2.5"
                                         Background="White">
@@ -152,7 +114,43 @@
                         </TabItem>
                     </TabControl>
                 </Grid>
-                <Grid Grid.Column="2" Name="CardEditorView">
+                <Grid DockPanel.Dock="Right" Width="270"  Name="CardPreviewView">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="5" Height="25">
+                        <Border Style="{DynamicResource ControlBorder}">
+                            <Label Width="165" Content="{Binding CardPreviewCountValue}" />
+                        </Border>
+                        <ComboBox Margin="10,0,0,0" Width="75"
+                                  DropDownClosed="CmbOrder_DropDownClosed" Text="{Binding CardPreviewOrder}"
+                                  ItemsSource="{Binding PreviewOrderValues}" SelectedIndex="1" />
+                    </StackPanel>
+                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,0,5,5">
+                        <ListView Style="{DynamicResource ControlTransparent}" x:Name="LvCardPreview" Grid.Row="1"
+                                  SelectedItem="{Binding SelectedItem}"
+                                  ItemsSource="{Binding CardPreviewModels}"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  SelectionChanged="LvCardPreview_SelectionChanged" BorderThickness="0">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Height="15">
+                                        <Label Content="{Binding CName}" Width="155" />
+                                        <Label Content="{Binding PowerValue}" Width="40"
+                                               HorizontalContentAlignment="Center" />
+                                        <Label Content="{Binding CostValue}" Width="20"
+                                               HorizontalContentAlignment="Center" />
+                                        <Label Content="{Binding Number}" Width="0" />
+                                        <Label Content="{Binding ImageJson}" Width="0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Border>
+                </Grid>
+                <Grid Name="CardEditorView">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -203,55 +201,21 @@
                                            Style="{DynamicResource LblCenter}" Content="标记" />
                                     <Label Grid.Column="0" Grid.Row="4"
                                            Style="{DynamicResource LblCenter}" Content="罕贵" />
-                                    <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding CardEditorModel.Type}"
+                                    <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding CardQueryModel.Type}" ItemsSource="{Binding QuerySourceModel.TypeList}"
                                               TextBoxBase.TextChanged="CmbType_TextChanged" SelectedIndex="0"
-                                              Grid.ColumnSpan="2">
-                                        <ComboBoxItem>(N/A)</ComboBoxItem>
-                                        <ComboBoxItem>Z/X</ComboBoxItem>
-                                        <ComboBoxItem>事件</ComboBoxItem>
-                                        <ComboBoxItem>玩家</ComboBoxItem>
-                                        <ComboBoxItem>Z/X EX</ComboBoxItem>
-                                    </ComboBox>
-                                    <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding CardEditorModel.Camp}"
+                                              Grid.ColumnSpan="2"/>
+                                    <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding CardQueryModel.Camp}" ItemsSource="{Binding QuerySourceModel.CampList}"
                                               TextBoxBase.TextChanged="CmbCamp_TextChanged" SelectedIndex="0"
-                                              Grid.ColumnSpan="2">
-                                        <ComboBoxItem>(N/A)</ComboBoxItem>
-                                        <ComboBoxItem>红</ComboBoxItem>
-                                        <ComboBoxItem>蓝</ComboBoxItem>
-                                        <ComboBoxItem>白</ComboBoxItem>
-                                        <ComboBoxItem>黑</ComboBoxItem>
-                                        <ComboBoxItem>绿</ComboBoxItem>
-                                        <ComboBoxItem>无</ComboBoxItem>
-                                    </ComboBox>
-                                    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding RaceList}"
-                                              Text="{Binding CardEditorModel.Race}"
-                                              IsEnabled="{Binding CardEditorModel.RaceEnabled}" SelectedIndex="0"
+                                              Grid.ColumnSpan="2"/>
+                                    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding QuerySourceModel.RaceList}"
+                                              Text="{Binding CardQueryModel.Race}"
+                                              IsEnabled="{Binding CardQueryModel.RaceEnabled}" SelectedIndex="0"
                                               Grid.ColumnSpan="2" />
-                                    <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardEditorModel.Sign}"
-                                              IsEnabled="{Binding CardEditorModel.SignEnabled}" SelectedIndex="0"
-                                              Grid.ColumnSpan="2">
-                                        <ComboBoxItem>(N/A)</ComboBoxItem>
-                                        <ComboBoxItem>-</ComboBoxItem>
-                                        <ComboBoxItem>点燃</ComboBoxItem>
-                                        <ComboBoxItem>觉醒之种</ComboBoxItem>
-                                    </ComboBox>
-                                    <ComboBox Grid.Column="1" Grid.Row="4" Text="{Binding CardEditorModel.Rare}"
-                                              SelectedIndex="0" Grid.ColumnSpan="2">
-                                        <ComboBoxItem>(N/A)</ComboBoxItem>
-                                        <ComboBoxItem>CVR</ComboBoxItem>
-                                        <ComboBoxItem>IGR</ComboBoxItem>
-                                        <ComboBoxItem>ZX/R</ComboBoxItem>
-                                        <ComboBoxItem>HR</ComboBoxItem>
-                                        <ComboBoxItem>DR</ComboBoxItem>
-                                        <ComboBoxItem>UR</ComboBoxItem>
-                                        <ComboBoxItem>SR</ComboBoxItem>
-                                        <ComboBoxItem>R</ComboBoxItem>
-                                        <ComboBoxItem>N</ComboBoxItem>
-                                        <ComboBoxItem>PR</ComboBoxItem>
-                                        <ComboBoxItem>UC</ComboBoxItem>
-                                        <ComboBoxItem>C</ComboBoxItem>
-                                        <ComboBoxItem>日本一R</ComboBoxItem>
-                                    </ComboBox>
+                                    <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Sign}" ItemsSource="{Binding QuerySourceModel.SignList}"
+                                              IsEnabled="{Binding CardQueryModel.SignEnabled}" SelectedIndex="0"
+                                              Grid.ColumnSpan="2"/>
+                                    <ComboBox Grid.Column="1" Grid.Row="4" Text="{Binding CardQueryModel.Rare}" ItemsSource="{Binding QuerySourceModel.RareList}"
+                                              SelectedIndex="0" Grid.ColumnSpan="2"/>
                                     <Label Grid.Column="3" Grid.Row="0" Style="{DynamicResource LblCenter}"
                                            Content="卡名" />
                                     <Label Grid.Column="3" Grid.Row="1" Style="{DynamicResource LblCenter}"
@@ -265,47 +229,38 @@
                                     <Label Grid.Column="5" Grid.Row="4" Style="{DynamicResource LblCenter}"
                                            Content="力量" />
                                     <TextBox Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2"
-                                             Text="{Binding CardEditorModel.CName}" />
+                                             Text="{Binding CardQueryModel.CName}" />
                                     <TextBox Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"
-                                             Text="{Binding CardEditorModel.JName}" />
+                                             Text="{Binding CardQueryModel.JName}" />
                                     <TextBox Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2"
-                                             Text="{Binding CardEditorModel.Illust}" />
+                                             Text="{Binding CardQueryModel.Illust}" />
                                     <ComboBox Grid.Column="4" Grid.Row="3" IsEditable="True"
-                                              Text="{Binding CardEditorModel.Pack}"
+                                              Text="{Binding CardQueryModel.Pack}"
                                               TextBoxBase.TextChanged="CmbPack_TextChanged"
-                                              ItemsSource="{Binding PackList}" />
+                                              ItemsSource="{Binding QuerySourceModel.PackList}" />
                                     <Label Grid.Column="3" Grid.Row="4" Style="{DynamicResource LblCenter}"
                                            Content="卡编" />
-                                    <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding CardEditorModel.Number}" />
-                                    <TextBox Grid.Column="6" Grid.Row="3" Text="{Binding CardEditorModel.CostValue}"
-                                             IsEnabled="{Binding CardEditorModel.CostEnabled}" />
-                                    <TextBox Grid.Column="6" Grid.Row="4" Text="{Binding CardEditorModel.PowerValue}"
-                                             IsEnabled="{Binding CardEditorModel.PowerEnabled}" />
+                                    <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding CardQueryModel.Number}" />
+                                    <TextBox Grid.Column="6" Grid.Row="3" Text="{Binding CardQueryModel.CostValue}"
+                                             IsEnabled="{Binding CardQueryModel.CostEnabled}" />
+                                    <TextBox Grid.Column="6" Grid.Row="4" Text="{Binding CardQueryModel.PowerValue}"
+                                             IsEnabled="{Binding CardQueryModel.PowerEnabled}" />
                                     <Button Grid.Column="6" Grid.Row="0" Grid.RowSpan="2" Content="检索"
                                             Command="{Binding CmdQuery}" />
                                     <Button Grid.Column="6" Grid.Row="2" Content="重置" Command="{Binding CmdReset}" />
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="35" />
                                         <RowDefinition Height="110" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1.75*" />
                                         <RowDefinition Height="25" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
-                                    <Grid Margin="5,2.5" Height="30">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="35" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="卡密" Style="{DynamicResource LblCenter}" />
-                                        <TextBox Grid.Column="1" Text="{Binding CardEditorModel.Md5}" />
-                                    </Grid>
-                                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="5,2.5,5,2.5">
+                                    <Border Style="{DynamicResource ControlBorder}" Grid.Row="0" Margin="5,2.5,5,2.5">
                                         <ListBox Style="{DynamicResource ControlTransparent}"
                                                  SelectionMode="Multiple"
-                                                 ItemsSource="{Binding CardEditorModel.AbilityDetailModels}"
+                                                 ItemsSource="{Binding CardQueryModel.AbilityDetailModels}"
                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                             <ListBox.ItemsPanel>
@@ -321,14 +276,14 @@
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                     </Border>
-                                    <Label Grid.Row="2" Content="能力:" Margin="5,0,5,0" />
-                                    <TextBox Grid.Row="3" TextWrapping="Wrap" AcceptsReturn="True"
+                                    <Label Grid.Row="1" Content="能力:" Margin="5,0,5,0" />
+                                    <TextBox Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-                                             Text="{Binding CardEditorModel.Ability}"
+                                             Text="{Binding CardQueryModel.Ability}"
                                              VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
-                                    <Label Grid.Row="4" Content="台词:" Margin="5,0,5,0" />
-                                    <TextBox Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True"
-                                             Text="{Binding CardEditorModel.Lines}"
+                                    <Label Grid.Row="3" Content="台词:" Margin="5,0,5,0" />
+                                    <TextBox Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True"
+                                             Text="{Binding CardQueryModel.Lines}"
                                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
                                              VerticalScrollBarVisibility="Auto" />
                                 </Grid>
@@ -336,7 +291,7 @@
                         </Border>
                     </Grid>
                 </Grid>
-            </Grid>
+            </DockPanel>
         </Grid>
     </Border>
 </Window>

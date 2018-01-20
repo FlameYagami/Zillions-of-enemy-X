@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
-using CardEditor.Model;
-using CardEditor.Utils;
+using Common;
 using Dialog;
+using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
 using CheckBox = System.Windows.Controls.CheckBox;
+using ExcelHelper = CardEditor.Utils.ExcelHelper;
 
 namespace CardEditor.View
 {
@@ -38,13 +39,13 @@ namespace CardEditor.View
             var filePath = TxtFilePath.Text.Trim();
             if (filePath.Equals(""))
             {
-                BaseDialogUtils.ShowDlg("源文件不存在");
+                BaseDialogUtils.ShowDialogAuto("源文件不存在");
                 return;
             }
             var packName = TxtPackName.Text.Trim();
             if (packName.Equals(""))
             {
-                BaseDialogUtils.ShowDlg("请输入卡包名称");
+                BaseDialogUtils.ShowDialogAuto("请输入卡包名称");
                 return;
             }
             // 获取源文件所有的信息
@@ -52,11 +53,11 @@ namespace CardEditor.View
             var isImport = ExcelHelper.ImportExcelToDataTable(filePath, packName, dtSource);
             if (!isImport)
             {
-                BaseDialogUtils.ShowDlg("文件中数据异常");
+                BaseDialogUtils.ShowDialogAuto("文件中数据异常");
                 return;
             }
             // 确认状态
-            if (!BaseDialogUtils.ShowDlgOkCancel("确认覆写?"))
+            if (!BaseDialogUtils.ShowDialogConfirm("确认覆写?"))
                 return;
             // 获取源文件编号
             var dtNumberList =
@@ -98,8 +99,8 @@ namespace CardEditor.View
                 .Select(cardEntity => GetUpdateSql(cardEntity, cardEntity.Number))
                 .ToList();
             // 数据库覆写
-            var isExecute = SqliteUtils.Execute(updateSqlList);
-            BaseDialogUtils.ShowDlg(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+            var isExecute = DataManager.Execute(updateSqlList);
+            BaseDialogUtils.ShowDialogAuto(isExecute ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
 
         private string GetUpdateSql(CardModel card, string number)
@@ -149,9 +150,9 @@ namespace CardEditor.View
             return columnList;
         }
 
-        private List<CardEditorModel> GetSourceCardModelList(DataSet dataSet)
+        private List<CeQueryModel> GetSourceCardModelList(DataSet dataSet)
         {
-            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CardEditorModel
+            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CeQueryModel()
             {
                 Type = row["种类"].ToString(),
                 Camp = row["色"].ToString(),

@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Common;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
@@ -57,13 +58,13 @@ namespace DeckEditor.ViewModel
         public void Delete_Click(object obj)
         {
             if (DeckName.Equals(string.Empty)) return;
-            if (!BaseDialogUtils.ShowDlgOkCancel(StringConst.DeleteHint)) return;
+            if (!BaseDialogUtils.ShowDialogConfirm(StringConst.DeleteHint)) return;
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) return;
             File.Delete(deckPath);
             ClearDeck();
             DeckName = string.Empty;
-            BaseDialogUtils.ShowDlg(StringConst.DeleteSucceed);
+            BaseDialogUtils.ShowDialogAuto(StringConst.DeleteSucceed);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace DeckEditor.ViewModel
         {
             var deckPath = CardUtils.GetDeckPath(DeckName);
             if (!File.Exists(deckPath)) Save();
-            BaseDialogUtils.ShowDlg(StringConst.DeckNameExist);
+            BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameExist);
         }
 
         /// <summary>
@@ -109,6 +110,7 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void LoadDeck()
         {
+            if (DeckName.Equals(string.Empty)) return;
             ClearDeck();
             var deckPath = CardUtils.GetDeckPath(DeckName);
             try
@@ -120,7 +122,7 @@ namespace DeckEditor.ViewModel
             }
             catch (Exception exception)
             {
-                BaseDialogUtils.ShowDlg(exception.Message);
+                BaseDialogUtils.ShowDialogAuto(exception.Message);
             }
         }
 
@@ -140,7 +142,7 @@ namespace DeckEditor.ViewModel
         {
             if (DeckName.Equals(string.Empty))
             {
-                BaseDialogUtils.ShowDlg(StringConst.DeckNameNone);
+                BaseDialogUtils.ShowDialogAuto(StringConst.DeckNameNone);
                 return;
             }
             var deckPath = CardUtils.GetDeckPath(DeckName);
@@ -152,7 +154,7 @@ namespace DeckEditor.ViewModel
             deckNumberList.AddRange(_deckVm.ExModels.Select(deckEntity => deckEntity.NumberEx).ToList());
             deckBuilder.Append(JsonUtils.Serializer(deckNumberList));
             var isSave = FileUtils.SaveFile(deckPath, deckBuilder.ToString());
-            BaseDialogUtils.ShowDlg(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
+            BaseDialogUtils.ShowDialogAuto(isSave ? StringConst.SaveSucceed : StringConst.SaveFailed);
         }
 
         /// <summary>
@@ -176,7 +178,7 @@ namespace DeckEditor.ViewModel
             var areaType = CardUtils.GetAreaType(numberEx);
             switch (areaType)
             {
-                case Enums.AreaType.Pl:
+                case Enums.AreaType.Player:
                     _playerVm.PlayerModels.Clear();
                     AddDeckModel(numberEx, _playerVm.PlayerModels);
                     break;
@@ -211,7 +213,7 @@ namespace DeckEditor.ViewModel
         private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)
         {
             var thumbnailPath = CardUtils.GetThumbnailPath(numberEx);
-            var row = DataCache.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsEnumerable().AsParallel()
+            var row = DataManager.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsEnumerable().AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[SqliteConst.ColumnNumber].ToString()));
             var md5 = row[SqliteConst.ColumnMd5].ToString();
             var name = row[SqliteConst.ColumnCName].ToString();
@@ -236,7 +238,7 @@ namespace DeckEditor.ViewModel
         {
             switch (areaType)
             {
-                case Enums.AreaType.Pl:
+                case Enums.AreaType.Player:
                     return _playerVm.PlayerModels;
                 case Enums.AreaType.Ig:
                     return _deckVm.IgModels;

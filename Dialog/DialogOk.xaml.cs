@@ -5,9 +5,9 @@ namespace Dialog
     /// <summary>
     ///     DlgOK.xaml 的交互逻辑
     /// </summary>
-    public partial class DlgOk
+    public partial class DialogOk
     {
-        public DlgOk(string message)
+        public DialogOk(string message)
         {
             InitializeComponent();
             LblHint.Content = message;

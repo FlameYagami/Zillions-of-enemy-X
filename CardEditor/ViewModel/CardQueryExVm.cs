@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CardEditor.Utils;
+using Common;
 using Dialog;
 using Wrapper;
 using Wrapper.Constant;
@@ -9,13 +10,13 @@ using Wrapper.Utils;
 
 namespace CardEditor.ViewModel
 {
-    public class ExternQueryVm : BaseModel
+    public class CardQueryExVm : BaseModel
     {
         private string _modeValue;
-
+        private string _md5;
         private string _restrictValue;
 
-        public ExternQueryVm()
+        public CardQueryExVm()
         {
             ModeList = Dic.ModeDic.Values.ToList();
             RestrctList = CardUtils.GetRestrictList();
@@ -38,6 +39,16 @@ namespace CardEditor.ViewModel
             }
         }
 
+        public string Md5
+        {
+            get { return _md5; }
+            set
+            {
+                _md5 = value;
+                OnPropertyChanged(nameof(Md5));
+            }
+        }
+
         public string RestrictValue
         {
             get { return _restrictValue; }
@@ -55,10 +66,10 @@ namespace CardEditor.ViewModel
 
         public void Md5Cover_Click(object obj)
         {
-            if (!BaseDialogUtils.ShowDlgOkCancel("确认覆写?")) return;
+            if (!BaseDialogUtils.ShowDialogConfirm("确认覆写?")) return;
             var sqlList = SqlUtils.GetMd5SqlList();
-            var succeed = SqliteUtils.Execute(sqlList);
-            BaseDialogUtils.ShowDlg(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
+            var succeed = DataManager.Execute(sqlList);
+            BaseDialogUtils.ShowDialogAuto(succeed ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
         }
 
         public void UpdateRestrictValue(int restrict)
