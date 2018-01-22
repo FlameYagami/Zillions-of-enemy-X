@@ -79,6 +79,7 @@ namespace Wrapper.Constant
             {"SR", PathManager.ImageRareSr},
             {"R", PathManager.ImageRareR},
             {"N", PathManager.ImageRareN},
+            {"CR", PathManager.ImageRareCR},
             {"PR", PathManager.ImageRarePr},
             {"UC", PathManager.ImageRareUc},
             {"C", PathManager.ImageRareC},

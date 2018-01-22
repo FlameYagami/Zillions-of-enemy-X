@@ -198,23 +198,28 @@
                                 </Grid.ColumnDefinitions>
                                 <ComboBox Grid.Column="0" Grid.Row="0" materialDesign:HintAssist.Hint="种类"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Type}"
                                           ItemsSource="{Binding QuerySourceModel.TypeList}" />
                                 <ComboBox Grid.Column="0" Grid.Row="1" materialDesign:HintAssist.Hint="阵营"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           DropDownClosed="Camp_DropDownClosed"
                                           Text="{Binding CardQueryModel.Camp}"
                                           ItemsSource="{Binding QuerySourceModel.CampList}" />
                                 <ComboBox Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="种族"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Race}"
                                           ItemsSource="{Binding QuerySourceModel.RaceList}" />
                                 <ComboBox Grid.Column="0" Grid.Row="3" materialDesign:HintAssist.Hint="标记"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Sign}"
                                           ItemsSource="{Binding QuerySourceModel.SignList}" />
                                 <ComboBox Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="罕贵"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Rare}"
                                           ItemsSource="{Binding QuerySourceModel.RareList}" />
                                 <TextBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0"
@@ -222,10 +227,12 @@
                                          ToolTip="字段以空格分开（A B C）" Text="{Binding CardQueryModel.Key}" />
                                 <ComboBox Grid.Column="1" Grid.Row="2" materialDesign:HintAssist.Hint="画师"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Illust}"
                                           ItemsSource="{Binding QuerySourceModel.IllustList}" />
                                 <ComboBox Grid.Column="1" Grid.Row="1" materialDesign:HintAssist.Hint="卡包"
                                           SelectedIndex="0"
+                                          IsEditable="True"
                                           Text="{Binding CardQueryModel.Pack}"
                                           ItemsSource="{Binding QuerySourceModel.PackList}" />
                                 <TextBox Grid.Column="2" Grid.Row="1" materialDesign:HintAssist.Hint="费用"

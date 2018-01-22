@@ -85,6 +85,7 @@ namespace CardEditor.ViewModel
                         sql = CeSqlUtils.GetEditorSql(ceQueryExModel.CeQueryModel, preOrderType);
                     break;
                 case Enums.ModeType.Develop:
+                    sql = CeSqlUtils.GetQuerySql(ceQueryExModel.CeQueryModel, preOrderType);
                     break;
             }
             return sql;

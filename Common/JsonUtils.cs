@@ -33,12 +33,20 @@ namespace Common
             return obj;
         }
 
-        public static Dictionary<string, int> GetDictionary(string jsonString)
+        public static Dictionary<string, int> GetIntDictionary(string jsonString)
         {
             var jo = JObject.Parse(jsonString);
             var propertiesList = jo.Properties();
             return propertiesList.ToDictionary(properties => properties.Name,
                 properties => int.Parse(properties.Value.ToString()));
+        }
+
+        public static Dictionary<string, string> GetDictionary(string jsonString)
+        {
+            var jo = JObject.Parse(jsonString);
+            var propertiesList = jo.Properties();
+            return propertiesList.ToDictionary(properties => properties.Name,
+                properties => properties.Value.ToString());
         }
     }
 }

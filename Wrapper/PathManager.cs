@@ -40,5 +40,6 @@ namespace Wrapper
         public static string ImageRareUc = $"{TexturesPath}r_uc.png";
         public static string ImageRareUr = $"{TexturesPath}r_ur.png";
         public static string ImageRareZxr = $"{TexturesPath}r_zxr.png";
+        public static string ImageRareCR = $"{TexturesPath}r_cr.png";
     }
 }

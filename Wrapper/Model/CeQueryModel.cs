@@ -394,9 +394,8 @@ namespace Wrapper.Model
             }
         }
 
-        public void UpdateAbilityLinkage()
+        public void UpdateAbilityLinkage(string ability)
         {
-            var ability = Ability;
             if (ability.Contains("降临条件") || ability.Contains("觉醒条件"))
             {
                 Type = StringConst.TypeZxEx;

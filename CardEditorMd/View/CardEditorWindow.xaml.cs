@@ -72,7 +72,8 @@ namespace CardEditor.View
         /// <summary>能力文本改变事件</summary>
         private void TxtAbility_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _cardEditorVm?.UpdateAbilityLinkage();
+            // Xaml中Textbox的TextChanged事件并不会引起Vm框架中Binding属性改变，所以这里必须手动取值
+            _cardEditorVm?.UpdateAbilityLinkage((sender as TextBox).Text);
         }
 
         /// <summary>类型选择</summary>

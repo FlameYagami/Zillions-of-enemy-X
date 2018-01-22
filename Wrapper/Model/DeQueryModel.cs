@@ -54,6 +54,7 @@ namespace Wrapper.Model
             Dic.AbilityDetailDic.Keys.ToList().ForEach(key => AbilityDetailModels.Add(new AbilityModel
             {
                 Name = key,
+                Code = Dic.AbilityDetailDic[key],
                 Checked = false
             }));
             OnPropertyChanged(nameof(AbilityDetailModels));

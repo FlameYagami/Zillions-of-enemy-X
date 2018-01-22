@@ -27,7 +27,7 @@ namespace DeckEditor.View
         public MainWindow()
         {
             InitializeComponent();
-            LogUtils.Show();
+            //LogUtils.Show();
             if (DataManager.FillDataToDataSet())
             {
                 if (!Directory.Exists(PathManager.DeckFolderPath))

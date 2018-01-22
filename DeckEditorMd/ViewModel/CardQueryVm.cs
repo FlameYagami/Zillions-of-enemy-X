@@ -19,11 +19,11 @@ namespace DeckEditor.ViewModel
             CmdAlilityDetail = new DelegateCommand {ExecuteCommand = AlilityDetail_Click};
 
             CardQueryModel = new DeQueryModel();
-            SearchSourceModel = new QuerySourceModel();
+            QuerySourceModel = new QuerySourceModel();
         }
 
         public DeQueryModel CardQueryModel { get; set; }
-        public QuerySourceModel SearchSourceModel { get; set; }
+        public QuerySourceModel QuerySourceModel { get; set; }
 
         public DelegateCommand CmdQuery { get; set; }
         public DelegateCommand CmdReset { get; set; }
@@ -62,7 +62,7 @@ namespace DeckEditor.ViewModel
         public void UpdateRaceList()
         {
             OnPropertyChanged(nameof(CardQueryModel));
-            SearchSourceModel.UpdateRaceList(CardQueryModel.Camp);
+            QuerySourceModel.UpdateRaceList(CardQueryModel.Camp);
             CardQueryModel.Race = StringConst.NotApplicable;
             OnPropertyChanged(nameof(CardQueryModel));
         }

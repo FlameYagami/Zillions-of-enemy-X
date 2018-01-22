@@ -149,8 +149,12 @@ namespace CardEditor.ViewModel
                                                       CardUtils.GetMd5(selectedItem.Number))) return;
             // 数据库修改
             var updateSql = CeSqlUtils.GetUpdateSql(CardQueryModel, selectedItem.Number);
-            var udpateSameSql = CeSqlUtils.GetUpdateSql(CardQueryModel);
-            var isUpdate = DataManager.Execute(new List<string> {updateSql, udpateSameSql});
+            var updateSqls = new List<string> { updateSql };
+            if (CardUtils.GetModeType(_cardQueryExVm.ModeValue).Equals(Enums.ModeType.Develop))
+            {
+                updateSqls.Add(CeSqlUtils.GetUpdateSql(CardQueryModel));
+            }
+            var isUpdate = DataManager.Execute(updateSqls);
             BaseDialogUtils.ShowDialogAuto(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
             // 数据库更新
             if (!isUpdate) return;
@@ -243,10 +247,10 @@ namespace CardEditor.ViewModel
         /// <summary>
         ///     能力改变联动事件
         /// </summary>
-        public void UpdateAbilityLinkage()
+        public void UpdateAbilityLinkage(string ability)
         {
             if (_cardPreviewVm.IsPreviewChanged) return;
-            CardQueryModel.UpdateAbilityLinkage();
+            CardQueryModel.UpdateAbilityLinkage(ability);
         }
     }
 }

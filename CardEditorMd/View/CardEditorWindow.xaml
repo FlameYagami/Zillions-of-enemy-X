@@ -116,7 +116,7 @@
                                               materialDesign:HintAssist.Hint="禁限规制"
                                               ItemsSource="{Binding RestrctList}" />
                                     <TextBox Text="{Binding Md5Value}" materialDesign:HintAssist.Hint="Md5"
-                                             IsEnabled="False" />
+                                             IsReadOnly="True" />
                                 </StackPanel>
                             </materialDesign:Card>
                         </StackPanel>
