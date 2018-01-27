@@ -12,7 +12,7 @@
                 <RowDefinition Height="30" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Border Style="{DynamicResource BorderTitle}" Name="GridTitle" Height="30" ToolTip="右键最小化"
+            <Border Style="{DynamicResource BorderTitle}" Name="GridTitle" ToolTip="右键最小化"
                     MouseRightButtonDown="Title_MouseRightButtonDown" MouseMove="Title_MouseMove">
                 <Label Content="Z/X DeckEditor" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
             </Border>
@@ -416,15 +416,16 @@
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" Height="30">
-                        <Border Style="{DynamicResource ControlBorder}" Margin="5,2.5">
-                            <Label Content="{Binding CardPreviewCountValue}" Width="110" Height="20" />
-                        </Border>
+                    <DockPanel Margin="5,0,5,0" Height="30">
                         <ComboBox x:Name="CmbOrder" Margin="5,2.5" Width="70" SelectedIndex="0"
                                   Text="{Binding CardPreviewOrder}" IsEditable="False"
                                   ItemsSource="{Binding PreviewOrderValues}"
-                                  DropDownClosed="CmbOrder_DropDownClosed" />
-                    </StackPanel>
+                                  DropDownClosed="CmbOrder_DropDownClosed" DockPanel.Dock="Right"/>
+                        <Border Style="{DynamicResource ControlBorder}" Margin="5,2.5">
+                            <Label Content="{Binding CardPreviewCountValue}" Margin="4 0"/>
+                        </Border>
+
+                    </DockPanel>
                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="1" Margin="10,0,10,10">
                         <ListView x:Name="LvCardPreview" SelectionChanged="CardPreview_SelectionChanged"
                                   Style="{DynamicResource ControlTransparent}"
