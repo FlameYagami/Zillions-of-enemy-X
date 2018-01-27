@@ -34,8 +34,14 @@ namespace Wrapper.Model
         private string _sign;
         private bool _signEnabled;
         private string _type;
+        private bool _re;
 
         public CeQueryModel()
+        {
+            InitCeQueryModel();
+        }
+
+        public void Reset()
         {
             InitCeQueryModel();
         }
@@ -57,6 +63,8 @@ namespace Wrapper.Model
             PowerValue = string.Empty;
             Ability = string.Empty;
             Lines = string.Empty;
+
+            Re = false;
 
             InitAbilityTypeModels();
             InitAbilityDetailModels();
@@ -251,6 +259,16 @@ namespace Wrapper.Model
             {
                 _signEnabled = value;
                 OnPropertyChanged(nameof(SignEnabled));
+            }
+        }
+
+        public bool Re
+        {
+            get { return _re; }
+            set
+            {
+                _re = value;
+                OnPropertyChanged(nameof(Re));
             }
         }
 

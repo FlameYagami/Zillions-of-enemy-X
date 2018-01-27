@@ -16,9 +16,11 @@ namespace Wrapper.Model
         public string Ability { get; set; }
         public string Lines { get; set; }
         public string ImageJson { get; set; }
+        public string AbilityDetailJson { get; set; }
         public int Cost { get; set; }
         public int Power { get; set; }
         public int Restrict { get; set; }
-        public string AbilityDetailJson { get; set; }
+        // Ô´ÊıÊôĞÔ
+        public int Re { get; set; }
     }
 }

@@ -167,7 +167,7 @@ namespace CardEditor.ViewModel
         /// </summary>
         public void Reset_Click(object obj)
         {
-            CardQueryModel = new CeQueryModel();
+            CardQueryModel.Reset();
             var mode = _cardQueryExVm.ModeValue;
             if (!CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor)) return;
             CardQueryModel.Pack = _cardPreviewVm.CeQueryExModel.CeQueryModel.Pack;

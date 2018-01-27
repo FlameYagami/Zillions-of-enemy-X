@@ -211,6 +211,8 @@ namespace Common
 
         private static string GetDataPassword(string dbCfgKey)
         {
+            if (string.IsNullOrWhiteSpace(dbCfgKey))
+                return "";
             var dbPwd = ConfigUtils.Get(dbCfgKey);
             return StringUtils.Decrypt(dbPwd);
         }

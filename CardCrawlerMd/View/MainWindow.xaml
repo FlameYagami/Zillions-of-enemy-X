@@ -25,12 +25,17 @@
             <DockPanel>
                 <materialDesign:Card DockPanel.Dock="Top" Margin="8">
                     <DockPanel>
-                        <Button DockPanel.Dock="Right" Content="数据覆写" Width="100" Command="{Binding CmdCover}" />
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" >
+                            <ComboBox Width="200" SelectedIndex="0" IsEditable="True" Text="{Binding DbPackValue}"
+                                      ItemsSource="{Binding DbPackList}" materialDesign:HintAssist.Hint="请选择覆写的卡包" />
+                            <Button Content="数据覆写" Width="100" Command="{Binding CmdCover}" />
+                        </StackPanel>
+
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                             <Button Content="同步卡包" Command="{Binding CmdPackAsync}" />
-                            <ComboBox Width="200" SelectedIndex="0" IsEditable="True" Text="{Binding PackValue}"
-                                      ItemsSource="{Binding PackList}" materialDesign:HintAssist.Hint="请选择卡包" />
-                            <Button Content="解析" Width="100" Margin="4" Command="{Binding CmdAnalyze}" />
+                            <ComboBox Width="200" SelectedIndex="0" IsEditable="True" Text="{Binding WebPackValue}"
+                                      ItemsSource="{Binding WebPackList}" materialDesign:HintAssist.Hint="请选择解析的卡包" />
+                            <Button Content="数据解析" Width="100" Margin="4" Command="{Binding CmdAnalyze}" />
                             <Label Width="200" Content="{Binding AnalyseHint}" VerticalContentAlignment="Center"
                                    Margin="16 0" />
                         </StackPanel>

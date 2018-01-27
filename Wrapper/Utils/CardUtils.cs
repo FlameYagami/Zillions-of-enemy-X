@@ -101,19 +101,6 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
-        ///     获取卡编相关的大图路径集合
-        /// </summary>
-        /// <param name="imageJson">图片Json</param>
-        /// <returns></returns>
-        public static List<string> GetPicturePathList(string imageJson)
-        {
-            var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
-            return imageExList.AsParallel()
-                .Select(imageEx => PathManager.PicturePath + imageEx + StringConst.ImageExtension)
-                .ToList();
-        }
-
-        /// <summary>
         ///     获取卡编是否重复的布尔值
         /// </summary>
         /// <param name="number">卡编</param>
@@ -213,23 +200,6 @@ namespace Wrapper.Utils
         public static List<string> GetNumberExList(string imageJson)
         {
             return JsonUtils.Deserialize<List<string>>(imageJson);
-        }
-
-        /// <summary>
-        ///     获取卡编相关的小图路径集合
-        /// </summary>
-        /// <param name="imageJson">图片Json</param>
-        /// <returns></returns>
-        public static List<string> GetThumbnailPathList(string imageJson)
-        {
-            var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
-            return imageExList.AsParallel()
-                .Select(
-                    imageEx =>
-                        File.Exists(PathManager.ThumbnailPath + imageEx + StringConst.ImageExtension)
-                            ? PathManager.ThumbnailPath + imageEx + StringConst.ImageExtension
-                            : PathManager.ThumbnailUnknownPath)
-                .ToList();
         }
 
         /// <summary>
@@ -399,13 +369,36 @@ namespace Wrapper.Utils
         }
 
         /// <summary>
+        ///     获取卡编相关的小图路径集合
+        /// </summary>
+        /// <param name="imageJson">图片Json</param>
+        /// <returns></returns>
+        public static List<string> GetThumbnailPathList(string imageJson)
+        {
+            var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
+            return imageExList.Select(GetThumbnailPath).ToList();
+        }
+
+        /// <summary>
         ///     获取缩略图路径
         /// </summary>
         /// <param name="numberEx">卡编</param>
         /// <returns>缩略图路径</returns>
         public static string GetThumbnailPath(string numberEx)
         {
-            return $"{PathManager.ThumbnailPath}{numberEx}{StringConst.ImageExtension}";
+            var path = $"{PathManager.ThumbnailPath}{numberEx}{StringConst.ImageExtension}";
+            return File.Exists(path) ? path : PathManager.ThumbnailUnknownPath;
+        }
+
+        /// <summary>
+        ///     获取卡编相关的大图路径集合
+        /// </summary>
+        /// <param name="imageJson">图片Json</param>
+        /// <returns></returns>
+        public static List<string> GetPicturePathList(string imageJson)
+        {
+            var imageExList = JsonUtils.Deserialize<List<string>>(imageJson);
+            return imageExList.Select(GetPicturePath).ToList();
         }
 
         /// <summary>
@@ -415,7 +408,8 @@ namespace Wrapper.Utils
         /// <returns>缩略图路径</returns>
         public static string GetPicturePath(string numberEx)
         {
-            return $"{PathManager.PicturePath}{numberEx}{StringConst.ImageExtension}";
+            var path = $"{PathManager.PicturePath}{numberEx}{StringConst.ImageExtension}";
+            return File.Exists(path) ? path : PathManager.PictureUnknownPath;
         }
 
         /// <summary>

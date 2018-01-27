@@ -25,7 +25,8 @@ namespace CardCrawler.ViewModel
         private bool _allChecked;
         private string _analyseHint;
         private IDisposable _dispose;
-        private string _packValue;
+        private string _webPackValue;
+        private string _dbPackValue;
         private int _pageCount = 1;
 
         public MainVm()
@@ -37,6 +38,8 @@ namespace CardCrawler.ViewModel
             CmdAllChecked = new DelegateCommand {ExecuteCommand = AllChecked_Click};
             CmdCover = new DelegateCommand {ExecuteCommand = CmdCover_Click};
             InitPack();
+            DbPackList = new ObservableCollection<string>();
+            CardUtils.GetPackList().ForEach(DbPackList.Add);
 //            LogUtils.Show();
         }
 
@@ -50,13 +53,23 @@ namespace CardCrawler.ViewModel
             }
         }
 
-        public string PackValue
+        public string WebPackValue
         {
-            get { return _packValue; }
+            get { return _webPackValue; }
             set
             {
-                _packValue = value;
-                OnPropertyChanged(nameof(PackValue));
+                _webPackValue = value;
+                OnPropertyChanged(nameof(WebPackValue));
+            }
+        }
+
+        public string DbPackValue
+        {
+            get { return _dbPackValue; }
+            set
+            {
+                _dbPackValue = value;
+                OnPropertyChanged(nameof(DbPackValue));
             }
         }
 
@@ -71,8 +84,8 @@ namespace CardCrawler.ViewModel
         }
 
         public ObservableCollection<CheckModel<CardModel>> CheckModels { get; set; }
-        public ObservableCollection<string> PackList { get; set; }
-
+        public ObservableCollection<string> WebPackList { get; set; }
+        public ObservableCollection<string> DbPackList { get; set; }
         public DelegateCommand CmdPackAsync { get; set; }
         public DelegateCommand CmdExit { get; set; }
         public DelegateCommand CmdAllChecked { get; set; }
@@ -87,17 +100,14 @@ namespace CardCrawler.ViewModel
                 BaseDialogUtils.ShowDialogOk("请勾选要覆写的数据");
                 return;
             }
-            if (!await BaseDialogUtils.ShowDialogConfirm(StringConst.CoverHint)) return;
-            // 以解析卡包前三位文字作为查询条件
-            var packLike = PackValue.Substring(0, 3);
-            var tempPack = CardUtils.GetPackList().FirstOrDefault(pack => pack.Contains(packLike));
-            if (string.IsNullOrWhiteSpace(tempPack))
+            if (string.IsNullOrWhiteSpace(DbPackValue) || StringConst.NotApplicable.Equals(DbPackValue))
             {
-                BaseDialogUtils.ShowDialogOk("无法查询到对应的卡包");
+                BaseDialogUtils.ShowDialogOk("请选择要覆写的卡包");
                 return;
             }
+            if(!await BaseDialogUtils.ShowDialogConfirm($"{StringConst.CoverHint}:{DbPackValue}")) return;
             // 为覆写的卡牌赋予卡包属性
-            cardModels.ForEach(cardModel => cardModel.Pack = tempPack);
+            cardModels.ForEach(cardModel => cardModel.Pack = DbPackValue);
             var allNumberList = CardUtils.GetAllNumberList();
             // 获取添加、更新Sql语句集合
             var sqlList =
@@ -207,9 +217,9 @@ namespace CardCrawler.ViewModel
                     return packList;
                 }).ToObservable().ObserveOnDispatcher().Subscribe(result =>
                 {
-                    PackList.Clear();
+                    WebPackList.Clear();
                     result.Insert(0, StringConst.NotApplicable);
-                    result.ForEach(PackList.Add);
+                    result.ForEach(WebPackList.Add);
                     e.Session.Close(false);
                     BaseDialogUtils.ShowDialogAuto(StringConst.UpdateSucceed);
                 });
@@ -218,14 +228,14 @@ namespace CardCrawler.ViewModel
 
         private void InitPack()
         {
-            PackList = new ObservableCollection<string>();
+            WebPackList = new ObservableCollection<string>();
             var packJsonPath = Environment.CurrentDirectory + "\\PackJson";
             if (!File.Exists(packJsonPath))
                 FileUtils.SaveFile(packJsonPath, JsonUtils.Serializer(new List<string>()));
             var packJson = FileUtils.GetFileContent(packJsonPath);
             var packList = JsonUtils.Deserialize<List<string>>(packJson);
-            PackList.Add(StringConst.NotApplicable);
-            packList.ForEach(PackList.Add);
+            WebPackList.Add(StringConst.NotApplicable);
+            packList.ForEach(WebPackList.Add);
         }
 
         public void Exit_Click(object obj)
@@ -235,7 +245,7 @@ namespace CardCrawler.ViewModel
 
         public async void Analyze_Click(object obj)
         {
-            if (PackValue.Equals(string.Empty))
+            if (WebPackValue.Equals(string.Empty))
             {
                 BaseDialogUtils.ShowDialogOk("请选择卡包");
                 return;
@@ -359,8 +369,8 @@ namespace CardCrawler.ViewModel
         private string GetUrl(int pageCount = 0)
         {
             return 0 == pageCount
-                ? $"https://www.zxtcg.com/card/?fwcn=1&fwil=1&fwct=1&fwft=1&pn={PackValue}"
-                : $"https://www.zxtcg.com/card/?page={pageCount}&fwcn=1&fwil=1&fwct=1&fwft=1&pn={PackValue}";
+                ? $"https://www.zxtcg.com/card/?fwcn=1&fwil=1&fwct=1&fwft=1&pn={WebPackValue}"
+                : $"https://www.zxtcg.com/card/?page={pageCount}&fwcn=1&fwil=1&fwct=1&fwft=1&pn={WebPackValue}";
         }
     }
 }

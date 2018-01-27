@@ -62,6 +62,7 @@ namespace Wrapper.Utils
             builder.Append($"{ColumnPower}= '{card.PowerValue}',");
             builder.Append($"{ColumnAbility}= '{card.Ability}',");
             builder.Append($"{ColumnLines}= '{card.Lines}',");
+            builder.Append($"{ColumnRe}= '{GetReValue(card.Re)}',"); // 只有修改时才会变更源数数据
             builder.Append(
                 $"{ColumnImage}= '{JsonUtils.Serializer(new List<string> {card.Number})}',");
             builder.Append(

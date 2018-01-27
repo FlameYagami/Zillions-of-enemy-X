@@ -43,7 +43,7 @@ namespace DeckEditor.ViewModel
         /// </summary>
         public void Reset_Click(object obj)
         {
-            CardQueryModel = new DeQueryModel();
+            CardQueryModel.Reset();
             OnPropertyChanged(nameof(CardQueryModel));
         }
 

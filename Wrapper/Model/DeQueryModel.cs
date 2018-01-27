@@ -8,6 +8,16 @@ namespace Wrapper.Model
     {
         public DeQueryModel()
         {
+            Init();
+        }
+
+        public void Reset()
+        {
+            Init();
+        }
+
+        public void Init()
+        {
             Type = StringConst.NotApplicable;
             Camp = StringConst.NotApplicable;
             Race = StringConst.NotApplicable;
