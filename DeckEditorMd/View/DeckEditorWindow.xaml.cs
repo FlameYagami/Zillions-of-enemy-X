@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Common;
 using DeckEditor.ViewModel;
 using Dialog;
 using Wrapper;
@@ -27,7 +26,6 @@ namespace DeckEditor.View
         public MainWindow()
         {
             InitializeComponent();
-            //LogUtils.Show();
             if (DataManager.FillDataToDataSet())
             {
                 if (!Directory.Exists(PathManager.DeckFolderPath))

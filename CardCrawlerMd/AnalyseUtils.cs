@@ -97,7 +97,8 @@ namespace CardCrawler
                     .Attributes["src"].Value;
                 campText = campText.Substring(campText.LastIndexOf("/", StringComparison.Ordinal) + 1);
                 campText = campText.Substring(campText.IndexOf("_", StringComparison.Ordinal) + 1,
-                    campText.LastIndexOf("_", StringComparison.Ordinal) - campText.IndexOf("_", StringComparison.Ordinal) -
+                    campText.LastIndexOf("_", StringComparison.Ordinal) -
+                    campText.IndexOf("_", StringComparison.Ordinal) -
                     1).ToUpper();
                 return CampDic[campText];
             }
@@ -145,7 +146,6 @@ namespace CardCrawler
                 LogUtils.Write("类型解析失败");
                 return StringConst.NotApplicable;
             }
-
         }
 
         public static string AnalyseRace(HtmlNodeCollection nodes)

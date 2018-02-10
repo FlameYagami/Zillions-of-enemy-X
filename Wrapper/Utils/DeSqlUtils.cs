@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using Common;
+using Wrapper.Constant;
 using Wrapper.Model;
 
 namespace Wrapper.Utils
 {
     public class DeSqlUtils : SqlUtils
     {
-        public static string GetQuerySql(DeQueryModel card, string cardPreviewOrder)
+        public static string GetQuerySql(DeQueryModel card, Enums.PreviewOrderType previewOrderType)
         {
-            var previewOrderType = CardUtils.GetPreOrderType(cardPreviewOrder);
             var builder = new StringBuilder();
             builder.Append(GetHeaderSql()); // 基础查询语句
             builder.Append(GetAllKeySql(card.Key)); // 关键字
@@ -20,9 +18,12 @@ namespace Wrapper.Utils
             builder.Append(GetAccurateSql(card.Sign, ColumnSign)); // 标记
             builder.Append(GetAccurateSql(card.Rare, ColumnRare)); // 罕贵
             builder.Append(GetAccurateSql(card.Illust, ColumnIllust)); // 画师
-            builder.Append(GetPackSql(card.Pack, ColumnPack)); // 卡包
+            builder.Append(GetAccurateSql(CardUtils.GetReValue(card.Re), ColumnRe)); // 源数
+
             builder.Append(GetIntervalSql(card.CostValue, ColumnCost)); // 费用
             builder.Append(GetIntervalSql(card.PowerValue, ColumnPower)); // 力量
+
+            builder.Append(GetPackSql(card.Pack, ColumnPack)); // 卡包
             builder.Append(GetAbilityTypeSql(card.AbilityTypeModels.ToList())); //  能力类型
             builder.Append(GetAbilityDetailSql(card.AbilityDetailModels.ToList())); // 详细能力
             builder.Append(GetFooterSql(previewOrderType)); // 排序

@@ -10,7 +10,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         Loaded="Window_Loaded" Icon="../icon.ico"
         Title="Z/X CardEditor" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
-    <materialDesign:DialogHost>
+    <materialDesign:DialogHost Identifier="">
         <UserControl mc:Ignorable="d" d:DesignHeight="720" d:DesignWidth="1280" Background="Wheat">
             <Grid>
                 <Grid.RowDefinitions>
@@ -40,9 +40,11 @@
                         <materialDesign:Card VerticalAlignment="Center" Margin="8">
                             <DockPanel Margin="4" Height="Auto">
                                 <ComboBox x:Name="CmbOrder" DockPanel.Dock="Right" Width="80" Height="Auto"
-                                          SelectedIndex="1"
-                                          Text="{Binding CardPreviewOrder}" IsEditable="False"
-                                          ItemsSource="{Binding PreviewOrderValues}"
+                                          SelectedIndex="1" IsEditable="False"
+                                          SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          SelectedValue="{Binding PreviewOrderType}"
+                                          ItemsSource="{Binding PreviewOrderDic}"
                                           DropDownClosed="CmbOrder_DropDownClosed" materialDesign:HintAssist.Hint="排序" />
                                 <StackPanel Orientation="Horizontal" Margin="8">
                                     <TextBlock Text="检索结果：" VerticalAlignment="Bottom" />
@@ -108,10 +110,13 @@
                             </materialDesign:Card>
                             <materialDesign:Card Name="ExternQueryView" Margin="8 0 8 0">
                                 <StackPanel Orientation="Vertical" Margin="8">
-                                    <ComboBox Text="{Binding ModeValue}" SelectedIndex="0"
+                                    <ComboBox SelectedIndex="0"
                                               materialDesign:HintAssist.Hint="模式选择"
                                               DropDownClosed="CmdMode_OnDropDownClosed"
-                                              ItemsSource="{Binding ModeList}" />
+                                              SelectedValuePath="Key"
+                                              DisplayMemberPath="Value"
+                                              SelectedValue="{Binding ModeType}"
+                                              ItemsSource="{Binding ModeDic}" />
                                     <ComboBox Text="{Binding RestrictValue}" SelectedIndex="0"
                                               materialDesign:HintAssist.Hint="禁限规制"
                                               ItemsSource="{Binding RestrctList}" />
@@ -136,7 +141,7 @@
                                     <Button Content="导出" Command="{Binding CmdExport}" Margin="0 8 0 0" />
                                 </StackPanel>
                                 <materialDesign:Card Margin="0 8 8 0">
-                                    <Grid Margin="8">
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -201,7 +206,8 @@
                                                 Command="{Binding CmdQuery}" />
                                         <Button Grid.Column="3" Grid.Row="2" Content="重置"
                                                 Command="{Binding CmdReset}" />
-                                        <CheckBox Grid.Column="3" Grid.Row="3" Content="源数" IsChecked="{Binding CardQueryModel.Re}" Margin="8 4"/>
+                                        <CheckBox Grid.Column="3" Grid.Row="3" Content="源数"
+                                                  IsChecked="{Binding CardQueryModel.Re}" Margin="8 4" />
                                         <ListBox SelectionMode="Multiple" Width="100" Height="160" Grid.Row="0"
                                                  Grid.RowSpan="4" Grid.Column="4" Margin="4"
                                                  ItemsSource="{Binding CardQueryModel.AbilityTypeModels}"
@@ -223,7 +229,7 @@
                                 </materialDesign:Card>
                             </DockPanel>
                             <StackPanel Grid.Row="1">
-                                <materialDesign:Card Margin="0 8 0 4" Height="120">
+                                <materialDesign:Card Margin="0 8 0 4" Height="100">
                                     <ListBox ItemsSource="{Binding CardQueryModel.AbilityDetailModels}"
                                              SelectionMode="Multiple"
                                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -235,12 +241,13 @@
                                         </ListBox.ItemsPanel>
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}" />
+                                                <CheckBox Content="{Binding Name}" IsChecked="{Binding Checked}"
+                                                          Margin="-4" />
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
                                 </materialDesign:Card>
-                                <materialDesign:Card Margin="0 4 0 4" Height="168">
+                                <materialDesign:Card Margin="0 4 0 4" Height="136">
                                     <TextBox TextWrapping="Wrap" Margin="2"
                                              Style="{StaticResource MaterialDesignTextAreaTextBox}"
                                              AcceptsReturn="True" materialDesign:HintAssist.Hint="能力"
@@ -248,11 +255,18 @@
                                              Text="{Binding CardQueryModel.Ability}"
                                              TextChanged="TxtAbility_TextChanged" />
                                 </materialDesign:Card>
-                                <materialDesign:Card Margin="0 4 0 8" Height="124">
+                                <materialDesign:Card Margin="0 4 0 8" Height="100">
                                     <TextBox TextWrapping="Wrap" Margin="2"
                                              Style="{StaticResource MaterialDesignTextAreaTextBox}"
                                              AcceptsReturn="True" materialDesign:HintAssist.Hint="台词"
                                              Text="{Binding CardQueryModel.Lines}"
+                                             VerticalContentAlignment="Top" />
+                                </materialDesign:Card>
+                                <materialDesign:Card Margin="0 4 0 8" Height="80">
+                                    <TextBox TextWrapping="Wrap" Margin="2"
+                                             Style="{StaticResource MaterialDesignTextAreaTextBox}"
+                                             AcceptsReturn="True" materialDesign:HintAssist.Hint="原能力"
+                                             Text="{Binding CardQueryModel.OrigAbility}"
                                              VerticalContentAlignment="Top" />
                                 </materialDesign:Card>
                             </StackPanel>

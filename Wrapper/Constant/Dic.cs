@@ -49,6 +49,7 @@ namespace Wrapper.Constant
         {
             {"AC", 0},
             {"B", 0},
+            {"BG", 0},
             {"C", 0},
             {"CP", 0},
             {"D", 0},

@@ -22,6 +22,7 @@
         public const string ColumnAbility = "Ability";
         public const string ColumnAbilityDetail = "AbilityDetail"; // 存放Json数据的字段
         public const string ColumnRe = "Re"; // 源数字段
+        public const string ColumnOrigAbility = "OrigAbility"; // 原始能力
 
         // CardeDitor
         public const string ColumnCard =

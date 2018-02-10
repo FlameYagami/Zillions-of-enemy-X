@@ -220,10 +220,5 @@ namespace Wrapper.Utils
                     .ToList();
             return JsonUtils.Serializer(abilityDetailList);
         }
-
-        protected static int GetReValue(bool re)
-        {
-            return re ? 1 : 0;
-        }
     }
 }

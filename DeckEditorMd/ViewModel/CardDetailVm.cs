@@ -33,6 +33,7 @@ namespace DeckEditor.ViewModel
             CardDetailModel.Pack = cardModel.Pack;
             CardDetailModel.Illust = cardModel.Illust;
             CardDetailModel.Lines = cardModel.Lines;
+            CardDetailModel.OrigAbility = cardModel.OrigAbility;
             CardDetailModel.SignPath = CardUtils.GetSignPath(cardModel.Sign);
             CardDetailModel.CampPathList = CardUtils.GetCampPathList(cardModel.Camp);
             OnPropertyChanged(nameof(CardDetailModel));

@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="CardCrawler.View.ImagePreviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:CardCrawler.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <DockPanel Margin="16">
+        <materialDesign:Card DockPanel.Dock="Top">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="同步卡包" Command="{Binding CmdPackAsync}" />
+                    <ComboBox Width="200" SelectedIndex="0" IsEditable="True"
+                              SelectedValue="{Binding WebPackValue}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              ItemsSource="{Binding WebPackDic}"
+                              materialDesign:HintAssist.Hint="请选择解析的卡包" />
+                    <Button Content="卡图解析" Command="{Binding CmdImageAnalysis}" />
+                    <CheckBox Content="全图" Command="{Binding CmdAllChecked}" IsChecked="{Binding AllChecked}"
+                              Margin="8 4" />
+                    <CheckBox Content="闪图" Command="{Binding CmdFlashChecked}" IsChecked="{Binding FlashChecked}"
+                              Margin="8 4" />
+                    <Button Content="卡图下载" Command="{Binding CmdImageDownload}" />
+                </StackPanel>
+                <TextBlock Text="{Binding PrgModel.PrgHint}" Visibility="{Binding PrgModel.PrgHintVisibility}"
+                           DockPanel.Dock="Right" Width="108" VerticalAlignment="Center" Margin="0 0 16 0" />
+                <ProgressBar Orientation="Horizontal" Value="{Binding PrgModel.PrgValue}"
+                             Visibility="{Binding PrgModel.PrgValueVisibility}" Margin="16 0" />
+            </DockPanel>
+        </materialDesign:Card>
+        <Grid Background="White" Margin="0 16 0 0">
+            <ListView ItemsSource="{Binding CheckModels}"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemsPanel="{DynamicResource ListViewItemWrapPanel}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <Grid>
+                                <CheckBox IsChecked="{Binding Checked}" HorizontalAlignment="Right"
+                                          VerticalAlignment="Top" />
+                                <Image Width="80" Height="112"
+                                       MouseDown="UIElement_OnMouseDown"
+                                       Source="{Binding Model.ImageUrl}" Margin="8" />
+                            </Grid>
+                            <TextBlock Text="{Binding Model.Number}" TextTrimming="CharacterEllipsis" Width="120" />
+                            <TextBlock Text="{Binding Model.Name}" TextTrimming="CharacterEllipsis" Width="120" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </DockPanel>
+</UserControl>

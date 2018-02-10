@@ -25,49 +25,21 @@ namespace Wrapper.Model
 
         private string _md5;
         private string _number;
+        private string _origAbility;
         private string _pack;
         private bool _powerEnabled;
         private string _powerValue;
         private string _race;
         private bool _raceEnabled;
         private string _rare;
+        private bool _re;
         private string _sign;
         private bool _signEnabled;
         private string _type;
-        private bool _re;
 
         public CeQueryModel()
         {
             InitCeQueryModel();
-        }
-
-        public void Reset()
-        {
-            InitCeQueryModel();
-        }
-
-        public void InitCeQueryModel()
-        {
-            Type = StringConst.NotApplicable;
-            Camp = StringConst.NotApplicable;
-            Race = StringConst.NotApplicable;
-            Sign = StringConst.NotApplicable;
-            Rare = StringConst.NotApplicable;
-            Pack = StringConst.NotApplicable;
-
-            CName = string.Empty;
-            JName = string.Empty;
-            Number = string.Empty;
-            Illust = string.Empty;
-            CostValue = string.Empty;
-            PowerValue = string.Empty;
-            Ability = string.Empty;
-            Lines = string.Empty;
-
-            Re = false;
-
-            InitAbilityTypeModels();
-            InitAbilityDetailModels();
         }
 
         public string Type
@@ -272,6 +244,16 @@ namespace Wrapper.Model
             }
         }
 
+        public string OrigAbility
+        {
+            get { return _origAbility; }
+            set
+            {
+                _origAbility = value;
+                OnPropertyChanged(nameof(OrigAbility));
+            }
+        }
+
         public ObservableCollection<AbilityModel> AbilityTypeModels
         {
             get { return _abilityTypeModels; }
@@ -292,6 +274,36 @@ namespace Wrapper.Model
             }
         }
 
+        public void Reset()
+        {
+            InitCeQueryModel();
+        }
+
+        public void InitCeQueryModel()
+        {
+            Type = StringConst.NotApplicable;
+            Camp = StringConst.NotApplicable;
+            Race = StringConst.NotApplicable;
+            Sign = StringConst.NotApplicable;
+            Rare = StringConst.NotApplicable;
+            Pack = StringConst.NotApplicable;
+
+            CName = string.Empty;
+            JName = string.Empty;
+            Number = string.Empty;
+            Illust = string.Empty;
+            CostValue = string.Empty;
+            PowerValue = string.Empty;
+            Ability = string.Empty;
+            Lines = string.Empty;
+            OrigAbility = string.Empty;
+
+            Re = false;
+
+            InitAbilityTypeModels();
+            InitAbilityDetailModels();
+        }
+
         public void UpdateBaseProperty(CardModel cardModel)
         {
             Type = cardModel.Type;
@@ -308,6 +320,8 @@ namespace Wrapper.Model
             PowerValue = cardModel.Power.ToString();
             Ability = cardModel.Ability;
             Lines = cardModel.Lines;
+            Re = CardUtils.GetRe(cardModel.Re);
+            OrigAbility = cardModel.OrigAbility;
         }
 
         public void UpdateAbilityTypeModels(CardModel cardModel)

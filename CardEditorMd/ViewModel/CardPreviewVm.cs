@@ -16,13 +16,13 @@ namespace CardEditor.ViewModel
         public CardPreviewVm()
         {
             CardPreviewModels = new ObservableCollection<CardPreviewModel>();
-            PreviewOrderValues = Dic.PreviewOrderDic.Values.ToList();
+            PreviewOrderDic = Dic.PreviewOrderDic;
         }
 
         public bool IsPreviewChanged { get; set; }
-        public List<string> PreviewOrderValues { get; set; }
+        public Dictionary<Enums.PreviewOrderType, string> PreviewOrderDic { get; set; }
         public string CardPreviewCountValue { get; set; }
-        public string CardPreviewOrder { get; set; }
+        public Enums.PreviewOrderType PreviewOrderType { get; set; }
         public CeQueryExModel CeQueryExModel { get; set; }
         public ObservableCollection<CardPreviewModel> CardPreviewModels { get; set; }
 
@@ -71,21 +71,19 @@ namespace CardEditor.ViewModel
 
         private string GetModelSql(CeQueryExModel ceQueryExModel)
         {
-            OnPropertyChanged(nameof(CardPreviewOrder));
+            OnPropertyChanged(nameof(PreviewOrderType));
             var sql = string.Empty;
-            var modeType = CardUtils.GetModeType(ceQueryExModel.ModeValue);
-            var preOrderType = CardUtils.GetPreOrderType(CardPreviewOrder);
-            switch (modeType)
+            switch (ceQueryExModel.ModeType)
             {
                 case Enums.ModeType.Query:
-                    sql = CeSqlUtils.GetQuerySql(ceQueryExModel.CeQueryModel, preOrderType);
+                    sql = CeSqlUtils.GetQuerySql(ceQueryExModel.CeQueryModel, PreviewOrderType);
                     break;
                 case Enums.ModeType.Editor:
                     if (!ceQueryExModel.CeQueryModel.Pack.Equals(string.Empty))
-                        sql = CeSqlUtils.GetEditorSql(ceQueryExModel.CeQueryModel, preOrderType);
+                        sql = CeSqlUtils.GetEditorSql(ceQueryExModel.CeQueryModel, PreviewOrderType);
                     break;
                 case Enums.ModeType.Develop:
-                    sql = CeSqlUtils.GetQuerySql(ceQueryExModel.CeQueryModel, preOrderType);
+                    sql = CeSqlUtils.GetQuerySql(ceQueryExModel.CeQueryModel, PreviewOrderType);
                     break;
             }
             return sql;

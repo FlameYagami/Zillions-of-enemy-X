@@ -12,29 +12,11 @@ namespace Wrapper.Utils
     public class CardUtils : SqliteConst
     {
         /// <summary>
-        ///     获取排序的枚举类型
+        ///     获取卡牌数据模型
+        ///     数据库添加、修改、删除字段后都必须修改这个方法
         /// </summary>
-        /// <param name="order">排序方式</param>
-        /// <returns></returns>
-        public static Enums.PreviewOrderType GetPreOrderType(string order)
-        {
-            return order.Equals(StringConst.OrderNumber)
-                ? Enums.PreviewOrderType.Number
-                : Enums.PreviewOrderType.Value;
-        }
-
-        /// <summary>
-        ///     获取模式的枚举类型
-        /// </summary>
-        /// <param name="mode">模式</param>
-        /// <returns></returns>
-        public static Enums.ModeType GetModeType(string mode)
-        {
-            return mode.Equals(StringConst.ModeQuery)
-                ? Enums.ModeType.Query
-                : mode.Equals(StringConst.ModeEditor) ? Enums.ModeType.Editor : Enums.ModeType.Develop;
-        }
-
+        /// <param name="numberEx">卡牌扩展编号</param>
+        /// <returns>卡牌数据模型</returns>
         public static CardModel GetCardModel(string numberEx)
         {
             var row = DataManager.DsAllCache.Tables[TableName].Rows
@@ -57,6 +39,8 @@ namespace Wrapper.Utils
                 Ability = row[ColumnAbility].ToString(),
                 Lines = row[ColumnLines].ToString(),
                 ImageJson = row[ColumnImage].ToString(),
+                OrigAbility = row[ColumnOrigAbility].ToString(),
+                Re = int.Parse(row[ColumnRe].ToString()),
                 Cost = int.Parse(row[ColumnCost].ToString()),
                 Power = int.Parse(row[ColumnPower].ToString()),
                 AbilityDetailJson = row[ColumnAbilityDetail].ToString(),
@@ -185,7 +169,7 @@ namespace Wrapper.Utils
         {
             if (pack.Contains(StringConst.Series))
                 return pack.Substring(0, pack.IndexOf(StringConst.Series, StringComparison.Ordinal));
-            if (pack.Contains("AC") || pack.Contains("CP"))
+            if (pack.Contains("AC") || pack.Contains("CP") || pack.Contains("BG"))
                 return pack.Substring(0, 4) + StringConst.Hyphen;
             if ((pack.Length >= 3) && !pack.Contains(StringConst.NotApplicable))
                 return pack.Substring(0, 3) + StringConst.Hyphen;
@@ -502,6 +486,16 @@ namespace Wrapper.Utils
             return DataManager.DsAllCache.Tables[TableName].Rows.Cast<DataRow>().AsParallel()
                 .Select(row => row[ColumnNumber].ToString())
                 .ToList();
+        }
+
+        public static int GetReValue(bool re)
+        {
+            return re ? 1 : 0;
+        }
+
+        public static bool GetRe(int reValue)
+        {
+            return reValue == 1;
         }
     }
 }

@@ -62,7 +62,8 @@ namespace Wrapper.Utils
             builder.Append($"{ColumnPower}= '{card.PowerValue}',");
             builder.Append($"{ColumnAbility}= '{card.Ability}',");
             builder.Append($"{ColumnLines}= '{card.Lines}',");
-            builder.Append($"{ColumnRe}= '{GetReValue(card.Re)}',"); // 只有修改时才会变更源数数据
+            builder.Append($"{ColumnRe}= '{card.Re}',");
+            builder.Append($"{ColumnOrigAbility}= '{card.OrigAbility}',");
             builder.Append(
                 $"{ColumnImage}= '{JsonUtils.Serializer(new List<string> {card.Number})}',");
             builder.Append(
@@ -90,6 +91,8 @@ namespace Wrapper.Utils
             builder.Append($"{ColumnCost}= '{card.CostValue}',");
             builder.Append($"{ColumnPower}= '{card.PowerValue}',");
             builder.Append($"{ColumnAbility}= '{card.Ability}',");
+            builder.Append($"{ColumnRe}= '{card.Re}',");
+            builder.Append($"{ColumnOrigAbility}= '{card.OrigAbility}',");
             builder.Append(
                 $"{ColumnAbilityDetail}= '{GetAbilityDetailJson(card.AbilityDetailModels.ToList())}'");
             // 详细能力处理
@@ -116,6 +119,7 @@ namespace Wrapper.Utils
             builder.Append(GetAccurateSql(card.Race, ColumnRace)); // 种族
             builder.Append(GetAccurateSql(card.Sign, ColumnSign)); // 标记
             builder.Append(GetAccurateSql(card.Rare, ColumnRare)); // 罕贵
+            builder.Append(GetAccurateSql(CardUtils.GetReValue(card.Re), ColumnRe)); // 源数
 
             builder.Append(GetSimilarSql(card.CName, ColumnCName)); // 卡名
             builder.Append(GetSimilarSql(card.JName, ColumnJName)); // 日名

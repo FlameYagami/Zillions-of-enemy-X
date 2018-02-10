@@ -115,6 +115,8 @@
                                             <TextBlock Margin="0 8 0 0" Text="{Binding CardDetailModel.Illust}" />
                                             <TextBlock TextWrapping="Wrap" Margin="0 8 0 0"
                                                        Text="{Binding CardDetailModel.Lines}" />
+                                            <TextBlock TextWrapping="Wrap" Margin="0 8 0 0"
+                                                       Text="{Binding CardDetailModel.OrigAbility}" />
                                         </StackPanel>
                                     </Expander>
                                 </StackPanel>
@@ -130,8 +132,10 @@
                             <DockPanel Margin="4" Height="Auto">
                                 <ComboBox x:Name="CmbOrder" DockPanel.Dock="Right" Width="80" Height="Auto"
                                           SelectedIndex="0"
-                                          Text="{Binding CardPreviewOrder}"
-                                          ItemsSource="{Binding PreviewOrderValues}"
+                                          SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          SelectedValue="{Binding PreviewOrderType}"
+                                          ItemsSource="{Binding PreviewOrderDic}"
                                           DropDownClosed="CmbOrder_DropDownClosed"
                                           materialDesign:HintAssist.Hint="排序" />
                                 <StackPanel Orientation="Horizontal" Margin="8">
@@ -241,6 +245,8 @@
                                 <TextBox Grid.Column="2" Grid.Row="2" materialDesign:HintAssist.Hint="力量"
                                          ToolTip="区间以连接号分开（A-B）"
                                          Text="{Binding CardQueryModel.PowerValue}" />
+                                <CheckBox Grid.Column="2" Grid.Row="3" Content="源数" Margin="8 4"
+                                          IsChecked="{Binding CardQueryModel.Re}" />
                                 <Button Grid.Column="3" Grid.Row="3" Content="能力分类"
                                         Command="{Binding CmdAlilityDetail}" />
                                 <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Height="60"

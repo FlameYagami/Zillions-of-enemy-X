@@ -22,5 +22,7 @@ namespace Wrapper.Model
         public int Restrict { get; set; }
         // 源数属性
         public int Re { get; set; }
+        // 原能力
+        public string OrigAbility { get; set; }
     }
 }

@@ -149,11 +149,9 @@ namespace CardEditor.ViewModel
                                                       CardUtils.GetMd5(selectedItem.Number))) return;
             // 数据库修改
             var updateSql = CeSqlUtils.GetUpdateSql(CardQueryModel, selectedItem.Number);
-            var updateSqls = new List<string> { updateSql };
-            if (CardUtils.GetModeType(_cardQueryExVm.ModeValue).Equals(Enums.ModeType.Develop))
-            {
+            var updateSqls = new List<string> {updateSql};
+            if (_cardQueryExVm.ModeType.Equals(Enums.ModeType.Develop))
                 updateSqls.Add(CeSqlUtils.GetUpdateSql(CardQueryModel));
-            }
             var isUpdate = DataManager.Execute(updateSqls);
             BaseDialogUtils.ShowDialogAuto(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
             // 数据库更新
@@ -168,8 +166,7 @@ namespace CardEditor.ViewModel
         public void Reset_Click(object obj)
         {
             CardQueryModel.Reset();
-            var mode = _cardQueryExVm.ModeValue;
-            if (!CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor)) return;
+            if (!_cardQueryExVm.ModeType.Equals(Enums.ModeType.Editor)) return;
             CardQueryModel.Pack = _cardPreviewVm.CeQueryExModel.CeQueryModel.Pack;
             CardQueryModel.Number = _cardPreviewVm.CeQueryExModel.CeQueryModel.Number;
         }
@@ -186,7 +183,6 @@ namespace CardEditor.ViewModel
         {
             // 深拷贝查询模型
             var cardEditorModel = JsonUtils.Deserialize<CeQueryModel>(JsonUtils.Serializer(CardQueryModel));
-            var mode = _cardQueryExVm.ModeValue;
             var restrict = _cardQueryExVm.RestrictValue.Equals(StringConst.NotApplicable)
                 ? -1
                 : int.Parse(_cardQueryExVm.RestrictValue);
@@ -194,7 +190,7 @@ namespace CardEditor.ViewModel
             {
                 CeQueryModel = cardEditorModel,
                 Restrict = restrict,
-                ModeValue = mode
+                ModeType = _cardQueryExVm.ModeType
             };
         }
 

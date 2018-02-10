@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="CardCrawler.View.DataPreivewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:CardCrawler.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <DockPanel>
+        <materialDesign:Card DockPanel.Dock="Top" Margin="8">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <ComboBox Width="200" SelectedIndex="0" IsEditable="True" Text="{Binding DbPackValue}"
+                              ItemsSource="{Binding DbPackList}" materialDesign:HintAssist.Hint="请选择覆写的卡包" />
+                    <Button Content="数据覆写" Width="100" Command="{Binding CmdCover}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="同步卡包" Command="{Binding CmdPackAsync}" />
+                    <ComboBox Width="200" SelectedIndex="0" IsEditable="True" Text="{Binding WebPackValue}"
+                              ItemsSource="{Binding WebPackList}" materialDesign:HintAssist.Hint="请选择解析的卡包" />
+                    <Button Content="数据解析" Width="100" Margin="4" Command="{Binding CmdAnalyze}" />
+                    <Label Width="200" Content="{Binding AnalyseHint}" VerticalContentAlignment="Center"
+                           Margin="16 0" />
+                </StackPanel>
+            </DockPanel>
+        </materialDesign:Card>
+        <Grid Background="White" Margin="16 0 16 16">
+            <ListView ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemsSource="{Binding CheckModels}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn>
+                                <GridViewColumn.Header>
+                                    <CheckBox Width="20" Command="{Binding CmdAllChecked}"
+                                              IsChecked="{Binding AllChecked}" />
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Checked,Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="编号" DisplayMemberBinding="{Binding Model.Number}"
+                                            Width="80" />
+                            <GridViewColumn Header="日名" DisplayMemberBinding="{Binding Model.JName}"
+                                            Width="160" />
+                            <GridViewColumn Header="阵营" DisplayMemberBinding="{Binding Model.Camp}" />
+                            <GridViewColumn Header="费用" DisplayMemberBinding="{Binding Model.Cost}" />
+                            <GridViewColumn Header="力量" DisplayMemberBinding="{Binding Model.Power}" />
+                            <GridViewColumn Header="罕贵" DisplayMemberBinding="{Binding Model.Rare}" />
+                            <GridViewColumn Header="种类" DisplayMemberBinding="{Binding Model.Type}" Width="80" />
+                            <GridViewColumn Header="种族" DisplayMemberBinding="{Binding Model.Race}" Width="80" />
+                            <GridViewColumn Header="画师" DisplayMemberBinding="{Binding Model.Illust}"
+                                            Width="100" />
+                            <GridViewColumn Header="台词" DisplayMemberBinding="{Binding Model.Lines}" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </DockPanel>
+</UserControl>

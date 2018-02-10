@@ -76,14 +76,22 @@ namespace Common
             var rootPath = $"{Environment.CurrentDirectory}/logs/";
             if (!Directory.Exists(rootPath))
                 Directory.CreateDirectory(rootPath);
-            using (var log = new StreamWriter($"{rootPath}{DateTime.Now:yyyy_MM_dd}.txt", true))
+            var path = $"{rootPath}{DateTime.Now:yyyy_MM_dd}.txt";
+            try
             {
-                log.WriteLine("*********************************");
-                log.WriteLine("Time" + DateTime.Now.ToLongTimeString());
-                log.WriteLine(str);
-                log.WriteLine("*********************************");
-                log.WriteLine();
-                log.Close();
+                using (var log = new StreamWriter(path, true))
+                {
+                    log.WriteLine("*********************************");
+                    log.WriteLine("Time|" + DateTime.Now.ToLongTimeString());
+                    log.WriteLine(str);
+                    log.WriteLine("*********************************");
+                    log.WriteLine();
+                    log.Close();
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
             }
         }
     }

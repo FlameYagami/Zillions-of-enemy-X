@@ -1,11 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using CardCrawler.ViewModel;
-using Dialog;
-using Wrapper;
-using Wrapper.Constant;
 
-namespace WebCrawler.View
+namespace CardCrawler.View
 {
     /// <summary>
     ///     MainWindow.xaml 的交互逻辑
@@ -15,10 +12,7 @@ namespace WebCrawler.View
         public MainWindow()
         {
             InitializeComponent();
-            if (DataManager.FillDataToDataSet())
-                DataContext = new MainVm();
-            else
-                BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
+            DataContext = new MainVm(this);
         }
 
         private void Title_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

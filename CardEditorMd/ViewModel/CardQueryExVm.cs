@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
@@ -9,26 +8,26 @@ namespace CardEditor.ViewModel
     public class CardQueryExVm : BaseModel
     {
         private string _md5Value;
-        private string _modeValue;
+        private Enums.ModeType _modeType;
 
         private string _restrictValue;
 
         public CardQueryExVm()
         {
-            ModeList = Dic.ModeDic.Values.ToList();
+            ModeDic = Dic.ModeDic;
             RestrctList = CardUtils.GetRestrictList();
         }
 
         public List<string> RestrctList { get; set; }
-        public List<string> ModeList { get; set; }
+        public Dictionary<Enums.ModeType, string> ModeDic { get; set; }
 
-        public string ModeValue
+        public Enums.ModeType ModeType
         {
-            get { return _modeValue; }
+            get { return _modeType; }
             set
             {
-                _modeValue = value;
-                OnPropertyChanged(nameof(ModeValue));
+                _modeType = value;
+                OnPropertyChanged(nameof(ModeType));
             }
         }
 

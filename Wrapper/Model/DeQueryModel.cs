@@ -11,6 +11,20 @@ namespace Wrapper.Model
             Init();
         }
 
+        public string Type { get; set; }
+        public string Camp { get; set; }
+        public string Race { get; set; }
+        public string Sign { get; set; }
+        public string Rare { get; set; }
+        public string Pack { get; set; }
+        public string Illust { get; set; }
+        public string Key { get; set; }
+        public string CostValue { get; set; }
+        public string PowerValue { get; set; }
+        public ObservableCollection<AbilityModel> AbilityTypeModels { get; set; }
+        public ObservableCollection<AbilityModel> AbilityDetailModels { get; set; }
+        public bool Re { get; set; }
+
         public void Reset()
         {
             Init();
@@ -33,19 +47,6 @@ namespace Wrapper.Model
             InitAbilityTypeModels();
             InitAbilityDetailModels();
         }
-
-        public string Type { get; set; }
-        public string Camp { get; set; }
-        public string Race { get; set; }
-        public string Sign { get; set; }
-        public string Rare { get; set; }
-        public string Pack { get; set; }
-        public string Illust { get; set; }
-        public string Key { get; set; }
-        public string CostValue { get; set; }
-        public string PowerValue { get; set; }
-        public ObservableCollection<AbilityModel> AbilityTypeModels { get; set; }
-        public ObservableCollection<AbilityModel> AbilityDetailModels { get; set; }
 
         private void InitAbilityTypeModels()
         {

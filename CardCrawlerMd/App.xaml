@@ -60,6 +60,11 @@
                 <VirtualizingStackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
 
+            <!-- ListViewItem的换行模板-->
+            <ItemsPanelTemplate x:Key="ListViewItemWrapPanel">
+                <WrapPanel />
+            </ItemsPanelTemplate>
+
             <!-- LabelCenter模板-->
             <Style TargetType="Label" x:Key="LblCenter">
                 <Setter Property="Margin" Value="4 0" />
