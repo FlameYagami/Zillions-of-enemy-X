@@ -18,5 +18,6 @@ namespace DeckEditor.Model
         public string Pack { get; set; }
         public string Illust { get; set; }
         public string Lines { get; set; }
+        public string OrigAbility { get; set; }
     }
 }

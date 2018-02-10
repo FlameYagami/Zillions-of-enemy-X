@@ -11,12 +11,12 @@ namespace CardEditor.ViewModel
 {
     public class DbOperationVm : BaseModel
     {
+        private readonly MainWindow _cardEditor;
         private Visibility _decryptVisibility;
 
         private Visibility _encryptVisibility;
 
         private string _password;
-        private readonly MainWindow _cardEditor;
 
         public DbOperationVm(MainWindow cardEditor)
         {
@@ -46,7 +46,7 @@ namespace CardEditor.ViewModel
                 _decryptVisibility = value;
                 OnPropertyChanged(nameof(DecryptVisibility));
             }
-        }                                                                                                                                  
+        }
 
         public string Password
         {

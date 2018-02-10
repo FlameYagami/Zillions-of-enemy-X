@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using CardEditor.Utils;
 using Common;
 using Dialog;
@@ -11,6 +7,7 @@ using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
 using Wrapper.Utils;
+using ExcelHelper = Common.ExcelHelper;
 
 namespace CardEditor.ViewModel
 {
@@ -65,9 +62,9 @@ namespace CardEditor.ViewModel
 
             var sql = SqlUtils.GetExportSql(pack);
             var dataSet = new DataSet();
-            if (!DataManager.FillDataToDataSet(dataSet,sql)) return;
+            if (!DataManager.FillDataToDataSet(dataSet, sql)) return;
 
-            var isExport = Common.ExcelHelper.ExportPackToExcel(exportPath, dataSet);
+            var isExport = ExcelHelper.ExportPackToExcel(exportPath, dataSet);
             BaseDialogUtils.ShowDialogAuto(isExport ? StringConst.ExportSucceed : StringConst.ExportFailed);
         }
 
@@ -149,10 +146,8 @@ namespace CardEditor.ViewModel
             // 数据库修改
             var updateSql = CeSqlUtils.GetUpdateSql(CardQueryModel, selectedItem.Number);
             var updateSqls = new List<string> {updateSql};
-            if (CardUtils.GetModeType(_cardQueryExVm.ModeValue).Equals(Enums.ModeType.Develop))
-            {
+            if (_cardQueryExVm.ModeType.Equals(Enums.ModeType.Develop))
                 updateSqls.Add(CeSqlUtils.GetUpdateSql(CardQueryModel));
-            }
             var isUpdate = DataManager.Execute(updateSqls);
             BaseDialogUtils.ShowDialogAuto(isUpdate ? StringConst.UpdateSucceed : StringConst.UpdateFailed);
             if (!isUpdate) return;
@@ -162,14 +157,13 @@ namespace CardEditor.ViewModel
         }
 
         /// <summary>
-        /// 获取额外的的查询模型（其中包含模式、规制）
+        ///     获取额外的的查询模型（其中包含模式、规制）
         /// </summary>
         /// <returns></returns>
         private CeQueryExModel GetCardQueryExMdoel()
         {
             // 深拷贝查询模型
             var cardEditorModel = JsonUtils.Deserialize<CeQueryModel>(JsonUtils.Serializer(CardQueryModel));
-            var mode = _cardQueryExVm.ModeValue;
             var restrict = _cardQueryExVm.RestrictValue.Equals(StringConst.NotApplicable)
                 ? -1
                 : int.Parse(_cardQueryExVm.RestrictValue);
@@ -177,7 +171,7 @@ namespace CardEditor.ViewModel
             {
                 CeQueryModel = cardEditorModel,
                 Restrict = restrict,
-                ModeValue = mode
+                ModeType = _cardQueryExVm.ModeType
             };
         }
 
@@ -187,8 +181,7 @@ namespace CardEditor.ViewModel
         public void Reset_Click(object obj)
         {
             CardQueryModel.InitCeQueryModel();
-            var mode = _cardQueryExVm.ModeValue;
-            if (CardUtils.GetModeType(mode).Equals(Enums.ModeType.Editor))
+            if (_cardQueryExVm.ModeType.Equals(Enums.ModeType.Editor))
             {
                 CardQueryModel.Pack = _cardPreviewVm.MemoryQueryModel.CeQueryModel.Pack;
                 CardQueryModel.Number = _cardPreviewVm.MemoryQueryModel.CeQueryModel.Number;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using CardEditor.Utils;
 using Common;
 using Dialog;
@@ -12,30 +11,30 @@ namespace CardEditor.ViewModel
 {
     public class CardQueryExVm : BaseModel
     {
-        private string _modeValue;
         private string _md5;
+        private Enums.ModeType _modeType;
         private string _restrictValue;
 
         public CardQueryExVm()
         {
-            ModeList = Dic.ModeDic.Values.ToList();
+            ModeDic = Dic.ModeDic;
             RestrctList = CardUtils.GetRestrictList();
             CmdMd5Cover = new DelegateCommand {ExecuteCommand = Md5Cover_Click};
             CmdPackCover = new DelegateCommand {ExecuteCommand = PackCover_Click};
         }
 
         public List<string> RestrctList { get; set; }
-        public List<string> ModeList { get; set; }
+        public Dictionary<Enums.ModeType, string> ModeDic { get; set; }
         public DelegateCommand CmdMd5Cover { get; set; }
         public DelegateCommand CmdPackCover { get; set; }
 
-        public string ModeValue
+        public Enums.ModeType ModeType
         {
-            get { return _modeValue; }
+            get { return _modeType; }
             set
             {
-                _modeValue = value;
-                OnPropertyChanged(nameof(ModeValue));
+                _modeType = value;
+                OnPropertyChanged(nameof(ModeType));
             }
         }
 

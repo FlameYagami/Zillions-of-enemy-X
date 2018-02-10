@@ -33,7 +33,7 @@ namespace DeckEditor.View
             if (File.Exists(PathManager.BackgroundPath))
             {
                 var uri = new Uri(PathManager.BackgroundPath, UriKind.Relative);
-                var imageBrush = new ImageBrush { ImageSource = new BitmapImage(uri) };
+                var imageBrush = new ImageBrush {ImageSource = new BitmapImage(uri)};
                 BorderView.Background = imageBrush;
             }
 
@@ -42,7 +42,6 @@ namespace DeckEditor.View
 
             if (!DataManager.FillDataToDataSet())
                 BaseDialogUtils.ShowDialogOk(StringConst.DbOpenError);
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

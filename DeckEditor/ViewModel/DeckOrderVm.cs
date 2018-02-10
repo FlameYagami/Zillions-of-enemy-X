@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Common;
 using DeckEditor.Utils;
-using Wrapper;
 using Wrapper.Annotations;
 using Wrapper.Model;
 

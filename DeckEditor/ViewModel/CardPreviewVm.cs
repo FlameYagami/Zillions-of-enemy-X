@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using Common;
 using Wrapper;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -14,15 +11,15 @@ namespace DeckEditor.ViewModel
     public class CardPreviewVm : BaseModel
     {
         private string _cardPreviewCountValue;
-        private string _cardPreviewOrder;
+        private Enums.PreviewOrderType _previewOrderType;
 
         public CardPreviewVm()
         {
             CardPreviewModels = new ObservableCollection<CardPreviewModel>();
-            PreviewOrderValues = Dic.PreviewOrderDic.Values.ToList();
+            PreviewOrderDic = Dic.PreviewOrderDic;
         }
 
-        public List<string> PreviewOrderValues { get; set; }
+        public Dictionary<Enums.PreviewOrderType, string> PreviewOrderDic { get; set; }
 
         public string CardPreviewCountValue
         {
@@ -36,13 +33,13 @@ namespace DeckEditor.ViewModel
 
         public ObservableCollection<CardPreviewModel> CardPreviewModels { get; set; }
 
-        public string CardPreviewOrder
+        public Enums.PreviewOrderType PreviewOrderType
         {
-            get { return _cardPreviewOrder; }
+            get { return _previewOrderType; }
             set
             {
-                _cardPreviewOrder = value;
-                OnPropertyChanged(nameof(CardPreviewOrder));
+                _previewOrderType = value;
+                OnPropertyChanged(nameof(PreviewOrderType));
             }
         }
 
@@ -52,7 +49,7 @@ namespace DeckEditor.ViewModel
         {
             MemoryQueryModel = queryModel; // 保存查询的实例
             var dataSet = new DataSet();
-            var sql = DeSqlUtils.GetQuerySql(queryModel, CardPreviewOrder);
+            var sql = DeSqlUtils.GetQuerySql(queryModel, PreviewOrderType);
             DataManager.FillDataToDataSet(dataSet, sql);
             var tempList = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();

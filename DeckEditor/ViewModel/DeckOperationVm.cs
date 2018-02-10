@@ -213,7 +213,9 @@ namespace DeckEditor.ViewModel
         private void AddDeckModel(string numberEx, ObservableCollection<DeckModel> deckModelList)
         {
             var thumbnailPath = CardUtils.GetThumbnailPath(numberEx);
-            var row = DataManager.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>().AsEnumerable().AsParallel()
+            var row = DataManager.DsAllCache.Tables[SqliteConst.TableName].Rows.Cast<DataRow>()
+                .AsEnumerable()
+                .AsParallel()
                 .First(tempRow => numberEx.Contains(tempRow[SqliteConst.ColumnNumber].ToString()));
             var md5 = row[SqliteConst.ColumnMd5].ToString();
             var name = row[SqliteConst.ColumnCName].ToString();

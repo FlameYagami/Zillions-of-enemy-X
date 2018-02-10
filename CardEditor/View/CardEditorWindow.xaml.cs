@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CardEditor.ViewModel;
-using Common;
 using Dialog;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -17,16 +16,15 @@ namespace CardEditor.View
     public partial class MainWindow
     {
         private AbilityTypeVm _abilityTypeVm;
-        private CardQueryVm _cardQueryVm;
         private CardPictureVm _cardPictureVm;
         private CardPreviewVm _cardPreviewVm;
+        private CardQueryVm _cardQueryVm;
         private DbOperationVm _dbOperationVm;
         private CardQueryExVm _externQueryVm;
 
         public MainWindow()
         {
             InitializeComponent();
-//            LogUtils.Show();
         }
 
         /// <summary>≥Ã–Ú‘ÿ»Î</summary>

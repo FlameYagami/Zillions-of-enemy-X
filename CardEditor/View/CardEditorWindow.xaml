@@ -18,7 +18,7 @@
                 <Label Content="Z/X DeckEditor" Style="{DynamicResource LblCenter}" Foreground="White" FontSize="16" />
             </Border>
             <DockPanel Grid.Row="1">
-                <Grid DockPanel.Dock="Left" Width="270" >
+                <Grid DockPanel.Dock="Left" Width="270">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition />
@@ -40,9 +40,12 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="84" />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding ModeValue}" SelectedIndex="0"
+                                <ComboBox Grid.Column="1" Grid.Row="0" SelectedValuePath="Key"
+                                          DisplayMemberPath="Value"
+                                          SelectedValue="{Binding ModeType}"
+                                          ItemsSource="{Binding ModeDic}" SelectedIndex="0"
                                           IsEditable="False"
-                                          DropDownClosed="CmdMode_OnDropDownClosed" ItemsSource="{Binding ModeList}" />
+                                          DropDownClosed="CmdMode_OnDropDownClosed" />
                                 <Label Grid.Column="0" Grid.Row="0" Content="模式"
                                        Style="{DynamicResource LblCenter}" />
                                 <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding RestrictValue}"
@@ -51,9 +54,10 @@
                                        Style="{DynamicResource LblCenter}" />
                                 <Button Grid.Column="2" Grid.Row="0" Content="Md5覆写" Command="{Binding CmdMd5Cover}" />
                                 <Button Grid.Column="2" Grid.Row="1" Content="卡包覆写" Command="{Binding CmdPackCover}" />
-                                <Label Grid.Column="0" Grid.Row="2" Content="卡密" 
-                                           Style="{DynamicResource LblCenter}" />
-                                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Md5}" IsReadOnly="True"/>
+                                <Label Grid.Column="0" Grid.Row="2" Content="卡密"
+                                       Style="{DynamicResource LblCenter}" />
+                                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Md5}"
+                                         IsReadOnly="True" />
                             </Grid>
                         </Border>
                         <Border Style="{DynamicResource ControlBorder}" Margin="5" Name="DbOperationView">
@@ -102,30 +106,38 @@
                     <TabControl Grid.Row="2" x:Name="CardPictureView" Margin="4 0 4 8"
                                 SelectedIndex="{Binding CardPictureModel.SelectedIndex}">
                         <TabItem Header="A" Visibility="{Binding CardPictureModel.TabItemVisibilityList[0]}">
-                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[0]}" Stretch="UniformToFill"/>
+                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[0]}"
+                                   Stretch="UniformToFill" />
                         </TabItem>
                         <TabItem Header="B" Visibility="{Binding CardPictureModel.TabItemVisibilityList[1]}">
-                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[1]}" Stretch="UniformToFill"/>
+                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[1]}"
+                                   Stretch="UniformToFill" />
                         </TabItem>
                         <TabItem Header="C" Visibility="{Binding CardPictureModel.TabItemVisibilityList[2]}">
-                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[2]}" Stretch="UniformToFill"/>
+                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[2]}"
+                                   Stretch="UniformToFill" />
                         </TabItem>
                         <TabItem Header="D" Visibility="{Binding CardPictureModel.TabItemVisibilityList[3]}">
-                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[3]}" Stretch="UniformToFill"/>
+                            <Image Width="250" Height="350" Source="{Binding CardPictureModel.PicturePathList[3]}"
+                                   Stretch="UniformToFill" />
                         </TabItem>
                     </TabControl>
                 </Grid>
-                <Grid DockPanel.Dock="Right" Width="270"  Name="CardPreviewView">
+                <Grid DockPanel.Dock="Right" Width="270" Name="CardPreviewView">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <DockPanel Margin="5" Height="25">
                         <ComboBox Margin="10,0,0,0" Width="75" DockPanel.Dock="Right"
-                                  DropDownClosed="CmbOrder_DropDownClosed" Text="{Binding CardPreviewOrder}"
-                                  ItemsSource="{Binding PreviewOrderValues}" SelectedIndex="1" />
+                                  DropDownClosed="CmbOrder_DropDownClosed"
+                                  SelectedValuePath="Key"
+                                  DisplayMemberPath="Value"
+                                  SelectedValue="{Binding PreviewOrderType}"
+                                  ItemsSource="{Binding PreviewOrderDic}"
+                                  SelectedIndex="1" />
                         <Border Style="{DynamicResource ControlBorder}">
-                            <Label Content="{Binding CardPreviewCountValue}" Margin="4 0"/>
+                            <Label Content="{Binding CardPreviewCountValue}" Margin="4 0" />
                         </Border>
 
                     </DockPanel>
@@ -202,18 +214,24 @@
                                            Style="{DynamicResource LblCenter}" Content="标记" />
                                     <Label Grid.Column="4" Grid.Row="1"
                                            Style="{DynamicResource LblCenter}" Content="罕贵" />
-                                    <CheckBox Grid.Column="6" Grid.Row="3" IsChecked="{Binding CardQueryModel.Re}" Content="源数"  VerticalAlignment="Center" Margin="8 0"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding CardQueryModel.Type}" ItemsSource="{Binding QuerySourceModel.TypeList}"
-                                              TextBoxBase.TextChanged="CmbType_TextChanged" SelectedIndex="0"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding CardQueryModel.Camp}" ItemsSource="{Binding QuerySourceModel.CampList}"
-                                              TextBoxBase.TextChanged="CmbCamp_TextChanged" SelectedIndex="0"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding QuerySourceModel.RaceList}"
+                                    <CheckBox Grid.Column="6" Grid.Row="3" IsChecked="{Binding CardQueryModel.Re}"
+                                              Content="源数" VerticalAlignment="Center" Margin="8 0" />
+                                    <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding CardQueryModel.Type}"
+                                              ItemsSource="{Binding QuerySourceModel.TypeList}"
+                                              TextBoxBase.TextChanged="CmbType_TextChanged" SelectedIndex="0" />
+                                    <ComboBox Grid.Column="1" Grid.Row="1" Text="{Binding CardQueryModel.Camp}"
+                                              ItemsSource="{Binding QuerySourceModel.CampList}"
+                                              TextBoxBase.TextChanged="CmbCamp_TextChanged" SelectedIndex="0" />
+                                    <ComboBox Grid.Column="1" Grid.Row="2"
+                                              ItemsSource="{Binding QuerySourceModel.RaceList}"
                                               Text="{Binding CardQueryModel.Race}"
-                                              IsEnabled="{Binding CardQueryModel.RaceEnabled}" SelectedIndex="0"/>
-                                    <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Sign}" ItemsSource="{Binding QuerySourceModel.SignList}"
-                                              IsEnabled="{Binding CardQueryModel.SignEnabled}" SelectedIndex="0"/>
-                                    <ComboBox Grid.Column="5" Grid.Row="1" Text="{Binding CardQueryModel.Rare}" ItemsSource="{Binding QuerySourceModel.RareList}"
-                                              SelectedIndex="0"/>
+                                              IsEnabled="{Binding CardQueryModel.RaceEnabled}" SelectedIndex="0" />
+                                    <ComboBox Grid.Column="1" Grid.Row="3" Text="{Binding CardQueryModel.Sign}"
+                                              ItemsSource="{Binding QuerySourceModel.SignList}"
+                                              IsEnabled="{Binding CardQueryModel.SignEnabled}" SelectedIndex="0" />
+                                    <ComboBox Grid.Column="5" Grid.Row="1" Text="{Binding CardQueryModel.Rare}"
+                                              ItemsSource="{Binding QuerySourceModel.RareList}"
+                                              SelectedIndex="0" />
                                     <Label Grid.Column="2" Grid.Row="1" Style="{DynamicResource LblCenter}"
                                            Content="卡名" />
                                     <Label Grid.Column="2" Grid.Row="2" Style="{DynamicResource LblCenter}"
@@ -228,11 +246,11 @@
                                            Content="力量" />
                                     <Label Grid.Column="4" Grid.Row="0" Style="{DynamicResource LblCenter}"
                                            Content="卡编" />
-                                    <TextBox Grid.Column="3" Grid.Row="1" 
+                                    <TextBox Grid.Column="3" Grid.Row="1"
                                              Text="{Binding CardQueryModel.CName}" />
-                                    <TextBox Grid.Column="3" Grid.Row="2" 
+                                    <TextBox Grid.Column="3" Grid.Row="2"
                                              Text="{Binding CardQueryModel.JName}" />
-                                    <TextBox Grid.Column="3" Grid.Row="3" 
+                                    <TextBox Grid.Column="3" Grid.Row="3"
                                              Text="{Binding CardQueryModel.Illust}" />
                                     <ComboBox Grid.Column="3" Grid.Row="0" IsEditable="True"
                                               Text="{Binding CardQueryModel.Pack}"
@@ -250,9 +268,8 @@
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="120" />
-                                        <RowDefinition Height="28" />
                                         <RowDefinition Height="1.5*" />
-                                        <RowDefinition Height="28" />
+                                        <RowDefinition Height="1*" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Border Style="{DynamicResource ControlBorder}" Grid.Row="0" Margin="8 4">
@@ -274,16 +291,29 @@
                                             </ListBox.ItemTemplate>
                                         </ListBox>
                                     </Border>
-                                    <Label Grid.Row="1" Content="能力:" Margin="8 0" />
-                                    <TextBox Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True" Margin="8 4"
-                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-                                             Text="{Binding CardQueryModel.Ability}"
-                                             VerticalScrollBarVisibility="Auto" TextChanged="TxtAbility_TextChanged" />
-                                    <Label Grid.Row="3" Content="台词:" Margin="8 0" />
-                                    <TextBox Grid.Row="4" TextWrapping="Wrap" AcceptsReturn="True" Margin="8 4 8 8"
-                                             Text="{Binding CardQueryModel.Lines}"
-                                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
-                                             VerticalScrollBarVisibility="Auto" />
+                                    <DockPanel Grid.Row="1" Margin="8 8 8 0">
+                                        <Label Content="能力" DockPanel.Dock="Top" />
+                                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="0 4"
+                                                 VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                                 Text="{Binding CardQueryModel.Ability}"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="TxtAbility_TextChanged" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="2" Margin="8 8 8 0">
+                                        <Label Content="台词:" DockPanel.Dock="Top" />
+                                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="0 4"
+                                                 Text="{Binding CardQueryModel.Lines}"
+                                                 VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Row="3" Margin="8 8 8 4">
+                                        <Label Content="原能力" DockPanel.Dock="Top" />
+                                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="0 4"
+                                                 VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+                                                 Text="{Binding CardQueryModel.OrigAbility}"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 TextChanged="TxtAbility_TextChanged" />
+                                    </DockPanel>
                                 </Grid>
                             </Grid>
                         </Border>

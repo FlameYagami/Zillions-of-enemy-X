@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Common;
 using DeckEditor.Model;
 using Wrapper.Constant;
 using Wrapper.Model;
@@ -36,6 +35,7 @@ namespace DeckEditor.ViewModel
             CardDetailModel.Lines = cardModel.Lines;
             CardDetailModel.SignPath = CardUtils.GetSignPath(cardModel.Sign);
             CardDetailModel.CampPathList = CardUtils.GetCampPathList(cardModel.Camp);
+            CardDetailModel.OrigAbility = cardModel.OrigAbility;
             OnPropertyChanged(nameof(CardDetailModel));
             _cardPictureVm.UpdatePicture(cardModel);
         }

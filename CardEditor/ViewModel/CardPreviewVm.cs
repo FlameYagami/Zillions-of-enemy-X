@@ -16,13 +16,13 @@ namespace CardEditor.ViewModel
         public CardPreviewVm()
         {
             CardPreviewModels = new ObservableCollection<CardPreviewModel>();
-            PreviewOrderValues = Dic.PreviewOrderDic.Values.ToList();
+            PreviewOrderDic = Dic.PreviewOrderDic;
         }
 
         public bool IsPreviewChanged { get; set; }
-        public List<string> PreviewOrderValues { get; set; }
+        public Dictionary<Enums.PreviewOrderType, string> PreviewOrderDic { get; set; }
         public string CardPreviewCountValue { get; set; }
-        public string CardPreviewOrder { get; set; }
+        public Enums.PreviewOrderType PreviewOrderType { get; set; }
         public CeQueryExModel MemoryQueryModel { get; set; }
         public ObservableCollection<CardPreviewModel> CardPreviewModels { get; set; }
 
@@ -42,7 +42,7 @@ namespace CardEditor.ViewModel
             var sql = GetModelSql(cardQueryMdoel);
             // 保存上次查询的实例
             MemoryQueryModel = cardQueryMdoel;
-            DataManager.FillDataToDataSet(dataSet,sql);
+            DataManager.FillDataToDataSet(dataSet, sql);
 
             var previewModels = CardUtils.GetCardPreviewModels(dataSet);
             CardPreviewModels.Clear();
@@ -53,7 +53,7 @@ namespace CardEditor.ViewModel
             // 跟踪历史
             if (MemoryQueryModel.CeQueryModel.Number.Equals(string.Empty)) return;
             var firstOrDefault = CardPreviewModels
-                .Select((previewModel, index) => new { previewModel.Number, Index = index })
+                .Select((previewModel, index) => new {previewModel.Number, Index = index})
                 .FirstOrDefault(i => i.Number.Equals(MemoryQueryModel.CeQueryModel.Number));
             if (null == firstOrDefault) return;
             var position = firstOrDefault.Index;
@@ -72,21 +72,19 @@ namespace CardEditor.ViewModel
 
         private string GetModelSql(CeQueryExModel cardQueryMdoel)
         {
-            OnPropertyChanged(nameof(CardPreviewOrder));
+            OnPropertyChanged(nameof(PreviewOrderType));
             var sql = string.Empty;
-            var modeType = CardUtils.GetModeType(cardQueryMdoel.ModeValue);
-            var preOrderType = CardUtils.GetPreOrderType(CardPreviewOrder);
-            switch (modeType)
+            switch (cardQueryMdoel.ModeType)
             {
                 case Enums.ModeType.Query:
-                    sql = CeSqlUtils.GetQuerySql(cardQueryMdoel.CeQueryModel, preOrderType);
+                    sql = CeSqlUtils.GetQuerySql(cardQueryMdoel.CeQueryModel, PreviewOrderType);
                     break;
                 case Enums.ModeType.Editor:
                     if (!cardQueryMdoel.CeQueryModel.Pack.Equals(string.Empty))
-                        sql = CeSqlUtils.GetEditorSql(cardQueryMdoel.CeQueryModel, preOrderType);
+                        sql = CeSqlUtils.GetEditorSql(cardQueryMdoel.CeQueryModel, PreviewOrderType);
                     break;
                 case Enums.ModeType.Develop:
-                    sql = CeSqlUtils.GetQuerySql(cardQueryMdoel.CeQueryModel, preOrderType);
+                    sql = CeSqlUtils.GetQuerySql(cardQueryMdoel.CeQueryModel, PreviewOrderType);
                     break;
             }
             return sql;

@@ -152,7 +152,7 @@ namespace CardEditor.View
 
         private List<CeQueryModel> GetSourceCardModelList(DataSet dataSet)
         {
-            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CeQueryModel()
+            return dataSet.Tables[0].Rows.Cast<DataRow>().Select(row => new CeQueryModel
             {
                 Type = row["种类"].ToString(),
                 Camp = row["色"].ToString(),

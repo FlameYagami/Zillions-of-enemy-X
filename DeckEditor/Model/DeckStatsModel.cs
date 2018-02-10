@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media;
-using Common;
 using Wrapper.Model;
 
 namespace DeckEditor.Model
